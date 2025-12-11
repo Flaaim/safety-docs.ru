@@ -24,7 +24,7 @@ services:
       - ./frontend:/app
     environment:
       - WDS_SOCKET_PORT=0
-    command: yarn dev
+    command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn dev"
     tty: true
 
   frontend-node-cli:
