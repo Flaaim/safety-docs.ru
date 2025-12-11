@@ -22,7 +22,7 @@ docker-build:
 frontend-init: frontend-yarn-install
 
 frontend-clear:
-	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf build'
+	docker run --rm -v ${PWD}/frontend:/app -w /app alpine sh -c 'rm -rf dist'
 
 frontend-yarn-install:
 	docker-compose run --rm frontend-node-cli yarn install
