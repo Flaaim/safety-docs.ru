@@ -2,4 +2,6 @@
 
 declare(strict_types=1);
 
-echo "HELLO WORLD!\n";
+header('Content-Type: application/json');
+
+echo '{}';

@@ -1,19 +1,29 @@
 services:
+  gateway:
+    build:
+      context: gateway/docker/nginx
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - frontend
+      - api
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   frontend:
     build:
       context: frontend/docker/nginx
-    ports:
-      - "8080:80"
     volumes:
       - ./frontend:/app
 
   api:
     build:
       context: api/docker/nginx
-    ports:
-      - "8081:80"
     volumes:
       - ./api:/app
+    depends_on:
+      - api-php-fpm
 
   api-php-fpm:
     build:
