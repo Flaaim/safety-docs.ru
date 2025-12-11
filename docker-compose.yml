@@ -17,6 +17,16 @@ services:
     volumes:
       - ./frontend:/app
 
+  frontend-node:
+    build:
+      context: frontend/docker/node
+    volumes:
+      - ./frontend:/app
+    environment:
+      - WDS_SOCKET_PORT=0
+    command: yarn dev
+    tty: true
+
   frontend-node-cli:
     build:
       context: frontend/docker/node

@@ -7,8 +7,9 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
+    hmr: true,
     watch: {
-      usePolling: true  // Для Docker
+      usePolling: true
     }
   }
 })
