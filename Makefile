@@ -30,5 +30,8 @@ frontend-ready:
 frontend-yarn-install:
 	docker-compose run --rm frontend-node-cli yarn install
 
+frontend-test:
+	docker compose run --rm frontend-node-cli yarn test
+
 
 
