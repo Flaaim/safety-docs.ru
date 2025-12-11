@@ -6,3 +6,20 @@ services:
       - "8080:80"
     volumes:
       - ./frontend:/app
+
+  api:
+    build:
+      context: api/docker/nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./api:/app
+
+  api-php-fpm:
+    build:
+      context: api/docker/php-fpm
+    volumes:
+      - ./api:/app
+
+
+
