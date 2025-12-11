@@ -1,6 +1,6 @@
 /.idea
 /node_modules
 /coverage
-/build
+/dist
 /yarn-debug.log*
 /yarn-error.log*
