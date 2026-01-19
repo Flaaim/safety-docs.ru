@@ -2,7 +2,7 @@ init: docker-down-clear frontend-clear docker-pull docker-build docker-up fronte
 up: docker-up
 down: docker-down
 restart: down up
-
+lint: frontend-lint
 
 docker-up:
 	docker-compose up -d
@@ -29,6 +29,12 @@ frontend-ready:
 
 frontend-yarn-install:
 	docker-compose run --rm frontend-node-cli yarn install
+
+frontend-lint:
+	docker-compose run --rm frontend-node-cli yarn eslint
+
+frontend-fix:
+	docker-compose run --rm frontend-node-cli yarn eslint-fix
 
 frontend-test:
 	docker compose run --rm frontend-node-cli yarn test
