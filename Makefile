@@ -3,7 +3,7 @@ up: docker-up
 down: docker-down
 restart: down up
 lint: frontend-lint
-
+lint-fix: frontend-lint-fix
 docker-up:
 	docker-compose up -d
 
@@ -34,7 +34,7 @@ frontend-lint:
 	docker-compose run --rm frontend-node-cli yarn eslint
 	docker-compose run --rm frontend-node-cli yarn stylelint
 
-frontend-fix:
+frontend-lint-fix:
 	docker-compose run --rm frontend-node-cli yarn eslint-fix
 	docker-compose run --rm frontend-node-cli yarn stylelint-fix
 
