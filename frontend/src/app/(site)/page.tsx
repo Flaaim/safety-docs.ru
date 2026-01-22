@@ -1,9 +1,11 @@
+import {Ptag} from "@/components";
 
 
 export default function Home() {
   return (
     <div >
-      <p>Проверка текста</p>
+      <Ptag   >Стандартный размер шрифта</Ptag>
+      <Ptag  size='s'>Маленький размер шрифта</Ptag>
     </div>
   );
 }
