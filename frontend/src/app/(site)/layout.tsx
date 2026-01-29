@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import styles from './layout.module.css';
 import "../globals.css";
-import { Sidebar } from "@/components";
+import { Sidebar, Footer } from "@/components";
+
 
 
 
@@ -32,7 +33,7 @@ export default function RootLayout({
           <div className={styles.body}>
             {children}
           </div>
-          <footer className={styles.footer}>Footer</footer>
+          <Footer className={styles.footer} />
         </div>
       </body>
     </html>

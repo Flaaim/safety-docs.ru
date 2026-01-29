@@ -3,12 +3,12 @@
   grid-template-areas:
     ". header header ."
     ". sidebar body ."
-    ". footer footer .";
+    ". footer . .";
   grid-template-rows: auto 1fr auto;
-  grid-template-columns: auto 300px 600px auto;
+  grid-template-columns: auto 270px 600px auto;
 
   min-height: 100vh;
-  gap: 0 30px;
+  gap: 0 40px;
 }
 
 .header {
