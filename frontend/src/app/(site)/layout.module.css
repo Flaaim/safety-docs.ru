@@ -8,7 +8,7 @@
   grid-template-columns: auto 270px 600px auto;
 
   min-height: 100vh;
-  gap: 0 40px;
+  gap: 50px 40px;
 }
 
 .header {
@@ -34,6 +34,7 @@
     "sidebar"
     "body"
     "footer";
+    padding: 10px;
   }
   .header {
     display: none;
