@@ -1,12 +1,26 @@
 .tag {
-  display: inline-block;
+  position: relative;
+  padding: 5px 10px;
   box-sizing: border-box;
-  padding: 8px 15px;
   line-height: 1;
   color: var(--downloads-text-color);
   text-align: center;
   background: var(--downloads-background);
   border-radius: 5px;
   border: 1px solid var(--downloads-border-color);
+}
+.tag a::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.tag:hover {
+  background: var(--downloads-active-background);
+  color: var(--downloads-hover-color);
 }
 
