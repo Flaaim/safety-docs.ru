@@ -1,0 +1,12 @@
+.tag {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 8px 15px;
+  line-height: 1;
+  color: var(--downloads-text-color);
+  text-align: center;
+  background: var(--downloads-background);
+  border-radius: 5px;
+  border: 1px solid var(--downloads-border-color);
+}
+

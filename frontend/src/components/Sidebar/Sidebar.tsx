@@ -1,6 +1,6 @@
 import {JSX} from "react";
 import {SidebarProps} from "./Sidebar.props";
-import {Htag, Ptag, Spantag} from "@/components";
+import {Tag, Htag, Ptag, Spantag} from "@/components";
 import classNames from "classnames";
 import styles from './Sidebar.module.css'
 export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
@@ -12,5 +12,10 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
         <Spantag ><a href="https://t.me/help_ot_news">https://t.me/help_ot_news</a>
         </Spantag>
       </Ptag>
+
+      <Tag href='/'>
+        <Spantag size='s' > Скачать </Spantag> <br />
+        <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
+      </Tag>
     </aside>)
 }
