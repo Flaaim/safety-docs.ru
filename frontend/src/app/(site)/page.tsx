@@ -1,4 +1,14 @@
-import {Blockquote, Htag, Listtag, Ptag} from "@/components";
+import {
+  Button,
+  Htag,
+  InputForm,
+  LabelForm,
+  Listtag,
+  ProductModal,
+  Ptag,
+  Spantag,
+  ProductForm,
+} from "@/components";
 
 
 export default function Home() {
@@ -19,6 +29,15 @@ export default function Home() {
         <span>Item 1</span>
         <span>Item 2</span>
       </Listtag>
+      <ProductForm headline='Получить полный комплект документов по охране труда на 2026 год'>
+        <LabelForm forInput='email'  >Введите ваш email: </LabelForm>
+          <InputForm type='email' name='email' value=''  id='email' placeholder='Email'/>
+          <InputForm type='hidden' name='productId' value=''  id='productId' />
+          <Button type='submit'>Получить</Button>
+
+      </ProductForm>
+      <Spantag size='s'>Приобретая образцы документов вы соглашаетесь с условиями использования</Spantag>
+
     </div>
   );
 }

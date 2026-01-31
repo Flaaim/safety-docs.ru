@@ -1,0 +1,48 @@
+.form {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--heading-secondary-color);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+.form input {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--heading-secondary-color);
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--heading-secondary-color);
+}
+
+.form button {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--background-color);
+  background-color: var(--link-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+form button:hover {
+  background-color: var(--link-hover-color);
+}
