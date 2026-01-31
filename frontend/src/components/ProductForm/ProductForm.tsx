@@ -32,15 +32,13 @@ export const Button = ({children, type}: ButtonProps): JSX.Element => {
 
 export const ProductForm = ({children, headline, className, ...props}: ProductFormProps): JSX.Element => {
   return <>
-    <div>
       <h4>{headline}</h4>
       <form
+        action=''
         className={cn(styles.form, className)}
         {...props}
       >
         {children}
       </form>
-    </div>
-
     </>
 }

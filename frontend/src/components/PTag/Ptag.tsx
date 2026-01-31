@@ -1,5 +1,5 @@
 import {JSX} from "react";
-import {PtagProps} from "@/components/Ptag/Ptag.props";
+import {PtagProps} from "./Ptag.props";
 import styles from './Ptag.module.css';
 import cn from "classnames";
 export const Ptag = ({size = 'm', appearance, className, children, ...props}: PtagProps):JSX.Element => {
@@ -12,6 +12,7 @@ export const Ptag = ({size = 'm', appearance, className, children, ...props}: Pt
         [styles.italic]: appearance === 'italic',
         [styles.strikethrough]: appearance === 'strikethrough',
       })}
+
       {...props}
     >
       {children}

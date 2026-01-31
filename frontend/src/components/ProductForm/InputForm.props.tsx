@@ -5,6 +5,6 @@ export interface InputFormProps extends DetailedHTMLProps<HTMLAttributes<HTMLInp
   type: 'email' | 'hidden'
   name: 'email' | 'productId'
   placeholder?: string
-  value: string
+  value?: string
   id: string
 }
