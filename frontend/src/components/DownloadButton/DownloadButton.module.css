@@ -1,6 +1,6 @@
 .tag {
-  position: relative;
-  padding: 5px 10px;
+  cursor: pointer;
+  padding: 8px 12px;
   box-sizing: border-box;
   line-height: 1;
   color: var(--downloads-text-color);
@@ -8,15 +8,6 @@
   background: var(--downloads-background);
   border-radius: 5px;
   border: 1px solid var(--downloads-border-color);
-}
-.tag a::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
 }
 
 .tag:hover {

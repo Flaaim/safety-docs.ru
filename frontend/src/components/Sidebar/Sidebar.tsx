@@ -1,9 +1,13 @@
 import {JSX} from "react";
 import {SidebarProps} from "./Sidebar.props";
-import {Tag, Htag, Ptag, Spantag, DefItem} from "@/components";
+import {Htag, Ptag, Spantag, DefItem, DownloadButton, Deflisttag } from "@/components";
 import classNames from "classnames";
 import styles from './Sidebar.module.css'
-import {Deflisttag} from "@/components/DeflistTag/Deflisttag";
+
+
+
+
+
 export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
   return (
     <aside {...props} className={classNames(className, styles.sidebar)}>
@@ -13,11 +17,10 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
         <Spantag ><a href="https://t.me/help_ot_news">https://t.me/help_ot_news</a>
         </Spantag>
       </Ptag>
-
-      <Tag href='/'>
+      <DownloadButton >
         <Spantag size='s' > Скачать </Spantag> <br />
         <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
-      </Tag>
+      </DownloadButton>
       <Htag tag='h3'>Информация:</Htag>
       <hr/>
       <Deflisttag >
