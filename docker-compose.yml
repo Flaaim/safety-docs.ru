@@ -5,9 +5,11 @@ services:
     ports:
       - "8080:8080"
       - "8081:8081"
+      - "8082:8082"
     depends_on:
       - frontend
       - api
+      - mailer
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -16,6 +18,8 @@ services:
       context: frontend/docker/nginx
     volumes:
       - ./frontend:/app
+    depends_on:
+      - frontend-node
 
   frontend-node:
     build:
@@ -40,12 +44,87 @@ services:
       - ./api:/app
     depends_on:
       - api-php-fpm
+      - api-php-cli
 
   api-php-fpm:
     build:
       context: api/docker/php-fpm
     volumes:
       - ./api:/app
+    environment:
+      APP_DEBUG: 1
+      SITE_URL: localhost
+      SITE_NAME: Docker
+      APP_ENV: dev
+      DB_HOST: mysql
+      DB_USER: app
+      DB_PASSWORD: secret
+      DB_NAME: app
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
+      YOOKASSA_RETURN_URL: https://localhost/success
+      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
+      TELEGRAM_CHAT_ID: 1954013093
+      AUTH_LOGIN: app
+      AUTH_PASSWORD: secret
+
+
+  api-php-cli:
+    build:
+      context: api/docker/php-cli
+    volumes:
+      - ./api:/app
+    environment:
+      APP_DEBUG: 1
+      SITE_URL: localhost
+      SITE_NAME: Docker
+      APP_ENV: dev
+      DB_HOST: mysql
+      DB_USER: app
+      DB_PASSWORD: secret
+      DB_NAME: app
+      MAILER_HOST: mailer
+      MAILER_PORT: 1025
+      MAILER_USER: app
+      MAILER_PASSWORD: secret
+      MAILER_ENCRYPTION: tcp
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
+      YOOKASSA_RETURN_URL: https://localhost/success
+      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
+      TELEGRAM_CHAT_ID: 1954013093
+      AUTH_LOGIN: app
+      AUTH_PASSWORD: secret
+
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: app
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: app
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "33061:3306"
+    command: --default-authentication-plugin=mysql_native_password
+
+  mailer:
+    image: mailhog/mailhog
+
+volumes:
+  mysql:
 
 
 
