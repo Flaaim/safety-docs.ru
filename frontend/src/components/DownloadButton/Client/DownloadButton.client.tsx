@@ -23,11 +23,6 @@ export const DownloadButtonClient = ({children, ...props}: DownloadButtonClientP
 
     <ProductModal isOpen={isOpen} onClose={() => setIsOpen(false)} >
       <ProductForm headline='Получить полный комплект документов по охране труда на 2026 год'>
-        <LabelForm forInput='email'  >Введите ваш email: </LabelForm>
-        <InputForm type='email' name='email'  id='email' placeholder='Email'/>
-        <InputForm type='hidden' name='productId'  id='productId' value='1232324'/>
-        <Button type='submit'>Получить</Button>
-
       </ProductForm>
       <Spantag size='s'>Приобретая образцы документов вы соглашаетесь с условиями использования</Spantag>
     </ProductModal>
