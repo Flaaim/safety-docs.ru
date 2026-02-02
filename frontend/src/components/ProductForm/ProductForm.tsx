@@ -1,5 +1,6 @@
 'use client'
 
+import {z} from 'zod'
 import {FormEvent, JSX, useState} from "react";
 import {ProductFormProps} from "./ProductForm.props";
 import styles from './ProductForm.module.css'
@@ -7,6 +8,11 @@ import cn from 'classnames'
 import {InputFormProps} from "./InputForm.props";
 import {LabelFormProps} from "./LabelForm.props";
 import {ButtonProps} from "./Button.props";
+
+const schema = z.object({
+  email: z.string().email('Некорректный email адрес'),
+  productId: z.string().uuid()
+})
 
 export const InputForm = ({type, name, value, id, placeholder}: InputFormProps): JSX.Element => {
   return <>
@@ -37,14 +43,28 @@ export const ProductForm = ({headline, className}: ProductFormProps): JSX.Elemen
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
+
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>){
     e.preventDefault();
     setLoading(true)
     setError(null)
+    const formData = new FormData(e.target);
 
-    const formData = new FormData(e.currentTarget)
-    const email = formData.get('email')
-    const productId = formData.get('productId')
+    const data = {
+      email: formData.get('email'),
+      productId: formData.get('productId'),
+    }
+
+    const parsed = schema.safeParse(data)
+
+    if(!parsed.success){
+      setError(parsed.error.issues[0].message)
+      setLoading(false)
+      return
+    }
+
+    const {email, productId} = parsed.data
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-service/process-payment`, {
@@ -58,7 +78,7 @@ export const ProductForm = ({headline, className}: ProductFormProps): JSX.Elemen
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Произошла ошибка')
+        setError(data.message || 'Произошла ошибка при отправке запроса')
         return
       }
 
@@ -77,7 +97,7 @@ export const ProductForm = ({headline, className}: ProductFormProps): JSX.Elemen
       >
         <LabelForm forInput='email'  >Введите ваш email: </LabelForm>
         <InputForm type='email' name='email'  id='email' placeholder='Email'/>
-        <InputForm type='hidden' name='productId'  id='productId' value='5a0fa626-7fb5-446e-a5ed-b1ad2723e53c'/>
+        <InputForm type='hidden' name='productId'  id='productId' value='b38e76c0-ac23-4c48-85fd-975f32c8801f'/>
 
         {error && <p style={{color: 'red'}}>{error}</p>}
 
