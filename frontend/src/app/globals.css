@@ -9,7 +9,7 @@ body {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
 
   color: inherit;
 }
@@ -34,10 +34,27 @@ a {
   --downloads-text-color: #676767;
   --downloads-hover-color: #675C5C;
   --downloads-active-background: #f0f0f0;
-  --code-color: #333;
-  --pre-background: #f8f8f8;
-  --pre-border-color: #e5e5e5;
   --table-border-color: #e5e5e5;
   --table-header-color: #444;
 
+  /* Статусы */
+  --status-color: #333;
+  --status-background: #f8f8f8;
+  --status-border-color: #e5e5e5;
+
+  --status-color-success: #721c24;
+  --status-background-success: #d4edda;
+  --status-border-color-success: #28a745;
+
+  --status-color-pending: #856404;
+  --status-background-pending: #fff3cd;
+  --status-border-color-pending: #ffc107;
+
+  --status-color-loading: #383d41;
+  --status-background-loading: #e2e3e5;
+  --status-border-color-loading: #6c757d;
+
+  --status-color-failed: #721c24;
+  --status-background-failed: #f8d7da;
+  --status-border-color-failed: #dc3545;
 }

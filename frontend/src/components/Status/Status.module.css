@@ -1,0 +1,43 @@
+.status {
+  font-family: var(--font-roboto-mono), sans-serif;
+  color: var(--status-color);
+  padding: 8px 15px;
+  background: var(--status-background);
+  border-radius: 5px;
+  border: 1px solid var(--status-border-color);
+  overflow-x: auto;
+}
+
+.success {
+  background-color: var(--status-background-success);
+  border: 1px solid var(--status-border-color-success);
+  color: var(--status-color-success);
+}
+
+.failed, .error {
+  background-color: var(--status-background-failed);
+  border: 1px solid var(--status-border-color-failed);
+  color: var(--status-color-failed);
+}
+
+.pending {
+  background-color: var(--status-background-pending);
+  border: 1px solid var(--status-border-color-pending);
+  color: var(--status-color-pending);
+}
+.loading{
+  background-color: var(--status-background-loading);
+  border: 1px solid var(--status-border-color-loading);
+  color: var(--status-color-loading);
+}
+.loading::before {
+  content: '⟳';
+  display: inline-block;
+  margin-right: 8px;
+  font-weight: bold;
+  animation: spin 1.5s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
