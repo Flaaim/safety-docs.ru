@@ -11,7 +11,7 @@ import {ButtonProps} from "./Button.props";
 
 const schema = z.object({
   email: z.string().email('Некорректный email адрес'),
-  productId: z.string().uuid()
+  productId: z.string().uuid('Некорректный ID продукта')
 })
 
 export const InputForm = ({type, name, value, id, placeholder}: InputFormProps): JSX.Element => {
@@ -19,7 +19,7 @@ export const InputForm = ({type, name, value, id, placeholder}: InputFormProps):
     <input
       name={name}
       type={type}
-      value={value}
+      defaultValue={value}
       placeholder={placeholder}
       id={id}
     />
@@ -43,13 +43,11 @@ export const ProductForm = ({headline, className}: ProductFormProps): JSX.Elemen
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
-
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>){
     e.preventDefault();
     setLoading(true)
     setError(null)
-    const formData = new FormData(e.target);
+    const formData = new FormData(e.currentTarget);
 
     const data = {
       email: formData.get('email'),
@@ -75,19 +73,28 @@ export const ProductForm = ({headline, className}: ProductFormProps): JSX.Elemen
         body: JSON.stringify({ email, productId }),
       })
 
-      const data = await response.json()
+      const result = await response.json()
 
       if (!response.ok) {
-        setError(data.message || 'Произошла ошибка при отправке запроса')
+        setError(result.message || 'Произошла ошибка при отправке запроса')
+        setLoading(false)
         return
       }
 
       setSuccess(true)
+
+      if (result.returnUrl) {
+        window.location.href = result.returnUrl;
+      }
+
     } catch (err) {
       setError('Ошибка соединения')
+      setLoading(false)
     } finally {
       setLoading(false)
     }
+
+
   }
   return <>
       <h4>{headline}</h4>
