@@ -1,18 +1,16 @@
-import {JSX, ReactNode} from "react";
+import {JSX} from "react";
 import styles from './Status.module.css'
 import cn from 'classnames'
 import {Roboto_Mono} from "next/font/google";
+import {StatusProps} from "@/components/Status/Status.props";
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["cyrillic"]
 })
 
-export interface PendingStatusProps {
-  children: ReactNode
-  appearance: 'pending' | 'success' | 'failed' | 'error' | 'loading'
-}
-export const Status = ({children, className, appearance}: PendingStatusProps): JSX.Element => {
+
+export const Status = ({children, className, appearance}: StatusProps ): JSX.Element => {
   return (<>
       <div
 
