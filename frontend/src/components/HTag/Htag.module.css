@@ -13,11 +13,17 @@
 }
 
 .h3 {
-
+  color: #494949;
+  line-height: 1.1;
+  margin: 0 0 20px;
+  font-size: 16px;
 }
 
 .h4 {
-
+  color: #494949;
+  line-height: 1.1;
+  margin: 0 0 20px;
+  font-size: 14px;
 }
 
 .h5 {

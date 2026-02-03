@@ -2,7 +2,7 @@ import {JSX} from "react";
 import {HtagProps} from "./Htag.props";
 import styles from './Htag.module.css';
 
-export const Htag = ({tag, children, h}: HtagProps):JSX.Element => {
+export const Htag = ({tag, children}: HtagProps):JSX.Element => {
   switch (tag) {
     case "h1":
       return <h1 className={styles.h1}>{children}</h1>;
@@ -10,6 +10,8 @@ export const Htag = ({tag, children, h}: HtagProps):JSX.Element => {
       return <h2 className={styles.h2}>{children}</h2>;
     case "h3":
       return <h3 className={styles.h3}>{children}</h3>;
+    case "h4":
+      return <h3 className={styles.h4}>{children}</h3>;
     default:
       return <></>;
   }
