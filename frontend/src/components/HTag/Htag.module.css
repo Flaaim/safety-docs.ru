@@ -1,29 +1,25 @@
+.h1, .h2, .h3, .h4, .h5 {
+  margin: 20px 0 20px;
+  line-height: 1.1;
+}
 .h1 {
   font-size: 28px;
-  line-height: 1.1;
   color: var(--heading-color);
-  margin: 0 0 20px;
 }
 
 .h2 {
-  font-size: 21px;
-  line-height: 1.1;
+  font-size: 24px;
   color: var(--heading-secondary-color);
-  margin: 0 0 20px;
 }
 
 .h3 {
-  color: #494949;
-  line-height: 1.1;
-  margin: 0 0 20px;
-  font-size: 16px;
+  color: var(--heading-tertiary-color);
+  font-size: 18px;
 }
 
 .h4 {
-  color: #494949;
-  line-height: 1.1;
-  margin: 0 0 20px;
-  font-size: 14px;
+  color: var(--heading-tertiary-color);
+  font-size: 16px;
 }
 
 .h5 {
