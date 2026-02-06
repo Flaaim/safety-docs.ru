@@ -3,6 +3,7 @@ import {SidebarProps} from "./Sidebar.props";
 import {Htag, Ptag, Spantag, DefItem, DownloadButton, Deflisttag } from "@/components";
 import styles from './Sidebar.module.css'
 import classNames from "classnames";
+import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
 
 
 
@@ -23,6 +24,7 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
       </DownloadButton>
       <Htag tag='h3'>Информация:</Htag>
       <hr/>
+      <ProductInfo productId='b38e76c0-ac23-4c48-85fd-975f32c8801f'></ProductInfo>
       <Deflisttag >
         <DefItem term='Стоимость' definition='1200 рублей' />
         <DefItem term='Формат' definition='docx, doc, ' />
