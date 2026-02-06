@@ -1,0 +1,11 @@
+.productInfo {
+  font-family: var(--font-roboto-mono);
+  box-sizing: border-box;
+  border: 1px solid var(--downloads-border-color);
+  border-radius: 5px;
+  padding: 8px 12px;
+  line-height: 1;
+  margin: 15px 0;
+}
+
+
