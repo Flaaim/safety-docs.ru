@@ -8,7 +8,7 @@ import {DownloadButtonClientProps} from "@/components/DownloadButton/Client/Down
 import {Button, InputForm, LabelForm, ProductForm, ProductModal, Spantag} from "@/components";
 
 
-export const DownloadButtonClient = ({children, ...props}: DownloadButtonClientProps): JSX.Element => {
+export const DownloadButtonClient = ({children, productId, ...props}: DownloadButtonClientProps): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false)
 
 

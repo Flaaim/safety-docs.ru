@@ -8,6 +8,7 @@ import cn from 'classnames'
 import {InputFormProps} from "./InputForm.props";
 import {LabelFormProps} from "./LabelForm.props";
 import {ButtonProps} from "./Button.props";
+import {Status} from "@/components/Status/Status";
 
 const schema = z.object({
   email: z.string().email('Некорректный email адрес'),
@@ -38,7 +39,7 @@ export const Button = ({children, type}: ButtonProps): JSX.Element => {
   </>
 }
 
-export const ProductForm = ({headline, className}: ProductFormProps): JSX.Element => {
+export const ProductForm = ({headline, productId, className}: ProductFormProps): JSX.Element => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -104,9 +105,11 @@ export const ProductForm = ({headline, className}: ProductFormProps): JSX.Elemen
       >
         <LabelForm forInput='email'  >Введите ваш email: </LabelForm>
         <InputForm type='email' name='email'  id='email' placeholder='Email'/>
-        <InputForm type='hidden' name='productId'  id='productId' value='b38e76c0-ac23-4c48-85fd-975f32c8801f'/>
+        <InputForm type='hidden' name='productId'  id='productId' value={productId}/>
 
-        {error && <p style={{color: 'red'}}>{error}</p>}
+
+
+        {error &&  <Status appearance='error'>{error}</Status>}
 
         <Button type='submit' disabled={loading}>{loading ? 'Отправка...' : 'Получить'}</Button>
       </form>
