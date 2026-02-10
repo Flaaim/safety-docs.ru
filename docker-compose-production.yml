@@ -1,0 +1,98 @@
+services:
+  gateway:
+    image: ${REGISTRY}/stub-project-gateway:${IMAGE_TAG}
+    restart: always
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/html:/var/www/html:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - api
+
+
+  frontend:
+    image: ${REGISTRY}/stub-project-frontend:${IMAGE_TAG}
+    restart: always
+
+
+  api:
+    image: ${REGISTRY}/stub-project-api:${IMAGE_TAG}
+    restart: always
+    depends_on:
+      - api-php-fpm
+      - api-php-cli
+
+  api-php-fpm:
+    image: ${REGISTRY}/stub-project-api-php-fpm:${IMAGE_TAG}
+    restart: always
+    environment:
+      APP_DEBUG: 0
+      SITE_URL: ${API_SITE_URL}
+      SITE_NAME: ${API_SITE_NAME}
+      APP_ENV: prod
+      DB_HOST: mysql
+      DB_USER: app
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      DB_NAME: app
+      MAILER_HOST: ${API_MAILER_HOST}
+      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_USER: ${API_MAILER_USER}
+      MAILER_PASSWORD: ${API_MAILER_PASSWORD}
+      MAILER_ENCRYPTION: tls
+      MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      MAILER_FROM_NAME: ${API_MAILER_FROM_NAME}
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
+      YOOKASSA_RETURN_URL: ${API_SITE_URL}/success
+      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
+      TELEGRAM_CHAT_ID: 1954013093
+      AUTH_LOGIN: ${AUTH_LOGIN}
+      AUTH_PASSWORD: ${AUTH_PASSWORD}
+
+
+  api-php-cli:
+    image: ${REGISTRY}/stub-project-api-php-cli:${IMAGE_TAG}
+    environment:
+      APP_DEBUG: 0
+      SITE_URL: ${API_SITE_URL}
+      SITE_NAME: ${API_SITE_NAME}
+      APP_ENV: prod
+      DB_HOST: mysql
+      DB_USER: app
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      DB_NAME: app
+      MAILER_HOST: ${API_MAILER_HOST}
+      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_USER: ${API_MAILER_USER}
+      MAILER_PASSWORD: ${API_MAILER_PASSWORD}
+      MAILER_ENCRYPTION: tls
+      MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      MAILER_FROM_NAME: ${API_MAILER_FROM_NAME}
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
+      YOOKASSA_RETURN_URL: ${API_SITE_URL}/success
+      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
+      TELEGRAM_CHAT_ID: 1954013093
+      AUTH_LOGIN: app
+      AUTH_PASSWORD: secret
+
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: app
+      MYSQL_PASSWORD: ${API_DB_PASSWORD}
+      MYSQL_DATABASE: app
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
+
+
+

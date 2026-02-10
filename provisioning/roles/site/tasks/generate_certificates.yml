@@ -1,0 +1,17 @@
+---
+- name: Check if certificate already exists
+  stat:
+    path: /etc/letsencrypt/live/{{ item }}/fullchain.pem
+  loop: "{{ certbot_hosts }}"
+  register: certs
+
+- name: Generate certificates
+  command: >
+    certbot certonly
+    --noninteractive
+    --agree-tos
+    --email {{ certbot_email }}
+    -d {{ item.item }}
+  loop: "{{ certs.results }}"
+  when:
+    - not item.stat.exists

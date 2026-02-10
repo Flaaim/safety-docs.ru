@@ -1,0 +1,27 @@
+---
+- name: Install Certbot
+  apt:
+    name: certbot
+    state: present
+    update_cache: yes
+
+- name: Ensure letsencrypt directory exists
+  file:
+    path: /etc/letsencrypt
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy Certbot configuration
+  copy:
+    src: files/cli.ini
+    dest: /etc/letsencrypt/cli.ini
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install Certbot nginx plugin
+  apt:
+    name: python3-certbot-nginx
+    state: present

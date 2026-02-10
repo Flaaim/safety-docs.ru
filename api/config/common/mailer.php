@@ -27,7 +27,7 @@ return [
         $transport = (new EsmtpTransport(
             $config['host'],
             $config['port'],
-            $config['encryption'] === 'tls',
+            false,
             $dispatcher,
         ))
             ->setUsername($config['user'])

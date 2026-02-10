@@ -24,9 +24,6 @@ docker-down-clear:
 docker-pull:
 	docker-compose pull
 
-docker-build:
-	docker-compose build
-
 frontend-init: frontend-yarn-install frontend-ready
 
 frontend-clear:
@@ -74,3 +71,69 @@ unit-test:
 
 functional-test:
 	docker-compose run --rm api-php-cli composer test -- --testsuite=Functional
+
+
+docker-build:
+	docker-compose build
+
+build: build-gateway build-frontend build-api
+
+build-gateway:
+	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-gateway:${IMAGE_TAG} gateway/docker
+
+build-frontend:
+	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-frontend:${IMAGE_TAG} frontend
+
+
+build-api:
+	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-api:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/stub-project-api-php-fpm:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/stub-project-api-php-cli:${IMAGE_TAG} api
+
+try-build:
+	REGISTRY=localhost IMAGE_TAG=0 make build
+
+push: push-gateway push-frontend push-api
+
+push-gateway:
+	docker push ${REGISTRY}/stub-project-gateway:${IMAGE_TAG}
+
+push-frontend:
+	docker push ${REGISTRY}/stub-project-frontend:${IMAGE_TAG}
+
+push-api:
+	docker push ${REGISTRY}/stub-project-api:${IMAGE_TAG}
+	docker push ${REGISTRY}/stub-project-api-php-fpm:${IMAGE_TAG}
+	docker push ${REGISTRY}/stub-project-api-php-cli:${IMAGE_TAG}
+
+
+ifneq ("$(wildcard .env.production)","")
+    include .env.production
+    export
+endif
+
+deploy:
+	ssh ${HOST} -p ${PORT} 'rm -rf site_${BUILD_NUMBER}'
+	ssh ${HOST} -p ${PORT} 'mkdir site_${BUILD_NUMBER}'
+
+	scp -P ${PORT} docker-compose-production.yml ${HOST}:site_${BUILD_NUMBER}/docker-compose.yml
+
+	envsubst < .env.template > .env.local
+	scp -P ${PORT} .env.local ${HOST}:site_${BUILD_NUMBER}/.env
+	rm .env.local
+
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose pull'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose up --build --remove-orphans -d'
+
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose run --rm api-php-cli wait-for-it mysql:3306 -t 60'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose run --rm api-php-cli composer app migrations:migrate -- --no-interaction'
+
+	ssh ${HOST} -p ${PORT} 'rm -f site'
+	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
+
+
+rollback:
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose pull'
+	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker compose up --build --remove-orphans -d'
+	ssh ${HOST} -p ${PORT} 'rm -f site'
+	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'

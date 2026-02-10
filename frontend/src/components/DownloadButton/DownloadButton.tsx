@@ -3,6 +3,6 @@ import {DownloadButtonProps} from "@/components/DownloadButton/DownloadButton.pr
 import {DownloadButtonClient} from "./Client/DownloadButton.client";
 
 
-export const DownloadButton = ({children}:DownloadButtonProps): JSX.Element => {
-  return <DownloadButtonClient>{children}</DownloadButtonClient>
+export const DownloadButton = ({children, productId, headline}:DownloadButtonProps): JSX.Element => {
+  return <DownloadButtonClient productId={productId} headline={headline}>{children}</DownloadButtonClient>
 }

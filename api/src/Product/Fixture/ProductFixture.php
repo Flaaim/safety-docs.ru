@@ -17,11 +17,11 @@ class ProductFixture extends AbstractFixture
     {
         $product = new Product(
             new Id('b38e76c0-ac23-4c48-85fd-975f32c8801f'),
-            'СИЗ образцы документов',
-            new Price(450.00, new Currency()),
+            'Полный комплект ЛНА по охране труда',
+            new Price(2550.00, new Currency('RUB')),
             new File('/ppe/templates.txt'),
-            'ot161.4',
-            '161'
+            'lna2026.1',
+            'lna2026'
         );
 
         $manager->persist($product);

@@ -1,7 +1,8 @@
 services:
   gateway:
     build:
-      context: gateway/docker/development/nginx
+      context: gateway/docker
+      dockerfile: development/nginx/Dockerfile
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -15,7 +16,7 @@ services:
 
   frontend:
     build:
-      context: frontend/docker/nginx
+      context: frontend/docker/development/nginx
     volumes:
       - ./frontend:/app
     depends_on:
@@ -23,23 +24,25 @@ services:
 
   frontend-node:
     build:
-      context: frontend/docker/node
+      context: frontend/docker/development/node
     volumes:
       - ./frontend:/app
     environment:
       - WDS_SOCKET_PORT=0
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8081
     command: sh -c "until [ -f .ready ] ; do sleep 1 ; done && yarn dev"
     tty: true
 
   frontend-node-cli:
     build:
-      context: frontend/docker/node
+      context: frontend/docker/development/node
     volumes:
       - ./frontend:/app
 
   api:
     build:
-      context: api/docker/development/nginx
+      context: api/docker
+      dockerfile: development/nginx/Dockerfile
     volumes:
       - ./api:/app
     depends_on:
@@ -48,7 +51,8 @@ services:
 
   api-php-fpm:
     build:
-      context: api/docker/development/php-fpm
+      context: api/docker
+      dockerfile: development/php-fpm/Dockerfile
     volumes:
       - ./api:/app
     environment:
@@ -78,7 +82,8 @@ services:
 
   api-php-cli:
     build:
-      context: api/docker/development/php-cli
+      context: api/docker
+      dockerfile: development/php-cli/Dockerfile
     volumes:
       - ./api:/app
     environment:

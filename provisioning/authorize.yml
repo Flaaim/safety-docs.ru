@@ -1,0 +1,20 @@
+- name: Add authorized key
+  hosts: site
+  remote_user: root
+  tasks:
+  - name: Ensure .ssh directory exists for deploy user
+    file:
+      path: /home/deploy/.ssh
+      state: directory
+      mode: '0700'
+      owner: deploy
+      group: deploy
+
+  - name: Add SSH public key using copy module
+    copy:
+      content: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      dest: /home/deploy/.ssh/authorized_keys
+      owner: deploy
+      group: deploy
+      mode: '0600'
+      force: yes

@@ -23,7 +23,6 @@ export const Status = ({children, className, appearance}: StatusProps ): JSX.Ele
       )
       }>
         {children}</div>
-      <p>Вернуться на <a href='/frontend/public'>главную.</a></p>
   </>
   )
 }

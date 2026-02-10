@@ -18,18 +18,7 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
         <Spantag ><a href="https://t.me/help_ot_news">https://t.me/help_ot_news</a>
         </Spantag>
       </Ptag>
-      <DownloadButton >
-        <Spantag size='s' > Скачать </Spantag> <br />
-        <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
-      </DownloadButton>
       <Htag tag='h3'>Информация:</Htag>
-      <hr/>
-      <ProductInfo productId='b38e76c0-ac23-4c48-85fd-975f32c8801f'></ProductInfo>
-      <Deflisttag >
-        <DefItem term='Стоимость' definition='1200 рублей' />
-        <DefItem term='Формат' definition='docx, doc, ' />
-        <DefItem term='Количество' definition='47 штук' />
-      </Deflisttag>
-
+      <ProductInfo productId='e2ff37fb-8690-46e5-82fa-75b5ceca8b61'></ProductInfo>
     </aside>)
 }

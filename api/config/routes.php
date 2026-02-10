@@ -17,9 +17,11 @@ return static function(App $app): void {
         $group->post('/result', Payment\Result\RequestAction::class);
 
         $group->group('/products', function (RouteCollectorProxy $group): void {
-            $group->post('/upsert', Product\Upsert\RequestAction::class);
-            $group->post('/upload', Product\Upload\RequestAction::class);
-        })->add(AuthMiddleware::class);
+            $group->post('/upsert', Product\Upsert\RequestAction::class)->add(AuthMiddleware::class);
+            $group->post('/upload', Product\Upload\RequestAction::class)->add(AuthMiddleware::class);
+
+            $group->get('/get', Product\Get\RequestAction::class);
+        });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {
             $group->post('/login', GetToken\RequestAction::class);

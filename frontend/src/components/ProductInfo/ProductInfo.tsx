@@ -52,7 +52,7 @@ export const ProductInfo = ({productId}: ProductInfoProps): JSX.Element => {
       const data = response.json();
 
       if(!response.ok){
-        const errorMessage = 'Ошибка получения данных' || `Ошибка ${response.status}: ${response.statusText}`
+        const errorMessage = `Ошибка ${response.status}: ${response.statusText}`
 
         switch (response.status){
           case 400 : setError(`Ошибка: ${errorMessage}`)
@@ -76,14 +76,17 @@ export const ProductInfo = ({productId}: ProductInfoProps): JSX.Element => {
   if(error){
     return <Status appearance='error'>{error}</Status>
   }
-  return (<div className={cn(styles.productInfo, robotoMono.variable)} data={productId}>
+  return (<div className={cn(styles.productInfo, robotoMono.variable)}>
     <Deflisttag >
       <DefItem term='Название' definition={ProductInfoData?.name} />
       <DefItem term='Стоимость' definition={ProductInfoData?.price + ` рублей`} />
       <DefItem term='Количество' definition={ProductInfoData?.quantity + ` файлов`} />
       <DefItem term='Формат файлов' definition={ProductInfoData?.format} />
     </Deflisttag>
-    <DownloadButton >
+
+    <DownloadButton
+      headline={ProductInfoData?.name}
+      productId={productId}>
       <Spantag size='s' > Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>
