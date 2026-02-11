@@ -13,8 +13,8 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Блог",
-  description: "Мой блог",
+  title: "Комплект документов по охране труда 2026г.",
+  description: "Полный комплект готовых образцов документов для организации работы по охране труда и смежным направлениям на 2026 год.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={`${notoSans.variable} antialiased`}>
         <div className={styles.wrapper}>
           <header className={styles.header}>
-            ХЕАДЕР
+            
           </header>
           <Sidebar className={styles.sidebar} />
           <div className={styles.body}>
