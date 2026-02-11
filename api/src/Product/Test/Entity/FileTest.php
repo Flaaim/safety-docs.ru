@@ -36,22 +36,24 @@ class FileTest extends TestCase
     }
     public function testMergeRoot(): void
     {
-        $file = new File('/ppe/template.rar');
+        $file = new File($filename = $this->tempFile());
         $root = new RootPath($this->tempDir->getValue());
         $file->mergeRoot($root);
 
-        self::assertEquals('/tmp/phpunit_test_/ppe/template.rar', $file->getFullPath());
+        self::assertEquals('/tmp/phpunit_test_/'.$filename, $file->getFile());
     }
 
-    #[DataProvider('fullPathProvider')]
-    public function testTrimFullPath($value, $root, $expected): void
+
+    public function testMergeAlready(): void
     {
-        $file = new File($value);
-        $rootPath = new RootPath($root);
+        $file = new File($this->tempFile());
+        $root = new RootPath($this->tempDir->getValue());
 
-        $file->mergeRoot($rootPath);
+        $file->mergeRoot($root);
 
-        self::assertEquals($expected, $file->getFullPath());
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Root path already merged.');
+        $file->mergeRoot($root);
 
     }
     public function testFile()
@@ -61,16 +63,21 @@ class FileTest extends TestCase
 
         $file->mergeRoot($root);
 
-        self::assertFileExists($file->getFullPath());
+        self::assertFileExists($file->getFile());
     }
-    public static function fullPathProvider(): array
+    public function testExists(): void
     {
-        return [
-            ['/ppe/template.rar', '/tmp', '/tmp/ppe/template.rar'],
-            ['/ppe/template.rar/', '/tmp/', '/tmp/ppe/template.rar'],
-            ['ppe/template.rar//', 'tmp/', '/tmp/ppe/template.rar'],
-            ['//ppe/template.rar//', '//tmp/', '/tmp/ppe/template.rar'],
-        ];
+        $file = new File($this->tempFile());
+        $root = new RootPath($this->tempDir->getValue());
+
+        $file->mergeRoot($root);
+        self::assertTrue($file->exists());
+    }
+
+    public function testNotExists(): void
+    {
+        $file = new File($this->tempFile());
+        self::assertFalse($file->exists());
     }
 
     public static function fileValueProvider(): array
