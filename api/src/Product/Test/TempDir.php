@@ -21,4 +21,14 @@ class TempDir
     {
         return $this->value;
     }
+    public function clear(): void
+    {
+        $items = array_diff(scandir($this->value), ['.', '..']);
+
+        foreach ($items as $item) {
+            $path = $this->value . DIRECTORY_SEPARATOR . $item;
+
+            is_dir($path) ? $this->clear() : unlink($path);
+        }
+    }
 }
