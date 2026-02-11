@@ -10,7 +10,7 @@ class RootPath
     public function __construct(string $path)
     {
         Assert::notEmpty($path);
-        $this->path = $path;
+        $this->path = rtrim($path, '/');
     }
     public function getValue(): string
     {
