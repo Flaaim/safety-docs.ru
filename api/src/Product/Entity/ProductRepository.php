@@ -49,7 +49,7 @@ class ProductRepository
                 'id' => $product->getId()->getValue(),
                 'name' => $product->getName(),
                 'price' => $product->getPrice()->getValue(),
-                'file' => $product->getFile()->getPathToFile(),
+                'file' => $product->getFile()->getValue(),
                 'cipher' => $product->getCipher(),
                 'course' => $product->getCourse()
             ]);

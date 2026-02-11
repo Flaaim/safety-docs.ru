@@ -11,7 +11,7 @@ class FileType extends StringType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        return $value instanceof File ? $value->getPathToFile() : $value;
+        return $value instanceof File ? $value->getValue() : $value;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?File
