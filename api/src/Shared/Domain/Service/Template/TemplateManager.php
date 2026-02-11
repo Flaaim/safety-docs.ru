@@ -9,11 +9,11 @@ class TemplateManager
 {
     private string $templateFile;
     public function __construct(
-        private readonly TemplatePath $templatePath,
-        private readonly File $file)
-    {
+        private readonly RootPath $rootPath,
+        private readonly File $file
+    ){
         $this->templateFile =
-            rtrim($this->templatePath->getValue(), '/') .
+            rtrim($this->rootPath->getValue(), '/') .
             DIRECTORY_SEPARATOR .
             ltrim($this->file->getPathToFile(), '/');
     }

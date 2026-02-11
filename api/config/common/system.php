@@ -4,7 +4,7 @@
 declare(strict_types=1);
 
 
-use App\Shared\Domain\Service\Template\TemplatePath;
+use App\Shared\Domain\Service\Template\RootPath;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -14,8 +14,8 @@ return [
         'password' => getenv('AUTH_PASSWORD'),
         'template_paths' => __DIR__ . '/../../public/templates',
     ],
-    TemplatePath::class => function (ContainerInterface $container) {
-        return new TemplatePath(
+    RootPath::class => function (ContainerInterface $container) {
+        return new RootPath(
             $container->get('config')['template_paths'],
         );
     },

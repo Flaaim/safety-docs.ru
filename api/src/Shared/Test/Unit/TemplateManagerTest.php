@@ -3,8 +3,8 @@
 namespace App\Shared\Test\Unit;
 
 use App\Product\Entity\File;
+use App\Shared\Domain\Service\Template\RootPath;
 use App\Shared\Domain\Service\Template\TemplateManager;
-use App\Shared\Domain\Service\Template\TemplatePath;
 use PHPUnit\Framework\TestCase;
 
 class TemplateManagerTest extends TestCase
@@ -14,7 +14,7 @@ class TemplateManagerTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'template');
 
         $manager = new TemplateManager(
-            new TemplatePath(sys_get_temp_dir()),
+            new RootPath(sys_get_temp_dir()),
             new File(basename($tempFile))
         );
         $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename($tempFile);
@@ -28,7 +28,7 @@ class TemplateManagerTest extends TestCase
         $tempFile = tempnam(sys_get_temp_dir(), 'template');
 
         $manager = new TemplateManager(
-            new TemplatePath(sys_get_temp_dir() . '/'),
+            new RootPath(sys_get_temp_dir() . '/'),
             new File('/' . basename($tempFile))
         );
         $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename($tempFile);
@@ -40,7 +40,7 @@ class TemplateManagerTest extends TestCase
     public function testFileNotFound(): void
     {
         $manager = new TemplateManager(
-            new TemplatePath(sys_get_temp_dir()),
+            new RootPath(sys_get_temp_dir()),
             new File('/file.txt')
         );
         $this->expectException(\DomainException::class);

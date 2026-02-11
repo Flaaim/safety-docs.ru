@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Product\Entity\UploadDir;
 use App\Product\Service\FileHandler;
 use App\Product\Service\ValidatePath;
-use App\Shared\Domain\Service\Template\TemplatePath;
+use App\Shared\Domain\Service\Template\RootPath;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -14,7 +14,7 @@ return [
     },
     UploadDir::class => function(ContainerInterface $container){
         return new UploadDir(
-            $container->get(TemplatePath::class),
+            $container->get(RootPath::class),
             new ValidatePath()
         );
     }

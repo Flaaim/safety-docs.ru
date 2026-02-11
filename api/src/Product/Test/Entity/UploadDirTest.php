@@ -4,7 +4,7 @@ namespace App\Product\Test\Entity;
 
 use App\Product\Entity\UploadDir;
 use App\Product\Service\ValidatePath;
-use App\Shared\Domain\Service\Template\TemplatePath;
+use App\Shared\Domain\Service\Template\RootPath;
 use PHPUnit\Framework\TestCase;
 
 class UploadDirTest extends TestCase
@@ -29,9 +29,9 @@ class UploadDirTest extends TestCase
         ))->setTargetPath($targetPath);
 
     }
-    private function getTemplatePath(): TemplatePath
+    private function getTemplatePath(): RootPath
     {
-        return new TemplatePath(sys_get_temp_dir());
+        return new RootPath(sys_get_temp_dir());
     }
     private function getValidatePath(): ValidatePath
     {

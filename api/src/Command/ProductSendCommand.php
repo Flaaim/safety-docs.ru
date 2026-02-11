@@ -10,8 +10,9 @@ use App\Product\Entity\Currency;
 use App\Product\Entity\File;
 use App\Product\Entity\Price;
 use App\Product\Entity\Product;
-use App\Shared\Domain\Service\Template\TemplatePath;
+use App\Shared\Domain\Service\Template\RootPath;
 use App\Shared\Domain\ValueObject\Id;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,8 +37,9 @@ class ProductSendCommand extends Command
 
         $productSender = new ProductSender(
             $container->get(MailerInterface::class),
-            new TemplatePath(sys_get_temp_dir()),
+            new RootPath(sys_get_temp_dir()),
             $container->get(Environment::class),
+            $container->get(LoggerInterface::class)
         );
         $tempFile = tempnam(sys_get_temp_dir(), 'template');
         $productSender->send(
@@ -47,7 +49,8 @@ class ProductSendCommand extends Command
                 'Образцы документов СИЗ',
                 new Price(450.00, new Currency('RUB')),
                 new File(basename($tempFile)),
-                '1'
+                '1',
+                ''
             )
         );
             return self::SUCCESS;

@@ -10,7 +10,7 @@ use App\Payment\Service\Delivery\ProductDeliveryService;
 use App\Payment\Service\ProductSender;
 use App\Product\Entity\ProductRepository;
 use App\Shared\Domain\Service\Payment\WebhookParser\YookassaWebhookParser;
-use App\Shared\Domain\Service\Template\TemplatePath;
+use App\Shared\Domain\Service\Template\RootPath;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -28,7 +28,7 @@ return [
 
         $productSender = new ProductSender(
             $c->get(MailerInterface::class),
-            $c->get(TemplatePath::class),
+            $c->get(RootPath::class),
             $c->get(Environment::class),
             $logger = $c->get(LoggerInterface::class),
         );

@@ -3,17 +3,17 @@
 namespace App\Product\Entity;
 
 use App\Product\Service\ValidatePath;
-use App\Shared\Domain\Service\Template\TemplatePath;
+use App\Shared\Domain\Service\Template\RootPath;
 
 class UploadDir
 {
     private ?string $targetPath = null;
     private ValidatePath $validatePath;
-    private TemplatePath $uploadDir;
-    public function __construct(TemplatePath $uploadDir, ValidatePath $validatePath)
+    private RootPath $rootPath;
+    public function __construct(RootPath $uploadDir, ValidatePath $validatePath)
     {
         $this->validatePath = $validatePath;
-        $this->uploadDir = $uploadDir;
+        $this->rootPath = $uploadDir;
     }
     public function getValue(): ?string
     {
@@ -22,7 +22,7 @@ class UploadDir
     public function setTargetPath(string $targetPath): void
     {
         $this->ensurePathValid($targetPath, $this->validatePath);
-        $this->targetPath = $this->buildTargetPath($this->uploadDir, $targetPath);
+        $this->targetPath = $this->buildTargetPath($this->rootPath, $targetPath);
     }
     public function ensurePathValid(string $targetPath, ValidatePath $validatePath): void
     {
@@ -33,7 +33,7 @@ class UploadDir
         }
     }
 
-    private function buildTargetPath(TemplatePath $uploadDir, string $targetPath): string
+    private function buildTargetPath(RootPath $uploadDir, string $targetPath): string
     {
         return rtrim($uploadDir->getValue(), DIRECTORY_SEPARATOR)
             . DIRECTORY_SEPARATOR

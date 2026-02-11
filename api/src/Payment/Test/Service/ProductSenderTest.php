@@ -8,9 +8,8 @@ use App\Product\Entity\Currency;
 use App\Product\Entity\File as EntityFile;
 use App\Product\Entity\Price;
 use App\Product\Entity\Product;
-use App\Shared\Domain\Service\Payment\PaymentWebhookDataInterface;
+use App\Shared\Domain\Service\Template\RootPath;
 use App\Shared\Domain\Service\Template\TemplateManager;
-use App\Shared\Domain\Service\Template\TemplatePath;
 use App\Shared\Domain\ValueObject\Id;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -84,8 +83,8 @@ class ProductSenderTest extends TestCase
         );
     }
 
-    private function getTemplatePath(): TemplatePath
+    private function getTemplatePath(): RootPath
     {
-        return new TemplatePath(sys_get_temp_dir());
+        return new RootPath(sys_get_temp_dir());
     }
 }

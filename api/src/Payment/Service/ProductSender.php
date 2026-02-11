@@ -4,8 +4,8 @@ namespace App\Payment\Service;
 
 use App\Payment\Entity\Email;
 use App\Product\Entity\Product;
+use App\Shared\Domain\Service\Template\RootPath;
 use App\Shared\Domain\Service\Template\TemplateManager;
-use App\Shared\Domain\Service\Template\TemplatePath;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -18,13 +18,13 @@ use Twig\Environment;
 class ProductSender
 {
     private MailerInterface $mailer;
-    private TemplatePath $templatePath;
+    private RootPath $rootPath;
     private Environment $twig;
     private LoggerInterface $logger;
-    public function __construct(MailerInterface $mailer, TemplatePath $templatePath, Environment $twig, LoggerInterface $logger)
+    public function __construct(MailerInterface $mailer, RootPath $rootPath, Environment $twig, LoggerInterface $logger)
     {
         $this->mailer = $mailer;
-        $this->templatePath = $templatePath;
+        $this->rootPath = $rootPath;
         $this->twig = $twig;
         $this->logger = $logger;
     }
@@ -40,7 +40,7 @@ class ProductSender
             new DataPart(
                 new File(
                     (new TemplateManager(
-                        $this->templatePath,
+                        $this->rootPath,
                         $product->getFile()
                     ))
                         ->getTemplate()
