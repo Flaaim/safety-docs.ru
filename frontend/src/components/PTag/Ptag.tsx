@@ -8,6 +8,7 @@ export const Ptag = ({size = 'm', appearance, className, children, ...props}: Pt
       className={cn(styles.p, className, {
         [styles.s]: size === 's',
         [styles.m]: size === 'm',
+        [styles.es]: size === 'es',
         [styles.bold]: appearance === 'bold',
         [styles.italic]: appearance === 'italic',
         [styles.strikethrough]: appearance === 'strikethrough',
