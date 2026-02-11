@@ -8,10 +8,7 @@ class TempDir
     private function __construct()
     {
         $this->value = sys_get_temp_dir(). DIRECTORY_SEPARATOR . 'phpunit_test_';
-        $result = mkdir($this->value, 0777, true);
-        if(!$result) {
-            throw new \DomainException('Could not create temp test directory');
-        }
+        mkdir($this->value, 0777, true);
     }
     public static function create(): self
     {
@@ -23,12 +20,28 @@ class TempDir
     }
     public function clear(): void
     {
-        $items = array_diff(scandir($this->value), ['.', '..']);
+        $this->removeDirectory($this->value);
+    }
+    private function removeDirectory(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+        $items = array_diff(scandir($dir), ['.', '..']);
 
         foreach ($items as $item) {
-            $path = $this->value . DIRECTORY_SEPARATOR . $item;
+            $path = $dir . DIRECTORY_SEPARATOR . $item;
 
-            is_dir($path) ? $this->clear() : unlink($path);
+            if(is_dir($path)) {
+                $this->removeDirectory($path);
+                rmdir($path);
+            }else{
+                unlink($path);
+            }
+        }
+
+        if($dir === $this->value) {
+            rmdir($dir);
         }
     }
 }
