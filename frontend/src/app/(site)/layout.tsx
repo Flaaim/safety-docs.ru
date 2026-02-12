@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import styles from './layout.module.css';
 import "../globals.css";
-import { Sidebar, Footer } from "@/components";
+import {Sidebar, Footer, Header} from "@/components";
 
 
 
@@ -26,14 +26,16 @@ export default function RootLayout({
     <html lang="ru">
       <body className={`${notoSans.variable} antialiased`}>
         <div className={styles.wrapper}>
-          <header className={styles.header}>
-            
-          </header>
+
+          <Header className={styles.header} />
+
           <Sidebar className={styles.sidebar} />
           <div className={styles.body}>
             {children}
           </div>
+
           <Footer className={styles.footer} />
+
         </div>
       </body>
     </html>
