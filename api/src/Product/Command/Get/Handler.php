@@ -2,7 +2,7 @@
 
 namespace App\Product\Command\Get;
 
-use App\Product\Entity\ProductDTO;
+use App\Product\Entity\DTO\ProductDTO;
 use App\Product\Entity\ProductRepository;
 use App\Shared\Domain\ValueObject\Id;
 
@@ -18,7 +18,9 @@ class Handler
     {
         $product = $this->products->get(new Id($command->productId));
 
-
-        return new ProductDTO($product);
+        return new ProductDTO(
+            $product->getName(),
+            $product->getPrice()->getValue()
+        );
     }
 }

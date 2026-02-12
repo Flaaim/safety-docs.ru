@@ -28,6 +28,6 @@ class RequestAction implements RequestHandlerInterface
 
         $response = $this->handler->handle($command);
 
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200);
     }
 }
