@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Product\Entity;
+namespace App\Shared\Domain\File;
 
-interface FileInterface
+interface AttachableFileInterface
 {
     public function exists(): bool;
     public function getFile(): string;

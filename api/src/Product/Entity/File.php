@@ -2,10 +2,12 @@
 
 namespace App\Product\Entity;
 
+
+use App\Shared\Domain\File\AttachableFileInterface;
 use App\Shared\Domain\Service\Template\RootPath;
 use Webmozart\Assert\Assert;
 
-class File implements FileInterface
+class File implements AttachableFileInterface
 {
     private string $value;
     private ?string $fullPath = null;

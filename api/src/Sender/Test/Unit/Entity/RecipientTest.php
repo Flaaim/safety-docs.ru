@@ -2,9 +2,9 @@
 
 namespace App\Sender\Test\Unit\Entity;
 
-use App\Product\Entity\FileInterface;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
+use App\Shared\Domain\File\AttachableFileInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +22,7 @@ class RecipientTest extends TestCase
     public function testAddAttachment(): void
     {
         $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
-        $file = $this->createMock(FileInterface::class);
+        $file = $this->createMock(AttachableFileInterface::class);
 
         $file->expects($this->once())->method('exists')->willReturn(true);
 
@@ -35,7 +35,7 @@ class RecipientTest extends TestCase
     public function testAddAttachmentFailed(): void
     {
         $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
-        $file = $this->createMock(FileInterface::class);
+        $file = $this->createMock(AttachableFileInterface::class);
 
         $file->expects($this->once())->method('exists')->willReturn(false);
         $file->expects($this->once())->method('getValue')->willReturn('test_file.txt');
