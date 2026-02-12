@@ -3,6 +3,7 @@
 namespace App\Shared\Domain\Event\Payment;
 
 use App\Product\Entity\ProductRepository;
+use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
 use App\Shared\Domain\Service\Template\RootPath;
@@ -40,7 +41,7 @@ class PaymentSubscriber implements EventSubscriberInterface
             $file = $product->getFile();
             $file->mergeRoot($this->rootPath);
 
-            $recipient = new Recipient($payment->getEmail(), $product->getName());
+            $recipient = new Recipient(new EmailMessage($payment->getEmail()->getValue()), $product->getName());
             $recipient->addAttachment($product->getFile());
             $recipient->addAttachment($file);
 
