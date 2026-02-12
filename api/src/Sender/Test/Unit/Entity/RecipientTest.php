@@ -2,8 +2,8 @@
 
 namespace App\Sender\Test\Unit\Entity;
 
-use App\Payment\Entity\Email;
 use App\Product\Entity\FileInterface;
+use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +13,7 @@ class RecipientTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $recipient = new Recipient($email = new Email('test@email.ru'), $subject = 'Тестовая отправка');
+        $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
 
         self::assertEquals($email, $recipient->getEmail());
         self::assertEquals($subject, $recipient->getSubject());
@@ -21,7 +21,7 @@ class RecipientTest extends TestCase
     }
     public function testAddAttachment(): void
     {
-        $recipient = new Recipient($email = new Email('test@email.ru'), $subject = 'Тестовая отправка');
+        $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
         $file = $this->createMock(FileInterface::class);
 
         $file->expects($this->once())->method('exists')->willReturn(true);
@@ -34,7 +34,7 @@ class RecipientTest extends TestCase
 
     public function testAddAttachmentFailed(): void
     {
-        $recipient = new Recipient($email = new Email('test@email.ru'), $subject = 'Тестовая отправка');
+        $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
         $file = $this->createMock(FileInterface::class);
 
         $file->expects($this->once())->method('exists')->willReturn(false);

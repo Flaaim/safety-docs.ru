@@ -2,7 +2,6 @@
 
 namespace App\Sender\Entity;
 
-use App\Payment\Entity\Email;
 use App\Product\Entity\FileInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,7 +11,7 @@ class Recipient
     /** @var ArrayCollection<FileInterface> $attachments */
     private Collection $attachments;
     public function __construct(
-        private readonly Email $email,
+        private readonly EmailMessage $email,
         private readonly string $subject
     ){
         $this->attachments = new ArrayCollection();
@@ -34,7 +33,7 @@ class Recipient
     {
         return $this->subject;
     }
-    public function getEmail(): Email
+    public function getEmail(): EmailMessage
     {
         return $this->email;
     }

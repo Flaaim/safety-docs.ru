@@ -2,9 +2,9 @@
 
 namespace App\Sender\Test\Unit\Service\Message;
 
-use App\Payment\Entity\Email;
 use App\Product\Entity\File;
 use App\Product\Test\TempDir;
+use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\MessageCreator;
 use App\Shared\Domain\Service\Template\RootPath;
@@ -29,7 +29,7 @@ class MessageCreatorTest extends TestCase
 
     public function testSuccess(): void
     {
-        $recipient = new Recipient(new Email('user@email.ru'), 'subject');
+        $recipient = new Recipient(new EmailMessage('user@email.ru'), 'subject');
 
         $creator = new MessageCreator(
             $twig = $this->createMock(Environment::class),
@@ -49,7 +49,7 @@ class MessageCreatorTest extends TestCase
 
     public function testAttachment(): void
     {
-        $recipient = new Recipient(new Email('user@email.ru'), 'subject');
+        $recipient = new Recipient(new EmailMessage('user@email.ru'), 'subject');
         $recipient->addAttachment($this->file);
 
         $creator = new MessageCreator(

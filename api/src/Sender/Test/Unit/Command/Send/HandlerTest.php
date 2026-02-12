@@ -2,8 +2,8 @@
 
 namespace App\Sender\Test\Unit\Command\Send;
 
-use App\Payment\Entity\Email;
 use App\Sender\Command\Send\Handler;
+use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\CreatorInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,7 +18,7 @@ class HandlerTest extends TestCase
 {
     public function testSuccessSend(): void
     {
-        $recipient = new Recipient(new Email('test@email.ru'), 'Тест');
+        $recipient = new Recipient(new EmailMessage('test@email.ru'), 'Тест');
         $symfonyMessage = $this->getSymfonyMessage($recipient);
 
         $handler = new Handler(
@@ -38,7 +38,7 @@ class HandlerTest extends TestCase
 
     public function testFailedSend(): void
     {
-        $recipient = new Recipient(new Email('test@email.ru'), 'Тест');
+        $recipient = new Recipient(new EmailMessage('test@email.ru'), 'Тест');
         $symfonyMessage = $this->getSymfonyMessage($recipient);
 
         $handler = new Handler(
