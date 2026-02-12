@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Sender\Service\Message\CreatorInterface;
+use App\Sender\Service\Message\MessageCreator;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Mailer\EventListener\EnvelopeListener;
@@ -10,6 +12,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Component\Mime\Address;
+use Twig\Environment;
 
 return [
     MailerInterface::class => static function (ContainerInterface $container) {
@@ -34,6 +37,9 @@ return [
             ->setPassword($config['password']);
 
         return new Mailer($transport);
+    },
+    CreatorInterface::class => static function (ContainerInterface $c) {
+        return new MessageCreator($c->get(Environment::class));
     },
     'config' => [
         'mailer' => [

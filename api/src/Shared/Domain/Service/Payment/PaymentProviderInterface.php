@@ -4,9 +4,10 @@ namespace App\Shared\Domain\Service\Payment;
 
 
 
-use App\Shared\Domain\Service\Payment\DTO\MakePaymentDTO;
-use App\Shared\Domain\Service\Payment\DTO\PaymentCallbackDTO;
-use App\Shared\Domain\Service\Payment\DTO\PaymentInfoDTO;
+use App\Payment\Entity\DTO\MakePaymentDTO;
+use App\Payment\Entity\DTO\PaymentCallbackDTO;
+use App\Payment\Entity\DTO\PaymentInfoDTO;
+
 
 interface PaymentProviderInterface
 {

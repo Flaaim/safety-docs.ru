@@ -2,13 +2,12 @@
 
 namespace App\Shared\Domain\Service\Payment\Provider;
 
-use App\Shared\Domain\Service\Payment\DTO\MakePaymentDTO;
-use App\Shared\Domain\Service\Payment\DTO\PaymentCallbackDTO;
-use App\Shared\Domain\Service\Payment\DTO\PaymentInfoDTO;
+use App\Payment\Entity\DTO\MakePaymentDTO;
+use App\Payment\Entity\DTO\PaymentCallbackDTO;
+use App\Payment\Entity\DTO\PaymentInfoDTO;
 use App\Shared\Domain\Service\Payment\PaymentException;
 use App\Shared\Domain\Service\Payment\PaymentProviderInterface;
 use YooKassa\Client;
-use YooKassa\Model\Notification\NotificationEventType;
 use YooKassa\Model\Notification\NotificationFactory;
 use YooKassa\Request\Payments\PaymentResponse;
 

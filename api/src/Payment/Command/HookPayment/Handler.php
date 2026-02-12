@@ -3,13 +3,13 @@
 namespace App\Payment\Command\HookPayment;
 
 use App\Flusher;
-use App\Payment\Command\HookPayment\SendProduct\Command as SendProductCommand;
-use App\Payment\Command\HookPayment\SendProduct\Handler as SendProductHandler;
+use App\Payment\Entity\DTO\PaymentCallbackDTO;
 use App\Payment\Entity\PaymentRepository;
-use App\Shared\Domain\Service\Payment\DTO\PaymentCallbackDTO;
+use App\Shared\Domain\Event\Payment\SuccessfulPaymentEvent;
 use App\Shared\Domain\Service\Payment\PaymentProviderInterface;
 use App\Shared\Domain\Service\Payment\PaymentWebhookParserInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Handler
 {
@@ -18,13 +18,12 @@ class Handler
         private readonly PaymentProviderInterface       $provider,
         private readonly PaymentRepository $paymentRepository,
         private readonly Flusher $flusher,
-        private readonly SendProductHandler  $sendProductHandler,
+        private readonly EventDispatcherInterface  $dispatcher,
         private readonly LoggerInterface $logger,
     )
     {}
     public function handle(Command $command): void
     {
-
         $callbackDTO = new PaymentCallbackDTO(
             $command->data,
             $_SERVER['HTTP_CONTENT_SIGNATURE'] ?? '',
@@ -41,21 +40,17 @@ class Handler
             return;
         }
         $payment = $this->paymentRepository->getByExternalId($paymentId);
-        $paymentWebHookData = $this->webhookParser->parse($callbackDTO->rawData);
+
 
         try{
-            $this->sendProductHandler->handle(new SendProductCommand($payment, $paymentWebHookData));
-
-            $this->paymentRepository->update($payment);
-
             $this->flusher->flush();
+
+            $event = new SuccessfulPaymentEvent($payment);
+            $this->dispatcher->dispatch($event);
         }catch (\Exception $e){
             $this->logger->error('Failed to handle webhook', ['error' => $e->getMessage()]);
             throw new \RuntimeException('Failed to send product: ' . $e->getMessage());
         }
-
-
-
 
     }
 

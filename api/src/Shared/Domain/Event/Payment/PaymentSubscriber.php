@@ -2,15 +2,23 @@
 
 namespace App\Shared\Domain\Event\Payment;
 
+use App\Product\Entity\ProductRepository;
+use App\Sender\Entity\Recipient;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
+use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\Id;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Sender\Command\Send\Handler as SendHandler;
 
 class PaymentSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly TelegramNotifier $notifier,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly SendHandler $sendHandler,
+        private readonly ProductRepository $products,
+        private readonly RootPath $rootPath,
     )
     {}
 
@@ -25,7 +33,28 @@ class PaymentSubscriber implements EventSubscriberInterface
     }
     public function onSuccessPayment(SuccessfulPaymentEvent $event): void
     {
-        $this->notifier->sendSuccessfulPayment($event);
+        try{
+            $payment = $event->getPayment();
+
+            $product = $this->products->get(new Id($payment->getProductId()));
+            $file = $product->getFile();
+            $file->mergeRoot($this->rootPath);
+
+            $recipient = new Recipient($payment->getEmail(), $product->getName());
+            $recipient->addAttachment($product->getFile());
+            $recipient->addAttachment($file);
+
+            $this->sendHandler->handle($recipient);
+            $this->notifier->sendSuccessfulPayment($event);
+
+        }catch (\Exception $e){
+            $this->logger->error('Failed to send product email', [
+                'error' => $e->getMessage(),
+                'paymentId' => $event->getPayment()->getId(),
+                'email' => $event->getPayment()->getEmail()->getValue()
+            ]);
+            throw $e;
+        }
     }
 
     public function logSuccessfulPayment(SuccessfulPaymentEvent $event): void

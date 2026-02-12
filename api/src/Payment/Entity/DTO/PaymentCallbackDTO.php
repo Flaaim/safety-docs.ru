@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Domain\Service\Payment\DTO;
+namespace App\Payment\Entity\DTO;
 
 class PaymentCallbackDTO
 {
