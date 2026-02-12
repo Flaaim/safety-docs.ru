@@ -21,7 +21,7 @@ const robotoMono = Roboto_Mono({
 })
 
 
-export const ProductInfo = ({productId}: ProductInfoProps): JSX.Element => {
+export const ProductInfo = ({productId, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
   const [error, setError] = useState<string | null>(null)
   const [ProductInfoData, setProductInfoData] = useState<ProductInfoData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -80,8 +80,9 @@ export const ProductInfo = ({productId}: ProductInfoProps): JSX.Element => {
     <Deflisttag >
       <DefItem term='Название' definition={ProductInfoData?.name} />
       <DefItem term='Стоимость' definition={ProductInfoData?.price + ` рублей`} />
-      <DefItem term='Количество' definition={ProductInfoData?.quantity + ` файлов`} />
-      <DefItem term='Формат файлов' definition={ProductInfoData?.format} />
+      <DefItem term='Количество' definition={countFiles} />
+      <DefItem term='Формат' definition={formatFiles} />
+      <DefItem term='Описание' definition={description} />
     </Deflisttag>
 
     <DownloadButton

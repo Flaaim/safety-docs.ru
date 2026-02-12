@@ -19,6 +19,11 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
         </Spantag>
       </Ptag>
       <Htag tag='h3'>Информация:</Htag>
-      <ProductInfo productId='e2ff37fb-8690-46e5-82fa-75b5ceca8b61'></ProductInfo>
+      <ProductInfo
+        productId='e2ff37fb-8690-46e5-82fa-75b5ceca8b61'
+        countFiles='49'
+        formatFiles='docx, excel'
+        description=''>
+      </ProductInfo>
     </aside>)
 }
