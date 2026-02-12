@@ -1,6 +1,7 @@
 .tag {
   cursor: pointer;
   padding: 8px 12px;
+  margin: 10px 5px;
   box-sizing: border-box;
   line-height: 1;
   color: var(--downloads-text-color);
