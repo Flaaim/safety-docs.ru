@@ -20,7 +20,7 @@ class Handler
 
         return new ProductDTO(
             $product->getName(),
-            $product->getPrice()->getValue()
+            $product->getPrice()->formatted()
         );
     }
 }

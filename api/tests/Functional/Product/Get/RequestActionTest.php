@@ -24,7 +24,7 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals([
             'name' => 'ПИ 1791.10 Итоговое тестирование по Программе IП',
-            'price' => 550.00,
+            'formattedPrice' => '550.00 RUB',
         ], $data);
     }
 

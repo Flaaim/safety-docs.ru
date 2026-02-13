@@ -24,7 +24,7 @@ class Price
     }
     public function formatted(): string
     {
-        return number_format($this->value, 2, '.', '') . $this->getCurrency()->getValue();
+        return number_format($this->value, 2, '.', '') . ' ' . $this->getCurrency()->getValue();
     }
 
     public function equals(Price $price): bool
