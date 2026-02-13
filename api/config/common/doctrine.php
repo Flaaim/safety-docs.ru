@@ -57,6 +57,7 @@ return [
             'metadata_dirs' => [
                 __DIR__ . '/../../src/Payment/Entity',
                 __DIR__ . '/../../src/Product/Entity',
+                __DIR__ . '/../../src/Sender/Entity',
             ],
             'types' => [
                 App\Shared\Domain\ValueObject\IdType::NAME => App\Shared\Domain\ValueObject\IdType::class,
@@ -69,6 +70,8 @@ return [
 
                 App\Payment\Entity\EmailType::NAME => App\Payment\Entity\EmailType::class,
                 App\Payment\Entity\StatusType::NAME => App\Payment\Entity\StatusType::class,
+
+                App\Sender\Entity\MessageIdType::NAME => App\Sender\Entity\MessageIdType::class,
 
             ]
         ]
