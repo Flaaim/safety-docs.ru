@@ -72,6 +72,7 @@ return [
                 App\Payment\Entity\PaymentStatusType::NAME => App\Payment\Entity\PaymentStatusType::class,
 
                 App\Sender\Entity\MessageIdType::NAME => App\Sender\Entity\MessageIdType::class,
+                App\Sender\Entity\MessageStatusType::NAME => App\Sender\Entity\MessageStatusType::class,
 
             ]
         ]
