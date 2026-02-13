@@ -15,7 +15,7 @@ class Payment
     private Id $id;
     #[ORM\Column(type:'string', length: 255, nullable: true)]
     private ?string $externalId = null;
-    #[ORM\Column(type:'status')]
+    #[ORM\Column(type:'payment_status')]
     private PaymentStatus $status;
     #[ORM\Column(type: 'email')]
     private Email $email;
