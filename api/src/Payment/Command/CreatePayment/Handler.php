@@ -58,7 +58,7 @@ class Handler
             $payment->setExternalId($paymentInfo->paymentId);
         }catch (PaymentException $e){
             $this->logger->error('Failed to create payment: ', ['error' => $e->getMessage()]);
-            $payment->setStatus(Status::cancelled());
+            $payment->updateStatus(Status::cancelled());
 
             $this->payments->create($payment);
 

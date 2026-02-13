@@ -91,7 +91,7 @@ class PaymentBuilder
         }
 
         if($this->status !== null) {
-            $payment->setStatus(Status::succeeded());
+            $payment->updateStatus(Status::succeeded());
         }
         return $payment;
     }

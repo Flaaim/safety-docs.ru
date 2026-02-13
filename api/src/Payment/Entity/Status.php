@@ -34,6 +34,9 @@ class Status
     {
         return new self('succeeded');
     }
-
+    public function isSucceeded(): bool
+    {
+        return $this->value === 'succeeded';
+    }
 
 }

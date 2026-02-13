@@ -84,13 +84,8 @@ class Payment
     {
         $this->returnToken->validate($token, $date);
     }
-    public function isSend(): bool
-    {
-        return $this->isSend;
-    }
-    public function setSuccess(Status $newStatus): void
+    public function updateStatus(Status $newStatus): void
     {
         $this->setStatus($newStatus);
-        $this->isSend = true;
     }
 }

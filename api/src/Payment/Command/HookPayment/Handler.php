@@ -5,6 +5,7 @@ namespace App\Payment\Command\HookPayment;
 use App\Flusher;
 use App\Payment\Entity\DTO\PaymentCallbackDTO;
 use App\Payment\Entity\PaymentRepository;
+use App\Payment\Entity\Status;
 use App\Shared\Domain\Event\Payment\SuccessfulPaymentEvent;
 use App\Shared\Domain\Service\Payment\PaymentProviderInterface;
 use App\Shared\Domain\Service\Payment\PaymentWebhookParserInterface;
@@ -16,7 +17,7 @@ class Handler
     public function __construct(
         private readonly PaymentWebhookParserInterface  $webhookParser,
         private readonly PaymentProviderInterface       $provider,
-        private readonly PaymentRepository $paymentRepository,
+        private readonly PaymentRepository              $payments,
         private readonly Flusher $flusher,
         private readonly EventDispatcherInterface  $dispatcher,
         private readonly LoggerInterface $logger,
@@ -39,17 +40,29 @@ class Handler
         if (null === $paymentId) {
             return;
         }
-        $payment = $this->paymentRepository->getByExternalId($paymentId);
 
+        $payment = $this->payments->getByExternalId($paymentId);
+
+        if ($payment->getStatus()->isSucceeded()){
+            $this->logger->info('Payment already processed ', ['paymentId' => $paymentId]);
+            return;
+        }
 
         try{
+            $payment->updateStatus(Status::succeeded());
+
+            $this->payments->update($payment);
+
             $this->flusher->flush();
 
             $event = new SuccessfulPaymentEvent($payment);
             $this->dispatcher->dispatch($event);
         }catch (\Exception $e){
-            $this->logger->error('Failed to handle webhook', ['error' => $e->getMessage()]);
-            throw new \RuntimeException('Failed to send product: ' . $e->getMessage());
+            $this->logger->error('Failed to handle webhook', [
+                'error' => $e->getMessage(),
+                'paymentId' => $paymentId
+            ]);
+            throw new \RuntimeException('Failed to process payment: ' . $e->getMessage());
         }
 
     }
