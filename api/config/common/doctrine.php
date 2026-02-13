@@ -73,6 +73,7 @@ return [
 
                 App\Sender\Entity\MessageIdType::NAME => App\Sender\Entity\MessageIdType::class,
                 App\Sender\Entity\MessageStatusType::NAME => App\Sender\Entity\MessageStatusType::class,
+                App\Sender\Entity\EmailMessageType::NAME => App\Sender\Entity\EmailMessageType::class,
 
             ]
         ]
