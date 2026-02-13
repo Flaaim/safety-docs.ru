@@ -37,4 +37,12 @@ class Message
     {
         return $this->dateReceived;
     }
+    private function setStatus(MessageStatus $status): void
+    {
+        $this->status = $status;
+    }
+    public function updateStatus(MessageStatus $status): void
+    {
+        $this->setStatus($status);
+    }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Product\Entity\ProductRepository;
-use App\Sender\Service\Message\CreatorInterface;
+use App\Sender\Command\DeliverMessage\Create\Handler as CreateHandler;
 use App\Shared\Domain\Event\Payment\PaymentSubscriber;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
 use App\Shared\Domain\Service\Template\RootPath;
@@ -12,7 +12,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Mailer\MailerInterface;
 
 return [
     EventDispatcher::class => function (ContainerInterface $container) {
@@ -35,16 +34,16 @@ return [
     ],
     PaymentSubscriber::class => function (ContainerInterface $container) {
         $em = $container->get(EntityManagerInterface::class);
-        $mailer = $container->get(MailerInterface::class);
         $logger = $container->get(LoggerInterface::class);
-        $creator = $container->get(CreatorInterface::class);
+
+        $productRepository = new ProductRepository($em);
 
 
         return new PaymentSubscriber(
             $container->get(TelegramNotifier::class),
             $logger,
-            new \App\Sender\Command\Send\Handler($mailer, $logger, $creator),
-            new ProductRepository($em),
+            $container->get(CreateHandler::class),
+            $productRepository,
             $container->get(RootPath::class),
         );
     }

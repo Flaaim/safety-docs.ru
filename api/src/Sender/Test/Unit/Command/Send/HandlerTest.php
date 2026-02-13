@@ -8,7 +8,6 @@ use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\CreatorInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email as SymfonyMessage;
@@ -23,7 +22,6 @@ class HandlerTest extends TestCase
 
         $handler = new Handler(
             $mailer = $this->createMock(MailerInterface::class),
-            $this->createMock(LoggerInterface::class),
             $creator = $this->createMock(CreatorInterface::class),
         );
 
@@ -43,7 +41,6 @@ class HandlerTest extends TestCase
 
         $handler = new Handler(
             $mailer = $this->createMock(MailerInterface::class),
-            $logger = $this->createMock(LoggerInterface::class),
             $creator = $this->createMock(CreatorInterface::class),
         );
 
@@ -52,14 +49,6 @@ class HandlerTest extends TestCase
 
         $mailer->expects(self::once())->method('send')
             ->with($symfonyMessage)->willThrowException(new TransportException('Transport failed.'));
-
-        $logger->expects($this->once())->method('error')->with(
-            $this->equalTo('Failed to send mail: '),
-            $this->equalTo([
-                'error' => 'Transport failed.',
-                'recipient' => 'test@email.ru',
-            ])
-        );
 
         self::expectException(TransportException::class);
         self::expectExceptionMessage('Transport failed.');
