@@ -17,7 +17,7 @@ class ProductRepository
         $this->em = $em;
     }
 
-    public function get(Id $id): Product
+    public function get(ProductId $id): Product
     {
         if(!$product = $this->repo->find($id)) {
             throw new \DomainException('Product not found.');

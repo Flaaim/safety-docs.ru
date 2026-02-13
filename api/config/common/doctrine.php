@@ -65,7 +65,7 @@ return [
 
                 App\Product\Entity\PriceType::NAME => App\Product\Entity\PriceType::class,
                 App\Product\Entity\FileType::NAME => App\Product\Entity\FileType::class,
-
+                App\Product\Entity\ProductIdType::NAME => App\Product\Entity\ProductIdType::class,
 
                 App\Payment\Entity\EmailType::NAME => App\Payment\Entity\EmailType::class,
                 App\Payment\Entity\StatusType::NAME => App\Payment\Entity\StatusType::class,

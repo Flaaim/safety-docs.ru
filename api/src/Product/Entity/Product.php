@@ -2,7 +2,6 @@
 
 namespace App\Product\Entity;
 
-use App\Shared\Domain\ValueObject\Id;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -10,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Product
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'id', unique: true)]
-    private Id $id;
+    #[ORM\Column(type: 'product_id', unique: true)]
+    private ProductId $id;
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
     #[ORM\Column(type: 'string', length: 25)]
@@ -22,7 +21,7 @@ class Product
     private Price $price;
     #[ORM\Column(type: 'file')]
     private File $file;
-    public function __construct(Id $id, string $name, Price $price, File $file, string $cipher, string $course)
+    public function __construct(ProductId $id, string $name, Price $price, File $file, string $cipher, string $course)
     {
         $this->id = $id;
         $this->name = $name;
@@ -31,7 +30,7 @@ class Product
         $this->cipher = $cipher;
         $this->course = $course;
     }
-    public function getId(): Id
+    public function getId(): ProductId
     {
         return $this->id;
     }

@@ -2,12 +2,12 @@
 
 namespace App\Shared\Domain\Event\Payment;
 
+use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
 use App\Shared\Domain\Service\Template\RootPath;
-use App\Shared\Domain\ValueObject\Id;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Sender\Command\Send\Handler as SendHandler;
@@ -37,7 +37,7 @@ class PaymentSubscriber implements EventSubscriberInterface
         try{
             $payment = $event->getPayment();
 
-            $product = $this->products->get(new Id($payment->getProductId()));
+            $product = $this->products->get(new ProductId($payment->getProductId()));
             $file = $product->getFile();
             $file->mergeRoot($this->rootPath);
 

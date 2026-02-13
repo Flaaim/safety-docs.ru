@@ -11,6 +11,7 @@ use App\Payment\Entity\Status;
 use App\Payment\Entity\Token;
 use App\Product\Entity\Currency;
 use App\Product\Entity\Price;
+use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Shared\Domain\Service\Payment\PaymentException;
 use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
@@ -33,7 +34,7 @@ class Handler
     public function handle(Command $command): Response
     {
         $email = new Email($command->email);
-        $product = $this->products->get(new Id($command->productId));
+        $product = $this->products->get(new ProductId($command->productId));
         $returnToken = new Token(Id::generate(), new DateTimeImmutable('+ 1 hour'));
         $payment = new Payment(
             new Id(Uuid::uuid4()->toString()),

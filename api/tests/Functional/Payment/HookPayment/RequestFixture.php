@@ -2,10 +2,10 @@
 
 namespace Test\Functional\Payment\HookPayment;
 
+use App\Product\Test\ProductBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 use Test\Functional\Payment\PaymentBuilder;
-use Test\Functional\Payment\ProductBuilder;
 
 
 class RequestFixture extends AbstractFixture
