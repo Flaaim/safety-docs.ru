@@ -42,7 +42,6 @@ class PaymentSubscriber implements EventSubscriberInterface
             $file->mergeRoot($this->rootPath);
 
             $recipient = new Recipient(new EmailMessage($payment->getEmail()->getValue()), $product->getName());
-            $recipient->addAttachment($product->getFile());
             $recipient->addAttachment($file);
 
             $this->sendHandler->handle($recipient);
