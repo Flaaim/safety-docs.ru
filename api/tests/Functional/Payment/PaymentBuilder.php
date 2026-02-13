@@ -4,7 +4,7 @@ namespace Test\Functional\Payment;
 
 use App\Payment\Entity\Email;
 use App\Payment\Entity\Payment;
-use App\Payment\Entity\Status;
+use App\Payment\Entity\PaymentStatus;
 use App\Payment\Entity\Token;
 use App\Product\Entity\Currency;
 use App\Product\Entity\Price;
@@ -16,7 +16,7 @@ class PaymentBuilder
 {
     private Id $id;
     private ?string $externalId = null;
-    private ?Status $status = null;
+    private ?PaymentStatus $status = null;
     private Email $email;
     private string $productId;
     private Price $price;
@@ -62,7 +62,7 @@ class PaymentBuilder
 
     public function withSucceededStatus(): self
     {
-        $this->status = Status::succeeded();
+        $this->status = PaymentStatus::succeeded();
         return $this;
     }
     public function withSend(): self
@@ -91,7 +91,7 @@ class PaymentBuilder
         }
 
         if($this->status !== null) {
-            $payment->updateStatus(Status::succeeded());
+            $payment->updateStatus(PaymentStatus::succeeded());
         }
         return $payment;
     }

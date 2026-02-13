@@ -16,7 +16,7 @@ class Payment
     #[ORM\Column(type:'string', length: 255, nullable: true)]
     private ?string $externalId = null;
     #[ORM\Column(type:'status')]
-    private Status $status;
+    private PaymentStatus $status;
     #[ORM\Column(type: 'email')]
     private Email $email;
     #[ORM\Column(type:'string', length: 255)]
@@ -30,7 +30,7 @@ class Payment
     public function __construct(Id $id, Email $email, string $productId, Price $price, \DateTimeImmutable $createdAt, Token $returnToken)
     {
         $this->id = $id;
-        $this->status = Status::pending();
+        $this->status = PaymentStatus::pending();
         $this->email = $email;
         $this->productId = $productId;
         $this->price = $price;
@@ -41,7 +41,7 @@ class Payment
     {
         return $this->id;
     }
-    public function getStatus(): Status
+    public function getStatus(): PaymentStatus
     {
         return $this->status;
     }
@@ -73,7 +73,7 @@ class Payment
     {
         return $this->returnToken;
     }
-    public function setStatus(Status $newStatus): void
+    public function setStatus(PaymentStatus $newStatus): void
     {
         if($this->status->getValue() === $newStatus->getValue()) {
             throw new \DomainException('Status already set');
@@ -84,7 +84,7 @@ class Payment
     {
         $this->returnToken->validate($token, $date);
     }
-    public function updateStatus(Status $newStatus): void
+    public function updateStatus(PaymentStatus $newStatus): void
     {
         $this->setStatus($newStatus);
     }

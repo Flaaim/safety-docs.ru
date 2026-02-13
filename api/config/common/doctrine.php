@@ -69,7 +69,7 @@ return [
                 App\Product\Entity\ProductIdType::NAME => App\Product\Entity\ProductIdType::class,
 
                 App\Payment\Entity\EmailType::NAME => App\Payment\Entity\EmailType::class,
-                App\Payment\Entity\StatusType::NAME => App\Payment\Entity\StatusType::class,
+                App\Payment\Entity\PaymentStatusType::NAME => App\Payment\Entity\PaymentStatusType::class,
 
                 App\Sender\Entity\MessageIdType::NAME => App\Sender\Entity\MessageIdType::class,
 

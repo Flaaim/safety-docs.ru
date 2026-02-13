@@ -4,7 +4,7 @@ namespace App\Payment\Entity;
 
 use Webmozart\Assert\Assert;
 
-class Status
+class PaymentStatus
 {
     const ALLOWED_STATUSES = [
         'pending',

@@ -5,7 +5,7 @@ namespace App\Payment\Command\HookPayment;
 use App\Flusher;
 use App\Payment\Entity\DTO\PaymentCallbackDTO;
 use App\Payment\Entity\PaymentRepository;
-use App\Payment\Entity\Status;
+use App\Payment\Entity\PaymentStatus;
 use App\Shared\Domain\Event\Payment\SuccessfulPaymentEvent;
 use App\Shared\Domain\Service\Payment\PaymentProviderInterface;
 use App\Shared\Domain\Service\Payment\PaymentWebhookParserInterface;
@@ -49,7 +49,7 @@ class Handler
         }
 
         try{
-            $payment->updateStatus(Status::succeeded());
+            $payment->updateStatus(PaymentStatus::succeeded());
 
             $this->payments->update($payment);
 

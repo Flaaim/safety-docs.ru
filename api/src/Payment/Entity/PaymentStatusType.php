@@ -5,18 +5,18 @@ namespace App\Payment\Entity;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
-class StatusType extends StringType
+class PaymentStatusType extends StringType
 {
 
-    const NAME = 'status';
+    const NAME = 'payment_status';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        return $value instanceof Status ? $value->getValue() : $value;
+        return $value instanceof PaymentStatus ? $value->getValue() : $value;
     }
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Status
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?PaymentStatus
     {
-        return !empty($value) ? new Status((string)$value) : null;
+        return !empty($value) ? new PaymentStatus((string)$value) : null;
     }
     public function getName(): string
     {

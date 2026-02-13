@@ -7,7 +7,7 @@ use App\Payment\Entity\DTO\MakePaymentDTO;
 use App\Payment\Entity\Email;
 use App\Payment\Entity\Payment;
 use App\Payment\Entity\PaymentRepository;
-use App\Payment\Entity\Status;
+use App\Payment\Entity\PaymentStatus;
 use App\Payment\Entity\Token;
 use App\Product\Entity\Currency;
 use App\Product\Entity\Price;
@@ -58,7 +58,7 @@ class Handler
             $payment->setExternalId($paymentInfo->paymentId);
         }catch (PaymentException $e){
             $this->logger->error('Failed to create payment: ', ['error' => $e->getMessage()]);
-            $payment->updateStatus(Status::cancelled());
+            $payment->updateStatus(PaymentStatus::cancelled());
 
             $this->payments->create($payment);
 
