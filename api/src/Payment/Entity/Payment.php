@@ -27,8 +27,6 @@ class Payment
     private Token $returnToken;
     #[ORM\Column(type:'datetime_immutable')]
     private \DateTimeImmutable $createdAt;
-    #[ORM\Column(type: 'boolean')]
-    private bool $isSend = false;
     public function __construct(Id $id, Email $email, string $productId, Price $price, \DateTimeImmutable $createdAt, Token $returnToken)
     {
         $this->id = $id;
