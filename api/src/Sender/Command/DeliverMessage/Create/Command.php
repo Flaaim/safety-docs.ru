@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Sender\Command\CreateMessage;
+namespace App\Sender\Command\DeliverMessage\Create;
 
 use App\Sender\Entity\Recipient;
 

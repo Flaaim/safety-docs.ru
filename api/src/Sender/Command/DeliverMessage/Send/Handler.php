@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Sender\Command\Send;
+namespace App\Sender\Command\DeliverMessage\Send;
 
-use App\Product\Entity\File;
 use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\CreatorInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
@@ -16,10 +14,9 @@ class Handler
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $logger,
         private readonly CreatorInterface $creator,
-    )
-    {
-
+    ){
     }
+
     public function handle(Recipient $recipient): void
     {
         try{

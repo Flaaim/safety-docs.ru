@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Sender\Command\CreateMessage;
+namespace App\Sender\Command\DeliverMessage\Create;
 
 use App\Flusher;
 use App\Sender\Entity\Message;
 use App\Sender\Entity\MessageId;
 use App\Sender\Entity\MessageRepository;
 use App\Sender\Entity\MessageStatus;
+use App\Shared\Domain\Event\Message\CreateMessageEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Handler
 {
 
     public function __construct(
         private readonly MessageRepository $messages,
-        private readonly Flusher $flusher
+        private readonly Flusher $flusher,
+        private readonly EventDispatcher $dispatcher
     ){
     }
 
@@ -29,5 +32,8 @@ class Handler
         $this->messages->create($message);
 
         $this->flusher->flush();
+
+        $event = new CreateMessageEvent($message);
+        $this->dispatcher->dispatch($event);
     }
 }

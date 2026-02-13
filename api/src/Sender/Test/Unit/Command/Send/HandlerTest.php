@@ -2,7 +2,7 @@
 
 namespace App\Sender\Test\Unit\Command\Send;
 
-use App\Sender\Command\Send\Handler;
+use App\Sender\Command\DeliverMessage\Send\Handler;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\CreatorInterface;
