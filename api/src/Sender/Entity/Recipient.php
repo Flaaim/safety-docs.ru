@@ -3,18 +3,21 @@
 namespace App\Sender\Entity;
 
 use App\Shared\Domain\File\AttachableFileInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Embeddable]
 class Recipient
 {
-    /** @var ArrayCollection<AttachableFileInterface> $attachments */
-    private Collection $attachments;
+    /** @var array<AttachableFileInterface> $attachments */
+    #[ORM\Column(type: 'json')]
+    private array $attachments;
     public function __construct(
+        #[ORM\Column(type: 'email_message')]
         private readonly EmailMessage $email,
+        #[ORM\Column(type: 'string')]
         private readonly string $subject
     ){
-        $this->attachments = new ArrayCollection();
+        $this->attachments = [];
     }
 
     public function addAttachment(AttachableFileInterface $file): void
@@ -22,10 +25,10 @@ class Recipient
         if(!$file->exists()){
             throw new \DomainException("File '{$file->getValue()}' does not exists.");
         }
-        $this->attachments->add($file);
+        $this->attachments[] = $file;
     }
-    /** @return Collection<int, AttachableFileInterface> */
-    public function getAttachments(): Collection
+    /** @return array<int, AttachableFileInterface> */
+    public function getAttachments(): array
     {
         return $this->attachments;
     }
