@@ -1,5 +1,6 @@
 
+
 export interface SectionProps {
-  icon: string;
+  description: string
   title: string;
 }
