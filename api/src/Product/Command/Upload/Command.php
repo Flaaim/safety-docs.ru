@@ -13,14 +13,10 @@ class Command
         #[SlimUploadedFileAssert(
             maxSize: '15M',
             mimeTypes: [
-                'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'application/pdf'
+                'application/vnd.rar',
             ],
             extensions: [
-                'docx',
-                'doc',
-                'pdf'
+                'rar',
             ]
         )]
         public ?UploadedFileInterface $uploadFile,
