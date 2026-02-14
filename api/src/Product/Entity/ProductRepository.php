@@ -54,4 +54,9 @@ class ProductRepository
                 'course' => $product->getCourse()
             ]);
     }
+    /** @return array<Product> */
+    public function findAllPaginated(): array
+    {
+        return $this->repo->findAll();
+    }
 }
