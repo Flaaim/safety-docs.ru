@@ -1,0 +1,23 @@
+.section {
+  box-sizing: border-box;
+  padding: 30px 30px;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+  color: var(--heading-color);
+  min-width: 75px;
+  background: var(--downloads-background);
+  border: 1px solid var(--downloads-border-color);
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+
+.icon {
+
+}
+
+.hint {
+
+}
