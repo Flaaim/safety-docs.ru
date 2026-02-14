@@ -10,9 +10,7 @@ import cn from 'classnames'
 
 export interface ProductInfoData {
   name: string
-  price: number,
-  format: string
-  quantity: number,
+  formattedPrice: string,
 }
 
 const robotoMono = Roboto_Mono({
@@ -79,7 +77,7 @@ export const ProductInfo = ({productId, countFiles, formatFiles, description}: P
   return (<div className={cn(styles.productInfo, robotoMono.variable)}>
     <Deflisttag >
       <DefItem term='Название' definition={ProductInfoData?.name} />
-      <DefItem term='Стоимость' definition={ProductInfoData?.price + ` рублей`} />
+      <DefItem term='Стоимость' definition={ProductInfoData?.formattedPrice + ` рублей`} />
       <DefItem term='Количество' definition={countFiles} />
       <DefItem term='Формат' definition={formatFiles} />
       <DefItem term='Описание' definition={description} />
