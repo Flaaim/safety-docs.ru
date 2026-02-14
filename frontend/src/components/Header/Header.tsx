@@ -6,10 +6,7 @@ import styles from './Header.module.css'
 export const Header = ({className}:HeaderProps): JSX.Element => {
   return <header className={cn(className, styles.header)}>
     <nav>
-      <div className="logo">
-        <a href="/">Главная</a>
-      </div>
+        <a href="/" className={cn(className, styles.link)}>Главная</a>
     </nav>
-
   </header>
 }
