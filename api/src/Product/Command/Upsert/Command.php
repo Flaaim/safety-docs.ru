@@ -17,6 +17,6 @@ class Command
         #[Assert\NotBlank]
         public string $path,
         #[Assert\NotBlank]
-        public string $course
+        public string $slug
     ){}
 }

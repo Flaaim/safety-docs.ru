@@ -40,11 +40,11 @@ class ProductFixture extends AbstractFixture
 
         $product3 = new Product(
             new ProductId('658f2bb4-14e5-472e-a543-e3091c231eee'),
-            'Комплект документов служба ОТ и системы управления охраной труда',
+            'Служба охраны труда',
             new Price(550.00, new Currency('RUB')),
-            new File('/syot/templates.txt'),
-            'syot026.1',
-            'syot2026'
+            new File('/service/serv100.1.rar'),
+            'serv100.1',
+            'service'
         );
 
         $manager->persist($product3);

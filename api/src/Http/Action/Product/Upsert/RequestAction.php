@@ -28,7 +28,7 @@ class RequestAction implements RequestHandlerInterface
             $data['cipher'] ?? '',
             $data['amount'] ?? 0,
             $data['path'] ?? '',
-            $data['course'] ?? ''
+            $data['slug'] ?? ''
         );
 
         $this->validator->validate($command);

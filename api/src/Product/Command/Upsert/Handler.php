@@ -20,10 +20,9 @@ class Handler
     {}
     public function handle(Command $command): Response
     {
-        $product = $this->products->findByCourse($command->course);
+        $product = $this->products->findBySlug($command->slug);
 
         if($product) {
-            /** @var Product $product */
             $product->update(
                 $command->name,
                 new Price($command->amount, new Currency('RUB')),
@@ -37,7 +36,7 @@ class Handler
                 new Price($command->amount, new Currency('RUB')),
                 new File($command->path),
                 $command->cipher,
-                $command->course
+                $command->slug
             );
         }
 

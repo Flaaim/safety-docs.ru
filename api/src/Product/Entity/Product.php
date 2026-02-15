@@ -16,19 +16,19 @@ class Product
     #[ORM\Column(type: 'string', length: 25)]
     private string $cipher;
     #[ORM\Column(type: 'string', length: 25, unique: true)]
-    private string $course;
+    private string $slug;
     #[ORM\Column(type: 'price')]
     private Price $price;
     #[ORM\Column(type: 'file')]
     private File $file;
-    public function __construct(ProductId $id, string $name, Price $price, File $file, string $cipher, string $course)
+    public function __construct(ProductId $id, string $name, Price $price, File $file, string $cipher, string $slug)
     {
         $this->id = $id;
         $this->name = $name;
         $this->price = $price;
         $this->file = $file;
         $this->cipher = $cipher;
-        $this->course = $course;
+        $this->slug = $slug;
     }
     public function getId(): ProductId
     {
@@ -50,9 +50,9 @@ class Product
     {
         return $this->cipher;
     }
-    public function getCourse(): string
+    public function getSlug(): string
     {
-        return $this->course;
+        return $this->slug;
     }
     public function update(string $name, Price $price, File $file, string $cipher): void
     {

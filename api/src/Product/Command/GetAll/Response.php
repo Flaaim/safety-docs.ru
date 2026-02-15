@@ -36,7 +36,7 @@ class Response implements \JsonSerializable
                 'price' => $product->getPrice()->formatted(),
                 'cipher' => $product->getCipher(),
                 'file' => $product->getFile()->getValue(),
-                'course' => $product->getCourse(),
+                'slug' => $product->getSlug(),
             ], $this->products),
             'total' => $this->total,
             'currentPage' => $this->currentPage,
