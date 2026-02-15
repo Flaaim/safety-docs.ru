@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
-import styles from './layout.module.css';
-import "../globals.css";
+import styles from './(site)/layout.module.css';
+import "./globals.css";
 import {Sidebar, Footer, Header} from "@/components";
 
 
