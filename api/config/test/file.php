@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Product\Entity\UploadDir;
 use App\Product\Service\FileHandler;
 use App\Product\Service\ValidatePath;
+use App\Product\Test\TempDir;
 use App\Shared\Domain\Service\Template\RootPath;
 use Psr\Container\ContainerInterface;
 
@@ -14,7 +15,7 @@ return [
     },
     UploadDir::class => function(){
         return new UploadDir(
-            new RootPath(sys_get_temp_dir()),
+            new RootPath(TempDir::create()->getValue()),
             new ValidatePath()
         );
     }

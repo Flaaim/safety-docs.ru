@@ -19,11 +19,11 @@ class RequestActionTest extends WebTestCase
     public function testAddProduct(): void
     {
         $response = $this->app()->handle(self::json('POST','/payment-service/products/upsert', [
-            'name' => 'ПИ 1792.9 Итоговое тестирование по Программе IIП',
-            'cipher' => 'ПИ 1792.9',
+            'name' => 'Служба охраны труда',
+            'cipher' => 'serv100.1',
             'amount' => 500.00,
-            'path' => 'fire/1792/pi1792.9.docx',
-            'course' => '1792'
+            'path' => 'safety/service/serv100.1.rar',
+            'slug' => 'service'
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
@@ -36,11 +36,11 @@ class RequestActionTest extends WebTestCase
     public function testUpdateProduct(): void
     {
         $response = $this->app()->handle(self::json('POST','/payment-service/products/upsert', [
-            'name' => 'ПИ 1791.11 Итоговое тестирование по Программе IП',
-            'cipher' => 'ПИ 1791.11',
+            'name' => 'Служба охраны труда',
+            'cipher' => 'serv100.1',
             'amount' => 500.00,
-            'path' => 'fire/1791/pi1791.11.docx',
-            'course' => '1791'
+            'path' => 'safety/service/serv100.1.rar',
+            'slug' => 'service'
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
@@ -65,7 +65,7 @@ class RequestActionTest extends WebTestCase
                 'cipher' => 'This value should not be blank.',
                 'amount' => 'This value should be positive.',
                 'path' => 'This value should not be blank.',
-                'course' => 'This value should not be blank.',
+                'slug' => 'This value should not be blank.',
             ]
         ], $data);
 

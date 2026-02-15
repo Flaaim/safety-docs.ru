@@ -2,6 +2,7 @@
 
 namespace Test\Functional\Product\Upload;
 
+use App\Product\Test\TempDir;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\UploadedFile;
@@ -11,16 +12,20 @@ use Test\Functional\WebTestCase;
 class RequestActionTest extends WebTestCase
 {
     use ArraySubsetAsserts;
+    private TempDir $tempDir;
+    public function setUp(): void
+    {
+        $this->tempDir = TempDir::create();
+    }
 
-    private array $tempFiles = [];
     public function testSuccess(): void
     {
-        $uploadedFile = $this->buildUploadedFile('test.docx', 'data', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',UPLOAD_ERR_OK);
+        $uploadedFile = $this->tempFile('serv100.1.rar', 'data', 'application/vnd.rar',UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData(
             'POST',
             '/payment-service/products/upload',
-            ['path' => 'fire/pb992'],
+            ['path' => 'safety/service'],
             ['file' => $uploadedFile]
         ));
 
@@ -33,16 +38,14 @@ class RequestActionTest extends WebTestCase
             'name' => $uploadedFile->getClientFilename(),
             'mime_type' => $uploadedFile->getClientMediaType(),
             'size' => $uploadedFile->getSize(),
-            'path' => '/tmp/fire/pb992/'.$uploadedFile->getClientFilename(),
+            'path' => '/tmp/phpunit_test_/safety/service/'.$uploadedFile->getClientFilename(),
         ], $data);
-        
     }
 
     public function testEmptyFile(): void
     {
-
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'fire/pb992']));
+            'POST', '/payment-service/products/upload', ['path' => 'safety/service']));
 
         self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = $response->getBody());
@@ -58,12 +61,12 @@ class RequestActionTest extends WebTestCase
 
     public function testMultiUpload(): void
     {
-        $tempFileOne = $this->buildUploadedFile('test1.docx', 'some_content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', UPLOAD_ERR_OK);
+        $tempFileOne = $this->tempFile('test1.rar', 'some_content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
-        $tempFileTwo = $this->buildUploadedFile('test2.docx', 'some_content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', UPLOAD_ERR_OK);
+        $tempFileTwo = $this->tempFile('test2.rar', 'some_content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'fire/pb992'], ['file' => [$tempFileOne, $tempFileTwo]
+            'POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => [$tempFileOne, $tempFileTwo]
             ]
         ));
 
@@ -79,9 +82,7 @@ class RequestActionTest extends WebTestCase
 
     public function testEmptyPath(): void
     {
-        $file = $this->buildUploadedFile('test1.docx', 'some_content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', UPLOAD_ERR_OK);
-        $tempFile = tempnam(sys_get_temp_dir(), 'test_upload_');
-        file_put_contents($tempFile, 'test content');
+        $file = $this->tempFile('test1.rar', 'some_content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', [], [
             'file' => $file
@@ -99,10 +100,9 @@ class RequestActionTest extends WebTestCase
     }
     public function testInvalidMimeType(): void
     {
-
-        $uploadedFile = $this->buildUploadedFile('test.docx', 'data', $invalidFileType = 'text/plain', UPLOAD_ERR_OK);
+        $uploadedFile = $this->tempFile('test.rar', 'data', 'text/plain', UPLOAD_ERR_OK);
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'fire/pb992'], ['file' => $uploadedFile])
+            'POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile])
         );
 
         self::assertEquals(422, $response->getStatusCode());
@@ -111,16 +111,32 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals([
             'errors' => [
-                'uploadFile' => 'The mime type of the file is invalid (text/plain). Allowed mime types are application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf.'
+                'uploadFile' => 'The mime type of the file is invalid (text/plain). Allowed mime types are application/vnd.rar.'
             ]
         ], $data);
     }
+    public function testInvalidExtension(): void
+    {
+        $uploadedFile = $this->tempFile('test.docx', 'data', 'application/vnd.rar', UPLOAD_ERR_OK);
+        $response = $this->app()->handle(self::formData(
+            'POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile])
+        );
 
+        self::assertEquals(422, $response->getStatusCode());
+        self::assertJson($body = (string)$response->getBody());
+        $data = Json::decode($body);
+
+        self::assertEquals([
+            'errors' => [
+                'uploadFile' => 'The extension of the file is invalid (docx). Allowed extensions are rar.'
+            ]
+        ], $data);
+    }
     public function testUploadFailed(): void
     {
+        $uploadedFile = $this->tempFile('test.rar', 'data',  'application/vnd.rar', UPLOAD_ERR_NO_FILE);
 
-        $uploadedFile = $this->buildUploadedFile('test', 'data',  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', UPLOAD_ERR_NO_FILE);
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'fire/pb992'], ['file' => $uploadedFile]));
+        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
 
         self::assertEquals(422, $response->getStatusCode());
 
@@ -134,8 +150,8 @@ class RequestActionTest extends WebTestCase
 
     public function testUploadExisting(): void
     {
-        $uploadedFile = $this->buildUploadedFile('test.docx', 'data', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',UPLOAD_ERR_OK);
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'fire/pb992'], ['file' => $uploadedFile]));
+        $uploadedFile = $this->tempFile('test.rar', 'data', 'application/vnd.rar',UPLOAD_ERR_OK);
+        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertJson($body = $response->getBody());
@@ -144,9 +160,9 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals('data', file_get_contents($data['path']));
 
-        $uploadedFile = $this->buildUploadedFile('test.docx', 'data2', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',UPLOAD_ERR_OK);
+        $uploadedFile = $this->tempFile('test.rar', 'data2', 'application/vnd.rar',UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'fire/pb992992'], ['file' => $uploadedFile]));
+        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertJson($body = $response->getBody());
@@ -155,27 +171,22 @@ class RequestActionTest extends WebTestCase
         self::assertEquals('data2', file_get_contents($data['path']));
 
     }
-    private function buildUploadedFile(string $name, string $content, string $type, int $error): UploadedFileInterface
+
+    private function tempFile(string $name, string $content, string $type, int $error): UploadedFileInterface
     {
-        $tempFile = tempnam(sys_get_temp_dir(), $name);
-        file_put_contents($tempFile, $content);
-        $this->tempFiles[] = $tempFile;
+        $file1 = tempnam($this->tempDir->getValue(), 'file1');
+        file_put_contents($file1, $content);
 
         return new UploadedFile(
-            $tempFile,
+            $file1,
             $name,
             $type,
-            filesize($tempFile),
+            filesize($file1),
             $error
         );
     }
-
     public function tearDown(): void
     {
-        foreach ($this->tempFiles as $tempFile) {
-            if (file_exists($tempFile)) {
-                unlink($tempFile);
-            }
-        }
+        $this->tempDir->clear();
     }
 }

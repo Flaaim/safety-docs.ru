@@ -17,11 +17,11 @@ class RequestFixture extends AbstractFixture
     {
         $product = (new ProductBuilder())
             ->withId(new ProductId('b38e76c0-ac23-4c48-85fd-975f32c8801f'))
-            ->withName('ПИ 1791.10 Итоговое тестирование по Программе IП')
-            ->withCipher('ПИ 1791.10')
+            ->withName('Служба охраны труда')
+            ->withCipher('serv100.1')
             ->withPrice(new Price(550.00, new Currency('RUB')))
-            ->withFile(new File('fire/1791/pi1791.10.docx'))
-            ->withCourse('1791')
+            ->withFile(new File('safety/service/serv100.1.rar'))
+            ->withSlug('service')
             ->build();
 
         $manager->persist($product);

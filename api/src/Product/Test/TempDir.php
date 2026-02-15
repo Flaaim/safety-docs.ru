@@ -8,7 +8,9 @@ class TempDir
     private function __construct()
     {
         $this->value = sys_get_temp_dir(). DIRECTORY_SEPARATOR . 'phpunit_test_';
-        mkdir($this->value, 0777, true);
+        if(!file_exists($this->value)){
+            mkdir($this->value, 0777, true);
+        }
     }
     public static function create(): self
     {

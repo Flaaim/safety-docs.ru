@@ -23,7 +23,7 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'name' => 'ПИ 1791.10 Итоговое тестирование по Программе IП',
+            'name' => 'Служба охраны труда',
             'formattedPrice' => '550.00 RUB',
         ], $data);
     }
