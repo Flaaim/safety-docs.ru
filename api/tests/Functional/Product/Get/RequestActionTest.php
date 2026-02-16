@@ -2,11 +2,13 @@
 
 namespace Test\Functional\Product\Get;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 
 class RequestActionTest extends WebTestCase
 {
+    use ArraySubsetAsserts;
     public function setUp(): void
     {
         parent::setUp();
@@ -14,7 +16,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get?id=b38e76c0-ac23-4c48-85fd-975f32c8801f'));
+        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get/b38e76c0-ac23-4c48-85fd-975f32c8801f'));
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -31,7 +33,7 @@ class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get?id=b38e76c0-ac23-4c48-85fd-975f32c8800f'));
+        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get/b38e76c0-ac23-4c48-85fd-975f32c8800f'));
 
         self::assertEquals(400, $response->getStatusCode());
 
@@ -45,33 +47,31 @@ class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get?id=not-uuid-string'));
+        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get/!!!!!'));
 
-        self::assertEquals(422, $response->getStatusCode());
+        self::assertEquals(404, $response->getStatusCode());
 
         self::assertJson($body = (string)$response->getBody());
 
         $data = Json::decode($body);
 
-        self::assertEquals([
-            'errors' => [
-                'productId' => 'This is not a valid UUID.'
-            ]
+        self::assertArraySubset([
+            'message' => '404 Not Found',
         ], $data);
     }
 
     public function testEmpty(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get'));
+        $response = $this->app()->handle(self::json('GET', '/payment-service/products/get/'));
 
-        self::assertEquals(422, $response->getStatusCode());
+        self::assertEquals(404, $response->getStatusCode());
 
         self::assertJson($body = (string)$response->getBody());
 
         $data = Json::decode($body);
 
-        self::assertEquals(['errors' => [
-            'productId' => 'This value should not be blank.'
-        ]], $data);
+        self::assertArraySubset([
+            'message' => '404 Not Found',
+        ], $data);
     }
 }

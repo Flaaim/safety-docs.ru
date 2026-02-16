@@ -9,6 +9,7 @@ use App\Product\Command\Get\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Routing\RouteContext;
 
 class RequestAction implements RequestHandlerInterface
 {
@@ -20,7 +21,10 @@ class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $id = $request->getQueryParams()['id'] ?? '';
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+
+        $id = $route->getArgument('id');
 
         $command = new Command($id);
 

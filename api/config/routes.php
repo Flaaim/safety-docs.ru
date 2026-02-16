@@ -23,8 +23,8 @@ return static function(App $app): void {
             $group->post('/upsert', Product\Upsert\RequestAction::class)->add(AuthMiddleware::class);
             $group->post('/upload', Product\Upload\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->get('/get', Product\Get\RequestAction::class);
-            $group->get('/get/{slug:[a-z]+}', Product\GetBySlug\RequestAction::class);
+            $group->get('/get/{id:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}}', Product\Get\RequestAction::class);
+            $group->get('/get/{slug:[a-z-]+}', Product\GetBySlug\RequestAction::class);
         });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {
