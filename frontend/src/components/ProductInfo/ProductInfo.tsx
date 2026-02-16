@@ -19,7 +19,7 @@ const robotoMono = Roboto_Mono({
 })
 
 
-export const ProductInfo = ({productId, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
+export const ProductInfo = ({slug, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
   const [error, setError] = useState<string | null>(null)
   const [ProductInfoData, setProductInfoData] = useState<ProductInfoData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -29,7 +29,7 @@ export const ProductInfo = ({productId, countFiles, formatFiles, description}: P
       setLoading(true)
       setError(null)
 
-      const productInfoData = await getProductInfo(productId)
+      const productInfoData = await getProductInfo(slug)
       if(productInfoData){
         setProductInfoData(productInfoData)
       }
@@ -38,11 +38,11 @@ export const ProductInfo = ({productId, countFiles, formatFiles, description}: P
     }
 
     initProductInfo();
-  }, [productId])
+  }, [slug])
 
-  const getProductInfo = async (productId: string): Promise<ProductInfoData | null> => {
+  const getProductInfo = async (slug: string): Promise<ProductInfoData | null> => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-service/products/get?id=${productId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-service/products/get/${slug}`, {
         method: "GET",
         headers: {'Content-Type': 'application/json'},
       })
@@ -85,7 +85,7 @@ export const ProductInfo = ({productId, countFiles, formatFiles, description}: P
 
     <DownloadButton
       headline={ProductInfoData?.name}
-      productId={productId}>
+      productId=''>
       <Spantag size='s' > Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>

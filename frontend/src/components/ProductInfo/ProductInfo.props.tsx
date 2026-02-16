@@ -1,7 +1,7 @@
 
 
 export interface ProductInfoProps {
-  productId: string,
+  slug: string,
   countFiles: string,
   formatFiles: string,
   description: string
