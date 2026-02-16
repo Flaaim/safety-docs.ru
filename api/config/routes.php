@@ -7,6 +7,7 @@ use App\Http\Action\Payment;
 use App\Http\Action\Product;
 use App\Http\Middleware\AuthMiddleware;
 use Slim\App;
+use Slim\Middleware\RoutingMiddleware;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function(App $app): void {
@@ -23,6 +24,7 @@ return static function(App $app): void {
             $group->post('/upload', Product\Upload\RequestAction::class)->add(AuthMiddleware::class);
 
             $group->get('/get', Product\Get\RequestAction::class);
+            $group->get('/get/{slug}', Product\GetBySlug\RequestAction::class);
         });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {

@@ -12,6 +12,7 @@ return static function(App $app): void {
 
     $app->add(Middleware\ClearInputHandler::class);
     $app->addBodyParsingMiddleware();
+
     $app->add(ErrorMiddleware::class);
 
 };
