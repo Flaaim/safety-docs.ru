@@ -9,7 +9,8 @@ import {Roboto_Mono} from "next/font/google";
 import cn from 'classnames'
 
 export interface ProductInfoData {
-  name: string
+  productId: string,
+  name: string,
   formattedPrice: string,
 }
 
@@ -71,21 +72,21 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
   if(loading){
     return <Status appearance='loading'>Загрузка...</Status>
   }
-  if(error){
+  if(error || ProductInfoData === null){
     return <Status appearance='error'>{error}</Status>
   }
   return (<div className={cn(styles.productInfo, robotoMono.variable)}>
     <Deflisttag >
-      <DefItem term='Название' definition={ProductInfoData?.name} />
-      <DefItem term='Стоимость' definition={ProductInfoData?.formattedPrice + ` рублей`} />
+      <DefItem term='Название' definition={ProductInfoData.name} />
+      <DefItem term='Стоимость' definition={ProductInfoData.formattedPrice + ` рублей`} />
       <DefItem term='Количество' definition={countFiles} />
       <DefItem term='Формат' definition={formatFiles} />
       <DefItem term='Описание' definition={description} />
     </Deflisttag>
 
     <DownloadButton
-      headline={ProductInfoData?.name}
-      productId=''>
+      headline={ProductInfoData.name}
+      productId={ProductInfoData.productId}>
       <Spantag size='s' > Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>
