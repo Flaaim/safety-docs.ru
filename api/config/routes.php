@@ -24,7 +24,7 @@ return static function(App $app): void {
             $group->post('/upload', Product\Upload\RequestAction::class)->add(AuthMiddleware::class);
 
             $group->get('/get', Product\Get\RequestAction::class);
-            $group->get('/get/{slug}', Product\GetBySlug\RequestAction::class);
+            $group->get('/get/{slug:[a-z]+}', Product\GetBySlug\RequestAction::class);
         });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {

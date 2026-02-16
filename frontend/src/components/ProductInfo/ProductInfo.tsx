@@ -2,11 +2,12 @@
 
 import {JSX, useEffect, useState} from "react";
 import {ProductInfoProps} from "@/components/ProductInfo/ProductInfo.props";
-import styles from './ProductInfo.module.css'
-import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
-import {Status} from "@/components/Status/Status";
 import {Roboto_Mono} from "next/font/google";
-import cn from 'classnames'
+import {API} from '@/app/api'
+import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
+import cn from "classnames";
+import styles from './ProductInfo.module.css'
+import {Status} from "@/components/Status/Status";
 
 export interface ProductInfoData {
   productId: string,
@@ -43,7 +44,7 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
 
   const getProductInfo = async (slug: string): Promise<ProductInfoData | null> => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-service/products/get/${slug}`, {
+      const response = await fetch(API.product.getBySlug(slug), {
         method: "GET",
         headers: {'Content-Type': 'application/json'},
       })
