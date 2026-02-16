@@ -78,7 +78,7 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
   return (<div className={cn(styles.productInfo, robotoMono.variable)}>
     <Deflisttag >
       <DefItem term='Название' definition={ProductInfoData.name} />
-      <DefItem term='Стоимость' definition={ProductInfoData.formattedPrice + ` рублей`} />
+      <DefItem term='Стоимость' definition={ProductInfoData.formattedPrice} />
       <DefItem term='Количество' definition={countFiles} />
       <DefItem term='Формат' definition={formatFiles} />
       <DefItem term='Описание' definition={description} />
