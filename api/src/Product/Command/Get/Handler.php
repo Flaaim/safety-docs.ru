@@ -18,9 +18,6 @@ class Handler
     {
         $product = $this->products->get(new ProductId($command->productId));
 
-        return new ProductDTO(
-            $product->getName(),
-            $product->getPrice()->formatted()
-        );
+        return ProductDTO::fromProduct($product);
     }
 }

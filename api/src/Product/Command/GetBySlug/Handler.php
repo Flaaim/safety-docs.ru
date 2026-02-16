@@ -19,6 +19,6 @@ class Handler
             throw new \DomainException('Product not found.');
         }
 
-        return new ProductDTO($product->getName(), $product->getPrice()->formatted());
+        return ProductDTO::fromProduct($product);
     }
 }
