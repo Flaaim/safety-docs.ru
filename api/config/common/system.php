@@ -3,7 +3,6 @@
 
 declare(strict_types=1);
 
-
 use App\Shared\Domain\Service\Template\RootPath;
 use Psr\Container\ContainerInterface;
 

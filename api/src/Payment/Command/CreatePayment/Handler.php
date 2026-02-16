@@ -10,8 +10,7 @@ use App\Payment\Entity\PaymentRepository;
 use App\Payment\Entity\PaymentStatus;
 use App\Payment\Entity\Price;
 use App\Payment\Entity\Token;
-use App\Product\Entity\ProductId;
-use App\Product\Entity\ProductRepository;
+use App\Shared\Domain\Query\ProductQueryInterface;
 use App\Shared\Domain\Service\Payment\PaymentException;
 use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
 use App\Shared\Domain\ValueObject\Currency;
@@ -25,7 +24,7 @@ class Handler
 
     public function __construct(
         private readonly Flusher $flusher,
-        private readonly ProductRepository $products,
+        private readonly ProductQueryInterface $productQuery,
         private readonly YookassaProvider $yookassaProvider,
         private readonly PaymentRepository $payments,
         private readonly LoggerInterface $logger
@@ -34,13 +33,13 @@ class Handler
     public function handle(Command $command): Response
     {
         $email = new Email($command->email);
-        $product = $this->products->get(new ProductId($command->productId));
+        $product = $this->productQuery->getProduct($command->productId);
         $returnToken = new Token(Id::generate(), new DateTimeImmutable('+ 1 hour'));
         $payment = new Payment(
             new Id(Uuid::uuid4()->toString()),
             $email,
-            $command->productId,
-            new Price($product->getAmount()->getValue(), new Currency('RUB')),
+            $product->id,
+            new Price($product->amount, new Currency('RUB')),
             new DateTimeImmutable(),
             $returnToken
         );
@@ -49,9 +48,9 @@ class Handler
                 new MakePaymentDTO(
                     $payment->getPrice()->getValue(),
                     $payment->getPrice()->getCurrency()->getValue(),
-                    $product->getCipher(),
+                    $product->cipher,
                     $payment->getReturnToken()->getValue(),
-                    ['email' => $email->getValue(), 'productId' => $product->getId()->getValue()],
+                    ['email' => $email->getValue(), 'productId' => $product->id],
                     $email->getValue(),
                 )
             );
