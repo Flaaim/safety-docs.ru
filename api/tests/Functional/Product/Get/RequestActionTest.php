@@ -25,6 +25,7 @@ class RequestActionTest extends WebTestCase
         self::assertEquals([
             'name' => 'Служба охраны труда',
             'formattedPrice' => '550.00 RUB',
+            'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f'
         ], $data);
     }
 

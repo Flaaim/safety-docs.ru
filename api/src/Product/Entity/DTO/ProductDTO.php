@@ -18,7 +18,7 @@ class ProductDTO
         return new self(
             $product->getId()->getValue(),
             $product->getName(),
-            $product->getPrice()->formatted()
+            $product->getAmount()->formatted()
         );
     }
 }

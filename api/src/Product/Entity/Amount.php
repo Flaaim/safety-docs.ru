@@ -2,9 +2,10 @@
 
 namespace App\Product\Entity;
 
+use App\Shared\Domain\ValueObject\Currency;
 use Webmozart\Assert\Assert;
 
-class Price
+class Amount
 {
     private float $value;
     private Currency $currency;
@@ -27,7 +28,7 @@ class Price
         return number_format($this->value, 2, '.', '') . ' ' . $this->getCurrency()->getValue();
     }
 
-    public function equals(Price $price): bool
+    public function equals(Amount $price): bool
     {
         return $this->value === $price->getValue();
     }

@@ -6,11 +6,11 @@ namespace App\Command;
 
 use App\Payment\Entity\Email;
 use App\Payment\Service\ProductSender;
-use App\Product\Entity\Currency;
 use App\Product\Entity\File;
-use App\Product\Entity\Price;
+use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\Currency;
 use App\Shared\Domain\ValueObject\Id;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -47,7 +47,7 @@ class ProductSendCommand extends Command
             new Product(
                 Id::generate(),
                 'Образцы документов СИЗ',
-                new Price(450.00, new Currency('RUB')),
+                new Amount(450.00, new Currency('RUB')),
                 new File(basename($tempFile)),
                 '1',
                 ''

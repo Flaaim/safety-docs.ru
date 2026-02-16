@@ -34,11 +34,11 @@ class ProductRepository
         $qb = $this->em->createQueryBuilder();
 
         $sql = '
-        INSERT INTO products (id, name, price, file, cipher, slug) 
-        VALUES (:id, :name, :price, :file, :cipher, :slug)
+        INSERT INTO products (id, name, amount, file, cipher, slug) 
+        VALUES (:id, :name, :amount, :file, :cipher, :slug)
         ON DUPLICATE KEY UPDATE 
             name = VALUES(name),
-            price = VALUES(price),
+            amount = VALUES(amount),
             file = VALUES(file), 
             slug = VALUES(slug)
          ';
@@ -48,7 +48,7 @@ class ProductRepository
             ->executeStatement($sql, [
                 'id' => $product->getId()->getValue(),
                 'name' => $product->getName(),
-                'price' => $product->getPrice()->getValue(),
+                'amount' => $product->getAmount()->getValue(),
                 'file' => $product->getFile()->getValue(),
                 'cipher' => $product->getCipher(),
                 'slug' => $product->getSlug()

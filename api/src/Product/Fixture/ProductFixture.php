@@ -2,12 +2,11 @@
 
 namespace App\Product\Fixture;
 
-use App\Product\Entity\Currency;
 use App\Product\Entity\File;
-use App\Product\Entity\Price;
+use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
-use App\Shared\Domain\ValueObject\Id;
+use App\Shared\Domain\ValueObject\Currency;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -18,11 +17,11 @@ class ProductFixture extends AbstractFixture
     {
         $product = new Product(
             new ProductId('e2ff37fb-8690-46e5-82fa-75b5ceca8b61'),
-            'Полный комплект ЛНА по охране труда',
-            new Price(2550.00, new Currency('RUB')),
-            new File('/lna/templates.txt'),
-            'lna2026.1',
-            'lna2026'
+            'Система управления охраной труда',
+            new Amount(550.00, new Currency('RUB')),
+            new File('/safety/suot/suot200.1'),
+            'suot200.1',
+            'suot'
         );
 
         $manager->persist($product);
@@ -30,7 +29,7 @@ class ProductFixture extends AbstractFixture
         $product2 = new Product(
             new ProductId('63beafba-d948-4ddf-9463-54da074ae903'),
             'Комплект документов по обучению требованиям охраны труда',
-            new Price(750.00, new Currency('RUB')),
+            new Amount(750.00, new Currency('RUB')),
             new File('/edu/templates.txt'),
             'edu2026.1',
             'edu2026'
@@ -41,8 +40,8 @@ class ProductFixture extends AbstractFixture
         $product3 = new Product(
             new ProductId('658f2bb4-14e5-472e-a543-e3091c231eee'),
             'Служба охраны труда',
-            new Price(550.00, new Currency('RUB')),
-            new File('/service/serv100.1.rar'),
+            new Amount(250.00, new Currency('RUB')),
+            new File('/safety/service/serv100.1.rar'),
             'serv100.1',
             'service'
         );

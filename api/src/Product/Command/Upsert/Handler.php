@@ -3,12 +3,12 @@
 namespace App\Product\Command\Upsert;
 
 use App\Flusher;
-use App\Product\Entity\Currency;
 use App\Product\Entity\File;
-use App\Product\Entity\Price;
+use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
+use App\Shared\Domain\ValueObject\Currency;
 use Ramsey\Uuid\Uuid;
 
 class Handler
@@ -25,7 +25,7 @@ class Handler
         if($product) {
             $product->update(
                 $command->name,
-                new Price($command->amount, new Currency('RUB')),
+                new Amount($command->amount, new Currency('RUB')),
                 new File($command->path),
                 $command->cipher,
             );
@@ -33,7 +33,7 @@ class Handler
             $product = new Product(
                 new ProductId(Uuid::uuid4()->toString()),
                 $command->name,
-                new Price($command->amount, new Currency('RUB')),
+                new Amount($command->amount, new Currency('RUB')),
                 new File($command->path),
                 $command->cipher,
                 $command->slug

@@ -64,12 +64,13 @@ return [
                 App\Shared\Domain\ValueObject\UpdatedAtType::NAME => App\Shared\Domain\ValueObject\UpdatedAtType::class,
 
 
-                App\Product\Entity\PriceType::NAME => App\Product\Entity\PriceType::class,
+                App\Product\Entity\AmountType::NAME => App\Product\Entity\AmountType::class,
                 App\Product\Entity\FileType::NAME => App\Product\Entity\FileType::class,
                 App\Product\Entity\ProductIdType::NAME => App\Product\Entity\ProductIdType::class,
 
                 App\Payment\Entity\EmailType::NAME => App\Payment\Entity\EmailType::class,
                 App\Payment\Entity\PaymentStatusType::NAME => App\Payment\Entity\PaymentStatusType::class,
+                App\Payment\Entity\PriceType::NAME => App\Payment\Entity\PriceType::class,
 
                 App\Sender\Entity\MessageIdType::NAME => App\Sender\Entity\MessageIdType::class,
                 App\Sender\Entity\MessageStatusType::NAME => App\Sender\Entity\MessageStatusType::class,

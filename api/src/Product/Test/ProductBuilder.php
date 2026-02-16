@@ -2,18 +2,18 @@
 
 namespace App\Product\Test;
 
-use App\Product\Entity\Currency;
 use App\Product\Entity\File;
-use App\Product\Entity\Price;
+use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
+use App\Shared\Domain\ValueObject\Currency;
 
 class ProductBuilder
 {
     private ProductId $id;
     private string $name;
     private string $cipher;
-    private Price $price;
+    private Amount $price;
     private File $file;
     private string $slug;
 
@@ -22,7 +22,7 @@ class ProductBuilder
         $this->id = new ProductId("b38e76c0-ac23-4c48-85fd-975f32c8801f");
         $this->name = "Оказание первой помощи пострадавшим";
         $this->cipher = "ОТ 201.18";
-        $this->price = new Price(350.00, new Currency('RUB'));
+        $this->price = new Amount(350.00, new Currency('RUB'));
         $this->file = new File("201/ot201.18.docx");
         $this->slug = '201';
     }
@@ -41,7 +41,7 @@ class ProductBuilder
         $this->cipher = $cipher;
         return $this;
     }
-    public function withPrice(Price $price): self
+    public function withPrice(Amount $price): self
     {
         $this->price = $price;
         return $this;

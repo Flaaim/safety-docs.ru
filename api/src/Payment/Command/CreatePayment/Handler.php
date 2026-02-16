@@ -8,13 +8,13 @@ use App\Payment\Entity\Email;
 use App\Payment\Entity\Payment;
 use App\Payment\Entity\PaymentRepository;
 use App\Payment\Entity\PaymentStatus;
+use App\Payment\Entity\Price;
 use App\Payment\Entity\Token;
-use App\Product\Entity\Currency;
-use App\Product\Entity\Price;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Shared\Domain\Service\Payment\PaymentException;
 use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
+use App\Shared\Domain\ValueObject\Currency;
 use App\Shared\Domain\ValueObject\Id;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
@@ -40,7 +40,7 @@ class Handler
             new Id(Uuid::uuid4()->toString()),
             $email,
             $command->productId,
-            new Price($product->getPrice()->getValue(), new Currency('RUB')),
+            new Price($product->getAmount()->getValue(), new Currency('RUB')),
             new DateTimeImmutable(),
             $returnToken
         );

@@ -4,9 +4,9 @@ namespace App\Payment\Fixture;
 
 use App\Payment\Entity\Email;
 use App\Payment\Entity\Payment;
+use App\Payment\Entity\Price;
 use App\Payment\Entity\Token;
-use App\Product\Entity\Currency;
-use App\Product\Entity\Price;
+use App\Shared\Domain\ValueObject\Currency;
 use App\Shared\Domain\ValueObject\Id;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;

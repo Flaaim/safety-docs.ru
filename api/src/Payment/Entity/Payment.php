@@ -2,7 +2,6 @@
 
 namespace App\Payment\Entity;
 
-use App\Product\Entity\Price;
 use App\Shared\Domain\ValueObject\Id;
 use Doctrine\ORM\Mapping as ORM;
 

@@ -33,7 +33,7 @@ class Response implements \JsonSerializable
             'products' => array_map(fn(Product $product) => [
                 'id' => $product->getId()->getValue(),
                 'name' => $product->getName(),
-                'price' => $product->getPrice()->formatted(),
+                'price' => $product->getAmount()->formatted(),
                 'cipher' => $product->getCipher(),
                 'file' => $product->getFile()->getValue(),
                 'slug' => $product->getSlug(),

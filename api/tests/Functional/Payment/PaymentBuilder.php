@@ -5,9 +5,10 @@ namespace Test\Functional\Payment;
 use App\Payment\Entity\Email;
 use App\Payment\Entity\Payment;
 use App\Payment\Entity\PaymentStatus;
+use App\Payment\Entity\Price;
 use App\Payment\Entity\Token;
-use App\Product\Entity\Currency;
-use App\Product\Entity\Price;
+use App\Product\Entity\Amount;
+use App\Shared\Domain\ValueObject\Currency;
 use App\Shared\Domain\ValueObject\Id;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
@@ -22,7 +23,6 @@ class PaymentBuilder
     private Price $price;
     private Token $returnToken;
     private \DateTimeImmutable $createdAt;
-    private bool $isSend = false;
 
     public function __construct()
     {
@@ -63,11 +63,6 @@ class PaymentBuilder
     public function withSucceededStatus(): self
     {
         $this->status = PaymentStatus::succeeded();
-        return $this;
-    }
-    public function withSend(): self
-    {
-        $this->isSend = true;
         return $this;
     }
     public function withExpiredToken(): self
