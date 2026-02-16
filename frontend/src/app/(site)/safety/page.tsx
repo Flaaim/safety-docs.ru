@@ -19,6 +19,7 @@ export default function Safety(){
 
         <Link href='/safety/service'><Section description='Служба охраны труда ведет на предприятии работу по охране труда' title='Служба охраны труда' /></Link>
         <Link href='/safety/suot'><Section description='Система управления охраной труда.' title='СУОТ' /></Link>
+        <Link href='/safety/education'><Section description='' title='Обучение охране труда' /></Link>
 
       </Navigation>
     </div>
