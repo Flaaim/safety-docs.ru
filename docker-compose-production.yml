@@ -94,6 +94,8 @@ services:
       MYSQL_DATABASE: app
     volumes:
       - mysql:/var/lib/mysql
+    ports:
+      - "33061:3306"
 
 volumes:
   mysql:
