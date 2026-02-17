@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Action\Payment\CreatePayment;
+namespace App\Http\Action\V1\Payment\CreatePayment;
 
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;

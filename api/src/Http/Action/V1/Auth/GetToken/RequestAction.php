@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Action\Auth\GetToken;
+namespace App\Http\Action\V1\Auth\GetToken;
 
 use App\Http\EmptyResponse;
 use App\Http\JsonResponse;

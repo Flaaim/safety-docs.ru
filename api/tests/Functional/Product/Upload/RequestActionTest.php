@@ -24,7 +24,7 @@ class RequestActionTest extends WebTestCase
 
         $response = $this->app()->handle(self::formData(
             'POST',
-            '/payment-service/products/upload',
+            '/v1/products/upload',
             ['path' => 'safety/service'],
             ['file' => $uploadedFile]
         ));
@@ -45,7 +45,7 @@ class RequestActionTest extends WebTestCase
     public function testEmptyFile(): void
     {
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'safety/service']));
+            'POST', '/v1/products/upload', ['path' => 'safety/service']));
 
         self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = $response->getBody());
@@ -66,7 +66,7 @@ class RequestActionTest extends WebTestCase
         $tempFileTwo = $this->tempFile('test2.rar', 'some_content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => [$tempFileOne, $tempFileTwo]
+            'POST', '/v1/products/upload', ['path' => 'safety/service'], ['file' => [$tempFileOne, $tempFileTwo]
             ]
         ));
 
@@ -84,7 +84,7 @@ class RequestActionTest extends WebTestCase
     {
         $file = $this->tempFile('test1.rar', 'some_content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', [], [
+        $response = $this->app()->handle(self::formData('POST', '/v1/products/upload', [], [
             'file' => $file
         ]));
         self::assertEquals(422, $response->getStatusCode());
@@ -102,7 +102,7 @@ class RequestActionTest extends WebTestCase
     {
         $uploadedFile = $this->tempFile('test.rar', 'data', 'text/plain', UPLOAD_ERR_OK);
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile])
+            'POST', '/v1/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile])
         );
 
         self::assertEquals(422, $response->getStatusCode());
@@ -119,7 +119,7 @@ class RequestActionTest extends WebTestCase
     {
         $uploadedFile = $this->tempFile('test.docx', 'data', 'application/vnd.rar', UPLOAD_ERR_OK);
         $response = $this->app()->handle(self::formData(
-            'POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile])
+            'POST', '/v1/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile])
         );
 
         self::assertEquals(422, $response->getStatusCode());
@@ -136,7 +136,7 @@ class RequestActionTest extends WebTestCase
     {
         $uploadedFile = $this->tempFile('test.rar', 'data',  'application/vnd.rar', UPLOAD_ERR_NO_FILE);
 
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
+        $response = $this->app()->handle(self::formData('POST', '/v1/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
 
         self::assertEquals(422, $response->getStatusCode());
 
@@ -151,7 +151,7 @@ class RequestActionTest extends WebTestCase
     public function testUploadExisting(): void
     {
         $uploadedFile = $this->tempFile('test.rar', 'data', 'application/vnd.rar',UPLOAD_ERR_OK);
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
+        $response = $this->app()->handle(self::formData('POST', '/v1/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertJson($body = $response->getBody());
@@ -162,7 +162,7 @@ class RequestActionTest extends WebTestCase
 
         $uploadedFile = $this->tempFile('test.rar', 'data2', 'application/vnd.rar',UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/payment-service/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
+        $response = $this->app()->handle(self::formData('POST', '/v1/products/upload', ['path' => 'safety/service'], ['file' => $uploadedFile]));
 
         self::assertEquals(200, $response->getStatusCode());
         self::assertJson($body = $response->getBody());

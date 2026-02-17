@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Action\Product\Upsert;
+namespace App\Http\Action\V1\Product\Upsert;
 
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use App\Product\Command\Upsert\Command;
 use App\Product\Command\Upsert\Handler;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

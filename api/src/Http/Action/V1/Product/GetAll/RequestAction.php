@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Action\Product\GetAll;
+namespace App\Http\Action\V1\Product\GetAll;
 
 use App\Http\JsonResponse;
 use App\Product\Command\GetAll\Command;

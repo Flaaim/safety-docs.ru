@@ -24,7 +24,7 @@ class RequestActionTest extends WebTestCase
     {
         $returnToken = (new TokenBuilder())->build();
 
-        $response = $this->app()->handle(self::json('POST', '/payment-service/result', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/result', [
             'returnToken' => $returnToken->getValue()
         ]));
 
@@ -41,7 +41,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testEmpty(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/result'));
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/result'));
 
         self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
@@ -58,7 +58,7 @@ class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/result', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/result', [
             'returnToken' => 'invalid'
         ]));
         self::assertEquals(422, $response->getStatusCode());
@@ -77,7 +77,7 @@ class RequestActionTest extends WebTestCase
             ->withExpiredToken()
             ->build();
 
-        $response = $this->app()->handle(self::json('POST', '/payment-service/result', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/result', [
             'returnToken' => $expiredPayment->getReturnToken()->getValue()
         ]));
 

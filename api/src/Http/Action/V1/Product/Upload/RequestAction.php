@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Action\Product\Upload;
+namespace App\Http\Action\V1\Product\Upload;
 
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;

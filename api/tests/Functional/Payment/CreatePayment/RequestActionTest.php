@@ -21,7 +21,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/process-payment', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'test@app.ru',
             'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f'
         ]));
@@ -37,7 +37,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testEmpty(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/process-payment'));
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment'));
 
         $this->assertEquals(422, $response->getStatusCode());
 
@@ -53,7 +53,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testNotFound(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/process-payment', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'test@app.ru',
             'productId' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
         ]));
@@ -71,7 +71,7 @@ class RequestActionTest extends WebTestCase
 
     public function testInvalidEmail(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/process-payment', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'invalid',
             'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8809f'
         ]));
@@ -91,7 +91,7 @@ class RequestActionTest extends WebTestCase
 
     public function testInvalidProductId(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/payment-service/process-payment', [
+        $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'test@user.ru',
             'productId' => 'someInvalidProductId',
         ]));

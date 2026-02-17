@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Action\Payment\HookPayment;
+namespace App\Http\Action\V1\Payment\HookPayment;
 
 use App\Http\EmptyResponse;
 use App\Http\JsonResponse;
