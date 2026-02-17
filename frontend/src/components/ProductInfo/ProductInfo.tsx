@@ -3,17 +3,13 @@
 import {JSX, useEffect, useState} from "react";
 import {ProductInfoProps} from "@/components/ProductInfo/ProductInfo.props";
 import {Roboto_Mono} from "next/font/google";
-import {API} from '@/app/api'
+
 import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
 import cn from "classnames";
 import styles from './ProductInfo.module.css'
 import {Status} from "@/components/Status/Status";
-
-export interface ProductInfoData {
-  productId: string,
-  name: string,
-  formattedPrice: string,
-}
+import {ProductInfoData} from "@/interfaces/product.interface";
+import {getProductBySlug} from "../../../api/product";
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
@@ -23,71 +19,53 @@ const robotoMono = Roboto_Mono({
 
 export const ProductInfo = ({slug, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
   const [error, setError] = useState<string | null>(null)
-  const [ProductInfoData, setProductInfoData] = useState<ProductInfoData | null>(null)
+  const [productInfoData, setProductInfoData] = useState<ProductInfoData | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const controller = new AbortController();
     const initProductInfo = async () => {
       setLoading(true)
       setError(null)
 
-      const productInfoData = await getProductInfo(slug)
-      if(productInfoData){
-        setProductInfoData(productInfoData)
-      }
-
-      setLoading(false)
-    }
-
-    initProductInfo();
-  }, [slug])
-
-  const getProductInfo = async (slug: string): Promise<ProductInfoData | null> => {
-    try {
-      const response = await fetch(API.product.getBySlug(slug), {
-        method: "GET",
-        headers: {'Content-Type': 'application/json'},
-      })
-
-      const data = response.json();
-
-      if(!response.ok){
-        const errorMessage = `Ошибка ${response.status}: ${response.statusText}`
-
-        switch (response.status){
-          case 400 : setError(`Ошибка: ${errorMessage}`)
-            break
-          case 500 : setError(`Ошибка сервера, попробуйте позже`)
-            break
-          default : setError(errorMessage)
+      try{
+        const data = await getProductBySlug(slug);
+        if (!controller.signal.aborted) {
+          setProductInfoData(data);
         }
-        return null
+      }catch (err: unknown){
+        if (!controller.signal.aborted) {
+          const errorMessage = err instanceof Error ? err.message : 'Неизвестная ошибка';
+          setError(errorMessage);
+        }
+      }finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
-      return data
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ошибка соединения с сервером')
-      return null
     }
-  }
+    initProductInfo();
+    return () => controller.abort()
+  }, [slug])
 
   if(loading){
     return <Status appearance='loading'>Загрузка...</Status>
   }
-  if(error || ProductInfoData === null){
+  if(error || productInfoData === null){
     return <Status appearance='error'>{error}</Status>
   }
   return (<div className={cn(styles.productInfo, robotoMono.variable)}>
     <Deflisttag >
-      <DefItem term='Название' definition={ProductInfoData.name} />
-      <DefItem term='Стоимость' definition={ProductInfoData.formattedPrice} />
+      <DefItem term='Название' definition={productInfoData.name} />
+      <DefItem term='Стоимость' definition={productInfoData.formattedPrice} />
       <DefItem term='Количество' definition={countFiles} />
       <DefItem term='Формат' definition={formatFiles} />
       <DefItem term='Описание' definition={description} />
     </Deflisttag>
 
     <DownloadButton
-      headline={ProductInfoData.name}
-      productId={ProductInfoData.productId}>
+      headline={productInfoData.name}
+      productId={productInfoData.productId}>
       <Spantag size='s' > Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>
