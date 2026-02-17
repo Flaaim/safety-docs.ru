@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Action\V1\Payment\Result;
+namespace App\Http\Action\V1\Payment\GetPaymentResult;
 
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
@@ -9,6 +9,7 @@ use App\Payment\Command\GetPaymentResult\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Routing\RouteContext;
 
 
 class RequestAction implements RequestHandlerInterface
@@ -20,9 +21,12 @@ class RequestAction implements RequestHandlerInterface
     {}
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-            $returnToken = $request->getParsedBody()['returnToken'] ?? '';
+            $routeContext = RouteContext::fromRequest($request);
+            $route = $routeContext->getRoute();
 
-            $command = new Command($returnToken);
+            $token = $route->getArgument("token") ?? '';
+
+            $command = new Command($token);
 
             $this->validator->validate($command);
 

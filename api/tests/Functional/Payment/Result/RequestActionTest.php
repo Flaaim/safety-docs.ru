@@ -24,9 +24,7 @@ class RequestActionTest extends WebTestCase
     {
         $returnToken = (new TokenBuilder())->build();
 
-        $response = $this->app()->handle(self::json('POST', '/v1/payments/result', [
-            'returnToken' => $returnToken->getValue()
-        ]));
+        $response = $this->app()->handle(self::json('GET', '/v1/payments/get/'.$returnToken->getValue()));
 
         $this->assertEquals(200, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
@@ -41,26 +39,23 @@ class RequestActionTest extends WebTestCase
     }
     public function testEmpty(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/v1/payments/result'));
+        $response = $this->app()->handle(self::json('GET', '/v1/payments/get/'));
 
-        self::assertEquals(422, $response->getStatusCode());
+        self::assertEquals(404, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
 
         $data = Json::decode($body);
 
-        self::assertEquals([
-            'errors' => [
-                'returnToken' => 'This value should not be blank.',
-            ]
+        self::assertArraySubset([
+            'message' => '404 Not Found',
         ], $data);
 
     }
 
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/v1/payments/result', [
-            'returnToken' => 'invalid'
-        ]));
+        $response = $this->app()->handle(self::json('GET', '/v1/payments/get/invalid'));
+
         self::assertEquals(422, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());
         $data = Json::decode($body);
@@ -77,9 +72,8 @@ class RequestActionTest extends WebTestCase
             ->withExpiredToken()
             ->build();
 
-        $response = $this->app()->handle(self::json('POST', '/v1/payments/result', [
-            'returnToken' => $expiredPayment->getReturnToken()->getValue()
-        ]));
+        $response = $this->app()->handle(self::json('GET',
+            '/v1/payments/get/'.$expiredPayment->getReturnToken()->getValue()));
 
         self::assertEquals(400, $response->getStatusCode());
         self::assertJson($body = (string)$response->getBody());

@@ -17,7 +17,7 @@ return static function(App $app): void {
             $group->post('/process-payment', Payment\CreatePayment\RequestAction::class);
             $group->post('/payment-webhook', Payment\HookPayment\RequestAction::class);
 
-            $group->post('/result', Payment\Result\RequestAction::class);
+            $group->get('/get/{token}', Payment\GetPaymentResult\RequestAction::class);
         });
 
 
