@@ -1,7 +1,7 @@
 'use client'
 
 import {z} from 'zod'
-import {FormEvent, JSX, useState} from "react";
+import {FormEvent, JSX, useEffect, useRef, useState} from "react";
 import {ProductFormProps} from "./ProductForm.props";
 import styles from './ProductForm.module.css'
 import cn from 'classnames'
@@ -9,109 +9,85 @@ import {InputFormProps} from "./InputForm.props";
 import {LabelFormProps} from "./LabelForm.props";
 import {ButtonProps} from "./Button.props";
 import {Status} from "@/components/Status/Status";
+import {createPayment} from "../../../api/payment";
 
 const schema = z.object({
   email: z.string().email('Некорректный email адрес'),
   productId: z.string().uuid('Некорректный ID продукта')
 })
 
-export const InputForm = ({type, name, value, id, placeholder}: InputFormProps): JSX.Element => {
-  return <>
-    <input
-      name={name}
-      type={type}
-      defaultValue={value}
-      placeholder={placeholder}
-      id={id}
-    />
-  </>
-}
 
-export const LabelForm = ({children, forInput}:LabelFormProps): JSX.Element => {
-  return <>
-    <label htmlFor={forInput}>{children}</label>
-  </>
-}
 
-export const Button = ({children, type}: ButtonProps): JSX.Element => {
-  return <>
-    <button type={type}>{children}</button>
-  </>
-}
+export const InputForm = ({type, name, value, id, placeholder, ...props}: InputFormProps) => (
+  <input className={styles.input} name={name} type={type} defaultValue={value} placeholder={placeholder} id={id} {...props} />
+);
+
+export const LabelForm = ({children, forInput, ...props}: LabelFormProps) => (
+  <label htmlFor={forInput} {...props}>{children}</label>
+);
+
+export const Button = ({children, type, disabled, ...props}: ButtonProps) => (
+  <button type={type} disabled={disabled} className={styles.button} {...props}>{children}</button>
+);
 
 export const ProductForm = ({headline, productId, className}: ProductFormProps): JSX.Element => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>){
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => abortControllerRef.current?.abort();
+  }, []);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = new AbortController();
+
     setLoading(true)
     setError(null)
+
     const formData = new FormData(e.currentTarget);
 
     const data = {
       email: formData.get('email'),
-      productId: formData.get('productId'),
+      productId: productId,
     }
 
     const parsed = schema.safeParse(data)
 
-    if(!parsed.success){
+    if (!parsed.success) {
       setError(parsed.error.issues[0].message)
       setLoading(false)
       return
     }
 
-    const {email, productId} = parsed.data
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-service/process-payment`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, productId }),
-      })
+      const payment = await createPayment(parsed.data.email, parsed.data.productId, abortControllerRef.current.signal);
+      window.location.href = payment.returnUrl;
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') return;
 
-      const result = await response.json()
-
-      if (!response.ok) {
-        setError(result.message || 'Произошла ошибка при отправке запроса')
-        setLoading(false)
-        return
-      }
-
-      setSuccess(true)
-
-      if (result.returnUrl) {
-        window.location.href = result.returnUrl;
-      }
-
-    } catch (err) {
-      setError('Ошибка соединения')
-      setLoading(false)
-    } finally {
-      setLoading(false)
+      setError(err instanceof Error ? err.message : 'Неизвестная ошибка');
+      setLoading(false);
     }
 
-
   }
+
   return <>
-      <h4>{headline}</h4>
-      <form
-        className={cn(styles.form, className)}
-        onSubmit={handleSubmit}
-      >
-        <LabelForm forInput='email'  >Введите ваш email: </LabelForm>
-        <InputForm type='email' name='email'  id='email' placeholder='Email'/>
-        <InputForm type='hidden' name='productId'  id='productId' value={productId}/>
+    <h4>{headline}</h4>
+    <form
+      className={cn(styles.form, className)}
+      onSubmit={handleSubmit}
+    >
+      <LabelForm forInput='email' >Введите ваш email: </LabelForm>
+      <InputForm type='email' name='email' id='email' placeholder='Email'/>
+      {error && <Status appearance='error'>{error}</Status>}
 
-
-
-        {error &&  <Status appearance='error'>{error}</Status>}
-
-        <Button type='submit' disabled={loading}>{loading ? 'Отправка...' : 'Получить'}</Button>
-      </form>
-    </>
+      <Button type='submit' disabled={loading}>{loading ? 'Отправка...' : 'Получить'}</Button>
+    </form>
+  </>
 }

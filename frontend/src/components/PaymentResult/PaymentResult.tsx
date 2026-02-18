@@ -5,17 +5,19 @@ import {JSX, useEffect, useState} from "react";
 import {Status} from "@/components/Status/Status";
 import {getPaymentByToken} from "../../../api/payment";
 import {PaymentData} from "@/interfaces/payment.interface";
+import { Suspense } from "react";
 import {useSearchParams} from "next/navigation";
 
 const tokenSchema = z.string().uuid('Неверный формат токена')
 
-export const PaymentResult = (): JSX.Element => {
+const PaymentResultContent = (): JSX.Element => {
   const searchParams = useSearchParams()
 
   const [error, setError] = useState<string | null>(null)
   const [paymentData, setPaymentData] = useState<PaymentData| null>(null)
   const [loading, setLoading] = useState(true)
 
+  const token = searchParams.get('token')
 
   useEffect(() => {
     const controller = new AbortController();
@@ -23,8 +25,8 @@ export const PaymentResult = (): JSX.Element => {
     const initPayment = async () => {
       setLoading(true)
       setError(null)
+      setPaymentData(null);
 
-      const token = searchParams.get('token')
       const parsed = tokenSchema.safeParse(token)
 
       if (!token || !parsed.success) {
@@ -53,7 +55,7 @@ export const PaymentResult = (): JSX.Element => {
     }
     initPayment()
     return () => controller.abort()
-  }, [searchParams]);
+  }, [token]);
 
 
 
@@ -66,10 +68,19 @@ export const PaymentResult = (): JSX.Element => {
   }
 
   switch (paymentData.status) {
-    case 'failed' : return <Status appearance='failed'> Не удалось получить информацию о платеже</Status>
-    case 'pending': return <Status appearance='pending'>Платеж обрабатывается</Status>
-    case 'succeeded': return <Status appearance='success'>✅ Оплата прошла успешно!</Status>
-    default: return <Status appearance='error'>Неизвестный статус платежа</Status>
+    case 'failed' :
+      return <Status appearance='failed'> Не удалось получить информацию о платеже</Status>
+    case 'pending':
+      return <Status appearance='pending'>Платеж обрабатывается</Status>
+    case 'succeeded':
+      return <Status appearance='success'>✅ Оплата прошла успешно!</Status>
+    default:
+      return <Status appearance='error'>Неизвестный статус платежа</Status>
   }
+}
 
+export default function PaymentResultPage() {
+  return <Suspense fallback={<Status appearance='loading'>Загрузка...</Status>}>
+    <PaymentResultContent />
+  </Suspense>
 }

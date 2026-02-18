@@ -6,3 +6,10 @@ export interface PaymentData {
   returnToken: string
   message: string
 }
+
+export interface ProcessedPayment {
+  amount: string
+  currency: string,
+  status: string,
+  returnUrl: string
+}
