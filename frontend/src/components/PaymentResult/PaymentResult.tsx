@@ -3,41 +3,45 @@
 import {z} from 'zod'
 import {JSX, useEffect, useState} from "react";
 import {Status} from "@/components/Status/Status";
-
+import {getPaymentByToken} from "../../../api/payment";
+import {PaymentData} from "@/interfaces/payment.interface";
 
 const tokenSchema = z.string().uuid('Неверный формат токена')
-export interface PaymentData {
-  status: 'succeeded' | 'pending' | 'failed'
-  email?: string
-  returnToken?: string
-  message?: string
-}
 
 export const PaymentResult = (): JSX.Element => {
   const [error, setError] = useState<string | null>(null)
-  const [PaymentData, setPaymentData] = useState<PaymentData | null>(null)
+  const [paymentData, setPaymentData] = useState<PaymentData| null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const controller = new AbortController();
     const initPayment = async () => {
       setLoading(true)
       setError(null)
-
 
       const token = getToken()
       if(token === null){
         setLoading(false)
         return
       }
-      const data = await checkPaymentStatus(token)
-      if(data){
-        setPaymentData(data)
+      try{
+        const data = await getPaymentByToken(token)
+        if(!controller.signal.aborted){
+          setPaymentData(data)
+        }
+      }catch (err: unknown){
+        if(!controller.signal.aborted){
+          const errorMessage = err instanceof Error ? err.message : 'Неизвестная ошибка';
+          setError(errorMessage);
+        }
+      }finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
-
-      setLoading(false)
     }
-
     initPayment()
+    return () => controller.abort()
   }, []);
 
 
@@ -61,45 +65,18 @@ export const PaymentResult = (): JSX.Element => {
     return parsed.data
   }
 
-  const checkPaymentStatus = async (returnToken: string): Promise<PaymentData | null> => {
-    try{
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payment-service/result`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({returnToken})
-      })
-      const data = await response.json()
-
-      if(!response.ok){
-        const errorMessage = data.message || `Ошибка ${response.status}: ${response.statusText}`
-
-        switch (response.status){
-          case 400 : setError(`Ошибка: ${errorMessage}`)
-            break
-          case 500 : setError(`Ошибка сервера, попробуйте позже`)
-            break
-          default : setError(errorMessage)
-        }
-        return null
-      }
-
-      return data as PaymentData
-
-    }catch (err){
-      setError(err instanceof Error ? err.message : 'Ошибка соединения с сервером')
-      return null
-    }
-  }
   if(loading){
     return <Status appearance='loading'>Загрузка...</Status>
   }
-  switch (PaymentData?.status) {
+  if(error || paymentData === null){
+    return <Status appearance='error'>{error}</Status>
+  }
+
+  switch (paymentData.status) {
     case 'failed' : return <Status appearance='failed'> Не удалось получить информацию о платеже</Status>
     case 'pending': return <Status appearance='pending'>Платеж обрабатывается</Status>
     case 'succeeded': return <Status appearance='success'>✅ Оплата прошла успешно!</Status>
     default: return <Status appearance='error'>{error}</Status>
   }
-
-
 
 }
