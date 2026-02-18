@@ -73,7 +73,7 @@ services:
       MAILER_FROM_NAME: admin
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
-      YOOKASSA_RETURN_URL: https://localhost/success
+      YOOKASSA_RETURN_URL: https://localhost:8080/success
       TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
       TELEGRAM_CHAT_ID: 1954013093
       AUTH_LOGIN: app
@@ -104,7 +104,7 @@ services:
       MAILER_FROM_NAME: admin
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
-      YOOKASSA_RETURN_URL: https://localhost/success
+      YOOKASSA_RETURN_URL: https://localhost:8080/success
       TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
       TELEGRAM_CHAT_ID: 1954013093
       AUTH_LOGIN: app
