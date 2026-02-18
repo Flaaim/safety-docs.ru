@@ -36,7 +36,6 @@ class PaymentSubscriber implements EventSubscriberInterface
     public function onSuccessPayment(SuccessfulPaymentEvent $event): void
     {
             $payment = $event->getPayment();
-            $this->logSuccessfulPayment($event);
 
             $product = $this->products->get(new ProductId($payment->getProductId()));
             $file = $product->getFile();
