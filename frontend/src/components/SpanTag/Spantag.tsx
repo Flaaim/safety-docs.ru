@@ -3,7 +3,7 @@ import {SpantagProps} from "./Spantag.props";
 import cn from 'classnames'
 import styles from './Spantag.module.css'
 
-export const Spantag = ({size = 's', appearance, children, className}: SpantagProps): JSX.Element => {
+export const Spantag = ({size = 'm', appearance, children, className}: SpantagProps): JSX.Element => {
   return (<span
     className={cn(className, {
       [styles.s]: size === 's',

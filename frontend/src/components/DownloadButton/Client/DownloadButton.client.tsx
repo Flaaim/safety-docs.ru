@@ -6,6 +6,7 @@ import cn from 'classnames'
 import styles from '../DownloadButton.module.css'
 import {DownloadButtonClientProps} from "@/components/DownloadButton/Client/DownloadButton.client.props";
 import {ProductForm, ProductModal, Spantag} from "@/components";
+import Link from "next/link";
 
 
 export const DownloadButtonClient = ({children, productId, headline, ...props}: DownloadButtonClientProps): JSX.Element => {
@@ -24,7 +25,7 @@ export const DownloadButtonClient = ({children, productId, headline, ...props}: 
     <ProductModal isOpen={isOpen} onClose={() => setIsOpen(false)} >
       <ProductForm headline={headline} productId={productId}>
       </ProductForm>
-      <Spantag size='s'>Приобретая образцы документов вы соглашаетесь с условиями использования</Spantag>
+      <Spantag size='s'>Приобретая образцы документов вы соглашаетесь с <Link href='/terms'>условиями использования</Link></Spantag>
     </ProductModal>
     </>
 }
