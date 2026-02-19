@@ -1,8 +1,8 @@
 import type {Metadata} from "next";
-import {Htag, Section, Navigation, Ptag, Listtag} from "@/components";
-import Link from "next/link";
+import {Htag, Ptag, Listtag, StaticGallery} from "@/components";
 import React from "react";
 import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
+import {getImagesFromFolder} from "@/utils/galleryUtils";
 
 
 
@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   description: "Собраны комплекты образцов документов по организации на предприятии службы охраны труда",
 };
 
-export default function Service(){
+export default async function Service() {
+
+  const images = await getImagesFromFolder('service');
+
   return (
     <div>
       <Htag tag='h1'>Служба охраны труда - образцы документов</Htag>
@@ -23,7 +26,8 @@ export default function Service(){
       </ProductInfo>
       <Ptag appearance='bold'>Как организовать:</Ptag>
       <Ptag>
-        Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите должность специалиста, оформив приказ и утвердив Положение о службе.
+        Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите
+        должность специалиста, оформив приказ и утвердив Положение о службе.
       </Ptag>
       <Htag tag='h4'>Образцы документов</Htag>
       <Listtag appearance='ol'>
@@ -31,8 +35,12 @@ export default function Service(){
         <span>Приказ о создании службы охраны труда</span>
         <span>Положение о службе охраны труда в организации</span>
       </Listtag>
-
       <hr/>
+      <StaticGallery
+        images={images}
+        title="Примеры документов в архиве"
+      />
+
     </div>
   )
 }
