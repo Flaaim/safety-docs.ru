@@ -1,14 +1,13 @@
 import type {Metadata} from "next";
-import {Htag, Section, Navigation, Ptag, Listtag} from "@/components";
-import Link from "next/link";
+import {Htag, Ptag, Listtag} from "@/components";
 import React from "react";
 import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
 
 
 
 export const metadata: Metadata = {
-  title: "Образцы документов Системы управления охраной труда",
-  description: "Документы по организации системы управления охраной труда.",
+  title: "Образцы документов Обучения по охране труда",
+  description: "Документы для организации обучения и проверки знаний работников организаций.",
 };
 
 export default function Service(){
