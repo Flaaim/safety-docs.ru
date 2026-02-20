@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Документы для организации обучения и проверки знаний работников организаций.",
 };
 
-export default function Service(){
+export default function Education(){
   return (
     <div>
       <Htag tag='h1'>Обучение охраны труда - комплект документов</Htag>

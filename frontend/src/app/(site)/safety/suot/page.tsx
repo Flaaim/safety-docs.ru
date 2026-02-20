@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "Документы по организации системы управления охраной труда.",
 };
 
-export default function Service(){
+export default function Suot(){
   return (
     <div>
       <Htag tag='h1'>СУОТ - образцы документов</Htag>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Документы по организации и проведению медицинских периодических и предварительных осмотров",
 };
 
-export default function Service(){
+export default function Medical(){
   return (
     <div>
       <Htag tag='h1'>Медосмотры - комплект документов</Htag>
