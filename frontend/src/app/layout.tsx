@@ -4,9 +4,6 @@ import styles from './(site)/layout.module.css';
 import "./globals.css";
 import {Sidebar, Footer, Header} from "@/components";
 
-
-
-
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
   subsets: ["cyrillic"],
@@ -28,7 +25,6 @@ export default function RootLayout({
         <div className={styles.wrapper}>
 
           <Header className={styles.header} />
-
           <Sidebar className={styles.sidebar} />
           <div className={styles.body}>
             {children}

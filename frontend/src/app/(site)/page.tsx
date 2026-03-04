@@ -1,9 +1,11 @@
 import {
   Htag,
   Navigation,
-  Ptag, Section,
+  Ptag,
 } from "@/components";
 import Link from "next/link";
+import SimpleCard from "@/components/SimpleCard/SimpleCard";
+import {Factory, Flame, HardHat, Zap} from "lucide-react";
 
 
 export default function Home() {
@@ -20,21 +22,33 @@ export default function Home() {
         Все документы разбиты по следующим категориям:
       </Ptag>
       <Navigation>
-        <Link href='/safety'><Section
+        <SimpleCard
+          icon={<HardHat className="inline-block"  size={24}/>}
           title='Охрана труда'
-          description=''
-        /></Link>
-        <Section
+          short_description='Подборки документов по охране труда'
+          description='Все что относиться к организации охраны труда, обучения, инструктажи, медосмотры, СУОТ, риски, СОУТ, расследование НС и т.д.'
+          link={'/safety'}
+        />
+        <SimpleCard
+          icon={<Flame className="inline-block"  size={24}/>}
           title='Пожарная безопасность'
-          description=''
+          short_description='Подборки документов по противопожарной профилактике'
+          description='Все что относиться к организации обеспечения пожарной безопасности на предприятии, инструктажи, обучение, первичные средства пожаротушения, тренировки эвакуации и т.д.'
+          link={'#'}
         />
-        <Section
-          title='Промбезопасность'
-          description=''
+        <SimpleCard
+          icon={<Factory className="inline-block"  size={24}/>}
+          title='Промышленная безопасность'
+          short_description='Подборки документов по промышленной безопасности'
+          description='Все что относиться к безопасной эксплуатации ОПО: аттестация, производственный контроль, грузоподъемные механизмы, сосуды и т.д.'
+          link={'#'}
         />
-        <Section
-          title='Энергобезопасность'
-          description=''
+        <SimpleCard
+          icon={<Zap className="inline-block"  size={24}/>}
+          title='Энеретическая безопасность'
+          short_description='Подборки документов по энергетической безопасности'
+          description='Все что относиться к обесечению энергетической безопасности, допуски, проверки, аттестации, группы допуска по электробзопасности и т.д.'
+          link={'#'}
         />
       </Navigation>
     </div>

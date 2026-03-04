@@ -16,7 +16,7 @@ export default function Medical(){
       <Htag tag='h1'>Медосмотры - комплект документов</Htag>
       <ProductInfo
         slug='medical'
-        countFiles=' файла'
+        countFiles='23 файла'
         formatFiles='docx, excel'
         description='
         '>
