@@ -3,6 +3,7 @@ import {Htag, Ptag, Listtag, StaticGallery} from "@/components";
 import React from "react";
 import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
 import {getImagesFromFolder} from "@/utils/galleryUtils";
+import Breadcrumbs from "@/components/Breadcrumb/Breadcrumbs";
 
 
 
@@ -13,10 +14,13 @@ export const metadata: Metadata = {
 
 export default async function Service() {
 
+
+
   const images = await getImagesFromFolder('service');
 
   return (
     <div>
+      <Breadcrumbs path="/safety/service" />
       <Htag tag='h1'>Служба охраны труда - образцы документов</Htag>
       <ProductInfo
         slug='service'

@@ -3,7 +3,6 @@ import {
   Navigation,
   Ptag,
 } from "@/components";
-import Link from "next/link";
 import SimpleCard from "@/components/SimpleCard/SimpleCard";
 import {Factory, Flame, HardHat, Zap} from "lucide-react";
 

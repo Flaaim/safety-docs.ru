@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {Htag, Listtag, Ptag} from "@/components";
 import Link from "next/link";
 import React from "react";
+import Breadcrumbs from "@/components/Breadcrumb/Breadcrumbs";
 
 
 
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function Safety(){
   return (
     <div>
+      <Breadcrumbs path="/safety" />
       <Htag tag='h1'>Охрана труда — документация по направлениям</Htag>
       <Ptag> Вопросы безопасности на рабочем месте требуют скрупулезного подхода к бумажной работе. Чтобы вам было проще ориентироваться в мире нормативных актов и приказов по охране труда, я собрал полный список документации по охране труда, распределив её по основным направлениям работы организации.
 

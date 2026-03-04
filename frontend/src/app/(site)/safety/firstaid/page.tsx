@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import {Htag, Ptag, Listtag} from "@/components";
 import React from "react";
 import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
+import Breadcrumbs from "@/components/Breadcrumb/Breadcrumbs";
 
 
 
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function FirstAid(){
   return (
     <div>
+      <Breadcrumbs path="/safety/firstaid" />
       <Htag tag='h1'>Аптечки - комплект документов</Htag>
       <ProductInfo
         slug='firstaid'
