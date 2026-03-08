@@ -3,6 +3,7 @@ import {Htag, Listtag, Ptag} from "@/components";
 import Link from "next/link";
 import React from "react";
 import Breadcrumbs from "@/components/Breadcrumb/Breadcrumbs";
+import {ChevronRight} from "lucide-react";
 
 
 
@@ -12,6 +13,16 @@ export const metadata: Metadata = {
 };
 
 export default function Safety(){
+
+  const safetyLinks = [
+    { href: '/safety/service', title: 'Служба охраны труда' },
+    { href: '/safety/suot', title: 'СУОТ' },
+    { href: '/safety/education', title: 'Обучение и Инструктажи' },
+    { href: '/safety/medical', title: 'Медосмотр' },
+    { href: '/safety/firstaid', title: 'Аптечки' },
+    { href: '/safety/rules', title: 'Правила и инструкции' },
+  ]
+
   return (
     <div>
       <Breadcrumbs path="/safety" />
@@ -20,16 +31,20 @@ export default function Safety(){
 
         Все образцы документов, представленные на сайте, актуальны на 2026 год и могут быть адаптированы под специфику вашего производства.</Ptag>
       <Ptag>В каждом разделе добавлена памятка как организовать работу по направлению и перечень документов, которые необходимы</Ptag>
-      <Ptag appearance='bold'>Документация: </Ptag>
-      <hr/>
-      <Listtag appearance='ol'>
-        <Link href='/safety/service'>Служба охраны труда</Link>
-        <Link href='/safety/suot'>СУОТ</Link>
-        <Link href='/safety/education'>Обучение и Инструктажи</Link>
-        <Link href='/safety/medical'>Медосмотр</Link>
-        <Link href='/safety/firstaid'>Аптечки</Link>
-        <Link href='/safety/rules'>Правила и инструкции</Link>
-      </Listtag>
+      <Htag tag='h2'>Разделы</Htag>
+
+      <div className="grid gap-3 sm:grid-cols-2 mt-6">
+        {safetyLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
+          >
+            <span className="font-medium">{link.title}</span>
+            <ChevronRight className="h-4 w-4 opacity-50" />
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

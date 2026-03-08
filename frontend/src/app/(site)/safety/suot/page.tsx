@@ -3,6 +3,8 @@ import {Htag, Section, Navigation, Ptag, Listtag} from "@/components";
 import Link from "next/link";
 import React from "react";
 import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
+import {getImagesFromFolder} from "@/utils/galleryUtils";
+import {ImageCarousel} from "@/components/Gallery/Carusel/ImageCarousel";
 
 
 
@@ -11,7 +13,10 @@ export const metadata: Metadata = {
   description: "Документы по организации системы управления охраной труда.",
 };
 
-export default function Suot(){
+export default async function Suot() {
+
+  const images = await getImagesFromFolder('suot');
+
   return (
     <div>
       <Htag tag='h1'>СУОТ - образцы документов</Htag>
@@ -26,9 +31,13 @@ export default function Suot(){
       ✅ Комплект нормативно-правовых актов с требованиями охраны труда
         '>
       </ProductInfo>
+      <ImageCarousel images={images} title='Примеры документов Системы управления охраной труда'></ImageCarousel>
       <Ptag appearance='bold'>Как организовать:</Ptag>
       <Ptag>
-        Разработайте и утвердите Положение о СУОТ, опираясь на примерное положение. Закрепите процедуры по охране труда в локальных нормативных актах. Приказом распределите обязанности между руководителями всех уровней — это снизит нагрузку на службу охраны труда. Сформулируйте Политику по охране труда (отдельно или в составе Положения), включив в неё цели, задачи и ключевые показатели на текущий год.
+        Разработайте и утвердите Положение о СУОТ, опираясь на примерное положение. Закрепите процедуры по охране труда
+        в локальных нормативных актах. Приказом распределите обязанности между руководителями всех уровней — это снизит
+        нагрузку на службу охраны труда. Сформулируйте Политику по охране труда (отдельно или в составе Положения),
+        включив в неё цели, задачи и ключевые показатели на текущий год.
       </Ptag>
       <Htag tag='h4'>Образцы документов</Htag>
       <Listtag appearance='ol'>
