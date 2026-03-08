@@ -4,7 +4,7 @@ import {JSX, useEffect, useState} from "react";
 import {ProductInfoProps} from "@/components/ProductInfo/ProductInfo.props";
 import {Roboto_Mono} from "next/font/google";
 
-import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
+import {DefItem, Deflisttag, DownloadButton, SimpleDialog, Spantag} from "@/components";
 import cn from "classnames";
 import styles from './ProductInfo.module.css'
 import {Status} from "@/components/Status/Status";
@@ -54,7 +54,7 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
   if(error || productInfoData === null){
     return <Status appearance='error'>{error}</Status>
   }
-  return (<div className={cn(styles.productInfo, robotoMono.variable)}>
+  return (<div className={cn(robotoMono.variable)}>
     <Deflisttag >
       <DefItem term='Название' definition={productInfoData.name} />
       <DefItem term='Стоимость' definition={productInfoData.formattedPrice} />
