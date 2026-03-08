@@ -10,6 +10,7 @@ class ProductDTO
         public string $productId,
         public string $name,
         public string $formattedPrice,
+        public string $updatedAt
     ){
     }
 
@@ -18,7 +19,8 @@ class ProductDTO
         return new self(
             $product->getId()->getValue(),
             $product->getName(),
-            $product->getAmount()->formatted()
+            $product->getAmount()->formatted(),
+            $product->getUpdatedAt()->format('d.m.Y')
         );
     }
 }

@@ -21,7 +21,8 @@ class ProductFixture extends AbstractFixture
             new Amount(550.00, new Currency('RUB')),
             new File('/safety/suot/suot200.1'),
             'suot200.1',
-            'suot'
+            'suot',
+            new \DateTimeImmutable(),
         );
 
         $manager->persist($product);

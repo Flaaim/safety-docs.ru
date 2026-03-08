@@ -22,6 +22,7 @@ class RequestFixture extends AbstractFixture
             ->withPrice(new Amount(550.00, new Currency('RUB')))
             ->withFile(new File('safety/service/serv100.1.rar'))
             ->withSlug('service')
+            ->withUpdatedAt(new \DateTimeImmutable('-1 day'))
             ->build();
 
         $manager->persist($product);

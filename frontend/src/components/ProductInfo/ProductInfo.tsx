@@ -6,7 +6,7 @@ import {Roboto_Mono} from "next/font/google";
 
 import {DefItem, Deflisttag, DownloadButton, SimpleDialog, Spantag} from "@/components";
 import cn from "classnames";
-import styles from './ProductInfo.module.css'
+
 import {Status} from "@/components/Status/Status";
 import {ProductInfoData} from "@/interfaces/product.interface";
 import {getProductBySlug} from "../../../api/product";
