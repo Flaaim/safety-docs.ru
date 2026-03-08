@@ -33,7 +33,8 @@ class ProductFixture extends AbstractFixture
             new Amount(750.00, new Currency('RUB')),
             new File('/edu/templates.txt'),
             'edu2026.1',
-            'edu2026'
+            'edu2026',
+            new \DateTimeImmutable(),
         );
 
         $manager->persist($product2);
@@ -44,7 +45,8 @@ class ProductFixture extends AbstractFixture
             new Amount(250.00, new Currency('RUB')),
             new File('/safety/service/serv100.1.rar'),
             'serv100.1',
-            'service'
+            'service',
+            new \DateTimeImmutable(),
         );
 
         $manager->persist($product3);
