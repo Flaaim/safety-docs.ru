@@ -36,7 +36,8 @@ class Handler
                 new Amount($command->amount, new Currency('RUB')),
                 new File($command->path),
                 $command->cipher,
-                $command->slug
+                $command->slug,
+                new \DateTimeImmutable()
             );
         }
 

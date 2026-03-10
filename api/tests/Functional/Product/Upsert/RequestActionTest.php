@@ -23,7 +23,8 @@ class RequestActionTest extends WebTestCase
             'cipher' => 'serv100.1',
             'amount' => 500.00,
             'path' => 'safety/service/serv100.1.rar',
-            'slug' => 'service'
+            'slug' => 'service',
+            'updatedAt' => '01.01.2019',
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
@@ -40,7 +41,8 @@ class RequestActionTest extends WebTestCase
             'cipher' => 'serv100.1',
             'amount' => 500.00,
             'path' => 'safety/service/serv100.1.rar',
-            'slug' => 'service'
+            'slug' => 'service',
+            'updatedAt' => '01.01.2019',
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
@@ -66,6 +68,7 @@ class RequestActionTest extends WebTestCase
                 'amount' => 'This value should be positive.',
                 'path' => 'This value should not be blank.',
                 'slug' => 'This value should not be blank.',
+                'updatedAt' => 'This value should not be blank.',
             ]
         ], $data);
 

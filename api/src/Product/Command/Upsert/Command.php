@@ -17,6 +17,9 @@ class Command
         #[Assert\NotBlank]
         public string $path,
         #[Assert\NotBlank]
-        public string $slug
+        public string $slug,
+        #[Assert\NotBlank]
+        #[Assert\DateTime(format: 'd.m.Y')]
+        public string $updatedAt,
     ){}
 }

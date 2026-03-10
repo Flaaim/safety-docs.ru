@@ -7,6 +7,7 @@ use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Shared\Domain\ValueObject\Currency;
+use App\Shared\Domain\ValueObject\UpdatedAt;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -22,7 +23,7 @@ class ProductFixture extends AbstractFixture
             new File('/safety/suot/suot200.1'),
             'suot200.1',
             'suot',
-            new \DateTimeImmutable(),
+            new \DateTimeImmutable('now'),
         );
 
         $manager->persist($product);

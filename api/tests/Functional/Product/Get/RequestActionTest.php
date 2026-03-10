@@ -28,7 +28,7 @@ class RequestActionTest extends WebTestCase
             'name' => 'Служба охраны труда',
             'formattedPrice' => '550.00 RUB',
             'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f',
-            'updatedAt' => '07.03.2026',
+            'updatedAt' => (new \DateTimeImmutable())->format('d.m.Y'),
         ], $data);
     }
 

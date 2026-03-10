@@ -2,6 +2,7 @@
 
 namespace App\Product\Entity;
 
+use App\Shared\Domain\ValueObject\UpdatedAt;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]

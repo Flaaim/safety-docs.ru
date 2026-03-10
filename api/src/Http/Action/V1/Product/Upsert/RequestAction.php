@@ -6,6 +6,7 @@ use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use App\Product\Command\Upsert\Command;
 use App\Product\Command\Upsert\Handler;
+use App\Shared\Domain\ValueObject\UpdatedAt;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -27,7 +28,8 @@ class RequestAction implements RequestHandlerInterface
             $data['cipher'] ?? '',
             $data['amount'] ?? 0,
             $data['path'] ?? '',
-            $data['slug'] ?? ''
+            $data['slug'] ?? '',
+            $data['updatedAt'] ?? '',
         );
 
         $this->validator->validate($command);
