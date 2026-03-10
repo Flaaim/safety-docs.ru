@@ -28,6 +28,7 @@ class Handler
                 new Amount($command->amount, new Currency('RUB')),
                 new File($command->path),
                 $command->cipher,
+                new \DateTimeImmutable($command->updatedAt)
             );
         }else{
             $product = new Product(
@@ -37,7 +38,7 @@ class Handler
                 new File($command->path),
                 $command->cipher,
                 $command->slug,
-                new \DateTimeImmutable()
+                new \DateTimeImmutable($command->updatedAt)
             );
         }
 

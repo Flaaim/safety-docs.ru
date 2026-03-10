@@ -31,5 +31,13 @@ export const breadcrumbsConfig: Record<string, BreadcrumbItem[]> = {
   "/safety/rules": [
     { title: "Охрана труда", link: "/safety" },
     { title: "Инструкции по охране труда", link: "/safety/rules" }
+  ],
+  "/safety/control": [
+    { title: "Охрана труда", link: "/safety" },
+    { title: "Контроль требований охраны труда", link: "/safety/control" }
+  ],
+  "/safety/electrical": [
+    { title: "Охрана труда", link: "/safety" },
+    { title: "Электробезопасность", link: "/safety/electrical" }
   ]
 }

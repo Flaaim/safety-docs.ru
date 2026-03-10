@@ -21,6 +21,8 @@ export default function Safety(){
     { href: '/safety/medical', title: 'Медосмотр' },
     { href: '/safety/firstaid', title: 'Аптечки' },
     { href: '/safety/rules', title: 'Правила и инструкции' },
+    { href: '/safety/control', title: 'Контроль требований охраны труда' },
+    { href: '/safety/electrical', title: 'Электробезопасность' },
   ]
 
   return (
