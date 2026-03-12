@@ -23,6 +23,7 @@ export default function Safety(){
     { href: '/safety/rules', title: 'Правила и инструкции' },
     { href: '/safety/control', title: 'Контроль требований охраны труда' },
     { href: '/safety/electrical', title: 'Электробезопасность' },
+    { href: '/safety/ppe', title: 'Средства индивидуальной защиты' },
   ]
 
   return (
