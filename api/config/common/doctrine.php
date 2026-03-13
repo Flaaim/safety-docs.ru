@@ -78,6 +78,7 @@ return [
 
 
                 App\Direction\Entity\DirectionIdType::NAME => App\Direction\Entity\DirectionIdType::class,
+                App\Direction\Entity\SlugType::NAME => App\Direction\Entity\SlugType::class,
             ]
         ]
     ],
