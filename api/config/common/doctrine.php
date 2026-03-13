@@ -76,6 +76,8 @@ return [
                 App\Sender\Entity\MessageStatusType::NAME => App\Sender\Entity\MessageStatusType::class,
                 App\Sender\Entity\EmailMessageType::NAME => App\Sender\Entity\EmailMessageType::class,
 
+
+                App\Direction\Entity\DirectionIdType::NAME => App\Direction\Entity\DirectionIdType::class,
             ]
         ]
     ],
