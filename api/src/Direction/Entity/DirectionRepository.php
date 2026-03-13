@@ -2,7 +2,21 @@
 
 namespace App\Direction\Entity;
 
-interface DirectionRepository
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+
+class DirectionRepository
 {
-    public function getBySlug(string $slug): Direction;
+    private EntityRepository $repo;
+    private EntityManagerInterface $em;
+    public function __construct(EntityManagerInterface $em)
+    {
+        $repo = $em->getRepository(Direction::class);
+        $this->repo = $repo;
+        $this->em = $em;
+    }
+    public function findBySlug(string $slug): ?Direction
+    {
+        return $this->repo->findOneBy(['slug' => $slug]);
+    }
 }
