@@ -43,4 +43,12 @@ class Direction
         return $this->slug;
     }
 
+    public function update(string $title, string $description, string $text, Slug $slug): void
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->text = $text;
+        $this->slug = $slug;
+    }
+
 }

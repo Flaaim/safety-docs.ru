@@ -15,6 +15,15 @@ class DirectionRepository
         $this->repo = $repo;
         $this->em = $em;
     }
+    public function existsBySlug(Slug $slug): bool
+    {
+        return (bool) $this->repo->count(['slug' => $slug->getValue()]);
+    }
+    public function findById(DirectionId $id): ?Direction
+    {
+        return $this->repo->find($id);
+    }
+
     public function findBySlug(Slug $slug): ?Direction
     {
         return $this->repo->findOneBy(['slug' => $slug->getValue()]);
@@ -24,5 +33,10 @@ class DirectionRepository
     public function getAll(): array
     {
         return $this->repo->findAll();
+    }
+
+    public function add(Direction $direction): void
+    {
+        $this->em->persist($direction);
     }
 }
