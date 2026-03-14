@@ -19,4 +19,10 @@ class DirectionRepository
     {
         return $this->repo->findOneBy(['slug' => $slug]);
     }
+
+    /** @return array<Direction> */
+    public function getAll(): array
+    {
+        return $this->repo->findAll();
+    }
 }
