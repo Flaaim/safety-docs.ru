@@ -17,6 +17,7 @@ class DirectionsCollection implements \JsonSerializable
                 fn($direction) => [
                     'title' => $direction->getTitle(),
                     'description' => $direction->getDescription(),
+                    'text' => $direction->getText(),
                     'slug' => $direction->getSlug()->getValue(),
                 ], $this->directions
             ),
