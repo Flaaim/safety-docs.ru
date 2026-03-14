@@ -18,14 +18,15 @@ class Handler
     public function handle(Command $command): void
     {
         $slug = new Slug($command->slug);
-        $direction = $this->directions->findById(new DirectionId($command->directionId));
+        $directionId = new DirectionId($command->directionId);
+        $direction = $this->directions->findById($directionId);
 
         if(null === $direction){
             if($this->directions->existsBySlug($slug)){
                 throw new \DomainException('Direction slug already exists.');
             }
             $direction = new Direction(
-                new DirectionId($command->directionId),
+                $directionId,
                 $command->title,
                 $command->description,
                 $command->text,
