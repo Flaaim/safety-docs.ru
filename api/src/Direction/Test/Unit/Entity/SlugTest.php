@@ -21,7 +21,16 @@ class SlugTest extends TestCase
 
     public function testCase(): void
     {
-        self::expectException(\InvalidArgumentException::class);
-        new Slug('MY-URL');
+        $slug = new Slug('MY-URL');
+        self::assertEquals('my-url', $slug->getValue());
+    }
+
+    public function testEquals(): void
+    {
+        $slug = new Slug('my-url');
+
+        $this->assertTrue($slug->equals(new Slug('my-url')));
+        $this->assertTrue($slug->equals(new Slug('My-url')));
+        $this->assertTrue($slug->equals($slug));
     }
 }
