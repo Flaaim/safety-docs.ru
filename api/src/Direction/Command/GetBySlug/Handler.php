@@ -15,7 +15,7 @@ class Handler
     {
         $direction = $this->directions->findBySlug($command->slug);
         if(null === $direction){
-            throw new \DomainException('Direction not found');
+            throw new \DomainException('Direction not found.');
         }
 
         return new DirectionDTO(
