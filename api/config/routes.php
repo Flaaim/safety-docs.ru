@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Action\V1\Auth\GetToken\RequestAction;
 use App\Http\Action\V1\Payment;
 use App\Http\Action\V1\Product;
+use App\Http\Action\V1\Direction;
 use App\Http\Middleware\AuthMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
@@ -33,6 +34,12 @@ return static function(App $app): void {
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {
             $group->post('/login', RequestAction::class);
+        });
+
+
+        $group->group('/directions', function (RouteCollectorProxy $group): void {
+            $group->get('',  Direction\GetAll\RequestAction::class);
+           $group->get('/get/{slug}', Direction\GetBySlug\RequestAction::class);
         });
     });
 
