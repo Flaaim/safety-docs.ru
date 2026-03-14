@@ -1,11 +1,13 @@
 import type {Metadata} from "next";
-import {Htag, Listtag, Ptag} from "@/components";
+import {Htag, Ptag} from "@/components";
 import Link from "next/link";
 import React from "react";
 import Breadcrumbs from "@/components/Breadcrumb/Breadcrumbs";
 import {ChevronRight} from "lucide-react";
 
+const safetyPages = [
 
+]
 
 export const metadata: Metadata = {
   title: "Документация по направлениям Охраны труда",

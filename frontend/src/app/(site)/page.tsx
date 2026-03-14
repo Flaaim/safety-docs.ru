@@ -7,6 +7,7 @@ import SimpleCard from "@/components/SimpleCard/SimpleCard";
 import {Factory, Flame, HardHat, Zap} from "lucide-react";
 
 
+
 export default function Home() {
   return (
     <div >
