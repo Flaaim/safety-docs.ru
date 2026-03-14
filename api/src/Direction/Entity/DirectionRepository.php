@@ -15,9 +15,9 @@ class DirectionRepository
         $this->repo = $repo;
         $this->em = $em;
     }
-    public function findBySlug(string $slug): ?Direction
+    public function findBySlug(Slug $slug): ?Direction
     {
-        return $this->repo->findOneBy(['slug' => $slug]);
+        return $this->repo->findOneBy(['slug' => $slug->getValue()]);
     }
 
     /** @return array<Direction> */
