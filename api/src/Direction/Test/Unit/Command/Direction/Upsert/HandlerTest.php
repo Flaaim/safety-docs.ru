@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Test\Unit\Command\Upsert;
+namespace App\Direction\Test\Unit\Command\Direction\Upsert;
 
 use App\Direction\Command\Direction\Upsert\Command;
 use App\Direction\Command\Direction\Upsert\Handler;
