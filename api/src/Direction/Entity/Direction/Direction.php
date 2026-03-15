@@ -58,7 +58,7 @@ class Direction
         $this->text = $text;
         $this->slug = $slug;
     }
-    public function getCategories(): ArrayCollection
+    public function getCategories(): Collection
     {
         return $this->categories;
     }
