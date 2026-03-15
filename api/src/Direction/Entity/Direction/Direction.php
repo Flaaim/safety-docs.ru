@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'directions')]
 class Direction
 {
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'direction')]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'direction', cascade: ['persist'])]
     private Collection $categories;
     public function __construct(
         #[ORM\Id]
@@ -61,6 +61,12 @@ class Direction
     public function getCategories(): Collection
     {
         return $this->categories;
+    }
+    public function addCategory(Category $category): void
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
     }
 
     public function canBeDeleted(): bool
