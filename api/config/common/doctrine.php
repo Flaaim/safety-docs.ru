@@ -59,6 +59,7 @@ return [
                 __DIR__ . '/../../src/Product/Entity',
                 __DIR__ . '/../../src/Sender/Entity',
                 __DIR__ . '/../../src/Direction/Entity',
+                __DIR__ . '/../../src/Category/Entity',
             ],
             'types' => [
                 App\Shared\Domain\ValueObject\IdType::NAME => App\Shared\Domain\ValueObject\IdType::class,
@@ -80,6 +81,9 @@ return [
 
                 App\Direction\Entity\DirectionIdType::NAME => App\Direction\Entity\DirectionIdType::class,
                 App\Direction\Entity\SlugType::NAME => App\Direction\Entity\SlugType::class,
+
+                App\Category\Entity\CategoryIdType::NAME => App\Category\Entity\CategoryIdType::class,
+                App\Category\Entity\SlugType::NAME => App\Category\Entity\SlugType::class,
             ]
         ]
     ],
