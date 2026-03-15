@@ -2,6 +2,8 @@
 
 namespace App\Direction\Test\Unit\Entity;
 
+use App\Direction\Entity\Category\Category;
+use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
@@ -26,7 +28,6 @@ class DirectionTest extends TestCase
         self::assertEquals('2a7a593a-ee23-4a73-bb07-b372438fb269', $direction->getId()->getValue());
     }
 
-
     public function testUpdate(): void
     {
 
@@ -37,8 +38,22 @@ class DirectionTest extends TestCase
         self::assertEquals('description1', $direction->getDescription());
         self::assertEquals('text1', $direction->getText());
         self::assertEquals('slug', $direction->getSlug()->getValue());
+    }
 
-
+    public function testAddCategory(): void
+    {
+        $direction = (new DirectionBuilder())->build();
+        $category = new Category(
+            CategoryId::generate(),
+            'Category Title',
+            'Category Description',
+            'Category Text',
+            new Slug('cat-slug'),
+            $direction
+        );
+        $direction->addCategory($category);
+        self::assertCount(1, $direction->getCategories());
+        self::assertEquals($category, $direction->getCategories()->first());
     }
 
 }
