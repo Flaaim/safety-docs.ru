@@ -3,6 +3,7 @@
 namespace App\Direction\Entity\Category;
 
 use App\Direction\Entity\Direction\Direction;
+use App\Direction\Entity\Slug;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -25,6 +26,7 @@ class Category
         #[ORM\JoinColumn(name: 'direction_id', referencedColumnName: 'id', nullable: false, onDelete: "RESTRICT")]
         private Direction $direction
     ){
+        $direction->addCategory($this);
     }
     public function getId(): CategoryId
     {
