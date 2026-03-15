@@ -2,8 +2,8 @@
 
 namespace App\Http\Action\V1\Direction\GetBySlug;
 
-use App\Direction\Command\GetBySlug\Command;
-use App\Direction\Command\GetBySlug\Handler;
+use App\Direction\Command\Direction\GetBySlug\Command;
+use App\Direction\Command\Direction\GetBySlug\Handler;
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;

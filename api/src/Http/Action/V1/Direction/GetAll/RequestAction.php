@@ -2,7 +2,7 @@
 
 namespace App\Http\Action\V1\Direction\GetAll;
 
-use App\Direction\Command\GetAll\Handler;
+use App\Direction\Command\Direction\GetAll\Handler;
 use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

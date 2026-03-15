@@ -2,11 +2,11 @@
 
 namespace App\Direction\Test\Unit\Command\Upsert;
 
-use App\Direction\Command\Upsert\Command;
-use App\Direction\Command\Upsert\Handler;
-use App\Direction\Entity\Direction;
-use App\Direction\Entity\DirectionId;
-use App\Direction\Entity\DirectionRepository;
+use App\Direction\Command\Direction\Upsert\Command;
+use App\Direction\Command\Direction\Upsert\Handler;
+use App\Direction\Entity\Direction\Direction;
+use App\Direction\Entity\Direction\DirectionId;
+use App\Direction\Entity\Direction\DirectionRepository;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
 use App\Flusher;

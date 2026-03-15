@@ -2,8 +2,8 @@
 
 namespace App\Http\Action\V1\Direction\Upsert;
 
-use App\Direction\Command\Upsert\Handler;
-use App\Direction\Command\Upsert\Command;
+use App\Direction\Command\Direction\Upsert\Command;
+use App\Direction\Command\Direction\Upsert\Handler;
 use App\Http\EmptyResponse;
 use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;

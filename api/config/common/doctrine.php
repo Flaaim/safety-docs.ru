@@ -59,7 +59,6 @@ return [
                 __DIR__ . '/../../src/Product/Entity',
                 __DIR__ . '/../../src/Sender/Entity',
                 __DIR__ . '/../../src/Direction/Entity',
-                __DIR__ . '/../../src/Category/Entity',
             ],
             'types' => [
                 App\Shared\Domain\ValueObject\IdType::NAME => App\Shared\Domain\ValueObject\IdType::class,
@@ -79,11 +78,11 @@ return [
                 App\Sender\Entity\EmailMessageType::NAME => App\Sender\Entity\EmailMessageType::class,
 
 
-                App\Direction\Entity\DirectionIdType::NAME => App\Direction\Entity\DirectionIdType::class,
-                App\Direction\Entity\SlugType::NAME => App\Direction\Entity\SlugType::class,
+                App\Direction\Entity\Direction\DirectionIdType::NAME => App\Direction\Entity\Direction\DirectionIdType::class,
+                App\Direction\Entity\Direction\SlugType::NAME => App\Direction\Entity\Direction\SlugType::class,
 
-                App\Category\Entity\CategoryIdType::NAME => App\Category\Entity\CategoryIdType::class,
-                App\Category\Entity\SlugType::NAME => App\Category\Entity\SlugType::class,
+                App\Direction\Entity\Category\CategoryIdType::NAME => App\Direction\Entity\Category\CategoryIdType::class,
+                App\Direction\Entity\Category\SlugType::NAME => App\Direction\Entity\Category\SlugType::class,
             ]
         ]
     ],

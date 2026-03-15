@@ -2,7 +2,7 @@
 
 namespace App\Direction\Test\Unit\Entity;
 
-use App\Direction\Entity\DirectionId;
+use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
 use PHPUnit\Framework\TestCase;

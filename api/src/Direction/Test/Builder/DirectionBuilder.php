@@ -2,8 +2,8 @@
 
 namespace App\Direction\Test\Builder;
 
-use App\Direction\Entity\Direction;
-use App\Direction\Entity\DirectionId;
+use App\Direction\Entity\Direction\Direction;
+use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 
 class DirectionBuilder

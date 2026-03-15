@@ -2,16 +2,16 @@
 
 namespace App\Direction\Test\Unit\Entity;
 
-use App\Direction\Entity\Direction\DirectionId;
+use App\Direction\Entity\Category\CategoryId;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
 
-class DirectionIdTest extends TestCase
+class CategoryIdTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $id = new DirectionId($value = Uuid::uuid4()->toString());
+        $id = new CategoryId($value = Uuid::uuid4()->toString());
 
         $this->assertNotNull($id->getValue());
         $this->assertSame($value, $id->getValue());
@@ -20,18 +20,18 @@ class DirectionIdTest extends TestCase
     public function testInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new DirectionId('invalid');
+        new CategoryId('invalid');
     }
 
     public function testEmpty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new DirectionId('');
+        new CategoryId('');
     }
     public function testCase(): void
     {
         $value = Uuid::uuid4()->toString();
-        $id = new DirectionId(mb_strtoupper($value));
+        $id = new CategoryId(mb_strtoupper($value));
 
         $this->assertSame($value, $id->getValue());
     }

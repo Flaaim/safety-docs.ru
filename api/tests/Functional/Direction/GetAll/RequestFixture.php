@@ -2,8 +2,8 @@
 
 namespace Test\Functional\Direction\GetAll;
 
-use App\Direction\Entity\Direction;
-use App\Direction\Entity\DirectionId;
+use App\Direction\Entity\Direction\Direction;
+use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
