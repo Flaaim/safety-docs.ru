@@ -40,7 +40,8 @@ return static function(App $app): void {
         $group->group('/directions', function (RouteCollectorProxy $group): void {
             $group->get('',  Direction\GetAll\RequestAction::class);
             $group->get('/get/{slug:[a-z-]+}', Direction\GetBySlug\RequestAction::class);
-            $group->post('/upsert', Direction\Upsert\RequestAction::class);
+            $group->post('/add', Direction\Add\RequestAction::class);
+            $group->post('/update', Direction\Add\RequestAction::class);
         });
     });
 

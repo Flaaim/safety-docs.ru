@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Functional\Direction\Upsert;
+namespace Test\Functional\Direction\Add;
 
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
