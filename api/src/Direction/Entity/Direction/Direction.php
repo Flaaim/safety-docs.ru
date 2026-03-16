@@ -27,6 +27,8 @@ class Direction
         private string $text,
         #[ORM\Column(type: 'direction_slug', length: 35)]
         private Slug $slug,
+        #[ORM\Embedded(class: Breadcrumb::class)]
+        private ?Breadcrumb $breadcrumb = null,
 
     ){
         $this->categories = new ArrayCollection();
@@ -83,6 +85,11 @@ class Direction
     public function canBeDeleted(): bool
     {
         return $this->categories->count() > 0;
+    }
+
+    public function getBreadcrumb(): ?Breadcrumb
+    {
+        return $this->breadcrumb;
     }
 
 }
