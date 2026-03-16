@@ -26,4 +26,8 @@ class CategoryId
     {
         return $this->value;
     }
+    public function equals(CategoryId $categoryId): bool
+    {
+        return $this->value === $categoryId->value;
+    }
 }

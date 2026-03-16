@@ -4,7 +4,7 @@ namespace App\Direction\Test\Builder;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
-use App\Direction\Entity\Category\Slug;
+use App\Direction\Entity\Slug;
 
 class CategoryBuilder
 {

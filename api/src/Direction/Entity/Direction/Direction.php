@@ -3,6 +3,7 @@
 namespace App\Direction\Entity\Direction;
 
 use App\Direction\Entity\Category\Category;
+use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Slug;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'directions')]
 class Direction
 {
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'direction', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'direction', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $categories;
     public function __construct(
         #[ORM\Id]
@@ -67,6 +68,16 @@ class Direction
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
         }
+    }
+    public function removeCategory(CategoryId $categoryId): void
+    {
+        foreach ($this->categories as $category) {
+            if($category->getId()->equals($categoryId)) {
+                $this->categories->removeElement($category);
+                return;
+            }
+        }
+        throw new \DomainException('Category not found in this direction.');
     }
 
     public function canBeDeleted(): bool
