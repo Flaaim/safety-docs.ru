@@ -67,14 +67,18 @@ class Direction
     }
     public function addCategory(Category $category): void
     {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
+        foreach ($this->categories as $existingCategory) {
+            if($existingCategory->getSlug()->equals($category->getSlug())) {
+                throw new \DomainException('Category already exists.');
+            }
         }
+        $this->categories->add($category);
     }
-    public function removeCategory(CategoryId $categoryId): void
+
+    public function removeCategory(Slug $slug): void
     {
         foreach ($this->categories as $category) {
-            if($category->getId()->equals($categoryId)) {
+            if($category->getSlug()->equals($slug)) {
                 $this->categories->removeElement($category);
                 return;
             }

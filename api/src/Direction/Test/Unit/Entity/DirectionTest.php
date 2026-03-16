@@ -6,10 +6,7 @@ use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
-use App\Direction\Test\Builder\CategoryBuilder;
 use App\Direction\Test\Builder\DirectionBuilder;
-use Doctrine\Common\Collections\ArrayCollection;
-use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 
 class DirectionTest extends TestCase
@@ -54,34 +51,57 @@ class DirectionTest extends TestCase
             new Slug('cat-slug'),
             $direction
         );
-        $direction->addCategory($category);
         self::assertCount(1, $direction->getCategories());
         self::assertEquals($category, $direction->getCategories()->first());
     }
+    public function testAddExistingCategory(): void
+    {
+        $direction = (new DirectionBuilder())->build();
+        new Category(
+            CategoryId::generate(),
+            'Category Title',
+            'Category Description',
+            'Category Text',
+            new Slug('cat-slug'),
+            $direction
+        );
+        self::assertCount(1, $direction->getCategories());
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Category already exists.');
+        new Category(
+            CategoryId::generate(),
+            'Category Title',
+            'Category Description',
+            'Category Text',
+            new Slug('cat-slug'),
+            $direction
+        );
 
+    }
     public function testRemoveCategory(): void
     {
-        $category1 = (new CategoryBuilder())
-            ->withCategoryId($categoryId1 = new CategoryId('fe4140a0-1e7f-420c-b5d1-9fd44f919149'))->build();
-
-        $category2 = (new CategoryBuilder())
-            ->withCategoryId($categoryId2 = new CategoryId('5764bba3-dd03-4fe9-b188-98e4c40ecb94'))->build();
-
-        $direction = $category1->getDirection();
-        $direction->addCategory($category2);
-
-        self::assertCount(2, $direction->getCategories());
-        $direction->removeCategory($categoryId1);
+        $direction = (new DirectionBuilder())->build();
+        new Category(
+            CategoryId::generate(),
+            'Category Title',
+            'Category Description',
+            'Category Text',
+            $slug = new Slug('cat-slug'),
+            $direction
+        );
         self::assertCount(1, $direction->getCategories());
+        $direction->removeCategory($slug);
+        self::assertCount(0, $direction->getCategories());
     }
 
     public function testRemoveEmptyCategory(): void
     {
         $direction = (new DirectionBuilder())->build();
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Category not found in this direction.');
 
-        $direction->removeCategory(CategoryId::generate());
+        self::expectException(\DomainException::class);
+        $this->expectExceptionMessage('Category not found in this direction.');
+
+        $direction->removeCategory(new Slug('cat-slug'));
     }
 
 }
