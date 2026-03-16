@@ -26,4 +26,9 @@ class DirectionId
     {
         return $this->value;
     }
+
+    public function equals(DirectionId $directionId): bool
+    {
+        return $this->value === $directionId->value;
+    }
 }
