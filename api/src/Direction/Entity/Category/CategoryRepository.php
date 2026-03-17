@@ -2,6 +2,7 @@
 
 namespace App\Direction\Entity\Category;
 
+use App\Direction\Entity\Direction\DirectionId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -21,11 +22,8 @@ class CategoryRepository
         return $this->repo->find($id);
     }
     /** @return array<Category> */
-    public function findByDirectionId(string $directionId): array
+    public function findByDirectionId(DirectionId $directionId): array
     {
-        $qb = $this->repo->createQueryBuilder('c');
-        $qb->where('c.directionId = :directionId');
-        $qb->setParameter('directionId', $directionId);
-        return $qb->getQuery()->getResult();
+        return $this->repo->findBy(['direction' => $directionId]);
     }
 }

@@ -40,7 +40,7 @@ return [
     },
     'config' => [
         'doctrine' => [
-            'dev_mode' => false,
+            'dev_mode' => (bool)getenv('APP_DEBUG'),
             'cache_dir' => __DIR__ . '/../../var/cache/doctrine/cache',
             'proxy_dir' => __DIR__ . '/../../var/cache/doctrine/proxy',
             'connection' => [
