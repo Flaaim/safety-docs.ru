@@ -3,9 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Action\V1\Auth\GetToken\RequestAction;
+use App\Http\Action\V1\Category;
+use App\Http\Action\V1\Direction;
 use App\Http\Action\V1\Payment;
 use App\Http\Action\V1\Product;
-use App\Http\Action\V1\Direction;
 use App\Http\Middleware\AuthMiddleware;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
@@ -42,7 +43,12 @@ return static function(App $app): void {
             $group->get('/get/{slug:[a-z-]+}', Direction\GetBySlug\RequestAction::class);
             $group->post('/add', Direction\Add\RequestAction::class);
             $group->post('/update', Direction\Update\RequestAction::class);
+
+            $group->group('/categories', function (RouteCollectorProxy $group): void {
+                $group->get('', Direction\Category\GetAll\RequestAction::class);
+            });
         });
+
     });
 
 
