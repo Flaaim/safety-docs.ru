@@ -2,6 +2,8 @@
 
 namespace App\Direction\Fixture;
 
+use App\Direction\Entity\Category\Category;
+use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
@@ -26,7 +28,18 @@ class DirectionFixture extends AbstractFixture
             new Slug('safety')
         );
 
+        $category = new Category(
+            CategoryId::generate(),
+            'Служба охраны труда',
+            'Описание службы охраны труда',
+            'Текст службы охраны труда',
+            new Slug('service'),
+            $direction
+        );
+
+        $manager->persist($category);
         $manager->persist($direction);
+
         $manager->flush();
     }
 }
