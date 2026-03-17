@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Command\Category\Add;
+namespace App\Direction\Command\Direction\Category\Add;
 
 class Command
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Command\Category\Add;
+namespace App\Direction\Command\Direction\Category\Add;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;

@@ -2,9 +2,8 @@
 
 namespace App\Direction\Test\Unit\Command\Category\Add;
 
-use App\Direction\Command\Category\Add\Command;
-use App\Direction\Command\Category\Add\Handler;
-use App\Direction\Entity\Category\CategoryRepository;
+use App\Direction\Command\Direction\Category\Add\Command;
+use App\Direction\Command\Direction\Category\Add\Handler;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Direction\DirectionRepository;
 use App\Direction\Entity\Slug;
