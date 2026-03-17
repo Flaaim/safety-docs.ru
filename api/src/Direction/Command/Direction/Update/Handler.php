@@ -26,10 +26,8 @@ class Handler
 
         $existingDirection = $this->directions->findBySlug($slug);
 
-        if($existingDirection) {
-            if (!$existingDirection->getId()->equals($directionId)) {
+        if($existingDirection && !$existingDirection->getId()->equals($directionId)) {
                 throw new \DomainException('Direction with this slug already exists.');
-            }
         }
 
 
