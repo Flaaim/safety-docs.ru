@@ -3,8 +3,15 @@ export interface DirectionCollection {
   total: number
 }
 
-
 export interface DirectionDTO{
+  title: string,
+  description: string,
+  text: string
+  slug: string
+  categories: CategoryDTO[]
+}
+
+export interface CategoryDTO {
   title: string,
   description: string,
   text: string
