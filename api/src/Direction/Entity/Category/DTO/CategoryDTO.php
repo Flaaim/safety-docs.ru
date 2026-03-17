@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Direction\Entity\Direction\DTO;
+namespace App\Direction\Entity\Category\DTO;
 
-class DirectionDTO
+class CategoryDTO
 {
     public function __construct(
         public string $title,
         public string $description,
         public string $text,
         public string $slug,
-        public array $categories,
     ){
     }
-
 }
