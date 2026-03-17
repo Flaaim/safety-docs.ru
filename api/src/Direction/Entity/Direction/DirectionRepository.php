@@ -16,10 +16,6 @@ class DirectionRepository
         $this->repo = $repo;
         $this->em = $em;
     }
-    public function existsBySlug(Slug $slug): bool
-    {
-        return (bool) $this->repo->count(['slug' => $slug->getValue()]);
-    }
     public function findById(DirectionId $id): ?Direction
     {
         return $this->repo->find($id);
