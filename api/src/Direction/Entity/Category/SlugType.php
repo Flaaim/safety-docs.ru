@@ -2,6 +2,7 @@
 
 namespace App\Direction\Entity\Category;
 
+use App\Direction\Entity\Slug;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
