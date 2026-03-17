@@ -23,7 +23,8 @@ class Handler
             $direction->getSlug()->getValue(),
             $direction->getTitle(),
             $direction->getDescription(),
-            $direction->getText()
+            $direction->getText(),
+            $direction->getCategories()->toArray()
         );
     }
 }
