@@ -8,6 +8,7 @@ class Command
 {
     public function __construct(
         #[Assert\Uuid]
+        #[Assert\NotBlank]
         public string $directionId,
     ){
     }
