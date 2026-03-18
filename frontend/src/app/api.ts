@@ -9,6 +9,6 @@ export const API = {
   },
   direction: {
     getAll: () => process.env.NEXT_PUBLIC_BACKEND_URL + `/v1/directions`,
-    getBySlug: (slug: string) => process.env.NEXT_PUBLIC_BACKEND_URL + `/v1/directions/get/${slug}`
+    getBySlug: (slug: string) => process.env.NEXT_PUBLIC_BACKEND_URL + `/v1/directions/${slug}`
   }
 }

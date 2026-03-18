@@ -21,7 +21,7 @@ class CategoriesCollection implements \JsonSerializable
                     'description' => $category->getDescription(),
                     'text' => $category->getText(),
                     'slug' => $category->getSlug()->getValue(),
-                    'direction_id' => $category->getDirection()->getId(),
+                    'direction_id' => $category->getDirection()->getId()->getValue(),
                 ], $this->categories
             ),
             'total' => $this->total
