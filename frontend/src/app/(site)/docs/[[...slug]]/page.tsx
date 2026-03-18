@@ -29,7 +29,7 @@ const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
       {direction.categories.map((category) => (
         <Link
           key={category.slug}
-          href={`/directions/${direction.slug}/${category.slug}`}
+          href={`/docs/${direction.slug}/${category.slug}`}
           className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
         >
           <span className="font-medium">{category.title}</span>
@@ -42,11 +42,11 @@ const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
 
 const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: string }) => (
   <>
-    <Link href={`/directions/${dirSlug}`} className="text-sm text-muted-foreground hover:underline mb-4 block">
+    <Link href={`/docs/${dirSlug}`} className="text-sm text-muted-foreground hover:underline mb-4 block">
       ← Назад
     </Link>
     <Htag tag="h1">{category.title}</Htag>
-    <MarkdownRenderer content={normalizeMarkdown(category.text)} />
+      <MarkdownRenderer content={normalizeMarkdown(category.text)} />
   </>
 
 )
@@ -112,6 +112,8 @@ export default async function DirectionPage({ params }: Props) {
 
     return <DirectionView direction={direction} />;
   }catch (error){
+    console.error(error)
+    return;
     notFound();
   }
 

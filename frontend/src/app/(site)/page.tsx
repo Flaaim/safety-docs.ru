@@ -27,7 +27,7 @@ export default function Home() {
           title='Охрана труда'
           short_description='Подборки документов по охране труда'
           description='Все что относиться к организации охраны труда, обучения, инструктажи, медосмотры, СУОТ, риски, СОУТ, расследование НС и т.д.'
-          link={'/safety'}
+          link={'/docs/safety'}
         />
         <SimpleCard
           icon={<Flame className="inline-block"  size={24}/>}
