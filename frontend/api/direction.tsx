@@ -14,10 +14,19 @@ export async function getDirectionBySlug(slug: string): Promise<DirectionDTO> {
   return response.json();
 }
 
-export async function getAllDirections(): Promise<DirectionCollection> {
+export async function getAllDirections(token?:string): Promise<DirectionCollection> {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  }
+
+  if(token){
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const response = await fetch(API.direction.getAll(), {
     method: "GET",
-    headers: {'Content-Type': 'application/json'}
+    headers: headers,
+    cache: token ? 'no-store' : 'force-cache'
   })
 
   if (!response.ok) {
