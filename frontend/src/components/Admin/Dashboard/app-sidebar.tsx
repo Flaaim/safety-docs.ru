@@ -1,4 +1,6 @@
-import { LayoutDashboard, Users, Settings, FileText } from "lucide-react"
+'use client'
+
+import {LayoutDashboard, Settings, FileText, User, LogOut} from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -6,8 +8,15 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import {useRouter} from "next/navigation";
+import Cookies from "js-cookie";
+
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 
 
 const items = [
@@ -17,6 +26,15 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    Cookies.remove('admin_token');
+
+    router.push('/login');
+
+    router.refresh();
+  }
   return (
     <Sidebar>
       <SidebarHeader />
@@ -39,7 +57,29 @@ export function AppSidebar() {
             </SidebarGroupContent>
         <SidebarGroup />
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <User className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">Админ</span>
+                  <span className="truncate text-xs">admin@example.com</span>
+                </div>
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom" align="end" sideOffset={4}>
+              <DropdownMenuItem onClick={handleLogout} className="text-destructive cursor-pointer">
+                <LogOut className="mr-2 size-4" />
+                <span>Выйти из системы</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarFooter>
     </Sidebar>
   )
 }

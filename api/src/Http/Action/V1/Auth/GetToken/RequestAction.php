@@ -27,7 +27,7 @@ class RequestAction implements RequestHandlerInterface
                     ]);
                 }
             }
-            return new EmptyResponse(204);
+            return new EmptyResponse(401);
         }catch (\Exception $e){
             return new JsonResponse(['message' => $e->getMessage()], 500);
         }

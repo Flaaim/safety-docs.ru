@@ -30,7 +30,7 @@ return static function(App $app): void {
             $group->post('/upsert', Product\Upsert\RequestAction::class)->add(AuthMiddleware::class);
             $group->post('/upload', Product\Upload\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->get('/get/{id}', \App\Http\Action\V1\Product\Get\RequestAction::class);
+            $group->get('/get/{id}', Product\Get\RequestAction::class);
 
             $group->get('/get/{slug:[a-z-]+}', Product\GetBySlug\RequestAction::class);
         });
@@ -42,13 +42,18 @@ return static function(App $app): void {
 
         $group->group('/directions', function (RouteCollectorProxy $group): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+
             $group->get('',  Direction\GetAll\RequestAction::class);
             $group->get('/{slug:[a-z-]+}', Direction\GetBySlug\RequestAction::class);
             $group->post('', Direction\Add\RequestAction::class);
             $group->put('/{directionId:'.$uuidPattern.'}', Direction\Update\RequestAction::class);
 
-            $group->get('/{directionId:'.$uuidPattern.'}/categories',
-                Direction\Category\GetAll\RequestAction::class);
+            $group->group('/{directionId:'.$uuidPattern.'}/categories', function (RouteCollectorProxy $group): void {
+                $group->get('', Direction\Category\GetAll\RequestAction::class);
+                $group->post('', Direction\Category\Add\RequestAction::class);
+            });
+
+
         });
 
     });
