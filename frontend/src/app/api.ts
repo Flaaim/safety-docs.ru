@@ -14,6 +14,7 @@ export const API = {
   },
   direction: {
     getAll: () => BASE_URL + `/v1/directions`,
+    add: () => BASE_URL + `/v1/directions`,
     getBySlug: (slug: string) => BASE_URL + `/v1/directions/${slug}`
   },
   token: {
