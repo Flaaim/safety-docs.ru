@@ -36,4 +36,9 @@ class DirectionRepository
     {
         $this->em->persist($direction);
     }
+
+    public function remove(Direction $direction): void
+    {
+        $this->em->remove($direction);
+    }
 }
