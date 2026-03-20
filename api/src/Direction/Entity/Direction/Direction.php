@@ -88,9 +88,11 @@ class Direction
 
     public function canBeDeleted(): bool
     {
-        return $this->categories->count() > 0;
+        if($this->categories->count() > 0){
+            return false;
+        }
+        return true;
     }
-
     public function getBreadcrumb(): ?Breadcrumb
     {
         return $this->breadcrumb;

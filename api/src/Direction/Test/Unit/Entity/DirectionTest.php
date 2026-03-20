@@ -104,4 +104,20 @@ class DirectionTest extends TestCase
         $direction->removeCategory(new Slug('cat-slug'));
     }
 
+    public function testCanBeDeleted(): void
+    {
+        $direction = (new DirectionBuilder())->build();
+
+        self::assertTrue($direction->canBeDeleted());
+
+        new Category(
+            CategoryId::generate(),
+            'Category Title',
+            'Category Description',
+            'Category Text',
+            $slug = new Slug('cat-slug'),
+            $direction
+        );
+        self::assertFalse($direction->canBeDeleted());
+    }
 }
