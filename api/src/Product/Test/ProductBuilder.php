@@ -6,6 +6,7 @@ use App\Product\Entity\File;
 use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
+use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
 
 class ProductBuilder
@@ -15,7 +16,7 @@ class ProductBuilder
     private string $cipher;
     private Amount $price;
     private File $file;
-    private string $slug;
+    private Slug $slug;
 
     private \DateTimeImmutable $updatedAt;
 
@@ -26,7 +27,7 @@ class ProductBuilder
         $this->cipher = "ОТ 201.18";
         $this->price = new Amount(350.00, new Currency('RUB'));
         $this->file = new File("201/ot201.18.docx");
-        $this->slug = '201';
+        $this->slug = new Slug("201");
         $this->updatedAt = new \DateTimeImmutable();
     }
     public function withId(ProductId $id): self
@@ -54,7 +55,7 @@ class ProductBuilder
         $this->file = $file;
         return $this;
     }
-    public function withSlug(string $slug): self
+    public function withSlug(Slug $slug): self
     {
         $this->slug = $slug;
         return $this;
