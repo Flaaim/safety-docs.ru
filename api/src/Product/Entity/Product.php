@@ -16,8 +16,8 @@ class Product
     private string $name;
     #[ORM\Column(type: 'string', length: 25)]
     private string $cipher;
-    #[ORM\Column(type: 'string', length: 25, unique: true)]
-    private string $slug;
+    #[ORM\Column(type: 'product_slug')]
+    private Slug $slug;
     #[ORM\Column(type: 'amount')]
     private Amount $amount;
     #[ORM\Column(type: 'file')]
@@ -30,7 +30,7 @@ class Product
         Amount $amount,
         File $file,
         string $cipher,
-        string $slug,
+        Slug $slug,
         \DateTimeImmutable $updatedAt
     )
     {
@@ -62,7 +62,7 @@ class Product
     {
         return $this->cipher;
     }
-    public function getSlug(): string
+    public function getSlug(): Slug
     {
         return $this->slug;
     }
