@@ -2,7 +2,6 @@
 
 namespace App\Product\Entity;
 
-use App\Shared\Domain\ValueObject\UpdatedAt;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -16,7 +15,7 @@ class Product
     private string $name;
     #[ORM\Column(type: 'string', length: 25)]
     private string $cipher;
-    #[ORM\Column(type: 'product_slug')]
+    #[ORM\Column(type: 'product_slug', length: 35)]
     private Slug $slug;
     #[ORM\Column(type: 'amount')]
     private Amount $amount;
