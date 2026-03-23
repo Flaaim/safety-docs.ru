@@ -6,6 +6,7 @@ use App\Product\Entity\File;
 use App\Product\Entity\Amount;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
+use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
 use App\Shared\Domain\ValueObject\UpdatedAt;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -22,7 +23,7 @@ class ProductFixture extends AbstractFixture
             new Amount(550.00, new Currency('RUB')),
             new File('/safety/suot/suot200.1'),
             'suot200.1',
-            'suot',
+            new Slug('suot'),
             new \DateTimeImmutable('now'),
         );
 
@@ -34,7 +35,7 @@ class ProductFixture extends AbstractFixture
             new Amount(750.00, new Currency('RUB')),
             new File('/edu/templates.txt'),
             'edu2026.1',
-            'edu2026',
+            new Slug('edu2026'),
             new \DateTimeImmutable(),
         );
 
@@ -46,7 +47,7 @@ class ProductFixture extends AbstractFixture
             new Amount(250.00, new Currency('RUB')),
             new File('/safety/service/serv100.1.rar'),
             'serv100.1',
-            'service',
+            new Slug('service'),
             new \DateTimeImmutable(),
         );
 
