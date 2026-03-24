@@ -39,7 +39,6 @@ return [
                 StatusCommand::class,
                 UpToDateCommand::class,
 
-                ProductSendCommand::class,
             ],
             'fixture_paths' => [
                 __DIR__ . '/../../src/Product/Fixture',
