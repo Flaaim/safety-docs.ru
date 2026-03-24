@@ -1,6 +1,6 @@
 <?php
 
-namespace Functional\Product\GetBySlug;
+namespace Test\Functional\Product\Update;
 
 use App\Product\Entity\File;
 use App\Product\Entity\Amount;
@@ -26,7 +26,19 @@ class RequestFixture extends AbstractFixture
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 
+        $anotherProduct = (new ProductBuilder())
+            ->withId(new ProductId('df455720-90b9-4624-8d36-35b16e2716ac'))
+            ->withName('Система управления охраной труда - комплект документов')
+            ->withCipher('suot200.1')
+            ->withPrice(new Amount(350.00, new Currency('RUB')))
+            ->withFile(new File('safety/suot/suot200.1.rar'))
+            ->withSlug(new Slug('suot'))
+            ->withUpdatedAt(new \DateTimeImmutable())
+            ->build();
+
         $manager->persist($product);
+
+        $manager->persist($anotherProduct);
 
         $manager->flush();
     }

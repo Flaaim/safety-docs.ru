@@ -4,6 +4,7 @@ namespace App\Product\Command\GetBySlug;
 
 use App\Product\Entity\DTO\ProductDTO;
 use App\Product\Entity\ProductRepository;
+use App\Product\Entity\Slug;
 
 class Handler
 {
@@ -14,7 +15,8 @@ class Handler
 
     public function handle(Command $command): ProductDTO
     {
-        $product = $this->products->findBySlug($command->slug);
+        $slug = new Slug($command->slug);
+        $product = $this->products->findBySlug($slug);
         if(null === $product){
             throw new \DomainException('Product not found.');
         }

@@ -3,7 +3,6 @@
 namespace App\Product\Test\Service;
 
 use App\Product\Service\UploadFileHandler;
-use App\Product\Test\TempDir;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
@@ -25,7 +24,7 @@ class UploadFileHandlerTest extends TestCase
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Error uploading file '. $uploadFile->getError());
-        $this->handler->handle($this->tempDir->getValue(), [$uploadFile]);
+        $this->handler->handle($this->tempDir->getValue(), $uploadFile);
     }
 
 
@@ -37,10 +36,9 @@ class UploadFileHandlerTest extends TestCase
         $uploadedDir = $this->tempDir->getValue(). DIRECTORY_SEPARATOR . 'safety/service';
 
         $this->createDirectory($uploadedDir);
-        $result = $this->handler->handle($uploadedDir, [$uploadFile]);
+        $result = $this->handler->handle($uploadedDir, $uploadFile);
 
-        self::assertEquals('/tmp/phpunit_test_/safety/service/text.txt', $result[0]['path']);
-        self::assertCount(1, $result);
+        self::assertEquals('/tmp/phpunit_test_/safety/service/text.txt', $result['path']);
     }
 
     private function createUploadFile(string $name = 'test.txt', string $type = 'text/plain', int $size = 1, int $error = UPLOAD_ERR_OK): UploadedFileInterface

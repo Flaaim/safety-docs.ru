@@ -10,13 +10,14 @@ use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
-use Ramsey\Uuid\Uuid;
+use App\Product\Command\Add\Upload\Handler as UploadHandler;
 
 class Handler
 {
     public function __construct(
         private readonly ProductRepository $products,
         private readonly Flusher $flusher,
+        private readonly UploadHandler $uploadHandler,
     ){
     }
 
@@ -27,16 +28,20 @@ class Handler
         if($product) {
             throw new \DomainException("Product with slug " .$command->slug. " already exists.");
         }
+
         $product = new Product(
             ProductId::generate(),
             $command->name,
             new Amount($command->amount, new Currency('RUB')),
-            new File($command->path),
+            $file = new File($command->path),
             $command->cipher,
             $slug,
             new \DateTimeImmutable($command->updatedAt)
         );
+
         $this->products->add($product);
+
+        $this->uploadHandler->handle($file->getValue(), $command->file);
 
         $this->flusher->flush();
 

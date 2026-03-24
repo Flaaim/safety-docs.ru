@@ -2,12 +2,14 @@
 
 namespace Functional\Product\GetBySlug;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Test\Functional\Json;
 use Test\Functional\Product\Get\RequestFixture;
 use Test\Functional\WebTestCase;
 
 class RequestActionTest extends WebTestCase
 {
+    use ArraySubsetAsserts;
     public function setUp(): void
     {
         parent::setUp();
@@ -15,7 +17,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/products/get/service'));
+        $response = $this->app()->handle(self::json('GET', '/v1/products/s/service'));
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -33,7 +35,7 @@ class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/products/get/not-exist'));
+        $response = $this->app()->handle(self::json('GET', '/v1/products/s/not-exist'));
 
         self::assertEquals(400, $response->getStatusCode());
 
@@ -44,4 +46,33 @@ class RequestActionTest extends WebTestCase
         self::assertEquals(['message' => 'Product not found.'], $data);
     }
 
+    public function testInvalid(): void
+    {
+        $response = $this->app()->handle(self::json('GET', '/v1/products/s/124'));
+
+        self::assertEquals(404, $response->getStatusCode());
+
+        self::assertJson($body = (string)$response->getBody());
+
+        $data = Json::decode($body);
+
+        self::assertArraySubset([
+            'message' => '404 Not Found',
+        ], $data);
+    }
+
+    public function testEmpty(): void
+    {
+        $response = $this->app()->handle(self::json('GET', '/v1/products/s/'));
+
+        self::assertEquals(404, $response->getStatusCode());
+
+        self::assertJson($body = (string)$response->getBody());
+
+        $data = Json::decode($body);
+
+        self::assertArraySubset([
+            'message' => '404 Not Found',
+        ], $data);
+    }
 }

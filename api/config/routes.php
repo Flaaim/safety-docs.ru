@@ -7,6 +7,7 @@ use App\Http\Action\V1\Direction;
 use App\Http\Action\V1\Payment;
 use App\Http\Action\V1\Product;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\UploadFileHandler;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -27,11 +28,12 @@ return static function(App $app): void {
         $group->group('/products', function (RouteCollectorProxy $group): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
-            $group->post('/upsert', Product\Upsert\RequestAction::class)->add(AuthMiddleware::class);
-            $group->post('/upload', Product\Upload\RequestAction::class)->add(AuthMiddleware::class);
+            $group->post('', Product\Add\RequestAction::class)
+                ->add(UploadFileHandler::class)
+                ->add(AuthMiddleware::class);
 
-            $group->post('', Product\Add\RequestAction::class)->add(AuthMiddleware::class);
             $group->get('', Product\GetAll\RequestAction::class)->add(AuthMiddleware::class);
+            $group->put('/{productId:'.$uuidPattern.'}', Product\Update\RequestAction::class)->add(AuthMiddleware::class);
 
             $group->get('/{productId:'.$uuidPattern.'}', Product\Get\RequestAction::class);
             $group->get('/s/{slug:[a-z-]+}', Product\GetBySlug\RequestAction::class);

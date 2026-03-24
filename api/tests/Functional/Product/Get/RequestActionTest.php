@@ -16,7 +16,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/products/get/b38e76c0-ac23-4c48-85fd-975f32c8801f'));
+        $response = $this->app()->handle(self::json('GET', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f'));
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -34,7 +34,7 @@ class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/products/get/b38e76c0-ac23-4c48-85fd-975f32c8800f'));
+        $response = $this->app()->handle(self::json('GET', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8800f'));
 
         self::assertEquals(400, $response->getStatusCode());
 
@@ -48,7 +48,7 @@ class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/products/get/!!!!!'));
+        $response = $this->app()->handle(self::json('GET', '/v1/products/sss10'));
 
         self::assertEquals(404, $response->getStatusCode());
 

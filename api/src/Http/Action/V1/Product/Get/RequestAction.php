@@ -14,8 +14,8 @@ use Slim\Routing\RouteContext;
 class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly Validator $validator,
-        private readonly Handler $handler
+        private Validator $validator,
+        private Handler   $handler
     ){
 
     }
@@ -24,9 +24,9 @@ class RequestAction implements RequestHandlerInterface
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
 
-        $id = $route->getArgument('id');
+        $productId = $route->getArgument('productId', '');
 
-        $command = new Command($id);
+        $command = new Command($productId);
 
         $this->validator->validate($command);
 

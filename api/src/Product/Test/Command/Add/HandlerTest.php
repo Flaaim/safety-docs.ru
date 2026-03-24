@@ -5,29 +5,32 @@ namespace App\Product\Test\Command\Add;
 use App\Flusher;
 use App\Product\Command\Add\Command;
 use App\Product\Command\Add\Handler;
+use App\Product\Command\Add\Upload\Handler as UploadHandler;
 use App\Product\Entity\Product;
-use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\UploadedFileInterface;
 
 class HandlerTest extends TestCase
 {
     private ProductRepository $products;
     private Flusher $flusher;
-
+    private UploadHandler $uploadHandler;
     private Handler $handler;
     public function setUp(): void
     {
         $this->products = $this->createMock(ProductRepository::class);
         $this->flusher = $this->createMock(Flusher::class);
-        $this->handler = new Handler($this->products, $this->flusher);
+        $this->uploadHandler = $this->createMock(UploadHandler::class);
+        $this->handler = new Handler($this->products, $this->flusher, $this->uploadHandler);
     }
 
     public function testExists(): void
     {
-        $command = $this->createCommand();
+        $uploadedFile = $this->createMock(UploadedFileInterface::class);
+        $command = $this->createCommand($uploadedFile);
 
         $slug = new Slug($command->slug);
         $product = (new ProductBuilder())->build();
@@ -45,7 +48,8 @@ class HandlerTest extends TestCase
 
     public function testSuccess(): void
     {
-        $command = $this->createCommand();
+        $uploadedFile = $this->createMock(UploadedFileInterface::class);
+        $command = $this->createCommand($uploadedFile);
 
         $slug = new Slug($command->slug);
 
@@ -63,10 +67,18 @@ class HandlerTest extends TestCase
                 return true;
             }));
 
+        $this->uploadHandler->expects(self::once())->method('handle')
+            ->with(
+                $this->equalTo('safety/education'),
+                $this->equalTo($uploadedFile)
+            );
+
+        $this->flusher->expects(self::once())->method('flush');
+
         $this->handler->handle($command);
     }
 
-    private function createCommand(): Command
+    private function createCommand(UploadedFileInterface $uploadedFile): Command
     {
         return new Command(
             'Обучение по охране труда - комплект документов',
@@ -74,7 +86,8 @@ class HandlerTest extends TestCase
             550.00,
             'safety/education',
             'education',
-            (new \DateTimeImmutable())->format('d.m.Y')
+            (new \DateTimeImmutable())->format('d.m.Y'),
+            $uploadedFile
         );
     }
 }

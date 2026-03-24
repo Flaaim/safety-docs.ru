@@ -5,6 +5,7 @@ namespace Test\Functional\Product\Get;
 use App\Product\Entity\File;
 use App\Product\Entity\Amount;
 use App\Product\Entity\ProductId;
+use App\Product\Entity\Slug;
 use App\Product\Test\ProductBuilder;
 use App\Shared\Domain\ValueObject\Currency;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -21,7 +22,7 @@ class RequestFixture extends AbstractFixture
             ->withCipher('serv100.1')
             ->withPrice(new Amount(550.00, new Currency('RUB')))
             ->withFile(new File('safety/service/serv100.1.rar'))
-            ->withSlug('service')
+            ->withSlug(new Slug('service'))
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 
