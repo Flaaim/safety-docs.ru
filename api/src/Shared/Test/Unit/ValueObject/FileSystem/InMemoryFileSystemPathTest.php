@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Product\Test;
+namespace App\Shared\Test\Unit\ValueObject\FileSystem;
 
+use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-#[CoversClass(TempDir::class)]
-class TempDirTest extends TestCase
+#[CoversClass(InMemoryFileSystemPath::class)]
+class InMemoryFileSystemPathTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $temp = TempDir::create();
+        $temp = InMemoryFileSystemPath::create();
 
         self::assertEquals('/tmp/phpunit_test_', $temp->getValue());
         self::assertDirectoryExists($temp->getValue());
@@ -20,7 +21,7 @@ class TempDirTest extends TestCase
 
     public function testClear(): void
     {
-        $temp = TempDir::create();
+        $temp = InMemoryFileSystemPath::create();
 
         $file1 = tempnam($temp->getValue(), 'test1');
         $file2 = tempnam($temp->getValue(), 'test2');
@@ -36,7 +37,7 @@ class TempDirTest extends TestCase
 
     public function testNestedClear(): void
     {
-        $temp = TempDir::create();
+        $temp = InMemoryFileSystemPath::create();
 
         $subDir = $temp->getValue(). DIRECTORY_SEPARATOR .'nested';
         mkdir($subDir);

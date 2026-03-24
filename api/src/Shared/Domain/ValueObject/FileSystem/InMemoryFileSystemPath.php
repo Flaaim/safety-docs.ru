@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Product\Test;
+namespace App\Shared\Domain\ValueObject\FileSystem;
 
-class TempDir
+class InMemoryFileSystemPath implements FileSystemPathInterface
 {
     private string $value;
     private function __construct()

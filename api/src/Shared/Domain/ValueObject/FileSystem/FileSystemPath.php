@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Shared\Domain\Service\Template;
+namespace App\Shared\Domain\ValueObject\FileSystem;
 
 use Webmozart\Assert\Assert;
 
-class RootPath
+class FileSystemPath implements FileSystemPathInterface
 {
     private readonly string $path;
     public function __construct(string $path)
