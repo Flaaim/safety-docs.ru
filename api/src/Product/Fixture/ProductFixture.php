@@ -8,7 +8,6 @@ use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
-use App\Shared\Domain\ValueObject\UpdatedAt;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 

@@ -21,7 +21,10 @@ class ProductId
     {
         return new self(Uuid::uuid4()->toString());
     }
-
+    public function equals(ProductId $productId): bool
+    {
+        return $this->value === $productId->value;
+    }
     public function __toString(): string
     {
         return $this->value;

@@ -74,6 +74,7 @@ class Product
         Amount $amount,
         File $file,
         string $cipher,
+        Slug $slug,
         \DateTimeImmutable $updatedAt = new \DateTimeImmutable()
     ): void
     {
@@ -81,6 +82,7 @@ class Product
         $this->amount = $amount;
         $this->file = $file;
         $this->cipher = $cipher;
+        $this->slug = $slug;
         $this->updatedAt = $updatedAt;
     }
 }
