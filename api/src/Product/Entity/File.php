@@ -4,7 +4,7 @@ namespace App\Product\Entity;
 
 
 use App\Shared\Domain\File\AttachableFileInterface;
-use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use Webmozart\Assert\Assert;
 
 class File implements AttachableFileInterface
@@ -16,7 +16,7 @@ class File implements AttachableFileInterface
         Assert::notEmpty($value);
         $this->value = trim($value, '/');
     }
-    public function mergeRoot(RootPath $value): void
+    public function mergeRoot(FileSystemPath $value): void
     {
         if($this->fullPath !== null) {
             throw new \DomainException('Root path already merged.');

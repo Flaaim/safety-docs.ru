@@ -3,8 +3,8 @@
 namespace App\Product\Test\Entity;
 
 use App\Product\Entity\File;
-use App\Product\Test\TempDir;
-use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
+use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -12,10 +12,10 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(File::class)]
 class FileTest extends TestCase
 {
-    private TempDir $tempDir;
+    private InMemoryFileSystemPath $tempDir;
     public function setUp(): void
     {
-        $this->tempDir = TempDir::create();
+        $this->tempDir = InMemoryFileSystemPath::create();
     }
 
     public function testSuccess(): void
@@ -37,7 +37,7 @@ class FileTest extends TestCase
     public function testMergeRoot(): void
     {
         $file = new File($filename = $this->tempFile());
-        $root = new RootPath($this->tempDir->getValue());
+        $root = new FileSystemPath($this->tempDir->getValue());
         $file->mergeRoot($root);
 
         self::assertEquals('/tmp/phpunit_test_/'.$filename, $file->getFile());
@@ -47,7 +47,7 @@ class FileTest extends TestCase
     public function testMergeAlready(): void
     {
         $file = new File($this->tempFile());
-        $root = new RootPath($this->tempDir->getValue());
+        $root = new FileSystemPath($this->tempDir->getValue());
 
         $file->mergeRoot($root);
 
@@ -59,7 +59,7 @@ class FileTest extends TestCase
     public function testFile()
     {
         $file = new File($this->tempFile());
-        $root = new RootPath($this->tempDir->getValue());
+        $root = new FileSystemPath($this->tempDir->getValue());
 
         $file->mergeRoot($root);
 
@@ -68,7 +68,7 @@ class FileTest extends TestCase
     public function testExists(): void
     {
         $file = new File($this->tempFile());
-        $root = new RootPath($this->tempDir->getValue());
+        $root = new FileSystemPath($this->tempDir->getValue());
 
         $file->mergeRoot($root);
         self::assertTrue($file->exists());
