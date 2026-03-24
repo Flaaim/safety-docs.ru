@@ -6,7 +6,7 @@ use App\Product\Entity\ProductRepository;
 use App\Sender\Command\DeliverMessage\Create\Handler as CreateHandler;
 use App\Shared\Domain\Event\Payment\PaymentSubscriber;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
-use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -44,7 +44,7 @@ return [
             $logger,
             $container->get(CreateHandler::class),
             $productRepository,
-            $container->get(RootPath::class),
+            $container->get(FileSystemPath::class),
         );
     }
 ];

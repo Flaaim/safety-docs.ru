@@ -9,7 +9,7 @@ use App\Sender\Command\DeliverMessage\Create\Handler;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
-use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,7 +20,7 @@ class PaymentSubscriber implements EventSubscriberInterface
         private readonly LoggerInterface $logger,
         private readonly Handler $handler,
         private readonly ProductRepository $products,
-        private readonly RootPath $rootPath,
+        private readonly FileSystemPath $rootPath,
     )
     {}
 

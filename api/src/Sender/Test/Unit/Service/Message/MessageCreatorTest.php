@@ -3,11 +3,11 @@
 namespace App\Sender\Test\Unit\Service\Message;
 
 use App\Product\Entity\File;
-use App\Product\Test\TempDir;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\MessageCreator;
-use App\Shared\Domain\Service\Template\RootPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
+use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Part\DataPart;
@@ -15,13 +15,13 @@ use Twig\Environment;
 
 class MessageCreatorTest extends TestCase
 {
-    private readonly TempDir $tempDir;
+    private readonly InMemoryFileSystemPath $tempDir;
     private readonly File $file;
 
     public function setUp(): void
     {
-        $this->tempDir = TempDir::create();
-        $rootPath = new RootPath($this->tempDir->getValue());
+        $this->tempDir = InMemoryFileSystemPath::create();
+        $rootPath = new FileSystemPath($this->tempDir->getValue());
 
         $this->file = new File($this->tempFile());
         $this->file->mergeRoot($rootPath);
