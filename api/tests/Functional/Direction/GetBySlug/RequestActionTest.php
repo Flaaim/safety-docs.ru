@@ -17,8 +17,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $slug = 'safety';
-        $response = $this->app()->handle(self::json('GET', '/v1/directions/get/'.$slug));
+        $response = $this->app()->handle(self::json('GET', '/v1/directions/s/safety'));
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -27,17 +26,18 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'slug' => $slug,
+            'slug' => 'safety',
             'title' => $data['title'],
             'description' => $data['description'],
             'text' => $data['text'],
+            'categories' => []
         ], $data);
 
     }
 
     public function testNotExist(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/directions/get/not-exist'));
+        $response = $this->app()->handle(self::json('GET', '/v1/directions/s/not-exist'));
 
         self::assertEquals(400, $response->getStatusCode());
 

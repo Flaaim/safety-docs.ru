@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Functional\Direction\Update;
+namespace Test\Functional\Direction\Delete;
 
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
@@ -22,17 +22,6 @@ class RequestFixture extends AbstractFixture
             ->build();
 
         $manager->persist($directionSafety);
-
-
-        $directionFire = (new DirectionBuilder())
-            ->withId(new DirectionId('9582c2ff-e788-46f6-94f9-6b7d73b309bd'))
-            ->withTitle('Пожарная безопасность')
-            ->withDescription('Пожарная безопасность описание')
-            ->withText('Текст пожарная безопасность')
-            ->withSlug(new Slug('fire'))
-            ->build();
-
-        $manager->persist($directionFire);
 
         $manager->flush();
     }

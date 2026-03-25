@@ -2,7 +2,10 @@
 
 namespace App\Product\Command\Add;
 
+use App\Http\Validator\SlimUploadedFile as SlimUploadedFileAssert;
+use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Command
 {
@@ -20,5 +23,26 @@ class Command
         #[Assert\NotBlank]
         #[Assert\DateTime(format: 'd.m.Y')]
         public string $updatedAt,
+        #[Assert\NotNull]
+        #[SlimUploadedFileAssert(
+            maxSize: '15M',
+            mimeTypes: [
+                'application/vnd.rar',
+            ],
+            extensions: [
+                'rar',
+            ]
+        )]
+        public UploadedFileInterface $file,
     ){}
+
+    #[Assert\Callback]
+    public function validateFileAndFilename(ExecutionContextInterface $context): void
+    {
+        if(basename($this->path) !== $this->file->getClientFilename()){
+            $context->buildViolation('Name of uploaded file and path is not equal.')
+                ->atPath('path')
+                ->addViolation();
+        }
+    }
 }

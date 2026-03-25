@@ -48,7 +48,8 @@ return static function(App $app): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
             $group->get('',  Direction\GetAll\RequestAction::class);
-            $group->get('/{slug:[a-z-]+}', Direction\GetBySlug\RequestAction::class);
+
+            $group->get('/s/{slug:[a-z-]+}', Direction\GetBySlug\RequestAction::class);
             $group->post('', Direction\Add\RequestAction::class);
             $group->delete('/{directionId:'.$uuidPattern.'}', Direction\Delete\RequestAction::class);
             $group->put('/{directionId:'.$uuidPattern.'}', Direction\Update\RequestAction::class);

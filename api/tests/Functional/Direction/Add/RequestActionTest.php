@@ -15,7 +15,7 @@ class RequestActionTest extends WebTestCase
 
     public function testAddNew(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/v1/directions/add', [
+        $response = $this->app()->handle(self::json('POST', '/v1/directions', [
             'title' => 'Пожарная безопасность',
             'description' => 'Описание пожарная безопасность',
             'text' => 'Текст пожарная безопасность',
@@ -28,7 +28,7 @@ class RequestActionTest extends WebTestCase
 
     public function testAddFailExisting(): void
     {
-        $response = $this->app()->handle(self::json('POST', '/v1/directions/add', [
+        $response = $this->app()->handle(self::json('POST', '/v1/directions', [
             'title' => 'Пожарная безопасность',
             'description' => 'Описание пожарная безопасность',
             'text' => 'Текст пожарная безопасность',
