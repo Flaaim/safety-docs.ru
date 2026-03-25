@@ -29,6 +29,7 @@ export default async function DirectionsPage() {
             <TableRow>
               <TableHead>Название</TableHead>
               <TableHead>Описание</TableHead>
+              <TableHead>Категории</TableHead>
               <TableHead>slug</TableHead>
               <TableHead className="text-right">Действия</TableHead>
             </TableRow>
@@ -42,6 +43,7 @@ export default async function DirectionsPage() {
                     {dir.description}
                 </div>
                 </TableCell>
+                <TableCell className="text-muted-foreground">{dir.categories.length}</TableCell>
                 <TableCell className="text-muted-foreground">{dir.slug}</TableCell>
                 <TableCell className="text-right">
                   <EditDirectionDialog slug={dir.slug} id={dir.id}/>
