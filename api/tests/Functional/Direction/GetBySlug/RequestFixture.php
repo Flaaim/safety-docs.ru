@@ -14,7 +14,7 @@ class RequestFixture extends AbstractFixture
     public function load(ObjectManager $manager): void
     {
         $direction = new Direction(
-            DirectionId::generate(),
+            new DirectionId('a597bffd-cdbe-4ac2-b565-639e96957977'),
             'Охрана труда',
             'Собраны комплекты документов',
             'some text',

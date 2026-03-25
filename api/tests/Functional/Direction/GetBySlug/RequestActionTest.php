@@ -26,6 +26,7 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
+            'id' => 'a597bffd-cdbe-4ac2-b565-639e96957977',
             'slug' => 'safety',
             'title' => $data['title'],
             'description' => $data['description'],

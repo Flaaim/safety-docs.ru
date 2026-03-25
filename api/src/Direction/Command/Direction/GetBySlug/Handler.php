@@ -22,6 +22,7 @@ class Handler
         }
 
         return new DirectionDTO(
+            $direction->getId()->getValue(),
             $direction->getTitle(),
             $direction->getDescription(),
             $direction->getText(),
