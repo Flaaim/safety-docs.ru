@@ -4,6 +4,7 @@ export interface DirectionCollection {
 }
 
 export interface DirectionDTO{
+  id: string,
   title: string,
   description: string,
   text: string

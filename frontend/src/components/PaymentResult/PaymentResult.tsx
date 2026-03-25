@@ -3,10 +3,10 @@
 import {z} from 'zod'
 import {JSX, useEffect, useState} from "react";
 import {Status} from "@/components/Status/Status";
-import {getPaymentByToken} from "../../../api/payment";
 import {PaymentData} from "@/interfaces/payment.interface";
 import { Suspense } from "react";
 import {useSearchParams} from "next/navigation";
+import {getPaymentByToken} from "@api/payment";
 
 const tokenSchema = z.string().uuid('Неверный формат токена')
 

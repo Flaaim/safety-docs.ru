@@ -6,14 +6,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Plus, Edit } from "lucide-react";
-import Link from "next/link";
 import {getAllDirections} from "@api/direction";
 import AddDirectionDialog from "@/components/Admin/Dashboard/Directions/add-direction-dialog";
+import EditDirectionDialog from "@/components/Admin/Dashboard/Directions/edit-direction-dialog";
+import {cookies} from "next/headers";
 
 export default async function DirectionsPage() {
-  const data  = await getAllDirections()
+  const cookieStore = await cookies();
+  const token = cookieStore.get("admin_token")?.value;
+
+  const data  = await getAllDirections(token)
 
   return (
     <div className="space-y-6">
@@ -42,11 +44,7 @@ export default async function DirectionsPage() {
                 </TableCell>
                 <TableCell className="text-muted-foreground">{dir.slug}</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="icon" asChild>
-                    <Link href={`/dashboard/directions/edit/${dir.slug}`}>
-                      <Edit className="h-4 w-4" />
-                    </Link>
-                  </Button>
+                  <EditDirectionDialog slug={dir.slug} id={dir.id}/>
                 </TableCell>
               </TableRow>
             ))}

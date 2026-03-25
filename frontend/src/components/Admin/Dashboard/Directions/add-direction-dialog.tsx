@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import Cookies from "js-cookie";
-import addDirection from "@api/direction";
+import {addDirection} from "@api/direction";
 import {toast} from "sonner";
 import {
   Dialog,
