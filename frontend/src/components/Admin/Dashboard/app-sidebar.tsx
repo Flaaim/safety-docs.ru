@@ -1,6 +1,6 @@
 'use client'
 
-import {LayoutDashboard, Settings, FileText, User, LogOut, GamepadDirectional} from "lucide-react"
+import {LayoutDashboard, Settings, FileText, User, LogOut, GamepadDirectional, ChartColumnStacked} from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +22,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 const items = [
   {title: "Панель", url: "/dashboard", icon: LayoutDashboard},
   { title: "Документы", url: "/dashboard/docs", icon: FileText },
+  { title: "Категории", url: "/dashboard/categories", icon: ChartColumnStacked },
   { title: "Направления", url: "/dashboard/directions", icon: GamepadDirectional },
   { title: "Настройки", url: "/dashboard/settings", icon: Settings },
 ]
