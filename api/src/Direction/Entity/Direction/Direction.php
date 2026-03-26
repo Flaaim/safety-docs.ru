@@ -69,7 +69,7 @@ class Direction
     {
         foreach ($this->categories as $existingCategory) {
             if($existingCategory->getSlug()->equals($category->getSlug())) {
-                throw new \DomainException('Category already exists.');
+                throw new \DomainException("Category with slug ".$category->getSlug()->getValue()." is exists.");
             }
         }
         $this->categories->add($category);

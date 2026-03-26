@@ -67,7 +67,7 @@ class DirectionTest extends TestCase
         );
         self::assertCount(1, $direction->getCategories());
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Category already exists.');
+        $this->expectExceptionMessage('Category with slug cat-slug is exists.');
         new Category(
             CategoryId::generate(),
             'Category Title',
