@@ -9,6 +9,7 @@ use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Routing\RouteContext;
 
 
 class RequestAction implements RequestHandlerInterface
@@ -21,7 +22,12 @@ class RequestAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $directionId = $request->getParsedBody()['directionId'] ?? '';
+        $routeContext = RouteContext::fromRequest($request);
+
+        $route = $routeContext->getRoute();
+
+        $directionId = $route->getArgument('directionId', '');
+
         $title = $request->getParsedBody()['title'] ?? '';
         $description = $request->getParsedBody()['description'] ?? '';
         $text = $request->getParsedBody()['text'] ?? '';
