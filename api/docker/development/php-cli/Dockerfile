@@ -7,6 +7,8 @@ RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 
 RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 
+RUN mkdir -p var/cache var/log && chown -R www-data:www-data var
+
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 COPY ./common/wait-for-it.sh /usr/local/bin/wait-for-it
