@@ -28,6 +28,7 @@ class RequestActionTest extends WebTestCase
         self::assertEquals([
             'directions' => [
                 [
+                    'id' => '37e9c865-8401-4339-bb23-73a25b85e7b3',
                     'title' => 'Охрана труда',
                     'description' => 'Собраны комплекты документов',
                     'text' => 'some text',
