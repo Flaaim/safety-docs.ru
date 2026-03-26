@@ -2,6 +2,8 @@
 
 namespace App\Direction\Entity\Direction\DTO;
 
+use App\Direction\Entity\Category\Category;
+
 class DirectionsCollection implements \JsonSerializable
 {
     public function __construct(
@@ -15,12 +17,13 @@ class DirectionsCollection implements \JsonSerializable
         return [
             'directions' => array_map(
                 fn($direction) => [
+                    'id' => $direction->getId()->getValue(),
                     'title' => $direction->getTitle(),
                     'description' => $direction->getDescription(),
                     'text' => $direction->getText(),
                     'slug' => $direction->getSlug()->getValue(),
                     'categories' => array_map(
-                        fn($category) => [
+                        fn(Category $category) => [
                             'title' => $category->getTitle(),
                             'description' => $category->getDescription(),
                             'text' => $category->getText(),

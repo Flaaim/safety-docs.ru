@@ -2,8 +2,6 @@
 
 namespace App\Direction\Entity\Category\DTO;
 
-use App\Direction\Entity\Category\Category;
-
 class CategoriesCollection implements \JsonSerializable
 {
     public function __construct(
@@ -16,12 +14,13 @@ class CategoriesCollection implements \JsonSerializable
     {
         return [
             'categories' => array_map(
-                fn(Category $category) => [
-                    'title' => $category->getTitle(),
-                    'description' => $category->getDescription(),
-                    'text' => $category->getText(),
-                    'slug' => $category->getSlug()->getValue(),
-                    'direction_id' => $category->getDirection()->getId()->getValue(),
+                fn(CategoryDTO $category) => [
+                    'id' => $category->id,
+                    'title' => $category->title,
+                    'description' => $category->description,
+                    'text' => $category->text,
+                    'slug' => $category->slug,
+                    'direction_id' => $category->directionId,
                 ], $this->categories
             ),
             'total' => $this->total
