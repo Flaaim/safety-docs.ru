@@ -26,4 +26,12 @@ class CategoryRepository
     {
         return $this->repo->findBy(['direction' => $directionId]);
     }
+
+    /**
+     * @return array<Category>
+     */
+    public function getAllPaginated(): array
+    {
+        return $this->repo->findAll();
+    }
 }
