@@ -16,7 +16,7 @@ class AuthMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $token = $request->getHeader('Authorization');
-        $token = str_replace('Bearer ', '', $token[0]);
+        $token = str_replace('Bearer ', '', $token[0] ?? '');
 
         $expectedToken = $this->container->get('config')['auth']['api_token'];
 
