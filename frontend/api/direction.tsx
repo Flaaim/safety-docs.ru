@@ -46,7 +46,7 @@ export async function getAllDirections(token?: string): Promise<DirectionCollect
   return response.json();
 }
 
-export async function addDirection(token: string | undefined, direction: object): Promise<void> {
+export async function addDirection(token: string | undefined, direction: Partial<DirectionDTO>): Promise<void> {
 
   const response = await fetch(API.direction.add(), {
     method: "POST",
@@ -67,7 +67,7 @@ export async function addDirection(token: string | undefined, direction: object)
   }
 }
 
-export async function updateDirection(token: string | undefined, id: string, direction: object): Promise<void> {
+export async function updateDirection(token: string | undefined, id: string, direction: Partial<DirectionDTO>): Promise<void> {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   }

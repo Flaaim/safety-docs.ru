@@ -63,7 +63,14 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
     const text = formData.get('text')
     const slug = formData.get('slug');
 
-    const direction = {title, description, text, slug}
+
+    const direction:Partial<DirectionDTO> = {
+      title: typeof title === 'string' ? title : undefined,
+      description: typeof description === 'string' ? description : undefined,
+      text: typeof text === 'string' ? text : undefined,
+      slug: typeof slug === 'string' ? slug : undefined
+    }
+
     try{
       await updateDirection(token, id, direction)
       toast.success('Направление обновлено')

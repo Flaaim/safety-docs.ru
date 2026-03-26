@@ -19,6 +19,7 @@ import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
+import {DirectionDTO} from "@/interfaces/direction.interface";
 
 
 export default function AddDirectionDialog(){
@@ -37,7 +38,12 @@ export default function AddDirectionDialog(){
     const slug = formData.get('slug');
 
 
-    const direction = {title, description, text, slug}
+    const direction:Partial<DirectionDTO> = {
+      title: typeof title === 'string' ? title : undefined,
+      description: typeof description === 'string' ? description : undefined,
+      text: typeof text === 'string' ? text : undefined,
+      slug: typeof slug === 'string' ? slug : undefined
+    }
 
     const token = Cookies.get("admin_token");
     try{
