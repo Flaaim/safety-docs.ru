@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Command\Direction\Category\GetAll;
+namespace App\Direction\Command\Direction\Category\GetAllByDirection;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

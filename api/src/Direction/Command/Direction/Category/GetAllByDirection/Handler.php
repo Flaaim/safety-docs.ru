@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Command\Direction\Category\GetAll;
+namespace App\Direction\Command\Direction\Category\GetAllByDirection;
 
 use App\Direction\Entity\Category\CategoryRepository;
 use App\Direction\Entity\Category\DTO\CategoriesCollection;

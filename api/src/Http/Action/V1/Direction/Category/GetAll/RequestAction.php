@@ -2,8 +2,8 @@
 
 namespace App\Http\Action\V1\Direction\Category\GetAll;
 
-use App\Direction\Command\Direction\Category\GetAll\Command;
-use App\Direction\Command\Direction\Category\GetAll\Handler;
+use App\Direction\Command\Direction\Category\GetAllByDirection\Command;
+use App\Direction\Command\Direction\Category\GetAllByDirection\Handler;
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;
