@@ -18,6 +18,10 @@ export const API = {
     getBySlug: (slug: string) => BASE_URL + `/v1/directions/s/${slug}`,
     update: (id: string) => BASE_URL + `/v1/directions/${id}`
   },
+  category: {
+    getAll: () => BASE_URL + `/v1/categories`,
+    add: (directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories`
+  },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
   }
