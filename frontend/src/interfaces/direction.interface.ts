@@ -1,3 +1,5 @@
+import {CategoryDTO} from "@/interfaces/category.interface";
+
 export interface DirectionCollection {
   directions: DirectionDTO[];
   total: number
@@ -12,11 +14,5 @@ export interface DirectionDTO{
   categories: CategoryDTO[]
 }
 
-export interface CategoryDTO {
-  title: string,
-  description: string,
-  text: string
-  slug: string
-}
 
 
