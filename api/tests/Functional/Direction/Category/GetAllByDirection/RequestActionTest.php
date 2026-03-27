@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Functional\Direction\Category\GetAll;
+namespace Test\Functional\Direction\Category\GetAllByDirection;
 
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;

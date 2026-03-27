@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Functional\Direction\Category\GetAll;
+namespace Test\Functional\Direction\Category\GetAllByDirection;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
