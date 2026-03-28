@@ -120,4 +120,21 @@ class DirectionTest extends TestCase
         );
         self::assertFalse($direction->canBeDeleted());
     }
+    public function testIsCategoryExist(): void
+    {
+
+        $direction = (new DirectionBuilder())->build();
+        new Category(
+            CategoryId::generate(),
+            'Category Title',
+            'Category Description',
+            'Category Text',
+            new Slug('cat-slug'),
+            $direction
+        );
+
+        $newSlug = new Slug('new-slug');
+
+        self::assertFalse($direction->isCategoryExist($newSlug));
+    }
 }

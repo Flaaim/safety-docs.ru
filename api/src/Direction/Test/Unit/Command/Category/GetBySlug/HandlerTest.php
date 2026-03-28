@@ -7,11 +7,9 @@ use App\Direction\Command\Direction\Category\GetBySlug\Handler;
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Category\CategoryRepository;
-use App\Direction\Entity\Category\DTO\CategoryDTO;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
-use App\Flusher;
 use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase

@@ -74,7 +74,16 @@ class Direction
         }
         $this->categories->add($category);
     }
-
+    public function isCategoryExist(Slug $categorySlug): bool
+    {
+        foreach($this->categories as $existingCategory) {
+            /** @var Category $existingCategory */
+            if($existingCategory->getSlug()->equals($categorySlug)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public function removeCategory(Slug $slug): void
     {
         foreach ($this->categories as $category) {
