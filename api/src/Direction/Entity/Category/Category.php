@@ -52,4 +52,13 @@ class Category
     {
         return $this->direction;
     }
+
+    public function update(string $title, string $description, string $text, SLug $slug, Direction $direction): void
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->text = $text;
+        $this->slug = $slug;
+        $this->direction = $direction;
+    }
 }
