@@ -50,3 +50,24 @@ export async function addCategory(token: string | undefined, category:Partial<Ca
   }
 
 }
+
+export async function getCategoryBySlug(slug: string, directionId:string, token: string | undefined): Promise<CategoryDTO>{
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  }
+
+  if(token){
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(API.category.getBySlug(slug, directionId), {
+    method: "GET",
+    headers: headers
+  })
+
+  if (!response.ok) {
+    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
+    throw new Error(`Ошибка получения данных`);
+  }
+  return response.json();
+}
