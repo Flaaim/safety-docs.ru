@@ -103,7 +103,6 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
         </DialogHeader>
         {loading || !directionData ? (<div>Загрузка....</div>) : (
           <form key={directionData.id} onSubmit={onSubmit} className="grid gap-4 py-4">
-            <input type="hidden" name="id" value={id} />
             <div className="grid gap-2">
               <Label htmlFor="title">Название</Label>
               <Input id="title" name="title" placeholder="Напр: Охрана труда" defaultValue={directionData.title} required />
