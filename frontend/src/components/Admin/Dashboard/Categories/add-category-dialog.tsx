@@ -98,7 +98,7 @@ export default function AddCategoryDialog(){
           <Plus className="mr-2 h-4 w-4" /> Добавить
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Новая категория</DialogTitle>
           <DialogDescription>

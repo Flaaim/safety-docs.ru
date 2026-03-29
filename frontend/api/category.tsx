@@ -71,3 +71,31 @@ export async function getCategoryBySlug(slug: string, directionId:string, token:
   }
   return response.json();
 }
+
+export async function updateCategory(token: string | undefined, category:Partial<CategoryDTO>): Promise<void>{
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  }
+  if(token){
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const id = (category.id) ? category.id : '';
+  const directionId = (category.directionId) ? category.directionId : '';
+
+  const response = await fetch(API.category.update(id, directionId), {
+    method: 'PUT',
+    headers: headers,
+    body: JSON.stringify({
+      title: category.title,
+      description: category.description,
+      text: category.text,
+      slug: category.slug
+    })
+  })
+
+  if (!response.ok) {
+    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
+    throw new Error(`Ошибка отправки данных`);
+  }
+}

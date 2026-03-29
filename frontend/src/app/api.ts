@@ -21,7 +21,8 @@ export const API = {
   category: {
     getAll: () => BASE_URL + `/v1/categories`,
     add: (directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories`,
-    getBySlug: (slug: string, directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/s/${slug}`
+    getBySlug: (slug: string, directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/s/${slug}`,
+    update: (id: string , directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/${id}`
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
