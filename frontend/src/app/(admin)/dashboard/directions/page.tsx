@@ -10,6 +10,7 @@ import {getAllDirections} from "@api/direction";
 import AddDirectionDialog from "@/components/Admin/Dashboard/Directions/add-direction-dialog";
 import EditDirectionDialog from "@/components/Admin/Dashboard/Directions/edit-direction-dialog";
 import {cookies} from "next/headers";
+import {DirectionDTO} from "@/interfaces/direction.interface";
 
 export default async function DirectionsPage() {
   const cookieStore = await cookies();
@@ -35,7 +36,7 @@ export default async function DirectionsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.directions.map((dir: any) => (
+            {data.directions.map((dir: DirectionDTO) => (
               <TableRow key={dir.slug}>
                 <TableCell className="font-medium">{dir.title}</TableCell>
                 <TableCell className="max-w-[400px] font-medium">
