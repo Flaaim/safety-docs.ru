@@ -25,13 +25,11 @@ class CategoryTest extends TestCase
             'Обучение по пожарной безопасности, комплект документов',
             'Some text',
             new Slug('education'),
-            $fireDirection
         );
         self::assertEquals('Обучение по пожарной безопасности', $serviceCategory->getTitle());
         self::assertEquals('Обучение по пожарной безопасности, комплект документов', $serviceCategory->getDescription());
         self::assertEquals('Some text', $serviceCategory->getText());
         self::assertEquals('education', $serviceCategory->getSlug()->getValue());
-        self::assertEquals($fireDirection, $serviceCategory->getDirection());
     }
 
     private function getServiceCategory(): Category

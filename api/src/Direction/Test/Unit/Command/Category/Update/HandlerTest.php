@@ -39,9 +39,12 @@ class HandlerTest extends TestCase
             ->with($this->equalTo($directionId))
             ->willReturn(null);
 
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Direction not found.');
+        $this->categories->expects(self::never())->method('findById');
+        $this->categories->expects(self::never())->method('findBySlug');
+        $this->flusher->expects(self::never())->method('flush');
 
+        self::expectExceptionMessage('Direction not found.');
+        self::expectException(\DomainException::class);
         $this->handler->handle($command);
     }
 
@@ -51,15 +54,19 @@ class HandlerTest extends TestCase
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
-        $direction = (new DirectionBuilder())->withId($directionId)->build();
+        $direction = (new DirectionBuilder())->build();
 
         $this->directions->expects(self::once())->method('findById')
             ->with($this->equalTo($directionId))
             ->willReturn($direction);
 
+
         $this->categories->expects($this->once())->method('findById')
             ->with($this->equalTo($categoryId))
             ->willReturn(null);
+
+        $this->categories->expects(self::never())->method('findBySlug');
+        $this->flusher->expects(self::never())->method('flush');
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Category not found.');
@@ -67,70 +74,125 @@ class HandlerTest extends TestCase
         $this->handler->handle($command);
     }
 
-    public function testCategoryExists(): void
+    public function testSuccessWithNewSlug(): void
     {
         $command = $this->getCommand();
+
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
         $direction = (new DirectionBuilder())->withId($directionId)->build();
 
-        $existingCategory =  new Category(
+        $category =  new Category(
             new CategoryId($command->categoryId),
             'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            new Slug($command->slug),
+            new Slug('old-slug'),
             $direction
         );
+
         $this->directions->expects(self::once())->method('findById')
             ->with($this->equalTo($directionId))
             ->willReturn($direction);
 
         $this->categories->expects($this->once())->method('findById')
             ->with($this->equalTo($categoryId))
-            ->willReturn($existingCategory);
+            ->willReturn($category);
+
+        $this->flusher->expects(self::once())->method('flush');
+
+        $this->handler->handle($command);
+
+        self::assertEquals($command->title, $category->getTitle());
+        self::assertEquals($command->description, $category->getDescription());
+        self::assertEquals($command->slug, $category->getSlug()->getValue());
+        self::assertEquals($command->text, $category->getText());
+    }
+    public function testSuccessWithSameSlug(): void
+    {
+        $command = $this->getCommand();
+
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
+
+        $direction = (new DirectionBuilder())->withId($directionId)->build();
+
+        $category =  new Category(
+            new CategoryId($command->categoryId),
+            'Пожарная безопасность',
+            'Комплект документов',
+            'Some text',
+            new Slug('service'),
+            $direction
+        );
+
+        $this->directions->expects(self::once())->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($direction);
+
+        $this->categories->expects($this->once())->method('findById')
+            ->with($this->equalTo($categoryId))
+            ->willReturn($category);
+
+        $this->categories->expects(self::once())->method('findBySlug')
+            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->willReturn($category);
+
+        $this->flusher->expects(self::once())->method('flush');
+
+        $this->handler->handle($command);
+
+        self::assertEquals($command->title, $category->getTitle());
+        self::assertEquals($command->description, $category->getDescription());
+        self::assertEquals($command->slug, $category->getSlug()->getValue());
+        self::assertEquals($command->text, $category->getText());
+    }
+
+    public function testAlreadyTakenAnotherCategory(): void
+    {
+        $command = $this->getCommand();
+        $slug = new Slug($command->slug);
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
+
+        $direction = (new DirectionBuilder())->withId($directionId)->build();
+
+        $category =  new Category(
+            new CategoryId($command->categoryId),
+            'Пожарная безопасность',
+            'Комплект документов',
+            'Some text',
+            new Slug('old-slug'),
+            $direction
+        );
+
+        $anotherCategory =  new Category(
+            new CategoryId('7f2cf3f7-9f47-4d04-ae5e-d73995d2e005'),
+            'Another category title',
+            'Another category description',
+            'Some text',
+            new Slug('service'),
+            $direction
+        );
+
+        $this->directions->expects(self::once())->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($direction);
+
+        $this->categories->expects($this->once())->method('findById')
+            ->with($this->equalTo($categoryId))
+            ->willReturn($category);
+
+        $this->categories->expects(self::once())->method('findBySlug')
+            ->with($this->equalTo($slug), $this->equalTo($directionId))
+            ->willReturn($anotherCategory);
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Category with slug service is exists.');
 
         $this->handler->handle($command);
     }
-
-    public function testSuccess(): void
-    {
-        $command = $this->getCommand();
-        $categoryId = new CategoryId($command->categoryId);
-        $directionId = new DirectionId($command->directionId);
-
-        $direction = (new DirectionBuilder())->withId($directionId)->build();
-
-        $existingCategory =  new Category(
-            $categoryId,
-            'Пожарная безопасность',
-            'Комплект документов',
-            'Some text',
-            new Slug('new-slug'),
-            $this->createMock(Direction::class)
-        );
-
-        $this->directions->expects(self::once())->method('findById')
-            ->with($this->equalTo($directionId))
-            ->willReturn($direction);
-
-        $this->categories->expects($this->once())->method('findById')
-            ->with($this->equalTo($categoryId))
-            ->willReturn($existingCategory);
-
-        $this->handler->handle($command);
-
-        self::assertEquals($command->slug, $existingCategory->getSlug()->getValue());
-        self::assertEquals($command->categoryId, $existingCategory->getId()->getValue());
-        self::assertEquals($command->title, $existingCategory->getTitle());
-        self::assertEquals($command->description, $existingCategory->getDescription());
-        self::assertEquals($command->directionId, $existingCategory->getDirection()->getId()->getValue());
-    }
-
     private function getCommand(): Command
     {
         return new Command(

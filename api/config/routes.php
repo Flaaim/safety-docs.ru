@@ -54,12 +54,19 @@ return static function(App $app): void {
             $group->delete('/{directionId:'.$uuidPattern.'}', Direction\Delete\RequestAction::class);
             $group->put('/{directionId:'.$uuidPattern.'}', Direction\Update\RequestAction::class);
 
-            $group->group('/{directionId:'.$uuidPattern.'}/categories', function (RouteCollectorProxy $group): void {
+            $group->group('/{directionId:'.$uuidPattern.'}/categories', function (RouteCollectorProxy $group) use ($uuidPattern) : void {
+
                 $group->get('', Direction\Category\GetAll\RequestAction::class);
-                $group->post('', Direction\Category\Add\RequestAction::class);
+                $group->get('/s/{slug:[a-z-]+}', Direction\Category\GetBySlug\RequestAction::class);
+
+                $group->post('', Direction\Category\Add\RequestAction::class)->add(AuthMiddleware::class);
+                $group->put('/{categoryId:'.$uuidPattern.'}', Direction\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
             });
 
+        });
 
+        $group->group('/categories', function (RouteCollectorProxy $group): void {
+            $group->get('', Direction\Category\Admin\GetAll\RequestAction::class)->add(AuthMiddleware::class);
         });
 
     });

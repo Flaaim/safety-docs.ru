@@ -3,7 +3,6 @@
 use App\Flusher;
 use App\Payment\Command\HookPayment\Handler as HookPaymentHandler;
 use App\Payment\Entity\PaymentRepository;
-use App\Product\Entity\ProductRepository;
 use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
 use App\Shared\Domain\Service\Payment\WebhookParser\YookassaWebhookParser;
 use Doctrine\ORM\EntityManagerInterface;

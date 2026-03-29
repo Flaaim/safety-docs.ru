@@ -17,7 +17,7 @@ class ProductPaginatedDTOMapping
 
         return new ProductPaginatedDTO(
             $slicedProducts,
-            count($products),
+            $total,
             $page,
             $perPage,
             (int) ceil($total / $perPage) ?: 1
