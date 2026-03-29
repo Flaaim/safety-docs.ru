@@ -87,6 +87,17 @@ class RequestActionTest extends WebTestCase
         ]));
 
         self::assertEquals(400, $response->getStatusCode());
+    }
 
+    public function testUpdateWithNewDirection(): void
+    {
+        $response = $this->app()->handle(self::json('PUT', '/v1/directions/8b4929fa-51cc-4df9-90b6-071848e5b977/categories/8aa8f453-b19b-4b53-915b-1f04c83a9aee', [
+            'title' => 'Инструктажи по охране труда',
+            'description' => 'Описание инструктажей по охране труда',
+            'text' => 'Текст для инструктаже по охране труда',
+            'slug' => 'education',
+        ]));
+
+        self::assertEquals(204, $response->getStatusCode());
     }
 }

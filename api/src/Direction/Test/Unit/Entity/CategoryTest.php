@@ -25,18 +25,35 @@ class CategoryTest extends TestCase
             'Обучение по пожарной безопасности, комплект документов',
             'Some text',
             new Slug('education'),
+            $fireDirection
         );
+
         self::assertEquals('Обучение по пожарной безопасности', $serviceCategory->getTitle());
         self::assertEquals('Обучение по пожарной безопасности, комплект документов', $serviceCategory->getDescription());
         self::assertEquals('Some text', $serviceCategory->getText());
         self::assertEquals('education', $serviceCategory->getSlug()->getValue());
     }
 
+    public function testUpdateDirectionSuccess(): void
+    {
+        $newDirection = (new DirectionBuilder())
+            ->withTitle('Охрана труда')
+            ->withId(new DirectionId('2b03bff3-061d-4576-a29c-9376e15c572b'))->build();
+
+        $category = $this->getServiceCategory();
+
+        $category->updateDirection($newDirection);
+
+        self::assertEquals($newDirection, $category->getDirection());
+        self::assertCount(1, $newDirection->getCategories());
+        self::assertEquals('Охрана труда', $category->getDirection()->getTitle());
+    }
+
     private function getServiceCategory(): Category
     {
         $safetyDirection = (new DirectionBuilder())
             ->withId(new DirectionId('a393dded-51c5-4049-91ff-414b37ddf917'))
-            ->withTitle('Охран труда')
+            ->withTitle('Пожарная безопасность')
             ->build();
 
         return new Category(
@@ -48,5 +65,9 @@ class CategoryTest extends TestCase
             $safetyDirection
         );
     }
+
+
+
+
 
 }

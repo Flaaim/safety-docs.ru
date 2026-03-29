@@ -45,6 +45,7 @@ class Handler
             $command->description,
             $command->text,
             $slug,
+            $direction,
         );
 
         $this->flusher->flush();

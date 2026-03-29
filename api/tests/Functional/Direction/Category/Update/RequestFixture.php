@@ -23,6 +23,14 @@ class RequestFixture extends AbstractFixture
             ->withSlug(new Slug('safety'))
             ->build();
 
+        $newDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('8b4929fa-51cc-4df9-90b6-071848e5b977'))
+            ->withTitle('Пожарная безопасность')
+            ->withDescription('Пожарная безопасность описание')
+            ->withText('Пожарная безопасность текст')
+            ->withSlug(new Slug('fire'))
+            ->build();
+
         $category = new Category(
             new CategoryId('8aa8f453-b19b-4b53-915b-1f04c83a9aee'),
             'Служба охраны труда',
@@ -42,6 +50,8 @@ class RequestFixture extends AbstractFixture
         );
 
         $manager->persist($direction);
+
+        $manager->persist($newDirection);
 
         $manager->persist($category);
 

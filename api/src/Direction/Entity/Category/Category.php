@@ -53,11 +53,26 @@ class Category
         return $this->direction;
     }
 
-    public function update(string $title, string $description, string $text, Slug $slug): void
+    public function update(string $title, string $description, string $text, Slug $slug, Direction $direction): void
     {
         $this->title = $title;
         $this->description = $description;
         $this->text = $text;
         $this->slug = $slug;
+        $this->updateDirection($direction);
+    }
+    private function appendDirection(Direction $direction): void
+    {
+        $this->direction = $direction;
+    }
+    public function updateDirection(Direction $direction): void
+    {
+        if($this->direction->getId()->getValue() !== $direction->getId()->getValue()) {
+            if($this->direction->isCategoryExist($this->slug)) {
+                $this->direction->removeCategory($this->slug);
+                $this->appendDirection($direction);
+                $this->direction->addCategory($this);
+            }
+        }
     }
 }

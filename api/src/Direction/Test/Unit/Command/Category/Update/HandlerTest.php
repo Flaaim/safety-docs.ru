@@ -193,6 +193,52 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
     }
+
+    public function testSuccessWithNewDirection(): void
+    {
+        $command = $this->getCommand();
+
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
+
+        $direction = (new DirectionBuilder())
+            ->withTitle('Охрана труда')
+            ->withId(new DirectionId('658c6a52-09df-4ebb-acc4-b83c2b6abe48'))
+            ->build();
+
+        $newDirection = (new DirectionBuilder())
+            ->withTitle('Пожарная безопасность')
+            ->withId(new DirectionId('3b30a1da-2ce1-49d8-a994-d0fb222ad827'))->build();
+
+        $category =  new Category(
+            new CategoryId($command->categoryId),
+            'Пожарная безопасность',
+            'Комплект документов',
+            'Some text',
+            new Slug('service'),
+            $direction
+        );
+
+        $this->directions->expects(self::once())->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($newDirection);
+
+        $this->categories->expects($this->once())->method('findById')
+            ->with($this->equalTo($categoryId))
+            ->willReturn($category);
+
+        $this->categories->expects(self::once())->method('findBySlug')
+            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->willReturn(null);
+
+        $this->flusher->expects(self::once())->method('flush');
+
+        $this->handler->handle($command);
+
+        self::assertEquals('Пожарная безопасность', $category->getDirection()->getTitle());
+    }
+
+
     private function getCommand(): Command
     {
         return new Command(
