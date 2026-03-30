@@ -33,31 +33,6 @@ class ProductRepository
     {
         $this->em->persist($product);
     }
-    public function upsert(Product $product): void
-    {
-        $qb = $this->em->createQueryBuilder();
-
-        $sql = '
-        INSERT INTO products (id, name, amount, file, cipher, slug) 
-        VALUES (:id, :name, :amount, :file, :cipher, :slug)
-        ON DUPLICATE KEY UPDATE 
-            name = VALUES(name),
-            amount = VALUES(amount),
-            file = VALUES(file), 
-            slug = VALUES(slug)
-         ';
-
-        $qb->getEntityManager()
-            ->getConnection()
-            ->executeStatement($sql, [
-                'id' => $product->getId()->getValue(),
-                'name' => $product->getName(),
-                'amount' => $product->getAmount()->getValue(),
-                'file' => $product->getFile()->getValue(),
-                'cipher' => $product->getCipher(),
-                'slug' => $product->getSlug()
-            ]);
-    }
     /** @return array<Product> */
     public function findAllPaginated(): array
     {
