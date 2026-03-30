@@ -9,6 +9,7 @@ class ProductDTO
     public function __construct(
         public string $productId,
         public string $name,
+        public string $cipher,
         public string $formattedPrice,
         public string $updatedAt
     ){
@@ -19,6 +20,7 @@ class ProductDTO
         return new self(
             $product->getId()->getValue(),
             $product->getName(),
+            $product->getCipher(),
             $product->getAmount()->formatted(),
             $product->getUpdatedAt()->format('d.m.Y')
         );
