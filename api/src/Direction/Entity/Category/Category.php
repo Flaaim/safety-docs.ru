@@ -81,7 +81,7 @@ class Category
             }
         }
     }
-    public function appendProduct(Product $product): void
+    public function assignProduct(Product $product): void
     {
         $this->product = $product;
     }
