@@ -38,4 +38,9 @@ class ProductRepository
     {
         return $this->repo->findAll();
     }
+
+    public function findById(ProductId $id): ?Product
+    {
+        return $this->repo->find($id);
+    }
 }
