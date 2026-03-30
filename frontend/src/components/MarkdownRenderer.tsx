@@ -10,6 +10,15 @@ type Props = {
 };
 
 export default function MarkdownRenderer({ content }: Props) {
+
+  const formattedContent = (() => {
+    // Проверяем, есть ли экранированные символы
+    if (content.includes('\\n')) {
+      return content.replace(/\\n/g, '\n');
+    }
+    return content;
+  })();
+
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
@@ -19,11 +28,14 @@ export default function MarkdownRenderer({ content }: Props) {
         h1: ({ children }) => <Htag tag="h1">{children}</Htag>,
         h2: ({ children }) => <Htag tag="h2">{children}</Htag>,
         h3: ({ children }) => <Htag tag="h3">{children}</Htag>,
-        ul: ({ children }) => <Listtag className="doc-list">{children}</Listtag>,
-        li: ({ children }) => <Listtag className="doc-item">{children}</Listtag>,
+        h4: ({ children }) => <Htag tag="h4">{children}</Htag>,
+        h5: ({ children }) => <Htag tag="h5">{children}</Htag>,
+
+        ul: ({ children }) => <Listtag appearance="ul" className="doc-list">{children}</Listtag>,
+        ol: ({ children }) => <Listtag appearance="ol" className="doc-list">{children}</Listtag>,
       }}
     >
-      {content}
+      {formattedContent}
     </ReactMarkdown>
   );
 }

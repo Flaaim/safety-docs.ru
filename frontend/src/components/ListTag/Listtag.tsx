@@ -4,18 +4,16 @@ import cn from 'classnames'
 import styles from './Listtag.module.css'
 
 export const Listtag = ({children, appearance = 'ul', className, ...props}: ListtagProps): JSX.Element => {
-  const childArray = Array.isArray(children) ? children : [children];
+  const Tag = appearance === 'ul' ? 'ul' : 'ol';
+
   return (
-    <ul
-      className={cn(styles.ul, className, {
-        [styles.ul]: appearance === 'ul',
-        [styles.ol]: appearance === 'ol'
-      })}
+    <Tag className={cn(
+        appearance === 'ul' ? styles.ul : styles.ol,
+        className
+      )}
       {...props}
     >
-      {childArray.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))}
-    </ul>
-  )
+      {children}
+    </Tag>
+  );
 }
