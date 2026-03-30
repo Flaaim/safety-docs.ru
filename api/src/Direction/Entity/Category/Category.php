@@ -4,12 +4,17 @@ namespace App\Direction\Entity\Category;
 
 use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Slug;
+use App\Product\Entity\Product;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'categories')]
 class Category
 {
+    #[ORM\OneToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Product $product = null;
+
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'category_id', unique: true)]
@@ -24,7 +29,8 @@ class Category
         private Slug $slug,
         #[ORM\ManyToOne(targetEntity: Direction::class, inversedBy: 'categories')]
         #[ORM\JoinColumn(name: 'direction_id', referencedColumnName: 'id', nullable: false, onDelete: "RESTRICT")]
-        private Direction $direction
+        private Direction $direction,
+
     ){
         $direction->addCategory($this);
     }
@@ -74,5 +80,14 @@ class Category
                 $this->direction->addCategory($this);
             }
         }
+    }
+    public function appendProduct(Product $product): void
+    {
+        $this->product = $product;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
     }
 }
