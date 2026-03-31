@@ -29,7 +29,7 @@ class RequestActionTest extends WebTestCase
                 'amount' => 500.00,
                 'path' => 'safety/medical/med100.1.rar',
                 'slug' => 'medical',
-                'updatedAt' => '01.01.2019',
+                'updatedAt' => '2019-01-01',
             ],
             ['file' => $file]
         ));
@@ -50,7 +50,7 @@ class RequestActionTest extends WebTestCase
                 'amount' => 500.00,
                 'path' => 'safety/firstaid/first100.1.rar',
                 'slug' => 'medical',
-                'updatedAt' => '01.01.2019',
+                'updatedAt' => '2019-01-01',
             ],
             ['file' => $file]
         ));
@@ -156,7 +156,7 @@ class RequestActionTest extends WebTestCase
             'amount' => 500.00,
             'path' => 'safety/electrical/electr100.1.rar',
             'slug' => 'electrical',
-            'updatedAt' => '01.01.2019',
+            'updatedAt' => '2019-01-01',
         ];
     }
     private function createUploadFile(string $name, string $content, string $type, int $error): UploadedFileInterface
