@@ -12,6 +12,7 @@ class Handler
     public function __construct(
         private readonly ProductRepository $products,
         private readonly ProductPaginatedDTOMapping $mapper,
+        private readonly ProductDTOMapper $productDTOMapper,
     ){
     }
 
@@ -19,7 +20,9 @@ class Handler
     {
         $allProducts = $this->products->findAllPaginated();
 
-        $productPaginatedDTO = $this->mapper->map($allProducts, $command->perPage, $command->page);
+        $productDTOCollection = $this->productDTOMapper->mapCollection($allProducts);
+
+        $productPaginatedDTO = $this->mapper->map($productDTOCollection, $command->perPage, $command->page);
 
         return Response::fromResult($productPaginatedDTO);
     }

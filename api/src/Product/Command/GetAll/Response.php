@@ -2,11 +2,12 @@
 
 namespace App\Product\Command\GetAll;
 
+use App\Product\Entity\DTO\ProductDTO;
 use App\Product\Entity\DTO\ProductPaginatedDTO;
-use App\Product\Entity\Product;
 
 class Response implements \JsonSerializable
 {
+    /** @var array<ProductDTO> $products */
     private function __construct(
         private readonly array $products,
         private readonly int $total,
@@ -30,13 +31,13 @@ class Response implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'products' => array_map(fn(Product $product) => [
-                'id' => $product->getId()->getValue(),
-                'name' => $product->getName(),
-                'price' => $product->getAmount()->formatted(),
-                'cipher' => $product->getCipher(),
-                'file' => $product->getFile()->getValue(),
-                'slug' => $product->getSlug()->getValue(),
+            'products' => array_map(fn(ProductDTO $product) => [
+                'id' => $product->productId,
+                'name' => $product->name,
+                'price' => $product->formattedPrice,
+                'cipher' => $product->cipher,
+                'updatedAt' => $product->updatedAt,
+                'file' => $product->file,
             ], $this->products),
             'total' => $this->total,
             'currentPage' => $this->currentPage,
