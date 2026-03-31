@@ -21,13 +21,17 @@ class Command
         #[Assert\NotBlank]
         public string $slug,
         #[Assert\NotBlank]
-        #[Assert\DateTime(format: 'd.m.Y')]
+        #[Assert\DateTime(format: 'Y-m-d')]
         public string $updatedAt,
         #[Assert\NotNull]
         #[SlimUploadedFileAssert(
             maxSize: '15M',
             mimeTypes: [
                 'application/vnd.rar',
+                'application/x-rar-compressed',
+                'application/x-rar',
+                'application/octet-stream',
+                'application/x-compressed'
             ],
             extensions: [
                 'rar',
