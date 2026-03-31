@@ -5,6 +5,8 @@ const BASE_URL = isServer
 
 export const API = {
   product: {
+    getAll: () => BASE_URL + `/v1/products`,
+    add: () => BASE_URL + `/v1/products`,
     getById: (id: string) =>  BASE_URL + `/v1/products/get/${id}`,
     getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`
   },
