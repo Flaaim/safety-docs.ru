@@ -15,29 +15,26 @@ use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase
 {
-    private ProductRepository $products;
     private CategoryRepository $categories;
     private Flusher $flusher;
     private Handler $handler;
 
     public function setUp(): void
     {
-        $this->products = $this->createMock(ProductRepository::class);
         $this->categories = $this->createMock(CategoryRepository::class);
         $this->flusher = $this->createMock(Flusher::class);
-        $this->handler = new Handler($this->products,$this->categories, $this->flusher);
+        $this->handler = new Handler($this->categories, $this->flusher);
     }
 
     public function testCategoryNotFound(): void
     {
-        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224', '2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
+        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224');
         $categoryId = new CategoryId($command->categoryId);
 
         $this->categories->expects(self::once())->method('findById')
             ->with($categoryId)
             ->willReturn(null);
 
-        $this->products->expects(self::never())->method('findById');
         $this->flusher->expects(self::never())->method('flush');
 
         self::expectException(\DomainException::class);
@@ -45,33 +42,11 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
     }
-    public function testProductNotFound(): void
-    {
-        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224', '2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
-        $productId = new ProductId($command->productId);
-        $categoryId = new CategoryId($command->categoryId);
-
-        $category = (new CategoryBuilder())->withCategoryId($categoryId)->build();
-
-        $this->categories->expects(self::once())->method('findById')
-            ->with($categoryId)
-            ->willReturn($category);
-
-        $this->products->expects(self::once())->method('findById')
-            ->with($productId)
-            ->willReturn(null);
-
-        $this->flusher->expects(self::never())->method('flush');
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Product not found.');
-        $this->handler->handle($command);
-    }
 
     public function testRefuseProduct(): void
     {
-        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224', '2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
-        $productId = new ProductId($command->productId);
+        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224');
+        $productId = new ProductId('2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
         $categoryId = new CategoryId($command->categoryId);
 
         $product = (new ProductBuilder())->withId($productId)->build();
@@ -80,9 +55,6 @@ class HandlerTest extends TestCase
             ->withProduct($product)
             ->build();
 
-        $this->products->expects(self::once())->method('findById')
-            ->with($productId)
-            ->willReturn($product);
 
         $this->categories->expects(self::once())->method('findById')
             ->with($categoryId)
@@ -97,18 +69,12 @@ class HandlerTest extends TestCase
 
     public function testRefuseNotAssignedProduct(): void
     {
-        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224', '2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
-        $productId = new ProductId($command->productId);
+        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224');
         $categoryId = new CategoryId($command->categoryId);
 
-        $product = (new ProductBuilder())->withId($productId)->build();
         $category = (new CategoryBuilder())
             ->withCategoryId(($categoryId))
             ->build();
-
-        $this->products->expects(self::once())->method('findById')
-            ->with($productId)
-            ->willReturn($product);
 
         $this->categories->expects(self::once())->method('findById')
             ->with($categoryId)
