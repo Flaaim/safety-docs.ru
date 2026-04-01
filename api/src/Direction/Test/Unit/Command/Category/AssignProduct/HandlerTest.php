@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Test\Unit\Command\Category\AppendProduct;
+namespace App\Direction\Test\Unit\Command\Category\AssignProduct;
 
 use App\Direction\Command\Direction\Category\AssignProduct\Command;
 use App\Direction\Command\Direction\Category\AssignProduct\Handler;
