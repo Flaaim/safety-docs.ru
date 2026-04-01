@@ -5,6 +5,8 @@ namespace App\Direction\Test\Builder;
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Slug;
+use App\Product\Entity\Product;
+use App\Product\Test\ProductBuilder;
 
 class CategoryBuilder
 {
@@ -13,6 +15,8 @@ class CategoryBuilder
     private string $title;
     private string $description;
     private string $text;
+
+    private ?Product $product = null;
 
     public function __construct()
     {
@@ -47,10 +51,14 @@ class CategoryBuilder
         $this->text = $text;
         return $this;
     }
-
+    function withProduct(Product $product): self
+    {
+        $this->product = $product;
+        return $this;
+    }
     public function build(): Category
     {
-        return new Category(
+        $category = new Category(
             $this->categoryId,
             $this->title,
             $this->description,
@@ -58,5 +66,11 @@ class CategoryBuilder
             $this->slug,
             (new DirectionBuilder())->build()
         );
+
+        if($this->product !== null) {
+            $category->assignProduct($this->product);
+        }
+
+        return $category;
     }
 }
