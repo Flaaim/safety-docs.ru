@@ -7,6 +7,7 @@ use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
+use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
@@ -47,6 +48,30 @@ class CategoryTest extends TestCase
         self::assertEquals($newDirection, $category->getDirection());
         self::assertCount(1, $newDirection->getCategories());
         self::assertEquals('Охрана труда', $category->getDirection()->getTitle());
+    }
+    public function testAssign(): void
+    {
+        $category = $this->getServiceCategory();
+
+        $product = (new ProductBuilder())->build();
+
+        self::assertNull($category->getProduct());
+        $category->assignProduct($product);
+
+        self::assertEquals($product, $category->getProduct());
+    }
+    public function testAssignAlready(): void
+    {
+        $category = $this->getServiceCategory();
+        $product = (new ProductBuilder())->build();
+
+        $category->assignProduct($product);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Product already assigned. You must delete it first.');
+
+        $category->assignProduct($product);
+
     }
 
     private function getServiceCategory(): Category
