@@ -37,12 +37,12 @@ export default async function CategoriesPage() {
               <TableRow key={cat.slug}>
                 <TableCell className="font-medium">{cat.title}</TableCell>
                 <TableCell className="max-w-[400px] font-medium">
-                  <div className="line-clamp-2 text-sm text-muted-foreground">
+                  <div className="whitespace-normal break-words text-sm text-muted-foreground">
                     {cat.description}
                   </div>
                 </TableCell>
-                <TableCell className="font-medium">{cat.directionTitle}</TableCell>
-                <TableCell className="font-medium">
+                <TableCell className="whitespace-normal break-words font-medium">{cat.directionTitle}</TableCell>
+                <TableCell className="whitespace-normal break-words font-medium">
                   {cat.product ? cat.product.name : <AssignProductDialog categoryId={cat.id}></AssignProductDialog>}
                 </TableCell>
                 <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
