@@ -1,4 +1,4 @@
-import {ProductDTO} from "@/interfaces/product.interface";
+import {ProductDTO, ProductFree} from "@/interfaces/product.interface";
 
 export interface CategoryCollection {
   categories: CategoryDTO[]
@@ -12,7 +12,7 @@ export interface CategoryDTO {
   text: string
   slug: string
   directionTitle: string,
-  directionId: string
+  directionId: string,
   product: ProductDTO | null
 }
 
