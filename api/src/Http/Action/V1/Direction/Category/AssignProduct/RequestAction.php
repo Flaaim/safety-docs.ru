@@ -25,11 +25,11 @@ class RequestAction implements RequestHandlerInterface
 
         $categoryId = $route->getArgument('categoryId', '');
 
-        $data = $request->getParsedBody() ?? [];
+        $productId = $request->getParsedBody()['productId'] ?? '';
 
         $command = new Command(
-            $data['productId'] ?? '',
-                $categoryId,
+            $productId,
+            $categoryId,
         );
 
         $this->validator->validate($command);
