@@ -9,6 +9,7 @@ use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Routing\RouteContext;
 
 class RequestAction implements RequestHandlerInterface
 {
@@ -19,11 +20,16 @@ class RequestAction implements RequestHandlerInterface
     {}
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $routeContext = RouteContext::fromRequest($request);
+        $route = $routeContext->getRoute();
+
+        $categoryId = $route->getArgument('categoryId', '');
+
         $data = $request->getParsedBody() ?? [];
 
         $command = new Command(
             $data['productId'] ?? '',
-            $data['categoryId'] ?? '',
+                $categoryId,
         );
 
         $this->validator->validate($command);

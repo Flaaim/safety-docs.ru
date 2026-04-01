@@ -39,7 +39,7 @@ class Response implements \JsonSerializable
                 'slug' => $category->getSlug()->getValue(),
                 'directionTitle' => $category->getDirection()->getTitle(),
                 'directionId' => $category->getDirection()->getId()->getValue(),
-                'product' => (new ProductDTOMapper())->map($category->getProduct()) ?? null
+                'product' => (new ProductDTOMapper())->map($category->getProduct())
             ], $this->categories),
             'total' => $this->total,
             'currentPage' => $this->currentPage,

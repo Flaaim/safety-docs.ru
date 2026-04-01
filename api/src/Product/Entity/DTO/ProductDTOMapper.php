@@ -6,8 +6,11 @@ use App\Product\Entity\Product;
 
 class ProductDTOMapper
 {
-    public function map(Product $product): ProductDTO
+    public function map(?Product $product): ?ProductDTO
     {
+        if(null === $product) {
+            return null;
+        }
         return new ProductDTO(
             $product->getId()->getValue(),
             $product->getName(),

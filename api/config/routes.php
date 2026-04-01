@@ -68,9 +68,15 @@ return static function(App $app): void {
         });
 
         $group->group('/categories', function (RouteCollectorProxy $group): void {
+            $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+
             $group->get('', Direction\Category\Admin\GetAll\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->post('/assign', Direction\Category\AssignProduct\RequestAction::class)->add(AuthMiddleware::class);
+            $group->group('/{categoryId:'.$uuidPattern.'}', function (RouteCollectorProxy $group) : void {
+                $group->put('/product', Direction\Category\AssignProduct\RequestAction::class)->add(AuthMiddleware::class);
+                $group->delete('/product', Direction\Category\RefuseProduct\RequestAction::class)->add(AuthMiddleware::class);
+            });
+
 
         });
 
