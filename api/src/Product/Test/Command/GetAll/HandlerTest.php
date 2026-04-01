@@ -4,6 +4,7 @@ namespace App\Product\Test\Command\GetAll;
 
 use App\Product\Command\GetAll\Command;
 use App\Product\Command\GetAll\Handler;
+use App\Product\Entity\DTO\ProductDTOMapper;
 use App\Product\Entity\DTO\ProductPaginatedDTOMapping;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
@@ -22,7 +23,8 @@ class HandlerTest extends TestCase
         );
         $handler = new Handler(
             $products = $this->createMock(ProductRepository::class),
-            new ProductPaginatedDTOMapping()
+            new ProductPaginatedDTOMapping(),
+            new ProductDTOMapper()
         );
 
         $products->expects($this->once())->method('findAllPaginated')->willReturn([
