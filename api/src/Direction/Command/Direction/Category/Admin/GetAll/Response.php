@@ -4,6 +4,7 @@ namespace App\Direction\Command\Direction\Category\Admin\GetAll;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\DTO\Admin\CategoryPaginatedDTO;
+use App\Product\Entity\DTO\ProductDTOMapper;
 
 class Response implements \JsonSerializable
 {
@@ -38,6 +39,7 @@ class Response implements \JsonSerializable
                 'slug' => $category->getSlug()->getValue(),
                 'directionTitle' => $category->getDirection()->getTitle(),
                 'directionId' => $category->getDirection()->getId()->getValue(),
+                'product' => (new ProductDTOMapper())->map($category->getProduct()) ?? null
             ], $this->categories),
             'total' => $this->total,
             'currentPage' => $this->currentPage,
