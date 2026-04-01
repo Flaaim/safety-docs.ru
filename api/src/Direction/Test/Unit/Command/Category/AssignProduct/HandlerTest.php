@@ -90,4 +90,32 @@ class HandlerTest extends TestCase
 
         self::assertEquals($product, $category->getProduct());
     }
+
+    public function testAssignedProductAlready(): void
+    {
+        $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224', '2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
+        $productId = new ProductId($command->productId);
+        $categoryId = new CategoryId($command->categoryId);
+
+        $product = (new ProductBuilder())->withId($productId)->build();
+        $category = (new CategoryBuilder())
+            ->withCategoryId(($categoryId))
+            ->withProduct($product)
+            ->build();
+
+        $this->products->expects(self::once())->method('findById')
+            ->with($productId)
+            ->willReturn($product);
+
+        $this->categories->expects(self::once())->method('findById')
+            ->with($categoryId)
+            ->willReturn($category);
+
+        $this->flusher->expects(self::never())->method('flush');
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Product already assigned. You must delete it first.');
+
+        $this->handler->handle($command);
+    }
 }
