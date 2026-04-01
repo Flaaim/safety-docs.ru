@@ -3,8 +3,8 @@
 namespace App\Http\Action\V1\Direction\Category\Admin\GetAll;
 
 
-use App\Direction\Command\Direction\Category\Admin\Command;
-use App\Direction\Command\Direction\Category\Admin\Handler;
+use App\Direction\Command\Direction\Category\Admin\GetAll\Command;
+use App\Direction\Command\Direction\Category\Admin\GetAll\Handler;
 use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

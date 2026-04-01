@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Command\Direction\Category\Admin;
+namespace App\Direction\Command\Direction\Category\Admin\GetAll;
 
 use App\Direction\Entity\Category\CategoryRepository;
 use App\Direction\Entity\Category\DTO\Admin\CategoryPaginatedDTOMapping;

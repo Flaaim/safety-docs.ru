@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Direction\Command\Direction\Category\Admin;
+namespace App\Direction\Command\Direction\Category\Admin\GetAll;
 
 class Command
 {
