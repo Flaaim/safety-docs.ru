@@ -88,7 +88,13 @@ class Category
         }
         $this->product = $product;
     }
-
+    public function refuseProduct(): void
+    {
+        if($this->product === null) {
+            throw new \DomainException('Product not assigned.');
+        }
+        $this->product = null;
+    }
     public function getProduct(): ?Product
     {
         return $this->product;

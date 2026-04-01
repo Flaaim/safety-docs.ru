@@ -73,7 +73,25 @@ class CategoryTest extends TestCase
         $category->assignProduct($product);
 
     }
+    public function testRefuseNotAssigned(): void
+    {
+        $category = $this->getServiceCategory();
 
+        self::expectException(\DomainException::class);
+        $category->refuseProduct();
+    }
+    public function testRefuse(): void
+    {
+        $category = $this->getServiceCategory();
+
+        $product = (new ProductBuilder())->build();
+        $category->assignProduct($product);
+        self::assertEquals($product, $category->getProduct());
+
+        $category->refuseProduct();
+
+        self::assertNull($category->getProduct());
+    }
     private function getServiceCategory(): Category
     {
         $safetyDirection = (new DirectionBuilder())
