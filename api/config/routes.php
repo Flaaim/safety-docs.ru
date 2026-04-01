@@ -69,6 +69,9 @@ return static function(App $app): void {
 
         $group->group('/categories', function (RouteCollectorProxy $group): void {
             $group->get('', Direction\Category\Admin\GetAll\RequestAction::class)->add(AuthMiddleware::class);
+
+            $group->post('/assign', Direction\Category\AssignProduct\RequestAction::class)->add(AuthMiddleware::class);
+
         });
 
     });

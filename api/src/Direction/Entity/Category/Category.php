@@ -83,6 +83,9 @@ class Category
     }
     public function assignProduct(Product $product): void
     {
+        if($this->product !== null) {
+            throw new \DomainException('Product already assigned. You must delete it first.');
+        }
         $this->product = $product;
     }
 
