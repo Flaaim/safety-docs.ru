@@ -4,6 +4,7 @@ import {getAllCategories} from "@api/category";
 import {CategoryDTO} from "@/interfaces/category.interface";
 import AddCategoryDialog from "@/components/Admin/Dashboard/Categories/add-category-dialog";
 import EditCategoryDialog from "@/components/Admin/Dashboard/Categories/edit-category-dialog";
+import AssignProductDialog from "@/components/Admin/Dashboard/Categories/assign-product-dialog";
 
 
 
@@ -26,6 +27,7 @@ export default async function CategoriesPage() {
               <TableHead>Название</TableHead>
               <TableHead>Описание</TableHead>
               <TableHead>Направление</TableHead>
+              <TableHead>Продукт</TableHead>
               <TableHead>slug</TableHead>
               <TableHead className="text-right">Действия</TableHead>
             </TableRow>
@@ -40,6 +42,9 @@ export default async function CategoriesPage() {
                   </div>
                 </TableCell>
                 <TableCell className="font-medium">{cat.directionTitle}</TableCell>
+                <TableCell className="font-medium">
+                  {cat.product ? cat.product.name : <AssignProductDialog categoryId={cat.id}></AssignProductDialog>}
+                </TableCell>
                 <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
                 <TableCell className="text-right">
                   {<EditCategoryDialog slug={cat.slug} id={cat.id} directionId={cat.directionId}/>}

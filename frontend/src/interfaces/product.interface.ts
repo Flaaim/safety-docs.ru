@@ -22,3 +22,10 @@ export interface ProductCollection {
   products: ProductDTO[]
   total: number
 }
+
+export type ProductFreeCollection = ProductFree[];
+
+export interface ProductFree {
+  id: string,
+  name: string
+}

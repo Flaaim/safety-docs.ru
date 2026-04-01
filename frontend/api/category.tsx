@@ -1,4 +1,4 @@
-import {CategoryCollection, CategoryDTO} from "@/interfaces/category.interface";
+import {AssignCategory, CategoryCollection, CategoryDTO} from "@/interfaces/category.interface";
 import {API} from "@/app/api";
 
 
@@ -97,5 +97,36 @@ export async function updateCategory(token: string | undefined, category:Partial
   if (!response.ok) {
     console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
     throw new Error(`Ошибка отправки данных`);
+  }
+}
+
+export async function assignProduct(token: string | undefined, data: AssignCategory): Promise<void> {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  }
+  if(token){
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(API.category.assignProduct(), {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(data)
+  })
+
+  if (!response.ok) {
+    let errorMessage = "Ошибка отправки данных";
+
+    try {
+      const errorData = await response.json();
+
+      if (errorData && errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+    }catch (e) {
+      console.error("Не удалось распарсить JSON ошибки:", e);
+    }
+    throw new Error(errorMessage);
   }
 }

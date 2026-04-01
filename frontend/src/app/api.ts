@@ -5,7 +5,8 @@ const BASE_URL = isServer
 
 export const API = {
   product: {
-    getAll: () => BASE_URL + `/v1/products`,
+    getAll:() => BASE_URL + `/v1/products`,
+    getAllFree: () => BASE_URL + `/v1/products/free`,
     add: () => BASE_URL + `/v1/products`,
     getById: (id: string) =>  BASE_URL + `/v1/products/get/${id}`,
     getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`
@@ -24,7 +25,8 @@ export const API = {
     getAll: () => BASE_URL + `/v1/categories`,
     add: (directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories`,
     getBySlug: (slug: string, directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/s/${slug}`,
-    update: (id: string , directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/${id}`
+    update: (id: string , directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
+    assignProduct: () => BASE_URL + `/v1/categories/assign`
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,

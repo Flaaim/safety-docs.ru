@@ -8,7 +8,8 @@ import normalizeMarkdown  from "@/utils/normalizeMarkdown";
 import { cache } from 'react';
 import Link from "next/link";
 import {ChevronRight} from "lucide-react";
-import {CategoryDTO, DirectionDTO} from "@/interfaces/direction.interface";
+import {DirectionDTO} from "@/interfaces/direction.interface";
+import {CategoryDTO} from "@/interfaces/category.interface";
 
 
 type Props = {
@@ -47,7 +48,7 @@ const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: s
       ← Назад
     </Link>
     <Htag tag="h1">{category.title}</Htag>
-      <MarkdownRenderer content={normalizeMarkdown(category.text)} />
+      <MarkdownRenderer content={normalizeMarkdown(category.text.replace(/\\n/g, '\n'))} />
   </>
 
 )

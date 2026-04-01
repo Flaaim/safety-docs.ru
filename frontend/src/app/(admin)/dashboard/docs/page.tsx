@@ -34,7 +34,7 @@ export default async function ProductPage() {
               <TableRow key={prod.id}>
                 <TableCell className="font-medium">{prod.name}</TableCell>
                 <TableCell className="font-medium">{prod.cipher}</TableCell>
-                <TableCell className="font-medium">{prod.price}</TableCell>
+                <TableCell className="font-medium">{prod.amount}</TableCell>
                 <TableCell className="font-medium">{prod.updatedAt}</TableCell>
                 <TableCell className="font-medium">{prod.file}</TableCell>
                 <TableCell className="text-right">
