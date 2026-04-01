@@ -18,10 +18,22 @@ export async function getAllCategories(token?: string): Promise<CategoryCollecti
   })
 
   if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка получения данных`);
+    let errorMessage = 'Ошибка получения данных';
+
+    try{
+      const errorData = await response.json();
+      if (errorData && errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+    }catch (e) {
+      console.error("Не удалось распарсить JSON ошибки:", e);
+    }
+    throw new Error(errorMessage);
   }
+
   return response.json();
+
 }
 
 export async function addCategory(token: string | undefined, category:Partial<CategoryDTO>): Promise<void>{
@@ -108,10 +120,10 @@ export async function assignProduct(token: string | undefined, data: AssignCateg
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(API.category.assignProduct(), {
-    method: "POST",
+  const response = await fetch(API.category.assignProduct(data.categoryId), {
+    method: "PUT",
     headers: headers,
-    body: JSON.stringify(data)
+    body: JSON.stringify({productId: data.productId})
   })
 
   if (!response.ok) {
