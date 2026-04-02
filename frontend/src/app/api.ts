@@ -8,7 +8,7 @@ export const API = {
     getAll:() => BASE_URL + `/v1/products`,
     getAllFree: () => BASE_URL + `/v1/products/free`,
     add: () => BASE_URL + `/v1/products`,
-    getById: (id: string) =>  BASE_URL + `/v1/products/get/${id}`,
+    getById: (id: string) =>  BASE_URL + `/v1/products/${id}`,
     getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`
   },
   payment: {
