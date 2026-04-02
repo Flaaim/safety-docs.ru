@@ -72,11 +72,11 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
           <form key={productData.id} onSubmit={onSubmit} className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Название</Label>
-              <Input id="name" name="name" defaultValue={productData.name} required />
+              <Input id="name" type='text' name="name" defaultValue={productData.name} required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="cipher">Шифр</Label>
-              <Input id="cipher" name="cipher"  defaultValue={productData.cipher} required />
+              <Input id="cipher" type='text' name="cipher"  defaultValue={productData.cipher} required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="amount">Цена</Label>
@@ -89,7 +89,18 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="slug">Slug</Label>
-              <Input id="slug" name="slug" defaultValue={productData.slug}  required />
+              <Input id="slug" type='text' name="slug" defaultValue={productData.slug}  required />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="file">Файл</Label>
+              {productData.file && (<div className="flex items-center gap-2 p-2 border rounded-md bg-muted/50">
+                <span className="text-sm truncate">
+                    Текущий: <strong>{productData.file}</strong>
+                </span>
+              </div>)}
+              <Input id="file" type="file" name="file" />
+              <p className="text-xs text-muted-foreground">Оставьте пустым, чтобы не менять файл</p>
             </div>
           </form>
         )}
