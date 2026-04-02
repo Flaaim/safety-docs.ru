@@ -1,59 +1,31 @@
 
 import {API} from "@/app/api";
-import {CreateProductDTO, ProductCollection, ProductFreeCollection} from "@/interfaces/product.interface";
+import {CreateProductDTO, ProductCollection, ProductDTO, ProductFreeCollection} from "@/interfaces/product.interface";
+import {apiFetch} from "@api/apiClient";
 
 
-export async function getProductBySlug(slug: string): Promise<ProductInfoData> {
-  const response = await fetch(API.product.getBySlug(slug), {
+export async function getProductBySlug(slug: string): Promise<ProductDTO> {
+  return await apiFetch<ProductDTO>(API.product.getBySlug(slug), {
     method: "GET",
-    headers: {'Content-Type': 'application/json'},
   })
-  if(!response.ok){
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка получения данных`);
-  }
-  return response.json();
+
 }
 export async function getAllProducts(token: string | undefined): Promise<ProductCollection>{
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  }
 
-  if(token){
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(API.product.getAll(), {
+  return await apiFetch<ProductCollection>(API.product.getAll(), {
     method: "GET",
-    headers: headers,
+    token,
     cache: token ? 'no-store' : 'force-cache'
   })
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка получения данных`);
-  }
-  return response.json();
 }
 
 export async function getFreeProducts(token: string | undefined): Promise<ProductFreeCollection>{
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  }
 
-  if(token){
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(API.product.getAllFree(), {
+  return await apiFetch(API.product.getAllFree(), {
     method: "GET",
-    headers: headers,
+    token,
     cache: token ? 'no-store' : 'force-cache'
   })
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка получения данных`);
-  }
-  return response.json();
 }
 
 export async function addProduct(token:string | undefined, product:Partial<CreateProductDTO>): Promise<void>{
@@ -65,20 +37,9 @@ export async function addProduct(token:string | undefined, product:Partial<Creat
     }
   });
 
-  const headers: HeadersInit = {};
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(API.product.add(), {
+  return await apiFetch<void>(API.product.add(), {
     method: "POST",
-    headers: headers,
+    token,
     body: formData as BodyInit,
   });
-
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка отправки данных`);
-  }
 }

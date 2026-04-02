@@ -1,59 +1,30 @@
 import {DirectionCollection, DirectionDTO} from "@/interfaces/direction.interface";
 import {API} from "@/app/api";
-
+import {apiFetch} from "@api/apiClient";
 
 export async function getDirectionBySlug(slug: string, token?: string): Promise<DirectionDTO> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  }
 
-  if(token){
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(API.direction.getBySlug(slug), {
+  return await apiFetch<DirectionDTO>(API.direction.getBySlug(slug), {
     method: 'GET',
-    headers: headers,
+    token,
     cache: token ? 'no-store' : 'force-cache'
   })
-
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка получения данных`);
-  }
-  return response.json();
 }
 
 export async function getAllDirections(token?: string): Promise<DirectionCollection> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  }
 
-  if(token){
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const response = await fetch(API.direction.getAll(), {
+  return await apiFetch<DirectionCollection>(API.direction.getAll(), {
     method: "GET",
-    headers: headers,
+    token,
     cache: token ? 'no-store' : 'force-cache'
   })
-
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка получения данных`);
-  }
-  return response.json();
 }
 
 export async function addDirection(token: string | undefined, direction: Partial<DirectionDTO>): Promise<void> {
 
-  const response = await fetch(API.direction.add(), {
+  return await apiFetch<void>(API.direction.add(), {
     method: "POST",
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
+    token,
     body: JSON.stringify({
       title: direction.title,
       description: direction.description,
@@ -61,22 +32,13 @@ export async function addDirection(token: string | undefined, direction: Partial
       slug: direction.slug
     })
   })
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка отправки данных`);
-  }
 }
 
 export async function updateDirection(token: string | undefined, id: string, direction: Partial<DirectionDTO>): Promise<void> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  }
-  if(token){
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-  const response = await fetch(API.direction.update(id), {
+
+  return await apiFetch<void>(API.direction.update(id), {
     method: 'PUT',
-    headers: headers,
+    token,
     body: JSON.stringify({
       title: direction.title,
       description: direction.description,
@@ -84,9 +46,4 @@ export async function updateDirection(token: string | undefined, id: string, dir
       slug: direction.slug
     })
   })
-
-  if (!response.ok) {
-    console.error(`HTTP error! status: ${response.status} status text: ${response.statusText}`)
-    throw new Error(`Ошибка отправки данных`);
-  }
 }
