@@ -57,7 +57,7 @@ export default function AddProductDialog() {
 
     try {
       await addProduct(token, product)
-
+      toast.success('Продукт успешно добавлен.');
       setOpen(false);
       router.refresh();
 
