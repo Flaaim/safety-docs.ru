@@ -37,9 +37,10 @@ export async function addProduct(token:string | undefined, product:Partial<Creat
     }
   });
 
+
   return await apiFetch<void>(API.product.add(), {
     method: "POST",
-    token,
-    body: formData as BodyInit,
+    token: token,
+    body: formData
   });
 }

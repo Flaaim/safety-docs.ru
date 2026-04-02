@@ -3,11 +3,14 @@ interface fetchOptions extends RequestInit {
 }
 
 export async function apiFetch<T = void>(url: string, options: FetchOptions = {}): Promise<T> {
-  const { token, headers: customHeaders, ...restOptions } = options;
+  const { token, headers: customHeaders, body, ...restOptions } = options;
 
   const headers: HeadersInit = {
-    'Content-Type': 'application/json',
     ...customHeaders
+  }
+
+  if (!(body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
   }
 
   if (token) {
@@ -16,6 +19,7 @@ export async function apiFetch<T = void>(url: string, options: FetchOptions = {}
 
   const response = await fetch(url, {
     headers,
+    body,
     ...restOptions
   })
 
