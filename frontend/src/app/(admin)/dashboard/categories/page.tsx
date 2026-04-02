@@ -5,6 +5,7 @@ import {CategoryDTO} from "@/interfaces/category.interface";
 import AddCategoryDialog from "@/components/Admin/Dashboard/Categories/add-category-dialog";
 import EditCategoryDialog from "@/components/Admin/Dashboard/Categories/edit-category-dialog";
 import AssignProductDialog from "@/components/Admin/Dashboard/Categories/assign-product-dialog";
+import RefuseProductDialog from "@/components/Admin/Dashboard/Categories/refuse-product-dialog";
 
 
 
@@ -43,7 +44,9 @@ export default async function CategoriesPage() {
                 </TableCell>
                 <TableCell className="whitespace-normal break-words font-medium">{cat.directionTitle}</TableCell>
                 <TableCell className="whitespace-normal break-words font-medium">
-                  {cat.product ? cat.product.name : <AssignProductDialog categoryId={cat.id}></AssignProductDialog>}
+                  {cat.product ? (<div>{cat.product.name} <RefuseProductDialog categoryId={cat.id}></RefuseProductDialog>
+                  </div>) :
+                    <AssignProductDialog categoryId={cat.id}></AssignProductDialog>}
                 </TableCell>
                 <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
                 <TableCell className="text-right">
