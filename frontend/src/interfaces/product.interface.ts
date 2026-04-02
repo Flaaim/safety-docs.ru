@@ -12,7 +12,7 @@ export interface ProductDTO {
   id: string,
   name: string,
   cipher: string,
-  amount: string,
+  formattedPrice: string,
   path: string,
   updatedAt: string
   slug: string,

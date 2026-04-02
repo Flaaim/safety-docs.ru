@@ -3,6 +3,7 @@ import {getAllProducts} from "@api/product";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {ProductDTO} from "@/interfaces/product.interface";
 import AddProductDialog from "@/components/Admin/Dashboard/Docs/add-product-dialog";
+import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-dialog";
 
 
 export default async function ProductPage() {
@@ -38,7 +39,7 @@ export default async function ProductPage() {
                 <TableCell className="font-medium">{prod.updatedAt}</TableCell>
                 <TableCell className="font-medium">{prod.file}</TableCell>
                 <TableCell className="text-right">
-
+                  <EditProductDialog productId={prod.id}></EditProductDialog>
                 </TableCell>
               </TableRow>
             ))}
