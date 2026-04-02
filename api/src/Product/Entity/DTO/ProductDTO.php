@@ -10,6 +10,7 @@ class ProductDTO
         public string $productId,
         public string $name,
         public string $cipher,
+        public string $slug,
         public string $formattedPrice,
         public string $updatedAt,
         public string $file
@@ -22,8 +23,10 @@ class ProductDTO
             $product->getId()->getValue(),
             $product->getName(),
             $product->getCipher(),
+            $product->getSlug()->getValue(),
             $product->getAmount()->formatted(),
             $product->getUpdatedAt()->format('d.m.Y'),
+
             $product->getFile()->getValue()
         );
     }
