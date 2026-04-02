@@ -1,7 +1,6 @@
 import {AssignCategory, CategoryCollection, CategoryDTO} from "@/interfaces/category.interface";
 import {API} from "@/app/api";
 
-
 export async function getAllCategories(token?: string): Promise<CategoryCollection> {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
@@ -140,5 +139,32 @@ export async function assignProduct(token: string | undefined, data: AssignCateg
       console.error("Не удалось распарсить JSON ошибки:", e);
     }
     throw new Error(errorMessage);
+  }
+}
+
+export async function refuseProduct(token: string | undefined, categoryId: string): Promise<void> {
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+  }
+
+  if(token){
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(API.category.refuseProduct(categoryId), {
+    method: "DELETE",
+    headers: headers
+  })
+  if(!response.ok){
+    let errorMessage = 'Ошибка отправки данных';
+    try{
+      const errorData = await response.json();
+      if(errorData && errorData.message){
+        errorMessage = errorData.message
+      }
+    }catch (e){
+      console.error("Не удалось распарсить JSON ошибки:", e);
+    }
+    throw new Error(errorMessage)
   }
 }
