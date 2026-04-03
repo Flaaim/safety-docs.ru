@@ -7,7 +7,7 @@ import {ChevronRight} from "lucide-react";
 
 const safetyPages = [
 
-]
+];
 
 export const metadata: Metadata = {
   title: "Документация по направлениям Охраны труда",
@@ -26,7 +26,7 @@ export default function Safety(){
     { href: '/safety/control', title: 'Контроль требований охраны труда' },
     { href: '/safety/electrical', title: 'Электробезопасность' },
     { href: '/safety/ppe', title: 'Средства индивидуальной защиты' },
-  ]
+  ];
 
   return (
     <div>
@@ -51,5 +51,5 @@ export default function Safety(){
         ))}
       </div>
     </div>
-  )
+  );
 }

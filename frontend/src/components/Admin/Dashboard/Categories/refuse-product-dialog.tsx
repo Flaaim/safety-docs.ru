@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
@@ -22,8 +22,8 @@ export interface RefuseProductDialogProps {
   categoryId: string
 }
 export default function RefuseProductDialog({categoryId}:RefuseProductDialogProps) {
-  const [loading, setLoading] = useState<boolean>(false)
-  const [open, setOpen] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
 
   const router = useRouter();
@@ -39,9 +39,9 @@ export default function RefuseProductDialog({categoryId}:RefuseProductDialogProp
       setLoading(false);
       router.refresh();
     } catch (error: any) {
-        toast.error(error.message)
+        toast.error(error.message);
     }finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -65,5 +65,5 @@ export default function RefuseProductDialog({categoryId}:RefuseProductDialogProp
         </AlertDialogFooter>)}
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

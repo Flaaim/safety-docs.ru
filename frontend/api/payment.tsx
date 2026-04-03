@@ -6,7 +6,7 @@ export async function getPaymentByToken(token: string, signal?: AbortSignal): Pr
   return await apiFetch<PaymentData>(API.payment.getByToken(token), {
     method: 'GET',
     signal,
-  })
+  });
 }
 
 export async function createPayment(email: string, productId: string, signal?: AbortSignal): Promise<ProcessedPayment> {
@@ -14,5 +14,5 @@ export async function createPayment(email: string, productId: string, signal?: A
     method: 'POST',
     signal,
     body: JSON.stringify({ email, productId }),
-  })
+  });
 }

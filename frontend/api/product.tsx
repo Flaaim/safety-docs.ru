@@ -1,19 +1,25 @@
 
 import {API} from "@/app/api";
-import {CreateProductDTO, ProductCollection, ProductDTO, ProductFreeCollection} from "@/interfaces/product.interface";
+import {
+  CreateProductDTO,
+  ProductCollection,
+  ProductDTO,
+  ProductFreeCollection,
+  UpdateProductDTO
+} from "@/interfaces/product.interface";
 import {apiFetch} from "@api/apiClient";
 
 
 export async function getProductBySlug(slug: string): Promise<ProductDTO> {
   return await apiFetch<ProductDTO>(API.product.getBySlug(slug), {
     method: "GET",
-  })
+  });
 }
 
 export async function getProductById(id: string): Promise<ProductDTO> {
   return await apiFetch<ProductDTO>(API.product.getById(id), {
     method: "GET"
-  })
+  });
 }
 export async function getAllProducts(token: string | undefined): Promise<ProductCollection>{
 
@@ -21,7 +27,7 @@ export async function getAllProducts(token: string | undefined): Promise<Product
     method: "GET",
     token,
     cache: token ? 'no-store' : 'force-cache'
-  })
+  });
 }
 
 export async function getFreeProducts(token: string | undefined): Promise<ProductFreeCollection>{
@@ -30,7 +36,7 @@ export async function getFreeProducts(token: string | undefined): Promise<Produc
     method: "GET",
     token,
     cache: token ? 'no-store' : 'force-cache'
-  })
+  });
 }
 
 export async function addProduct(token:string | undefined, product:Partial<CreateProductDTO>): Promise<void>{
@@ -42,8 +48,25 @@ export async function addProduct(token:string | undefined, product:Partial<Creat
     }
   });
 
-
   return await apiFetch<void>(API.product.add(), {
+    method: "POST",
+    token: token,
+    body: formData
+  });
+}
+
+export async function updateProduct(token: string|undefined, product:Partial<UpdateProductDTO>):Promise<void> {
+  const formData = new FormData();
+
+  Object.entries(product).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      formData.append(key, value instanceof File ? value : String(value));
+    }
+  });
+
+  const productId = product.id || '';
+
+  return await apiFetch<void>(API.product.update(productId), {
     method: "POST",
     token: token,
     body: formData

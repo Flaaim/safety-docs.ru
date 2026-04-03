@@ -1,8 +1,8 @@
 import {JSX} from "react";
 import {SidebarProps} from "./Sidebar.props";
 import classNames from "classnames";
-import {SimpleSeparator} from './Separator/SimpleSeparator'
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {SimpleSeparator} from './Separator/SimpleSeparator';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
   return (
@@ -14,5 +14,5 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
         </Avatar>
         <SimpleSeparator />
       </div>
-    </aside>)
-}
+    </aside>);
+};

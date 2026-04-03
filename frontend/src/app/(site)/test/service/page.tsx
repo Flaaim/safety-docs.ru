@@ -43,5 +43,5 @@ export default async function Service() {
         <span>Положение о службе охраны труда в организации</span>
       </Listtag>
     </div>
-  )
+  );
 }

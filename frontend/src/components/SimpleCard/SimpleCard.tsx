@@ -5,8 +5,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import Link from "next/link"
+} from "@/components/ui/card";
+import Link from "next/link";
 import {SimpleCardProps} from "./SimpleCard.props";
 import {JSX} from "react";
 
@@ -29,5 +29,5 @@ export default function SimpleCard({title, short_description, link, description,
         </Link>
       </CardFooter>
     </Card>
-  )
+  );
 }

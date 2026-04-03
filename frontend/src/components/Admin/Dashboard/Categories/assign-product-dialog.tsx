@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
@@ -27,33 +27,33 @@ export interface AssignProductDialogProps {
 
 export default function AssignProductDialog({categoryId}:AssignProductDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false)
-  const [productFreeCollection, setProductFreeCollection] = useState<ProductFreeCollection>([])
+  const [loading, setLoading] = useState<boolean>(false);
+  const [productFreeCollection, setProductFreeCollection] = useState<ProductFreeCollection>([]);
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
   useEffect(() => {
     if(open){
-      setLoading(true)
+      setLoading(true);
       const initProducts = async () => {
         try{
-          const productFreeCollection = await getFreeProducts(token)
-          setProductFreeCollection(productFreeCollection)
+          const productFreeCollection = await getFreeProducts(token);
+          setProductFreeCollection(productFreeCollection);
         }catch (error){
-          toast.error('Не удалось загрузить продукты')
+          toast.error('Не удалось загрузить продукты');
         }finally {
-          setLoading(false)
+          setLoading(false);
         }
-      }
-      initProducts()
+      };
+      initProducts();
     }else {
-      setLoading(false)
-      setProductFreeCollection([])
+      setLoading(false);
+      setProductFreeCollection([]);
     }
   }, [open]);
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
@@ -62,19 +62,19 @@ export default function AssignProductDialog({categoryId}:AssignProductDialogProp
     const data: AssignCategory = {
       productId: typeof productId === 'string' ? productId : '',
       categoryId: categoryId
-    }
+    };
 
     try {
-      await assignProduct(token, data)
+      await assignProduct(token, data);
 
       toast.success('Продукт успешно привязан');
       setOpen(false);
 
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
 
   }
@@ -120,5 +120,5 @@ export default function AssignProductDialog({categoryId}:AssignProductDialogProp
       </DialogContent>
     </Dialog>
 
-  )
+  );
 }

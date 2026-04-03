@@ -38,5 +38,5 @@ export default async function Electrical() {
         <span>Программа проведения инструктажа неэлектротехнического персонала на группу I по электробезопасности</span>
       </Listtag>
     </div>
-  )
+  );
 }

@@ -52,5 +52,5 @@ export default async function Suot() {
 
       <hr/>
     </div>
-  )
+  );
 }

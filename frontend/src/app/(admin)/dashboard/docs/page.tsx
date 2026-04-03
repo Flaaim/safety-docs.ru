@@ -47,5 +47,5 @@ export default async function ProductPage() {
         </Table>
       </div>
     </div>
-  )
+  );
 }

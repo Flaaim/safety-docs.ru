@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import {z} from 'zod'
+import {z} from 'zod';
 import {FormEvent, JSX, useEffect, useRef, useState} from "react";
 import {ProductFormProps} from "./ProductForm.props";
-import styles from './ProductForm.module.css'
-import cn from 'classnames'
+import styles from './ProductForm.module.css';
+import cn from 'classnames';
 import {InputFormProps} from "./InputForm.props";
 import {LabelFormProps} from "./LabelForm.props";
 import {ButtonProps} from "./Button.props";
@@ -14,7 +14,7 @@ import {createPayment} from "../../../api/payment";
 const schema = z.object({
   email: z.string().email('Некорректный email адрес'),
   productId: z.string().uuid('Некорректный ID продукта')
-})
+});
 
 
 
@@ -31,8 +31,8 @@ export const Button = ({children, type, disabled, ...props}: ButtonProps) => (
 );
 
 export const ProductForm = ({headline, productId, className}: ProductFormProps): JSX.Element => {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -46,22 +46,22 @@ export const ProductForm = ({headline, productId, className}: ProductFormProps):
     abortControllerRef.current?.abort();
     abortControllerRef.current = new AbortController();
 
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
 
     const formData = new FormData(e.currentTarget);
 
     const data = {
       email: formData.get('email'),
       productId: productId,
-    }
+    };
 
-    const parsed = schema.safeParse(data)
+    const parsed = schema.safeParse(data);
 
     if (!parsed.success) {
-      setError(parsed.error.issues[0].message)
-      setLoading(false)
-      return
+      setError(parsed.error.issues[0].message);
+      setLoading(false);
+      return;
     }
 
 
@@ -89,5 +89,5 @@ export const ProductForm = ({headline, productId, className}: ProductFormProps):
 
       <Button type='submit' disabled={loading}>{loading ? 'Отправка...' : 'Получить'}</Button>
     </form>
-  </>
-}
+  </>;
+};

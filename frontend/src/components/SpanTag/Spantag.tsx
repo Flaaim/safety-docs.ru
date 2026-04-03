@@ -1,7 +1,7 @@
 import {JSX} from "react";
 import {SpantagProps} from "./Spantag.props";
-import cn from 'classnames'
-import styles from './Spantag.module.css'
+import cn from 'classnames';
+import styles from './Spantag.module.css';
 
 export const Spantag = ({size = 'm', appearance, children, className}: SpantagProps): JSX.Element => {
   return (<span
@@ -13,5 +13,5 @@ export const Spantag = ({size = 'm', appearance, children, className}: SpantagPr
       [styles.strikethrough]: appearance === 'strikethrough'
     })}
   >{children}
-  </span>)
-}
+  </span>);
+};

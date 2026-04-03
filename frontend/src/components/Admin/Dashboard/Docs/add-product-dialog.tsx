@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useState} from "react";
 import {ProductCollection, CreateProductDTO} from "@/interfaces/product.interface";
@@ -21,20 +21,20 @@ import {addProduct} from "@api/product";
 
 
 export default function AddProductDialog() {
-  const [open, setOpen] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
     const name = formData.get('name');
     const cipher = formData.get('cipher');
     const amount = formData.get('amount');
@@ -43,7 +43,7 @@ export default function AddProductDialog() {
     const slug = formData.get('slug');
     const fileData = formData.get('file');
 
-    const file = fileData instanceof File ? fileData : undefined
+    const file = fileData instanceof File ? fileData : undefined;
 
     const product: Partial<CreateProductDTO> = {
       name: typeof name === 'string' ? name : undefined,
@@ -53,18 +53,18 @@ export default function AddProductDialog() {
       updatedAt: typeof updatedAt === 'string' ? updatedAt : undefined,
       slug: typeof slug === 'string' ? slug : undefined,
       file: file instanceof File ? file : undefined
-    }
+    };
 
     try {
-      await addProduct(token, product)
+      await addProduct(token, product);
       toast.success('Продукт успешно добавлен.');
       setOpen(false);
       router.refresh();
 
     } catch (error: Error) {
-      toast.error(error.message)
+      toast.error(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -119,6 +119,6 @@ export default function AddProductDialog() {
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 
 }

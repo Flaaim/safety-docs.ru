@@ -18,7 +18,7 @@ type Props = {
 
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
-})
+});
 
 const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
   <>
@@ -40,7 +40,7 @@ const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
       ))}
     </div>
   </>
-)
+);
 
 const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: string }) => (
   <>
@@ -51,9 +51,9 @@ const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: s
       <MarkdownRenderer content={normalizeMarkdown(category.text.replace(/\\n/g, '\n'))} />
   </>
 
-)
+);
 export  async function generateStaticParams() {
-  const data = await getAllDirections()
+  const data = await getAllDirections();
 
   const paths: { slug: string[] }[] = [];
 
@@ -83,7 +83,7 @@ export async function generateMetadata({ params }: Props) {
       return {
         title: `${category?.title || 'Категория'} | Охрана труда`,
         description: category?.description
-      }
+      };
     }
 
     return {
@@ -114,7 +114,7 @@ export default async function DirectionPage({ params }: Props) {
 
     return <DirectionView direction={direction} />;
   }catch (error){
-    console.error(error)
+    console.error(error);
     return;
     notFound();
   }

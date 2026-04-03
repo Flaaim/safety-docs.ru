@@ -9,7 +9,8 @@ export const API = {
     getAllFree: () => BASE_URL + `/v1/products/free`,
     add: () => BASE_URL + `/v1/products`,
     getById: (id: string) =>  BASE_URL + `/v1/products/${id}`,
-    getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`
+    getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`,
+    update: (id: string) => BASE_URL + `/v1/products/${id}`
   },
   payment: {
     create: () => BASE_URL + `/v1/payments/process-payment`,
@@ -32,4 +33,4 @@ export const API = {
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
   }
-}
+};

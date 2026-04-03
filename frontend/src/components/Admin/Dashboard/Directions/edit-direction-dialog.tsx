@@ -28,7 +28,7 @@ export interface EditDirectionDialogProps {
 export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [directionData, setDirectionData] = useState<DirectionDTO | null>(null)
+  const [directionData, setDirectionData] = useState<DirectionDTO | null>(null);
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
@@ -38,29 +38,29 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
       setLoading(true);
       const initDirection = async () => {
         try{
-          const data = await getDirectionBySlug(slug, token)
-          setDirectionData(data)
+          const data = await getDirectionBySlug(slug, token);
+          setDirectionData(data);
         }catch (error){
-          toast.error('Не удалось загрузить направление')
+          toast.error('Не удалось загрузить направление');
         }finally {
           setLoading(false);
         }
-      }
-      initDirection()
+      };
+      initDirection();
     }else {
-      setDirectionData(null)
+      setDirectionData(null);
     }
 
-  }, [open])
+  }, [open]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
-    const formData = new FormData(e.currentTarget)
+    const formData = new FormData(e.currentTarget);
     const title = formData.get('title');
     const description = formData.get('description');
-    const text = formData.get('text')
+    const text = formData.get('text');
     const slug = formData.get('slug');
 
 
@@ -69,21 +69,21 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
       description: typeof description === 'string' ? description : undefined,
       text: typeof text === 'string' ? text : undefined,
       slug: typeof slug === 'string' ? slug : undefined
-    }
+    };
 
     try{
-      await updateDirection(token, id, direction)
-      toast.success('Направление обновлено')
-      setOpen(false)
+      await updateDirection(token, id, direction);
+      toast.success('Направление обновлено');
+      setOpen(false);
 
       setTimeout(() => {
         router.refresh();
       }, 100);
 
     }catch (error){
-      toast.error('Не удалось обновить направление')
+      toast.error('Не удалось обновить направление');
     }finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -128,5 +128,5 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

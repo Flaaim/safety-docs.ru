@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
 import {JSX} from "react";
 import {ProductModalProps} from "./ProductModal.props";
-import styles from './ProductModal.module.css'
+import styles from './ProductModal.module.css';
 
 export const ProductModal = ({children, isOpen, onClose}:ProductModalProps):JSX.Element|null => {
-  if(!isOpen) return null
+  if(!isOpen) return null;
 
   return (<div className={styles.overlay}>
       <div
@@ -16,6 +16,6 @@ export const ProductModal = ({children, isOpen, onClose}:ProductModalProps):JSX.
         {children}
       </div>
 
-  </div>)
+  </div>);
 
-}
+};

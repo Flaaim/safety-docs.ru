@@ -6,5 +6,5 @@ export async function getToken(login:string, password:string): Promise<TokenInte
   return await apiFetch<TokenInterface>(API.token.create(), {
     method: "POST",
     body: JSON.stringify({login, password}),
-  })
+  });
 }

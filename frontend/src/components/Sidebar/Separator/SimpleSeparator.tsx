@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator"
+import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export function SimpleSeparator() {
@@ -15,5 +15,5 @@ export function SimpleSeparator() {
         Информационная поддержка проекта "Блог охраны труда".
       </div>
     </div>
-  )
+  );
 }

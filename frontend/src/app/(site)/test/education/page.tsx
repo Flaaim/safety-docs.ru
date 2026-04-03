@@ -118,5 +118,5 @@ export default async function Education() {
       </Listtag>
       <hr/>
     </div>
-  )
+  );
 }

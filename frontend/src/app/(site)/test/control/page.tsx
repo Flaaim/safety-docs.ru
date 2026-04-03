@@ -46,5 +46,5 @@ export default async function Control() {
         <span>Приказ о введении трехступенчатого контроля над состоянием условий и безопасности труда</span>
       </Listtag>
     </div>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import * as React from "react"
+import * as React from "react";
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel"
+} from "@/components/ui/carousel";
 import {ImageCarouselProps} from "@/components/Gallery/Carusel/ImageCarousel.props";
 import styles from "./ImageCarousel.module.css";
 
@@ -64,5 +64,5 @@ export function ImageCarousel({images, title}: ImageCarouselProps) {
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 export default function LoginPage() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [login, setLogin] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [login, setLogin] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -18,19 +18,19 @@ export default function LoginPage() {
     setLoading(true);
 
     try{
-      const data = await getToken(login, password)
-      Cookies.set('admin_token', data.token, {expires: 7 })
+      const data = await getToken(login, password);
+      Cookies.set('admin_token', data.token, {expires: 7 });
       toast.success("Вход выполнен успешно!");
       router.push("/dashboard");
     }catch (err){
       const errorMessage = err instanceof Error ? err.message : 'Неизвестная ошибка';
       toast.error(errorMessage);
     }finally {
-      setLoading(false)
+      setLoading(false);
     }
 
 
-  }
+  };
 
   return (
     <div className="flex h-screen items-center justify-center bg-slate-50">
@@ -63,5 +63,5 @@ export default function LoginPage() {
       </form>
       </div>
     </div>
-  )
+  );
 }

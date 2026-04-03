@@ -1,6 +1,6 @@
 import React from "react";
 import {Footer, Header, Sidebar} from "@/components";
-import styles from './layout.module.css'
+import styles from './layout.module.css';
 import {Metadata} from "next";
 
 
@@ -24,5 +24,5 @@ export default function SiteLayout({children}: Readonly<{
 
       <Footer className={styles.footer} />
     </div>
-  )
+  );
 }

@@ -14,7 +14,7 @@ export const StaticGallery = ({images, title}:StaticGalleryProps) => {
       </div>
     );
   }
-  console.log(images)
+  console.log(images);
   return (
     <>
       <div className={styles.container}>
@@ -62,6 +62,6 @@ export const StaticGallery = ({images, title}:StaticGalleryProps) => {
         </div>
       )}
     </>
-  )
+  );
 
-}
+};

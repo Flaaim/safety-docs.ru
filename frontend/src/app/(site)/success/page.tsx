@@ -16,5 +16,5 @@ export default async function Result(){
       <PaymentResultPage />
       <Ptag>Вернуться на <Link href='/'>главную</Link></Ptag>
     </div>
-  )
+  );
 }

@@ -44,4 +44,4 @@ export const breadcrumbsConfig: Record<string, BreadcrumbItem[]> = {
     { title: "Охрана труда", link: "/safety" },
     { title: "СИЗ", link: "/safety/ppe" }
   ]
-}
+};

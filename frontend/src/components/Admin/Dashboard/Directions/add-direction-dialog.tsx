@@ -34,7 +34,7 @@ export default function AddDirectionDialog(){
     const formData = new FormData(e.currentTarget);
     const title = formData.get('title');
     const description = formData.get('description');
-    const text = formData.get('text')
+    const text = formData.get('text');
     const slug = formData.get('slug');
 
 
@@ -43,11 +43,11 @@ export default function AddDirectionDialog(){
       description: typeof description === 'string' ? description : undefined,
       text: typeof text === 'string' ? text : undefined,
       slug: typeof slug === 'string' ? slug : undefined
-    }
+    };
 
     const token = Cookies.get("admin_token");
     try{
-      await addDirection(token, direction)
+      await addDirection(token, direction);
 
       toast.success("Направление добавлено");
       setOpen(false);
@@ -55,7 +55,7 @@ export default function AddDirectionDialog(){
     }catch (error){
       toast.error("Не удалось добавить направление");
     }finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -98,5 +98,5 @@ export default function AddDirectionDialog(){
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

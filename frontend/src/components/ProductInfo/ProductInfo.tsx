@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {JSX, useEffect, useState} from "react";
 import {ProductInfoProps} from "@/components/ProductInfo/ProductInfo.props";
@@ -14,19 +14,19 @@ import {getProductBySlug} from "../../../api/product";
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["cyrillic"]
-})
+});
 
 
 export const ProductInfo = ({slug, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
-  const [error, setError] = useState<string | null>(null)
-  const [productInfoData, setProductInfoData] = useState<ProductInfoData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null);
+  const [productInfoData, setProductInfoData] = useState<ProductInfoData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
     const initProductInfo = async () => {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
 
       try{
         const data = await getProductBySlug(slug);
@@ -43,16 +43,16 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
           setLoading(false);
         }
       }
-    }
+    };
     initProductInfo();
-    return () => controller.abort()
-  }, [slug])
+    return () => controller.abort();
+  }, [slug]);
 
   if(loading){
-    return <Status appearance='loading'>Загрузка...</Status>
+    return <Status appearance='loading'>Загрузка...</Status>;
   }
   if(error || productInfoData === null){
-    return <Status appearance='error'>{error}</Status>
+    return <Status appearance='error'>{error}</Status>;
   }
   return (<div className={cn(robotoMono.variable)}>
     <Deflisttag >
@@ -70,5 +70,5 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
       <Spantag size='s' > Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>
-  </div>)
-}
+  </div>);
+};

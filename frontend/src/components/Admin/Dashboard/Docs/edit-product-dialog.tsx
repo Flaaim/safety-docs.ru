@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import Cookies from "js-cookie";
-import {ProductDTO} from "@/interfaces/product.interface";
+import {CreateProductDTO, ProductDTO, UpdateProductDTO} from "@/interfaces/product.interface";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  DialogDescription, DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
@@ -16,7 +16,7 @@ import {Button} from "@/components/ui/button";
 import {Edit} from "lucide-react";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
-import {getProductById} from "@api/product";
+import {getProductById, updateProduct} from "@api/product";
 import {toast} from "sonner";
 
 export interface EditProductDialogProps {
@@ -24,9 +24,9 @@ export interface EditProductDialogProps {
 }
 
 export default function EditProductDialog({productId}: EditProductDialogProps) {
-  const [open, setOpen] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [productData, setProductData] = useState<ProductDTO | null>(null)
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [productData, setProductData] = useState<ProductDTO | null>(null);
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
@@ -34,23 +34,61 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
   useEffect(() => {
     if(open) {
       const initProduct = async () => {
-        setLoading(true)
+        setLoading(true);
         try{
           const product = await getProductById(productId);
-          setProductData(product)
+          setProductData(product);
         }catch (error: any){
-          toast.error(error.message)
+          toast.error(error.message);
         }finally {
-          setLoading(false)
+          setLoading(false);
         }
-      }
-      initProduct()
+      };
+      initProduct();
     }else {
-      setProductData(null)
+      setProductData(null);
     }
   }, [open]);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    const name = formData.get('name');
+    const cipher = formData.get('cipher');
+    const amount = formData.get('amount');
+    const path = formData.get('path');
+    const updatedAt = formData.get('updatedAt');
+    const slug = formData.get('slug');
+    const fileData = formData.get('file');
+
+    const file = fileData instanceof File ? fileData : undefined;
+
+    const product: Partial<UpdateProductDTO> = {
+      id: productId,
+      name: typeof name === 'string' ? name : undefined,
+      cipher: typeof cipher === 'string' ? cipher : undefined,
+      amount: typeof amount === 'string' ? amount : undefined,
+      path: typeof path === 'string' ? path : undefined,
+      updatedAt: typeof updatedAt === 'string' ? updatedAt : undefined,
+      slug: typeof slug === 'string' ? slug : undefined,
+      file: file instanceof File ? file : undefined
+    };
+
+    try {
+      await updateProduct(token, product);
+
+      toast.success("Продукт успешно обновлен.");
+      setOpen(false);
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+
 
   }
 
@@ -94,17 +132,18 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
 
             <div className="grid gap-2">
               <Label htmlFor="file">Файл</Label>
-              {productData.file && (<div className="flex items-center gap-2 p-2 border rounded-md bg-muted/50">
-                <span className="text-sm truncate">
-                    Текущий: <strong>{productData.file}</strong>
-                </span>
-              </div>)}
+              {productData.file && (<Input id='path' name="path" defaultValue={productData.file} readOnly={true}/>)}
               <Input id="file" type="file" name="file" />
               <p className="text-xs text-muted-foreground">Оставьте пустым, чтобы не менять файл</p>
             </div>
+            <DialogFooter>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Сохранение..." : "Изменить"}
+              </Button>
+            </DialogFooter>
           </form>
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

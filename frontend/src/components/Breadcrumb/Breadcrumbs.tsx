@@ -6,7 +6,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 import {BreadcrumbsProps} from "@/components/Breadcrumb/Breadcrumbs.props";
 import { breadcrumbsConfig } from "@/configs/breadcrumbs.config";
 export default function Breadcrumbs ({ path }: BreadcrumbsProps ): JSX.Element  {
@@ -36,5 +36,5 @@ export default function Breadcrumbs ({ path }: BreadcrumbsProps ): JSX.Element  
         })}
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }

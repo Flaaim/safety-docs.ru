@@ -7,7 +7,7 @@ export async function apiFetch<T = void>(url: string, options: FetchOptions = {}
 
   const headers: HeadersInit = {
     ...customHeaders
-  }
+  };
 
   if (!(body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
@@ -21,7 +21,7 @@ export async function apiFetch<T = void>(url: string, options: FetchOptions = {}
     headers,
     body,
     ...restOptions
-  })
+  });
 
   if (!response.ok) {
     let errorMessage = 'Ошибка запроса';

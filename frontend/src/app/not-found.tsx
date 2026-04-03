@@ -11,5 +11,5 @@ export default function NotFound(){
         <Htag tag='h2'>Страница не найдена</Htag>
         <p>Запрашиваемая страница не может быть найдена...</p>
         <Link href='/'>Вернуться на главную</Link>
-  </div>)
+  </div>);
 }

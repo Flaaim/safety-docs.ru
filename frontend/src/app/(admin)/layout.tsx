@@ -1,7 +1,7 @@
 import React from "react";
-import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/Admin/Dashboard/app-sidebar"
-import { Separator } from "@/components/ui/separator"
+import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/Admin/Dashboard/app-sidebar";
+import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,5 +36,5 @@ export default function AdminLayout({children}: {children: React.ReactNode})
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

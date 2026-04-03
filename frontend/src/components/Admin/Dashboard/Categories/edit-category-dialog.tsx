@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useEffect, useState} from "react";
 import {CategoryDTO} from "@/interfaces/category.interface";
@@ -32,55 +32,55 @@ export interface EditCategoryDialogProps  {
 }
 
 export default function EditCategoryDialog({slug, id, directionId}: EditCategoryDialogProps) {
-  const [open, setOpen] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [categoryData, setCategoryData] = useState<CategoryDTO | null>(null)
-  const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0})
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [categoryData, setCategoryData] = useState<CategoryDTO | null>(null);
+  const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0});
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
 
   useEffect(() => {
     if(open){
-      setLoading(true)
+      setLoading(true);
       const initCategory = async () => {
         try{
-          const categoryDTO = await getCategoryBySlug(slug, directionId, token)
-          setCategoryData(categoryDTO)
+          const categoryDTO = await getCategoryBySlug(slug, directionId, token);
+          setCategoryData(categoryDTO);
         }catch (error){
-          toast.error('Не удалось загрузить категорию')
+          toast.error('Не удалось загрузить категорию');
         }finally {
-          setLoading(false)
+          setLoading(false);
         }
-      }
+      };
       const initDirections = async () => {
         try{
           const directionCollection = await getAllDirections(token);
-          setDirectionCollection(directionCollection)
+          setDirectionCollection(directionCollection);
         }catch (error){
-          toast.error('Не удалось загрузить директории')
+          toast.error('Не удалось загрузить директории');
         }
-      }
+      };
 
-      initCategory()
-      initDirections()
+      initCategory();
+      initDirections();
 
     }else{
-      setCategoryData(null)
-      setDirectionCollection({directions: [], total: 0})
+      setCategoryData(null);
+      setDirectionCollection({directions: [], total: 0});
     }
   }, [open]);
 
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
     const title = formData.get('title');
     const description = formData.get('description');
-    const text = formData.get('text')
+    const text = formData.get('text');
     const slug = formData.get('slug');
     const directionId = formData.get('directionId');
 
@@ -91,18 +91,18 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       text: typeof text === 'string' ? text : undefined,
       slug: typeof slug === 'string' ? slug : undefined,
       directionId: typeof directionId === 'string' ? directionId : undefined,
-    }
+    };
 
     try {
       await updateCategory(token, category);
       toast.success('Категория обновлена');
-      setOpen(false)
+      setOpen(false);
 
       router.refresh();
     } catch (error) {
-      toast.error('Не удалось обновить категорию')
+      toast.error('Не удалось обновить категорию');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -163,5 +163,5 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
         )}
       </DialogContent>
     </Dialog>
-  )
+  );
 }

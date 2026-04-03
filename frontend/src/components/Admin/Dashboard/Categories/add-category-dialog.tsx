@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
@@ -25,10 +25,10 @@ import {addCategory} from "@api/category";
 
 
 export default function AddCategoryDialog(){
-  const [open, setOpen] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<Error | null>(null)
-  const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0})
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0});
 
   const router = useRouter();
 
@@ -38,23 +38,23 @@ export default function AddCategoryDialog(){
 
   useEffect(() => {
     if(open){
-      setLoading(true)
+      setLoading(true);
       const initDirectionCollection = async () => {
         try{
           const data = await getAllDirections(token);
 
-          setDirectionCollection(data)
-          console.log(data)
+          setDirectionCollection(data);
+          console.log(data);
         }catch (error: Error){
-          toast.error(error.message)
-          setError(error)
+          toast.error(error.message);
+          setError(error);
         }finally {
           setLoading(false);
         }
-      }
-      initDirectionCollection()
+      };
+      initDirectionCollection();
     }else {
-      setDirectionCollection({directions: [], total: 0})
+      setDirectionCollection({directions: [], total: 0});
     }
 
 
@@ -62,12 +62,12 @@ export default function AddCategoryDialog(){
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
     const title = formData.get('title');
     const description = formData.get('description');
-    const text = formData.get('text')
+    const text = formData.get('text');
     const slug = formData.get('slug');
     const directionId = formData.get('directionId');
 
@@ -77,17 +77,17 @@ export default function AddCategoryDialog(){
       text: typeof text === 'string' ? text : undefined,
       slug: typeof slug === 'string' ? slug : undefined,
       directionId: typeof directionId === 'string' ? directionId : ''
-    }
+    };
     try {
-      await addCategory(token, category)
+      await addCategory(token, category);
 
       toast.success("Направление добавлено");
       setOpen(false);
       router.refresh();
     } catch (error: Error) {
-      toast.error(error.message)
+      toast.error(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -149,5 +149,5 @@ export default function AddCategoryDialog(){
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

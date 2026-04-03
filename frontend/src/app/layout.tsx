@@ -1,7 +1,7 @@
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import React from "react";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",

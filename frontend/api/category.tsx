@@ -7,7 +7,7 @@ export async function getAllCategories(token?: string): Promise<CategoryCollecti
     method: "GET",
     token,
     cache: token ? 'no-store' : 'force-cache'
-  })
+  });
 }
 
 export async function addCategory(token: string | undefined, category:Partial<CategoryDTO>): Promise<void>{
@@ -23,7 +23,7 @@ export async function addCategory(token: string | undefined, category:Partial<Ca
       text: category.text,
       slug: category.slug,
     })
-  })
+  });
 }
 
 export async function getCategoryBySlug(slug: string, directionId:string, token: string | undefined): Promise<CategoryDTO>{
@@ -31,7 +31,7 @@ export async function getCategoryBySlug(slug: string, directionId:string, token:
   return await apiFetch<CategoryDTO>(API.category.getBySlug(slug, directionId), {
     method: "GET",
     token
-  })
+  });
 }
 
 export async function updateCategory(token: string | undefined, category:Partial<CategoryDTO>): Promise<void>{
@@ -47,7 +47,7 @@ export async function updateCategory(token: string | undefined, category:Partial
       text: category.text,
       slug: category.slug
     })
-  })
+  });
 }
 
 export async function assignProduct(token: string | undefined, data: AssignCategory): Promise<void> {
@@ -56,7 +56,7 @@ export async function assignProduct(token: string | undefined, data: AssignCateg
     method: "PUT",
     token,
     body: JSON.stringify({productId: data.productId})
-  })
+  });
 }
 
 export async function refuseProduct(token: string | undefined, categoryId: string): Promise<void> {
@@ -64,5 +64,5 @@ export async function refuseProduct(token: string | undefined, categoryId: strin
   return await apiFetch<void>(API.category.refuseProduct(categoryId), {
     method: "DELETE",
     token
-  })
+  });
 }

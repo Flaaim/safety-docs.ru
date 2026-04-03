@@ -16,7 +16,7 @@ export default async function DirectionsPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
-  const data  = await getAllDirections(token)
+  const data  = await getAllDirections(token);
 
   return (
     <div className="space-y-6">
@@ -56,5 +56,5 @@ export default async function DirectionsPage() {
       </div>
 
     </div>
-  )
+  );
 }

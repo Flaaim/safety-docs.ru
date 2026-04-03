@@ -8,7 +8,7 @@ export async function getDirectionBySlug(slug: string, token?: string): Promise<
     method: 'GET',
     token,
     cache: token ? 'no-store' : 'force-cache'
-  })
+  });
 }
 
 export async function getAllDirections(token?: string): Promise<DirectionCollection> {
@@ -17,7 +17,7 @@ export async function getAllDirections(token?: string): Promise<DirectionCollect
     method: "GET",
     token,
     cache: token ? 'no-store' : 'force-cache'
-  })
+  });
 }
 
 export async function addDirection(token: string | undefined, direction: Partial<DirectionDTO>): Promise<void> {
@@ -31,7 +31,7 @@ export async function addDirection(token: string | undefined, direction: Partial
       text: direction.text,
       slug: direction.slug
     })
-  })
+  });
 }
 
 export async function updateDirection(token: string | undefined, id: string, direction: Partial<DirectionDTO>): Promise<void> {
@@ -45,5 +45,5 @@ export async function updateDirection(token: string | undefined, id: string, dir
       text: direction.text,
       slug: direction.slug
     })
-  })
+  });
 }

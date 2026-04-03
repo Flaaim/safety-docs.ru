@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import {LayoutDashboard, Settings, FileText, User, LogOut, GamepadDirectional, ChartColumnStacked} from "lucide-react"
+import {LayoutDashboard, Settings, FileText, User, LogOut, GamepadDirectional, ChartColumnStacked} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import {useRouter} from "next/navigation";
 import Cookies from "js-cookie";
 
@@ -25,7 +25,7 @@ const items = [
   { title: "Категории", url: "/dashboard/categories", icon: ChartColumnStacked },
   { title: "Направления", url: "/dashboard/directions", icon: GamepadDirectional },
   { title: "Настройки", url: "/dashboard/settings", icon: Settings },
-]
+];
 
 export function AppSidebar() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export function AppSidebar() {
     router.push('/login');
 
     router.refresh();
-  }
+  };
   return (
     <Sidebar>
       <SidebarHeader />
@@ -83,5 +83,5 @@ export function AppSidebar() {
         </SidebarMenuItem>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

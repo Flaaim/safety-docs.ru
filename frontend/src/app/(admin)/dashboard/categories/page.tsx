@@ -13,7 +13,7 @@ export default async function CategoriesPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
-  const data  = await getAllCategories(token)
+  const data  = await getAllCategories(token);
 
   return (
     <div className="space-y-6">
@@ -59,5 +59,5 @@ export default async function CategoriesPage() {
       </div>
 
     </div>
-  )
+  );
 }

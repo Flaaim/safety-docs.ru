@@ -52,5 +52,5 @@ export default function Rules(){
       </Listtag>
       <hr/>
     </div>
-  )
+  );
 }

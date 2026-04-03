@@ -35,5 +35,5 @@ export default function Terms() {
       <Htag tag='h2'>6. Контакты</Htag>
       <Ptag>По вопросам оплаты, доступа к файлам и возвратов:📧 Email: flaeim@gmail.com</Ptag>
     </div>
-  )
+  );
 }
