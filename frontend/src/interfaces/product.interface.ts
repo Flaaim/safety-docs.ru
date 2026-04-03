@@ -1,4 +1,14 @@
 export interface CreateProductDTO {
+  name: string,
+  cipher: string,
+  amount: string,
+  path: string,
+  updatedAt: string
+  slug: string,
+  file: File | null
+}
+
+export interface UpdateProductDTO {
   id: string,
   name: string,
   cipher: string,
@@ -8,6 +18,7 @@ export interface CreateProductDTO {
   slug: string,
   file: File | null
 }
+
 export interface ProductDTO {
   id: string,
   name: string,
