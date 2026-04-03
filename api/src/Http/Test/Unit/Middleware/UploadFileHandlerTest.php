@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Psr7\UploadedFile;
 
 class UploadFileHandlerTest extends TestCase
 {
@@ -20,8 +21,8 @@ class UploadFileHandlerTest extends TestCase
 
         $handler = $this->createMock(RequestHandlerInterface::class);
 
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('File is required.');
+        $handler->expects($this->once())->method('handle');
+
         $uploadFileHandler->process($request, $handler);
     }
 
@@ -29,8 +30,11 @@ class UploadFileHandlerTest extends TestCase
     {
         $uploadFileHandler = new UploadFileHandler();
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
+        $uploadedFile->method('getError')->willReturn(UPLOAD_ERR_OK);
 
-        $request = (new ServerRequestFactory())->createServerRequest('POST', '/test')->withUploadedFiles(['file' => [$uploadedFile]]);
+
+        $request = (new ServerRequestFactory())->createServerRequest('POST', '/test')
+            ->withUploadedFiles(['file' => $uploadedFile]);
 
         $handler = $this->createMock(RequestHandlerInterface::class);
 

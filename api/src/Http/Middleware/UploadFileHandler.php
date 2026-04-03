@@ -19,12 +19,11 @@ class UploadFileHandler implements MiddlewareInterface
 
         $file = is_array($fileEntry) ? ($fileEntry[0] ?? null) : $fileEntry;
 
-        if (!$file instanceof UploadedFileInterface || $file->getError() !== UPLOAD_ERR_OK) {
-            throw new \DomainException('File is required.');
+        if ($file instanceof UploadedFileInterface && $file->getError() === UPLOAD_ERR_OK) {
+            $request = $request->withAttribute('target_file', $file);
         }
 
-        $request = $request->withAttribute('target_file', $file);
-
         return $handler->handle($request);
+
     }
 }
