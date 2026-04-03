@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Product\Command\Add\Upload\Handler as UploadHandler;
+use App\Product\Command\Upload\Handler as UploadHandler;
 use App\Product\Service\File\FileUploader;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 

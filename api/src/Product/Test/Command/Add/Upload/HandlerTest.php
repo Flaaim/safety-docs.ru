@@ -2,8 +2,7 @@
 
 namespace App\Product\Test\Command\Add\Upload;
 
-use App\Product\Command\Add\Upload\Handler;
-use App\Product\Service\File\FileUploader;
+use App\Product\Command\Upload\Handler;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;

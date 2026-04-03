@@ -3,6 +3,7 @@
 namespace App\Product\Command\Add;
 
 use App\Flusher;
+use App\Product\Command\Upload\Handler as UploadHandler;
 use App\Product\Entity\Amount;
 use App\Product\Entity\File;
 use App\Product\Entity\Product;
@@ -10,7 +11,6 @@ use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
-use App\Product\Command\Add\Upload\Handler as UploadHandler;
 
 class Handler
 {

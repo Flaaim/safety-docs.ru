@@ -5,7 +5,7 @@ namespace App\Product\Test\Command\Add;
 use App\Flusher;
 use App\Product\Command\Add\Command;
 use App\Product\Command\Add\Handler;
-use App\Product\Command\Add\Upload\Handler as UploadHandler;
+use App\Product\Command\Upload\Handler as UploadHandler;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;

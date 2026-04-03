@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Product\Command\Add\Upload;
+namespace App\Product\Command\Upload;
 
 use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;

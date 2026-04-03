@@ -3,9 +3,9 @@
 namespace App\Product\Test\Command\Update;
 
 use App\Flusher;
-use App\Product\Command\Add\Upload\Handler as UploadHandler;
 use App\Product\Command\Update\Command;
 use App\Product\Command\Update\Handler;
+use App\Product\Command\Upload\Handler as UploadHandler;
 use App\Product\Entity\File;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
