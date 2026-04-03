@@ -9,12 +9,14 @@ use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
+use App\Product\Command\Add\Upload\Handler as UploadHandler;
 
 class Handler
 {
     public function __construct(
         private readonly ProductRepository $products,
         private readonly Flusher $flusher,
+        private readonly UploadHandler $uploadHandler,
     ){
     }
 
@@ -33,11 +35,16 @@ class Handler
         $product->update(
             $command->name,
             new Amount($command->amount, new Currency('RUB')),
-            new File($command->path),
+            $file = new File($command->path),
             $command->cipher,
             new Slug($command->slug),
             new \DateTimeImmutable($command->updatedAt),
         );
+
+        if($command->file !== null){
+            $this->uploadHandler->handle($file->getValue(), $command->file);
+        }
+
 
         $this->flusher->flush();
     }

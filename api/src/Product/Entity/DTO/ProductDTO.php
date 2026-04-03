@@ -26,7 +26,6 @@ class ProductDTO
             $product->getSlug()->getValue(),
             $product->getAmount()->formatted(),
             $product->getUpdatedAt()->format('d.m.Y'),
-
             $product->getFile()->getValue()
         );
     }

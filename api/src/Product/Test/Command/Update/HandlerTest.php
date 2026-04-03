@@ -3,6 +3,7 @@
 namespace App\Product\Test\Command\Update;
 
 use App\Flusher;
+use App\Product\Command\Add\Upload\Handler as UploadHandler;
 use App\Product\Command\Update\Command;
 use App\Product\Command\Update\Handler;
 use App\Product\Entity\ProductId;
@@ -10,23 +11,27 @@ use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\UploadedFileInterface;
 
 class HandlerTest extends TestCase
 {
     private ProductRepository $products;
     private Flusher $flusher;
     private Handler $handler;
+    private UploadHandler $uploadHandler;
     public function setUp(): void
     {
         $this->products = $this->createMock(ProductRepository::class);
         $this->flusher = $this->createMock(Flusher::class);
-        $this->handler = new Handler($this->products, $this->flusher);
+        $this->uploadHandler = $this->createMock(UploadHandler::class);
+        $this->handler = new Handler($this->products, $this->flusher, $this->uploadHandler);
     }
 
     public function testSuccess(): void
     {
+        $uploadedFile = $this->createMock(UploadedFileInterface::class);
         $slug = new Slug('education');
-        $command = $this->createCommand($slug);
+        $command = $this->createCommand($slug, $uploadedFile);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withId($productId)->build();
@@ -38,6 +43,9 @@ class HandlerTest extends TestCase
         $this->products->expects(self::once())->method('findBySlug')
             ->with($this->equalTo($slug))
             ->willReturn(null);
+
+        $this->uploadHandler->expects(self::once())->method('handle')
+            ->with($this->equalTo($command->path), $this->equalTo($command->file));
 
         $this->flusher->expects(self::once())->method('flush');
 
@@ -95,7 +103,7 @@ class HandlerTest extends TestCase
         self::assertEquals(550.00, $product->getAmount()->getValue());
         self::assertEquals('education', $product->getSlug()->getValue());
     }
-    private function createCommand(Slug $slug): Command
+    private function createCommand(Slug $slug, UploadedFileInterface $uploadedFile = null): Command
     {
         return new Command(
             new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d'),
@@ -104,7 +112,8 @@ class HandlerTest extends TestCase
             550.00,
             'safety/education',
             $slug->getValue(),
-            (new \DateTimeImmutable())->format('d.m.Y')
+            (new \DateTimeImmutable())->format('d.m.Y'),
+            $uploadedFile
         );
     }
 }

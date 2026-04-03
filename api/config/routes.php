@@ -33,7 +33,10 @@ return static function(App $app): void {
                 ->add(AuthMiddleware::class);
 
             $group->get('', Product\GetAll\RequestAction::class)->add(AuthMiddleware::class);
-            $group->put('/{productId:'.$uuidPattern.'}', Product\Update\RequestAction::class)->add(AuthMiddleware::class);
+
+            $group->put('/{productId:'.$uuidPattern.'}', Product\Update\RequestAction::class)
+                ->add(UploadFileHandler::class)
+                ->add(AuthMiddleware::class);
 
             $group->get('/{productId:'.$uuidPattern.'}', Product\Get\RequestAction::class);
             $group->get('/s/{slug:[a-z-]+}', Product\GetBySlug\RequestAction::class);

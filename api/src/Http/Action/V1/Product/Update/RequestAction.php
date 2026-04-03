@@ -25,7 +25,7 @@ class RequestAction implements RequestHandlerInterface
         $productId = $route->getArgument('productId', '');
 
         $data = $request->getParsedBody() ?? [];
-
+        $file = $request->getAttribute('target_file', null);
         $command = new Command(
             $productId,
             $data['name'] ?? '',
@@ -34,6 +34,7 @@ class RequestAction implements RequestHandlerInterface
             $data['path'] ?? '',
             $data['slug'] ?? '',
             $data['updatedAt'] ?? '',
+            $file
         );
 
         $this->validator->validate($command);
