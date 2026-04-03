@@ -19,11 +19,9 @@ class Command
         #[Assert\Positive]
         public float $amount,
         #[Assert\NotBlank]
-        public string $path,
-        #[Assert\NotBlank]
         public string $slug,
         #[Assert\NotBlank]
-        #[Assert\DateTime(format: 'd.m.Y')]
+        #[Assert\DateTime(format: 'Y-d-m')]
         public string $updatedAt,
         #[SlimUploadedFileAssert(
             maxSize: '15M',
@@ -38,6 +36,6 @@ class Command
                 'rar',
             ]
         )]
-        public ?UploadedFileInterface $file,
+        public ?UploadedFileInterface $file = null,
     ){}
 }
