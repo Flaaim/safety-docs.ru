@@ -71,18 +71,18 @@ class Product
     }
     public function update(
         string $name,
-        Amount $amount,
-        File $file,
         string $cipher,
         Slug $slug,
+        Amount $amount,
+        File $file,
         \DateTimeImmutable $updatedAt = new \DateTimeImmutable()
     ): void
     {
         $this->name = $name;
-        $this->amount = $amount;
-        $this->file = $file;
         $this->cipher = $cipher;
         $this->slug = $slug;
+        $this->amount = $amount;
+        $this->file = $file;
         $this->updatedAt = $updatedAt;
     }
 }

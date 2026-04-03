@@ -5,8 +5,7 @@ namespace App\Http\Action\V1\Product\Update;
 use App\Http\EmptyResponse;
 use App\Http\Validator\Validator;
 use App\Product\Command\Update\Command;
-use App\Product\Command\Update\HandlerFactory;
-use App\Product\Command\Update\WithFile\Handler;
+use App\Product\Command\Update\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -16,7 +15,7 @@ class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Validator $validator,
-        private readonly HandlerFactory $factory
+        private readonly Handler $handler,
     ){
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -40,7 +39,7 @@ class RequestAction implements RequestHandlerInterface
         );
         $this->validator->validate($command);
 
-        $this->factory->createHandler($command, ($file === null) ? 'common' : 'file');
+        $this->handler->handle($command);
 
         return new EmptyResponse(204);
     }
