@@ -25,6 +25,10 @@ class RequestAction implements RequestHandlerInterface
         $data = $request->getParsedBody() ?? [];
         $file = $request->getAttribute('target_file');
 
+        if(null === $file) {
+            throw new \DomainException('File is required.');
+        }
+
         $command = new Command(
             $data['name'] ?? '',
             $data['cipher'] ?? '',
