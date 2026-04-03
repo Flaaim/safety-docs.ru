@@ -34,7 +34,7 @@ return static function(App $app): void {
 
             $group->get('', Product\GetAll\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->put('/{productId:'.$uuidPattern.'}', Product\Update\RequestAction::class)
+            $group->post('/{productId:'.$uuidPattern.'}', Product\Update\RequestAction::class)
                 ->add(UploadFileHandler::class)
                 ->add(AuthMiddleware::class);
 

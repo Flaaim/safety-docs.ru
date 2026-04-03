@@ -16,7 +16,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccessSameSlug(): void
     {
-        $response = $this->app()->handle(self::json('PUT', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('service')));
+        $response = $this->app()->handle(self::json('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('service')));
 
         self::assertEquals(204, $response->getStatusCode());
 
@@ -25,7 +25,7 @@ class RequestActionTest extends WebTestCase
     public function testSlugAlreadyExists(): void
     {
         $existingSlug = 'suot';
-        $response = $this->app()->handle(self::json('PUT', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData($existingSlug)));
+        $response = $this->app()->handle(self::json('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData($existingSlug)));
 
         self::assertEquals(400, $response->getStatusCode());
 
@@ -41,7 +41,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('PUT', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('fire')));
+        $response = $this->app()->handle(self::json('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('fire')));
 
         self::assertEquals(204, $response->getStatusCode());
 
@@ -50,7 +50,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testNotFound(): void
     {
-        $response = $this->app()->handle(self::json('PUT',
+        $response = $this->app()->handle(self::json('POST',
             '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8802f',
             $this->getProductData('service'))
         );
@@ -67,7 +67,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::json('PUT', '/v1/products/invalid123', $this->getProductData('service')));
+        $response = $this->app()->handle(self::json('POST', '/v1/products/invalid123', $this->getProductData('service')));
         self::assertEquals(404, $response->getStatusCode());
 
     }
