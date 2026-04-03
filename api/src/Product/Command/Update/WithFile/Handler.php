@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Product\Command\Update;
+namespace App\Product\Command\Update\WithFile;
 
 use App\Flusher;
+use App\Product\Command\Add\Upload\Handler as UploadHandler;
+use App\Product\Command\Update\Command;
+use App\Product\Command\Update\UpdateProductHandlerInterface;
 use App\Product\Entity\Amount;
 use App\Product\Entity\File;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
-use App\Product\Command\Add\Upload\Handler as UploadHandler;
 
-class Handler
+class Handler implements UpdateProductHandlerInterface
 {
+    const TYPE = "file";
+
     public function __construct(
         private readonly ProductRepository $products,
         private readonly Flusher $flusher,
@@ -32,20 +36,24 @@ class Handler
             throw new \DomainException('Product with this slug already exists.');
         }
 
+        $path = dirname($product->getFile()->getValue()) . DIRECTORY_SEPARATOR . $command->file->getClientFilename();
+
         $product->update(
             $command->name,
-            new Amount($command->amount, new Currency('RUB')),
-            $file = new File($command->path),
             $command->cipher,
             new Slug($command->slug),
+            new Amount($command->amount, new Currency('RUB')),
+            new File($path),
             new \DateTimeImmutable($command->updatedAt),
         );
 
-        if($command->file !== null){
-            $this->uploadHandler->handle($file->getValue(), $command->file);
-        }
-
+        $this->uploadHandler->handle($product->getFile()->getValue(), $command->file);
 
         $this->flusher->flush();
+    }
+
+    public function getType(string $type): bool
+    {
+        return self::TYPE === $type;
     }
 }
