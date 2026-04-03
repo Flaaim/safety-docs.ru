@@ -9,6 +9,8 @@ use App\Product\Service\File\FileRemoverInterface;
 use App\Product\Service\File\FileUploader;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\Query\ProductQueryInterface;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
@@ -19,6 +21,9 @@ return [
 
         return new ProductQuery($productRepository);
     },
-    FileRemoverInterface::class => DI\autowire(FileRemover::class),
-    FileUploaderInterface::class => DI\autowire(FileUploader::class),
+    FileRemoverInterface::class => DI\get(FileRemover::class),
+    FileUploaderInterface::class => DI\get(FileUploader::class),
+    FileSystemPathInterface::class => DI\get(FileSystemPath::class),
+
+
 ];
