@@ -3,7 +3,8 @@
 namespace App\Product\Test\Command\Add\Upload;
 
 use App\Product\Command\Add\Upload\Handler;
-use App\Product\Service\UploadFileHandler;
+use App\Product\Service\File\FileUploader;
+use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
@@ -12,13 +13,13 @@ class HandlerTest extends TestCase
 {
     private InMemoryFileSystemPath $tempDir;
     private Handler $handler;
-    private UploadFileHandler $uploadFileHandler;
+    private FileUploaderInterface $fileUploader;
 
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create();
-        $this->uploadFileHandler = $this->createMock(UploadFileHandler::class);
-        $this->handler = new Handler($this->tempDir, $this->uploadFileHandler);
+        $this->fileUploader = $this->createMock(FileUploaderInterface::class);
+        $this->handler = new Handler($this->tempDir, $this->fileUploader);
     }
 
     public function testFileExists(): void
@@ -35,7 +36,7 @@ class HandlerTest extends TestCase
     {
         $file = 'safety/service/serv100.rar';
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $this->uploadFileHandler->expects($this->once())->method('handle')
+        $this->fileUploader->expects($this->once())->method('upload')
             ->with(
                 $this->equalTo('/tmp/phpunit_test_/safety/service'),
                 $this->equalTo($uploadedFile)

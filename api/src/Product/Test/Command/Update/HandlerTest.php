@@ -3,12 +3,14 @@
 namespace App\Product\Test\Command\Update;
 
 use App\Flusher;
+use App\Product\Command\Add\Upload\Handler as UploadHandler;
 use App\Product\Command\Update\Command;
 use App\Product\Command\Update\Handler;
-use App\Product\Command\Add\Upload\Handler as UploadHandler;
+use App\Product\Entity\File;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
+use App\Product\Service\File\FileRemoverInterface;
 use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
@@ -20,12 +22,15 @@ class HandlerTest extends TestCase
     private Handler $handler;
     private UploadHandler $uploadHandler;
 
+    private FileRemoverInterface $fileRemover;
+
     public function setUp(): void
     {
         $this->products = $this->createMock(ProductRepository::class);
         $this->flusher = $this->createMock(Flusher::class);
         $this->uploadHandler = $this->createMock(UploadHandler::class);
-        $this->handler = new Handler($this->products, $this->flusher, $this->uploadHandler);
+        $this->fileRemover = $this->createMock(FileRemoverInterface::class);
+        $this->handler = new Handler($this->products, $this->flusher, $this->uploadHandler, $this->fileRemover);
     }
 
     public function testSuccess(): void
@@ -33,8 +38,35 @@ class HandlerTest extends TestCase
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
         $uploadedFile->expects($this->once())->method('getClientFilename')->willReturn('test.rar');
         $slug = new Slug('education');
+        $file = new File('safety/service/serv100.rar');
         $command = $this->createCommand($slug, $uploadedFile);
 
+
+        $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
+        $product = (new ProductBuilder())->withFile($file)->withId($productId)->build();
+
+        $this->products->expects(self::once())->method('get')
+            ->with($this->equalTo($productId))
+            ->willReturn($product);
+
+        $this->products->expects(self::once())->method('findBySlug')
+            ->with($this->equalTo($slug))
+            ->willReturn(null);
+
+        $this->uploadHandler->expects(self::once())->method('handle')
+            ->with($this->equalTo('safety/service/test.rar'), $this->equalTo($uploadedFile));
+
+        $this->fileRemover->expects(self::once())->method('remove')
+            ->with($this->equalTo($file->getValue()));
+
+        $this->flusher->expects(self::once())->method('flush');
+
+        $this->handler->handle($command);
+    }
+    public function testSuccessWithoutFile(): void
+    {
+        $slug = new Slug('education');
+        $command = $this->createCommand($slug, null);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withId($productId)->build();
@@ -47,10 +79,8 @@ class HandlerTest extends TestCase
             ->with($this->equalTo($slug))
             ->willReturn(null);
 
-        $this->uploadHandler->expects(self::once())->method('handle')
-            ->with($this->equalTo('201/test.rar'), $this->equalTo($uploadedFile));
-
-
+        $this->uploadHandler->expects(self::never())->method('handle');
+        $this->fileRemover->expects(self::never())->method('remove');
         $this->flusher->expects(self::once())->method('flush');
 
         $this->handler->handle($command);
@@ -118,7 +148,7 @@ class HandlerTest extends TestCase
         self::assertEquals('education', $product->getSlug()->getValue());
     }
 
-    private function createCommand(Slug $slug, UploadedFileInterface $uploadedFile): Command
+    private function createCommand(Slug $slug, ?UploadedFileInterface $uploadedFile): Command
     {
         return new Command(
             new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d'),

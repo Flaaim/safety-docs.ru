@@ -2,15 +2,15 @@
 
 namespace App\Product\Command\Add\Upload;
 
-use App\Product\Service\UploadFileHandler;
+use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
 class Handler
 {
     public function __construct(
-        private FileSystemPathInterface $fileSystemPath,
-        private UploadFileHandler $uploadFileHandler,
+        private readonly FileSystemPathInterface $fileSystemPath,
+        private readonly FileUploaderInterface   $fileUploader,
     ){
     }
 
@@ -28,7 +28,7 @@ class Handler
 
         $this->createDirectory(dirname($fullPath));
 
-        $this->uploadFileHandler->handle(dirname($fullPath), $uploadFile);
+        $this->fileUploader->upload(dirname($fullPath), $uploadFile);
 
     }
 
