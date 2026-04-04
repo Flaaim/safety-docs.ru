@@ -23,17 +23,17 @@ class RequestAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeContext = RouteContext::fromRequest($request);
-
         $route = $routeContext->getRoute();
 
-        $directionId = $route->getArgument('directionId', '');
+        $data = (array) $request->getParsedBody();
 
-        $title = $request->getParsedBody()['title'] ?? '';
-        $description = $request->getParsedBody()['description'] ?? '';
-        $text = $request->getParsedBody()['text'] ?? '';
-        $slug = $request->getParsedBody()['slug'] ?? '';
-
-        $command = new Command($directionId, $title, $description, $text, $slug);
+        $command = new Command(
+            $route->getArgument('directionId', ''),
+            $data['title'] ?? '',
+            $data['description'] ?? '',
+            $data['text'] ?? '',
+            $data['slug'] ?? ''
+        );
 
         $this->validator->validate($command);
 

@@ -14,25 +14,24 @@ use Slim\Routing\RouteContext;
 class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
-        private Handler $handler,
-        private Validator $validator
+        private readonly Handler $handler,
+        private readonly Validator $validator
     ){
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeContext = RouteContext::fromRequest($request);
-
         $route = $routeContext->getRoute();
 
-        $directionId = $route->getArgument('directionId', '');
-        $categoryId = $route->getArgument('categoryId', '');
+        $data = (array)$request->getParsedBody();
+
         $command = new Command(
-            $categoryId,
-            $request->getParsedBody()['title'] ?? '',
-            $request->getParsedBody()['description'] ?? '',
-            $request->getParsedBody()['text'] ?? '',
-            $request->getParsedBody()['slug'] ?? '',
-            $directionId
+            $route->getArgument('categoryId', ''),
+            $data['title'] ?? '',
+            $data['description'] ?? '',
+            $data['text'] ?? '',
+            $data['slug'] ?? '',
+            $route->getArgument('directionId', '')
         );
         $this->validator->validate($command);
 
