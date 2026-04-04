@@ -19,6 +19,7 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {DirectionDTO} from "@/interfaces/direction.interface";
 import {toast} from "sonner";
+import MDEditor from '@uiw/react-md-editor';
 
 export interface EditDirectionDialogProps {
   slug: string
@@ -29,6 +30,8 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [directionData, setDirectionData] = useState<DirectionDTO | null>(null);
+  const [textValue, setTextValue] = useState<string>('');
+
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
@@ -38,8 +41,9 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
       setLoading(true);
       const initDirection = async () => {
         try{
-          const data = await getDirectionBySlug(slug, token);
-          setDirectionData(data);
+          const directionDTO = await getDirectionBySlug(slug, token);
+          setDirectionData(directionDTO);
+          setTextValue(directionDTO.text || '');
         }catch (error){
           toast.error('Не удалось загрузить направление');
         }finally {
@@ -49,6 +53,7 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
       initDirection();
     }else {
       setDirectionData(null);
+      setTextValue('');
     }
 
   }, [open]);
@@ -58,17 +63,12 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const title = formData.get('title');
-    const description = formData.get('description');
-    const text = formData.get('text');
-    const slug = formData.get('slug');
-
 
     const direction:Partial<DirectionDTO> = {
-      title: typeof title === 'string' ? title : undefined,
-      description: typeof description === 'string' ? description : undefined,
-      text: typeof text === 'string' ? text : undefined,
-      slug: typeof slug === 'string' ? slug : undefined
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      text: textValue,
+      slug: formData.get('slug') as string
     };
 
     try{
@@ -94,7 +94,7 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
           <Edit className="h-4 w-4"/>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Изменение направления</DialogTitle>
           <DialogDescription>
@@ -111,9 +111,15 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
               <Label htmlFor="description">Описание</Label>
               <Textarea id="description" name="description" rows='5' defaultValue={directionData.description} required></Textarea>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="text">Текст на странице</Label>
-              <Textarea id="text" name="text" rows='20' defaultValue={directionData.text} required></Textarea>
+            <div className="grid gap-2" data-color-mode="light">
+              <MDEditor
+                value={textValue}
+                onChange={(val) => setTextValue(val || '')}
+                height={300}
+                textareaProps={{
+                  placeholder: 'Введите текст в формате Markdown...'
+                }}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="slug">Slug (URL)</Label>

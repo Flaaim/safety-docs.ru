@@ -20,11 +20,13 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {DirectionDTO} from "@/interfaces/direction.interface";
-
+import MDEditor from '@uiw/react-md-editor';
 
 export default function AddDirectionDialog(){
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [textValue, setTextValue] = useState<string>('')
+
   const router = useRouter();
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>){
@@ -32,17 +34,12 @@ export default function AddDirectionDialog(){
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const title = formData.get('title');
-    const description = formData.get('description');
-    const text = formData.get('text');
-    const slug = formData.get('slug');
-
 
     const direction:Partial<DirectionDTO> = {
-      title: typeof title === 'string' ? title : undefined,
-      description: typeof description === 'string' ? description : undefined,
-      text: typeof text === 'string' ? text : undefined,
-      slug: typeof slug === 'string' ? slug : undefined
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      text: textValue,
+      slug: formData.get('slug') as string
     };
 
     const token = Cookies.get("admin_token");
@@ -66,7 +63,7 @@ export default function AddDirectionDialog(){
           <Plus className="mr-2 h-4 w-4" /> Добавить
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Новое направление</DialogTitle>
           <DialogDescription>
@@ -82,9 +79,15 @@ export default function AddDirectionDialog(){
             <Label htmlFor="description">Описание</Label>
             <Textarea id="description" name="description" rows='5' required></Textarea>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="text">Текст на странице</Label>
-            <Textarea id="text" name="text" rows='20' required></Textarea>
+          <div className="grid gap-2" data-color-mode="light">
+            <MDEditor
+              value={textValue}
+              onChange={(val) => setTextValue(val || '')}
+              height={300}
+              textareaProps={{
+                placeholder: 'Введите текст в формате Markdown...'
+              }}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="slug">Slug (URL)</Label>
