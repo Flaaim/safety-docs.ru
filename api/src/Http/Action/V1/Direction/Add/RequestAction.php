@@ -19,16 +19,13 @@ class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $title = $request->getParsedBody()['title'] ?? '';
-        $description = $request->getParsedBody()['description'] ?? '';
-        $slug = $request->getParsedBody()['slug'] ?? '';
-        $text = $request->getParsedBody()['text'] ?? '';
+        $data = (array)$request->getParsedBody();
 
         $command = new Command(
-            $title,
-            $description,
-            $text,
-            $slug
+            $data['title'] ?? '',
+            $data['description'] ?? '',
+            $data['text'] ?? '',
+            $data['slug'] ?? '',
         );
 
         $this->validator->validate($command);
