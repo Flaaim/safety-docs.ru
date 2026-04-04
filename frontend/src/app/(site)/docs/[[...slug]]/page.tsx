@@ -24,7 +24,7 @@ const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
   <>
     <Htag tag='h1'>{direction.title}</Htag>
     <MarkdownRenderer
-      content={normalizeMarkdown(direction.text.replace(/\\n/g, '\n'))}
+      content={normalizeMarkdown(direction.text)}
     />
     <Htag tag='h2'>Разделы:</Htag>
     <div className="grid gap-3 sm:grid-cols-2 mt-6">
@@ -48,7 +48,7 @@ const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: s
       ← Назад
     </Link>
     <Htag tag="h1">{category.title}</Htag>
-      <MarkdownRenderer content={normalizeMarkdown(category.text.replace(/\\n/g, '\n'))} />
+      <MarkdownRenderer content={normalizeMarkdown(category.text)} />
   </>
 
 );

@@ -22,7 +22,7 @@ import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVal
 import {getAllDirections} from "@api/direction";
 import {DirectionCollection, DirectionDTO} from "@/interfaces/direction.interface";
 import {useRouter} from "next/navigation";
-
+import MDEditor from '@uiw/react-md-editor';
 
 
 export interface EditCategoryDialogProps  {
@@ -36,6 +36,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
   const [loading, setLoading] = useState<boolean>(false);
   const [categoryData, setCategoryData] = useState<CategoryDTO | null>(null);
   const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0});
+  const [textValue, setTextValue] = useState<string>('');
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
@@ -47,6 +48,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
         try{
           const categoryDTO = await getCategoryBySlug(slug, directionId, token);
           setCategoryData(categoryDTO);
+          setTextValue(categoryDTO.text || '');
         }catch (error){
           toast.error('Не удалось загрузить категорию');
         }finally {
@@ -68,6 +70,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
     }else{
       setCategoryData(null);
       setDirectionCollection({directions: [], total: 0});
+      setTextValue('');
     }
   }, [open]);
 
@@ -78,19 +81,13 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
 
     const formData = new FormData(e.currentTarget);
 
-    const title = formData.get('title');
-    const description = formData.get('description');
-    const text = formData.get('text');
-    const slug = formData.get('slug');
-    const directionId = formData.get('directionId');
-
     const category: Partial<CategoryDTO> = {
       id: id,
-      title: typeof title === 'string' ? title : undefined,
-      description: typeof description === 'string' ? description : undefined,
-      text: typeof text === 'string' ? text : undefined,
-      slug: typeof slug === 'string' ? slug : undefined,
-      directionId: typeof directionId === 'string' ? directionId : undefined,
+      title: formData.get('title') as string,
+      description: formData.get('description') as string,
+      text: textValue,
+      slug: formData.get('slug') as string,
+      directionId: formData.get('directionId') as string
     };
 
     try {
@@ -113,7 +110,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
           <Edit className="h-4 w-4"/>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Изменение категории</DialogTitle>
           <DialogDescription>
@@ -131,9 +128,15 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
               <Label htmlFor="description">Описание</Label>
               <Textarea id="description" name="description" rows='5' defaultValue={categoryData.description} required></Textarea>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="text">Текст на странице</Label>
-              <Textarea id="text" name="text" rows='20' defaultValue={categoryData.text} required></Textarea>
+            <div className="grid gap-2" data-color-mode="light">
+              <MDEditor
+                value={textValue}
+                onChange={(val) => setTextValue(val || '')}
+                height={300}
+                textareaProps={{
+                  placeholder: 'Введите текст в формате Markdown...'
+                }}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="slug">Slug (URL)</Label>
