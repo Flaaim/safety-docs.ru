@@ -36,7 +36,9 @@ class RequestAction implements RequestHandlerInterface
             $data['path'] ?? '',
             $data['slug'] ?? '',
             $data['updatedAt'] ?? '',
-                $file
+                $file,
+            $data['totalDocuments'] ?? 0,
+            $data['formatDocuments'] ?? []
         );
 
         $this->validator->validate($command);

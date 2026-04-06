@@ -4,10 +4,13 @@ namespace App\Product\Test;
 
 use App\Product\Entity\File;
 use App\Product\Entity\Amount;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class ProductBuilder
 {
@@ -17,7 +20,9 @@ class ProductBuilder
     private Amount $price;
     private File $file;
     private Slug $slug;
-
+    private int $totalDocuments;
+    private array $formatDocument;
+    private Collection $images;
     private \DateTimeImmutable $updatedAt;
 
     public function __construct()
@@ -29,6 +34,9 @@ class ProductBuilder
         $this->file = new File("201/ot201.18.docx");
         $this->slug = new Slug("201");
         $this->updatedAt = new \DateTimeImmutable();
+        $this->totalDocuments = 22;
+        $this->formatDocument = [FormatDocument::DOCX, FormatDocument::PDF];
+        $this->images = new ArrayCollection();
     }
     public function withId(ProductId $id): self
     {
@@ -65,6 +73,16 @@ class ProductBuilder
         $this->updatedAt = $updatedAt;
         return $this;
     }
+    public function withTotalDocuments(int $totalDocuments): self
+    {
+        $this->totalDocuments = $totalDocuments;
+        return $this;
+    }
+    public function withFormatDocument(array $formatDocument): self
+    {
+        $this->formatDocument = $formatDocument;
+        return $this;
+    }
     public function build(): Product
     {
         return new Product(
@@ -74,7 +92,9 @@ class ProductBuilder
             $this->file,
             $this->cipher,
             $this->slug,
-            $this->updatedAt
+            $this->updatedAt,
+            $this->totalDocuments,
+            $this->formatDocument
         );
     }
 }

@@ -4,6 +4,7 @@ namespace App\Product\Fixture;
 
 use App\Product\Entity\File;
 use App\Product\Entity\Amount;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
@@ -24,6 +25,8 @@ class ProductFixture extends AbstractFixture
             'suot200.1',
             new Slug('suot'),
             new \DateTimeImmutable('now'),
+            10,
+            [FormatDocument::PDF, FormatDocument::DOCX],
         );
 
         $manager->persist($product);
@@ -36,6 +39,8 @@ class ProductFixture extends AbstractFixture
             'edu2026.1',
             new Slug('edu2026'),
             new \DateTimeImmutable(),
+            12,
+            [FormatDocument::PDF, FormatDocument::DOCX],
         );
 
         $manager->persist($product2);
@@ -48,6 +53,8 @@ class ProductFixture extends AbstractFixture
             'serv100.1',
             new Slug('service'),
             new \DateTimeImmutable(),
+            40,
+            [FormatDocument::PDF, FormatDocument::DOCX],
         );
 
         $manager->persist($product3);

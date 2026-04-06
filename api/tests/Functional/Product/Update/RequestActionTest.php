@@ -86,7 +86,9 @@ class RequestActionTest extends WebTestCase
             'amount' => 500.00,
             'path' => 'safety/service/serv200.1.rar',
             'slug' => $slug,
-            'updatedAt' => '2025-01-01'
+            'updatedAt' => '2025-01-01',
+            'totalDocuments' => 10,
+            'formatDocuments' => ['pdf', 'doc', 'docx'],
         ];
     }
 }

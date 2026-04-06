@@ -30,6 +30,8 @@ class RequestActionTest extends WebTestCase
                 'path' => 'safety/medical/med100.1.rar',
                 'slug' => 'medical',
                 'updatedAt' => '2019-01-01',
+                'totalDocuments' => 10,
+                'formatDocuments' => ['pdf', 'doc', 'docx'],
             ],
             ['file' => $file]
         ));
@@ -51,6 +53,8 @@ class RequestActionTest extends WebTestCase
                 'path' => 'safety/firstaid/first100.1.rar',
                 'slug' => 'medical',
                 'updatedAt' => '2019-01-01',
+                'totalDocuments' => 10,
+                'formatDocuments' => ['pdf', 'doc', 'docx'],
             ],
             ['file' => $file]
         ));
@@ -81,6 +85,8 @@ class RequestActionTest extends WebTestCase
                     'path' => '',
                     'slug' => '',
                     'updatedAt' => '',
+                    'totalDocuments' => -5,
+                    'formatDocuments' => [],
                 ],
                 ['file' => $file]
             ));
@@ -99,7 +105,8 @@ class RequestActionTest extends WebTestCase
                 'path' => 'This value should not be blank.',
                 'slug' => 'This value should not be blank.',
                 'updatedAt' => 'This value should not be blank.',
-                'file' => 'The extension of the file is invalid (txt). Allowed extensions are rar.'
+                'file' => 'The extension of the file is invalid (txt). Allowed extensions are rar.',
+                'totalDocuments' => 'This value should be greater than 0.',
             ]
         ], $data);
     }
@@ -157,6 +164,8 @@ class RequestActionTest extends WebTestCase
             'path' => 'safety/electrical/electr100.1.rar',
             'slug' => 'electrical',
             'updatedAt' => '2019-01-01',
+            'totalDocuments' => 10,
+            'formatDocuments' => ['docx', 'pdf'],
         ];
     }
     private function createUploadFile(string $name, string $content, string $type, int $error): UploadedFileInterface

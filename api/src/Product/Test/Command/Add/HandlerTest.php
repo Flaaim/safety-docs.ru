@@ -6,6 +6,7 @@ use App\Flusher;
 use App\Product\Command\Add\Command;
 use App\Product\Command\Add\Handler;
 use App\Product\Command\Upload\Handler as UploadHandler;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
@@ -64,6 +65,8 @@ class HandlerTest extends TestCase
                 self::assertEquals(550.00, $product->getAmount()->getValue());
                 self::assertEquals('safety/education', $product->getFile()->getValue());
                 self::assertEquals('education', $product->getSlug()->getValue());
+                self::assertEquals(22, $product->getTotalDocuments());
+                self::assertEquals([FormatDocument::DOCX, FormatDocument::PDF], $product->getFormatDocuments());
                 return true;
             }));
 
@@ -87,7 +90,9 @@ class HandlerTest extends TestCase
             'safety/education',
             'education',
             (new \DateTimeImmutable())->format('d.m.Y'),
-            $uploadedFile
+            $uploadedFile,
+            22,
+            ['docx', 'pdf'],
         );
     }
 }

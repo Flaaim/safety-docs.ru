@@ -157,6 +157,8 @@ class HandlerTest extends TestCase
             550.00,
             $slug->getValue(),
             (new \DateTimeImmutable())->format('d.m.Y'),
+            22,
+            ['pdf', 'docx'],
             $uploadedFile
         );
     }

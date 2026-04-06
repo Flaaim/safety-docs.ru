@@ -11,15 +11,7 @@ class ProductDTOMapper
         if(null === $product) {
             return null;
         }
-        return new ProductDTO(
-            $product->getId()->getValue(),
-            $product->getName(),
-            $product->getCipher(),
-            $product->getSlug()->getValue(),
-            $product->getAmount()->formatted(),
-            $product->getUpdatedAt()->format('d.m.Y'),
-            $product->getFile()->getValue()
-        );
+        return ProductDTO::fromProduct($product);
     }
 
     public function mapCollection(array $products): array

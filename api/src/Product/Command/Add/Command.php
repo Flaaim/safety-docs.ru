@@ -3,6 +3,7 @@
 namespace App\Product\Command\Add;
 
 use App\Http\Validator\SlimUploadedFile as SlimUploadedFileAssert;
+use App\Product\Entity\FormatDocument;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -38,6 +39,15 @@ class Command
             ]
         )]
         public UploadedFileInterface $file,
+        #[Assert\GreaterThan(0)]
+        public int $totalDocuments,
+        #[Assert\Choice(
+            callback: [FormatDocument::class, 'getValues'],
+            multiple: true,
+            message: 'One or more selected document formats are invalid.'
+        )]
+        /** @var string[] */
+        public array $formatDocuments
     ){}
 
     #[Assert\Callback]

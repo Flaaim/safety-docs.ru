@@ -32,7 +32,9 @@ class RequestActionTest extends WebTestCase
             'updatedAt' => (new \DateTimeImmutable())->format('d.m.Y'),
             'cipher' => 'serv100.1',
             'file' => 'safety/service/serv100.1.rar',
-            'slug' => 'service'
+            'slug' => 'service',
+            'totalDocuments' => 10,
+            'formatDocuments' => ['docx', 'pdf'],
         ], $data);
     }
 

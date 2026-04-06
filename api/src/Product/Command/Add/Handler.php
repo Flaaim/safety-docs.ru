@@ -6,6 +6,7 @@ use App\Flusher;
 use App\Product\Command\Upload\Handler as UploadHandler;
 use App\Product\Entity\Amount;
 use App\Product\Entity\File;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
@@ -29,6 +30,11 @@ class Handler
             throw new \DomainException("Product with slug " .$command->slug. " already exists.");
         }
 
+        $formatEnums = array_map(
+            static fn(string $format) => FormatDocument::from($format),
+            $command->formatDocuments
+        );
+
         $product = new Product(
             ProductId::generate(),
             $command->name,
@@ -36,7 +42,9 @@ class Handler
             $file = new File($command->path),
             $command->cipher,
             $slug,
-            new \DateTimeImmutable($command->updatedAt)
+            new \DateTimeImmutable($command->updatedAt),
+            $command->totalDocuments,
+            $formatEnums
         );
 
         $this->products->add($product);

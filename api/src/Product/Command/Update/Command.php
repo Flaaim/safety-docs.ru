@@ -3,6 +3,7 @@
 namespace App\Product\Command\Update;
 
 use App\Http\Validator\SlimUploadedFile as SlimUploadedFileAssert;
+use App\Product\Entity\FormatDocument;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,6 +24,13 @@ class Command
         #[Assert\NotBlank]
         #[Assert\DateTime(format: 'Y-d-m')]
         public string $updatedAt,
+        #[Assert\GreaterThan(0)]
+        public int $totalDocuments,
+        #[Assert\Choice(
+            callback: [FormatDocument::class, 'getValues'],
+            multiple: true,
+            message: 'One or more selected document formats are invalid.')]
+        public array $formatDocuments,
         #[SlimUploadedFileAssert(
             maxSize: '15M',
             mimeTypes: [

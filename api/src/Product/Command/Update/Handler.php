@@ -6,6 +6,7 @@ use App\Flusher;
 use App\Product\Command\Upload\Handler as UploadHandler;
 use App\Product\Entity\Amount;
 use App\Product\Entity\File;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
@@ -39,6 +40,10 @@ class Handler
             ? dirname($product->getFile()->getValue()) . DIRECTORY_SEPARATOR . $command->file->getClientFilename()
             : $product->getFile()->getValue();
 
+        $formatEnums = array_map(
+            static fn(string $format) => FormatDocument::from($format),
+            $command->formatDocuments
+        );
 
         $oldFilePath = $product->getFile()->getValue();
 
@@ -48,6 +53,8 @@ class Handler
             new Slug($command->slug),
             new Amount($command->amount, new Currency('RUB')),
             new File($path),
+            $command->totalDocuments,
+            $formatEnums,
             new \DateTimeImmutable($command->updatedAt),
         );
 

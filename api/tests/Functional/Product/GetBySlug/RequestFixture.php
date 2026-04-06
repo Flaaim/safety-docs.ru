@@ -24,6 +24,8 @@ class RequestFixture extends AbstractFixture
             ->withFile(new File('safety/service/serv100.1.rar'))
             ->withSlug(new Slug('service'))
             ->withUpdatedAt(new \DateTimeImmutable())
+            ->withFormatDocument(['pdf', 'docx'])
+            ->withTotalDocuments(10)
             ->build();
 
         $manager->persist($product);

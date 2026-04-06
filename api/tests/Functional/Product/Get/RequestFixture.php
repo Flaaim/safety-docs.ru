@@ -4,6 +4,7 @@ namespace Test\Functional\Product\Get;
 
 use App\Product\Entity\File;
 use App\Product\Entity\Amount;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
 use App\Product\Test\ProductBuilder;
@@ -23,6 +24,8 @@ class RequestFixture extends AbstractFixture
             ->withPrice(new Amount(550.00, new Currency('RUB')))
             ->withFile(new File('safety/service/serv100.1.rar'))
             ->withSlug(new Slug('service'))
+            ->withTotalDocuments(10)
+            ->withFormatDocument([FormatDocument::DOCX, FormatDocument::PDF])
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 
