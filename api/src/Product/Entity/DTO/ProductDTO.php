@@ -29,7 +29,7 @@ class ProductDTO
             $product->getCipher(),
             $product->getSlug()->getValue(),
             $product->getAmount()->formatted(),
-            $product->getUpdatedAt()->format('d.m.Y'),
+            $product->getUpdatedAt()->format('Y-m-d'),
             $product->getFile()->getValue(),
             $product->getTotalDocuments(),
             array_map(function (FormatDocument $document) {

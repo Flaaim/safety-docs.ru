@@ -22,7 +22,7 @@ class Command
         #[Assert\NotBlank]
         public string $slug,
         #[Assert\NotBlank]
-        #[Assert\DateTime(format: 'Y-d-m')]
+        #[Assert\DateTime(format: 'Y-m-d')]
         public string $updatedAt,
         #[Assert\GreaterThan(0)]
         public int $totalDocuments,
