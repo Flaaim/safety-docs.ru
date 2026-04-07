@@ -1,7 +1,7 @@
 
 import {API} from "@/app/api";
 import {
-  CreateProductDTO,
+  CreateProductDTO, Product,
   ProductCollection,
   ProductDTO,
   ProductFreeCollection,
@@ -40,13 +40,7 @@ export async function getFreeProducts(token: string | undefined): Promise<Produc
 }
 
 export async function addProduct(token:string | undefined, product:Partial<CreateProductDTO>): Promise<void>{
-  const formData = new FormData();
-
-  Object.entries(product).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      formData.append(key, value instanceof File ? value : String(value));
-    }
-  });
+  const formData = handleFormData(product)
 
   return await apiFetch<void>(API.product.add(), {
     method: "POST",
@@ -56,13 +50,8 @@ export async function addProduct(token:string | undefined, product:Partial<Creat
 }
 
 export async function updateProduct(token: string|undefined, product:Partial<UpdateProductDTO>):Promise<void> {
-  const formData = new FormData();
 
-  Object.entries(product).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      formData.append(key, value instanceof File ? value : String(value));
-    }
-  });
+  const formData = handleFormData(product)
 
   const productId = product.id || '';
 
@@ -71,4 +60,27 @@ export async function updateProduct(token: string|undefined, product:Partial<Upd
     token: token,
     body: formData
   });
+}
+
+
+function handleFormData(product: Product): FormData {
+
+  const formData = new FormData();
+
+  Object.entries(product).forEach(([key, value]) => {
+    if (value === undefined || value === null) {
+      return;
+    }
+    if (value instanceof File) {
+      formData.append(key, value);
+    }else if (Array.isArray(value)) {
+      value.forEach((item) => {
+        formData.append(`${key}[]`, String(item));
+      });
+    }else {
+      formData.append(key, String(value));
+    }
+  });
+
+  return formData
 }

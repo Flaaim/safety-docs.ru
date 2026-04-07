@@ -127,7 +127,7 @@ export default function AddCategoryDialog(){
             <Label htmlFor="directionId">Направление</Label>
             {error  ? (<div className="text-destructive text-sm">Ошибка загрузки: {error.message}</div>) : (
               <Select name='directionId'>
-              <SelectTrigger className="w-full" disabled={loading || !directionCollection?.directions.length}>
+              <SelectTrigger className="w-full" disabled={loading || !directionCollection.directions.length}>
                 <SelectValue placeholder={loading ? "Загрузка..." : "Выберите направление"} />
               </SelectTrigger>
               <SelectContent>

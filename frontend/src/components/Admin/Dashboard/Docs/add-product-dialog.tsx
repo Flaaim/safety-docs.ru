@@ -1,7 +1,7 @@
 "use client";
 
-import React, {useState} from "react";
-import {ProductCollection, CreateProductDTO} from "@/interfaces/product.interface";
+import React, {useEffect, useState} from "react";
+import {CreateProductDTO} from "@/interfaces/product.interface";
 import {useRouter} from "next/navigation";
 import Cookies from "js-cookie";
 import {
@@ -18,50 +18,52 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {toast} from "sonner";
 import {addProduct} from "@api/product";
+import {ProductMultipleFormats} from "@/components/Admin/Dashboard/Docs/Format/product-formats";
+
 
 
 export default function AddProductDialog() {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
 
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
 
+  useEffect(() => {
+    if (!open) {
+      setSelectedFormats([]);
+    }
+  }, [open]);
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-
-
     const formData = new FormData(e.currentTarget);
-    const name = formData.get('name');
-    const cipher = formData.get('cipher');
-    const amount = formData.get('amount');
-    const path = formData.get('path');
-    const updatedAt = formData.get('updatedAt');
-    const slug = formData.get('slug');
-    const fileData = formData.get('file');
-
-    const file = fileData instanceof File ? fileData : undefined;
 
     const product: Partial<CreateProductDTO> = {
-      name: typeof name === 'string' ? name : undefined,
-      cipher: typeof cipher === 'string' ? cipher : undefined,
-      amount: typeof amount === 'string' ? amount : undefined,
-      path: typeof path === 'string' ? path : undefined,
-      updatedAt: typeof updatedAt === 'string' ? updatedAt : undefined,
-      slug: typeof slug === 'string' ? slug : undefined,
-      file: file instanceof File ? file : undefined
+      name: formData.get('name') as string,
+      cipher: formData.get('cipher') as string,
+      amount: formData.get('amount') as string,
+      path: formData.get('path') as string,
+      updatedAt: formData.get('updatedAt') as string,
+      slug: formData.get('slug') as string,
+      file: formData.get('file') as File,
+      totalDocuments: Number(formData.get('totalDocuments')),
+      formatDocuments: selectedFormats
     };
 
     try {
       await addProduct(token, product);
       toast.success('Продукт успешно добавлен.');
+
+      setSelectedFormats([]);
+      e.currentTarget.reset();
       setOpen(false);
       router.refresh();
 
-    } catch (error: Error) {
+    } catch (error: any) {
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -110,6 +112,13 @@ export default function AddProductDialog() {
           <div className="grid gap-2">
             <Label htmlFor="file">Приложить архив с файлами</Label>
             <Input id="file" type='file' name="file"  required />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="totalDocuments">Количество док-тов в архиве</Label>
+            <Input id="totalDocuments" type="number" name="totalDocuments" required></Input>
+          </div>
+          <div className="grid gap-2">
+            <ProductMultipleFormats  formats={selectedFormats} onChange={(value) => setSelectedFormats(value)}/>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>

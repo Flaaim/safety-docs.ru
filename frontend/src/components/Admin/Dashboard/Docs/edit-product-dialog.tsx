@@ -18,6 +18,7 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {getProductById, updateProduct} from "@api/product";
 import {toast} from "sonner";
+import {ProductMultipleFormats} from "@/components/Admin/Dashboard/Docs/Format/product-formats";
 
 export interface EditProductDialogProps {
   productId: string
@@ -27,6 +28,7 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [productData, setProductData] = useState<ProductDTO | null>(null);
+  const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
@@ -50,31 +52,29 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
     }
   }, [open]);
 
+  useEffect(() => {
+    if (productData) {
+      setSelectedFormats(productData.formatDocuments || []);
+    }
+  }, [productData]);
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
-    const name = formData.get('name');
-    const cipher = formData.get('cipher');
-    const amount = formData.get('amount');
-    const path = formData.get('path');
-    const updatedAt = formData.get('updatedAt');
-    const slug = formData.get('slug');
-    const fileData = formData.get('file');
-
-    const file = fileData instanceof File ? fileData : undefined;
-
     const product: Partial<UpdateProductDTO> = {
       id: productId,
-      name: typeof name === 'string' ? name : undefined,
-      cipher: typeof cipher === 'string' ? cipher : undefined,
-      amount: typeof amount === 'string' ? amount : undefined,
-      path: typeof path === 'string' ? path : undefined,
-      updatedAt: typeof updatedAt === 'string' ? updatedAt : undefined,
-      slug: typeof slug === 'string' ? slug : undefined,
-      file: file instanceof File ? file : undefined
+      name: formData.get('name') as string,
+      cipher: formData.get('cipher') as string,
+      amount: formData.get('amount') as string,
+      path: formData.get('path') as string,
+      updatedAt: formData.get('updatedAt') as string,
+      slug: formData.get('slug') as string,
+      file: formData.get('file') as File,
+      totalDocuments: Number(formData.get('totalDocuments')),
+      formatDocuments: selectedFormats
     };
 
     try {
@@ -135,6 +135,17 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
               {productData.file && (<Input id='path' name="path" defaultValue={productData.file} readOnly={true}/>)}
               <Input id="file" type="file" name="file" />
               <p className="text-xs text-muted-foreground">Оставьте пустым, чтобы не менять файл</p>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="totalDocuments">Количество док-тов в архиве</Label>
+              <Input id="totalDocuments" type="number" name="totalDocuments" defaultValue={productData.totalDocuments}></Input>
+            </div>
+            <div className="grid gap-2">
+              <Label>Форматы документов</Label>
+              <ProductMultipleFormats
+                formats={productData.formatDocuments}
+                onChange={setSelectedFormats}
+              />
             </div>
             <DialogFooter>
               <Button type="submit" disabled={loading}>
