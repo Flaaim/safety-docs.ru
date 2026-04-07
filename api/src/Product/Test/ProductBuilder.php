@@ -22,7 +22,7 @@ class ProductBuilder
     private Slug $slug;
     private int $totalDocuments;
     private array $formatDocument;
-    private Collection $images;
+    private array $images;
     private \DateTimeImmutable $updatedAt;
 
     public function __construct()
@@ -36,7 +36,7 @@ class ProductBuilder
         $this->updatedAt = new \DateTimeImmutable();
         $this->totalDocuments = 22;
         $this->formatDocument = [FormatDocument::DOCX, FormatDocument::PDF];
-        $this->images = new ArrayCollection();
+        $this->images = [];
     }
     public function withId(ProductId $id): self
     {
@@ -83,9 +83,14 @@ class ProductBuilder
         $this->formatDocument = $formatDocument;
         return $this;
     }
+    public function withImages(array $images): self
+    {
+        $this->images = $images;
+        return $this;
+    }
     public function build(): Product
     {
-        return new Product(
+        $product = new Product(
             $this->id,
             $this->name,
             $this->price,
@@ -96,5 +101,12 @@ class ProductBuilder
             $this->totalDocuments,
             $this->formatDocument
         );
+
+        if(!empty($this->images)) {
+            foreach ($this->images as $image) {
+                $product->attachImage($image);
+            }
+        }
+        return $product;
     }
 }

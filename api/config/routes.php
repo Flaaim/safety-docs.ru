@@ -42,6 +42,10 @@ return static function(App $app): void {
             $group->get('/s/{slug:[a-z-]+}', Product\GetBySlug\RequestAction::class);
 
             $group->get('/free', Product\GetAllFree\RequestAction::class)->add(AuthMiddleware::class);
+
+            $group->group('{productId:'.$uuidPattern.'}/images', function (RouteCollectorProxy $group): void {
+                $group->get('', Product\Images\GetAll\RequestAction::class);
+            });
         });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {
