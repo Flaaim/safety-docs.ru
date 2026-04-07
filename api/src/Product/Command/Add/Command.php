@@ -41,6 +41,7 @@ class Command
         public UploadedFileInterface $file,
         #[Assert\GreaterThan(0)]
         public int $totalDocuments,
+        #[Assert\NotBlank]
         #[Assert\Choice(
             callback: [FormatDocument::class, 'getValues'],
             multiple: true,
