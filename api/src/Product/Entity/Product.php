@@ -16,12 +16,12 @@ class Product
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'product_id', unique: true)]
-        private readonly ProductId $id,
+        private ProductId $id,
         #[ORM\Column(type: 'string', length: 255)]
         private string $name,
         #[ORM\Column(type: 'amount')]
         private Amount $amount,
-        #[ORM\Column(type: 'string', length: 50)]
+        #[ORM\Column(type: 'filename', length: 50)]
         private Filename $filename,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,

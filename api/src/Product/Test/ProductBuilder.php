@@ -29,7 +29,7 @@ class ProductBuilder
         $this->name = "Оказание первой помощи пострадавшим";
         $this->cipher = "ОТ 201.18";
         $this->price = new Amount(350.00, new Currency('RUB'));
-        $this->filename = new Filename("ot201.18.doc");
+        $this->filename = new Filename("ot201.1.rar");
         $this->slug = new Slug("201");
         $this->updatedAt = new \DateTimeImmutable();
         $this->totalDocuments = 22;
@@ -56,7 +56,7 @@ class ProductBuilder
         $this->price = $price;
         return $this;
     }
-    public function withFile(Filename $filename): self
+    public function withFilename(Filename $filename): self
     {
         $this->filename = $filename;
         return $this;

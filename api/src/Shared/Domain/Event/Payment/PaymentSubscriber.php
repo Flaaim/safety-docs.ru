@@ -4,12 +4,12 @@ namespace App\Shared\Domain\Event\Payment;
 
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
-use App\Sender\Command\DeliverMessage\Create\Command;
-use App\Sender\Command\DeliverMessage\Create\Handler;
+use App\Sender\Command\Send\Command;
+use App\Sender\Command\Send\Handler;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
-use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,7 +20,7 @@ class PaymentSubscriber implements EventSubscriberInterface
         private readonly LoggerInterface $logger,
         private readonly Handler $handler,
         private readonly ProductRepository $products,
-        private readonly FileSystemPath $rootPath,
+        private readonly FileSystemPathInterface $fileSystemPath,
     )
     {}
 
@@ -38,11 +38,12 @@ class PaymentSubscriber implements EventSubscriberInterface
             $payment = $event->getPayment();
 
             $product = $this->products->get(new ProductId($payment->getProductId()));
-            $file = $product->getFile();
-            $file->mergeRoot($this->rootPath);
+            $pathToFile = $this->fileSystemPath->getValue() . DIRECTORY_SEPARATOR . $product->getId()->getValue() .
+                DIRECTORY_SEPARATOR . $product->getFilename()->getValue();
+
 
             $recipient = new Recipient(new EmailMessage($payment->getEmail()->getValue()), $product->getName());
-            $recipient->addAttachment($file);
+            $recipient->addAttachment($pathToFile);
 
 
             $command = new Command($recipient);

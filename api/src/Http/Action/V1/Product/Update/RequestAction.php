@@ -33,6 +33,7 @@ class RequestAction implements RequestHandlerInterface
             $data['name'] ?? '',
             $data['cipher'] ?? '',
             $data['amount'] ?? 0,
+            $data['filename'] ?? '',
             $data['slug'] ?? '',
             $data['updatedAt'] ?? '',
             $data['totalDocuments'] ?? 0,

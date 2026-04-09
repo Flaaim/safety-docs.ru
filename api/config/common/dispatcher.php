@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Product\Entity\ProductRepository;
-use App\Sender\Command\DeliverMessage\Create\Handler as CreateHandler;
+use App\Sender\Command\Send\Handler as CreateHandler;
 use App\Shared\Domain\Event\Payment\PaymentSubscriber;
 use App\Shared\Domain\Service\Notification\TelegramNotifier;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;

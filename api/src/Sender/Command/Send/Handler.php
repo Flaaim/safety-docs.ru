@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Sender\Command\DeliverMessage\Create;
+namespace App\Sender\Command\Send;
 
 use App\Flusher;
 use App\Sender\Entity\Message;
 use App\Sender\Entity\MessageId;
 use App\Sender\Entity\MessageRepository;
 use App\Sender\Entity\MessageStatus;
-use App\Sender\Command\DeliverMessage\Send\Handler as SendHandler;
+use App\Sender\Service\Message\CreatorInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 class Handler
 {
@@ -16,8 +17,9 @@ class Handler
     public function __construct(
         private readonly MessageRepository $messages,
         private readonly Flusher $flusher,
-        private readonly SendHandler $sendHandler,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly CreatorInterface $creator,
+        private readonly MailerInterface $mailer
     ){
     }
 
@@ -30,11 +32,13 @@ class Handler
             new \DateTimeImmutable()
         );
 
-        $this->messages->create($message);
+        $this->messages->add($message);
 
         try{
 
-            $this->sendHandler->handle($message->getRecipient());
+            $mimeMessage = $this->creator->create($message->getRecipient());
+
+            $this->mailer->send($mimeMessage);
 
             $message->updateStatus(MessageStatus::received());
 

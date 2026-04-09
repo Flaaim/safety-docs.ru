@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\StringType;
 
 class FilenameType extends StringType
 {
-    public const NAME = 'file';
+    public const NAME = 'filename';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {

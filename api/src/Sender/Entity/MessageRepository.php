@@ -16,7 +16,7 @@ class MessageRepository
         $this->em = $em;
     }
 
-    public function create(Message $message): void
+    public function add(Message $message): void
     {
         $this->em->persist($message);
     }

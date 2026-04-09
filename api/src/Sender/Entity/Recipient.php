@@ -2,13 +2,12 @@
 
 namespace App\Sender\Entity;
 
-use App\Shared\Domain\File\AttachableFileInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
 class Recipient
 {
-    /** @var array<AttachableFileInterface> $attachments */
+    /** @var array<string[]> $attachments */
     #[ORM\Column(type: 'json')]
     private array $attachments;
     public function __construct(
@@ -20,14 +19,11 @@ class Recipient
         $this->attachments = [];
     }
 
-    public function addAttachment(AttachableFileInterface $file): void
+    public function addAttachment(string $absolutePathToFile): void
     {
-        if(!$file->exists()){
-            throw new \DomainException("File '{$file->getValue()}' does not exists.");
-        }
-        $this->attachments[] = $file;
+        $this->attachments[] = $absolutePathToFile;
     }
-    /** @return array<int, AttachableFileInterface> */
+    /** @return array<int, string> */
     public function getAttachments(): array
     {
         return $this->attachments;

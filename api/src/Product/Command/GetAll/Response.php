@@ -34,7 +34,7 @@ class Response implements \JsonSerializable
             'products' => array_map(fn(ProductDTO $product) => [
                 'id' => $product->productId,
                 'name' => $product->name,
-                'price' => $product->formattedPrice,
+                'amount' => $product->formattedPrice,
                 'cipher' => $product->cipher,
                 'updatedAt' => $product->updatedAt,
                 'filename' => $product->filename,

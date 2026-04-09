@@ -26,7 +26,7 @@ export default async function ProductPage() {
               <TableHead>Шифр</TableHead>
               <TableHead>Цена</TableHead>
               <TableHead>Обновлен</TableHead>
-              <TableHead>Файл</TableHead>
+              <TableHead>Имя файла</TableHead>
               <TableHead className="text-right">Действия</TableHead>
             </TableRow>
           </TableHeader>
@@ -37,7 +37,7 @@ export default async function ProductPage() {
                 <TableCell className="font-medium">{prod.cipher}</TableCell>
                 <TableCell className="font-medium">{prod.amount}</TableCell>
                 <TableCell className="font-medium">{prod.updatedAt}</TableCell>
-                <TableCell className="font-medium">{prod.file}</TableCell>
+                <TableCell className="font-medium">{prod.filename}</TableCell>
                 <TableCell className="text-right">
                   <EditProductDialog productId={prod.id}></EditProductDialog>
                 </TableCell>

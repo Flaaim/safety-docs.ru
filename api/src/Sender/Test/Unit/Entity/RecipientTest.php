@@ -4,7 +4,6 @@ namespace App\Sender\Test\Unit\Entity;
 
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
-use App\Shared\Domain\File\AttachableFileInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -22,26 +21,12 @@ class RecipientTest extends TestCase
     public function testAddAttachment(): void
     {
         $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
-        $file = $this->createMock(AttachableFileInterface::class);
+        $filename = 'template100.1.rar';
 
-        $file->expects($this->once())->method('exists')->willReturn(true);
+        $recipient->addAttachment($filename);
 
-        $recipient->addAttachment($file);
-
-        self::assertEquals($file, $recipient->getAttachments()[0]);
+        self::assertEquals($filename, $recipient->getAttachments()[0]);
         self::assertCount(1, $recipient->getAttachments());
     }
 
-    public function testAddAttachmentFailed(): void
-    {
-        $recipient = new Recipient($email = new EmailMessage('test@email.ru'), $subject = 'Тестовая отправка');
-        $file = $this->createMock(AttachableFileInterface::class);
-
-        $file->expects($this->once())->method('exists')->willReturn(false);
-        $file->expects($this->once())->method('getValue')->willReturn('test_file.txt');
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage("File 'test_file.txt' does not exists.");
-        $recipient->addAttachment($file);
-    }
 }

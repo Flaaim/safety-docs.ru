@@ -46,7 +46,7 @@ export default function AddProductDialog() {
       name: formData.get('name') as string,
       cipher: formData.get('cipher') as string,
       amount: formData.get('amount') as string,
-      path: formData.get('path') as string,
+      filename: formData.get('filename') as string,
       updatedAt: formData.get('updatedAt') as string,
       slug: formData.get('slug') as string,
       file: formData.get('file') as File,
@@ -56,10 +56,10 @@ export default function AddProductDialog() {
 
     try {
       await addProduct(token, product);
+      e.currentTarget.reset();
       toast.success('Продукт успешно добавлен.');
 
       setSelectedFormats([]);
-      e.currentTarget.reset();
       setOpen(false);
       router.refresh();
 
@@ -98,8 +98,8 @@ export default function AddProductDialog() {
             <Input id="amount" type='number' name="amount"  required />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="path">Путь к файлу</Label>
-            <Input id="path"  name="path" placeholder="Например: safety/medical/med100.1.rar" required />
+            <Label htmlFor="filename">Имя файла</Label>
+            <Input id="filename"  name="filename" placeholder="Например: med100.1.rar" required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="updatedAt">Дата обновления</Label>

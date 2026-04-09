@@ -21,7 +21,7 @@ class MessageCreator implements CreatorInterface
             ->html($this->twig->render($this->template));
 
         foreach ($recipient->getAttachments() as $attachment) {
-            $message->attachFromPath($attachment->getFile());
+            $message->attachFromPath($attachment);
         }
 
         return $message;

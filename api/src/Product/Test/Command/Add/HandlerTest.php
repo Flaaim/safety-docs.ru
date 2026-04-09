@@ -11,9 +11,11 @@ use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Product\Test\ProductBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 
+#[CoversClass(Handler::class)]
 class HandlerTest extends TestCase
 {
     private ProductRepository $products;
@@ -50,8 +52,8 @@ class HandlerTest extends TestCase
     public function testFilenameFileNotEquals(): void
     {
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $command = $this->createCommand($uploadedFile, 'test1.rar');
-        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn('test2.rar');
+        $command = $this->createCommand($uploadedFile, 'test100.1.rar');
+        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn('test200.1.rar');
 
         $slug = new Slug($command->slug);
 
@@ -70,7 +72,7 @@ class HandlerTest extends TestCase
     public function testSuccess(): void
     {
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn($filename = 'test.rar');
+        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn($filename = 'test100.1.rar');
         $command = $this->createCommand($uploadedFile, $filename);
 
         $slug = new Slug($command->slug);
@@ -84,7 +86,7 @@ class HandlerTest extends TestCase
                 self::assertEquals('Обучение по охране труда - комплект документов', $product->getName());
                 self::assertEquals('edu300.1', $product->getCipher());
                 self::assertEquals(550.00, $product->getAmount()->getValue());
-                self::assertEquals('test.rar', $product->getFilename()->getValue());
+                self::assertEquals('test100.1.rar', $product->getFilename()->getValue());
                 self::assertEquals('education', $product->getSlug()->getValue());
                 self::assertEquals(22, $product->getTotalDocuments());
                 self::assertEquals([FormatDocument::DOCX, FormatDocument::PDF], $product->getFormatDocuments());
@@ -98,7 +100,7 @@ class HandlerTest extends TestCase
         $this->handler->handle($command);
     }
 
-    private function createCommand(UploadedFileInterface $uploadedFile, string $filename = 'test.rar'): Command
+    private function createCommand(UploadedFileInterface $uploadedFile, string $filename = 'test100.1.rar'): Command
     {
         return new Command(
             'Обучение по охране труда - комплект документов',

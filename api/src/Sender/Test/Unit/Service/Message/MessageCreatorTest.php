@@ -2,7 +2,6 @@
 
 namespace App\Sender\Test\Unit\Service\Message;
 
-use App\Product\Entity\File;
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Recipient;
 use App\Sender\Service\Message\MessageCreator;
@@ -15,17 +14,6 @@ use Twig\Environment;
 
 class MessageCreatorTest extends TestCase
 {
-    private readonly InMemoryFileSystemPath $tempDir;
-    private readonly File $file;
-
-    public function setUp(): void
-    {
-        $this->tempDir = InMemoryFileSystemPath::create();
-        $rootPath = new FileSystemPath($this->tempDir->getValue());
-
-        $this->file = new File($this->tempFile());
-        $this->file->mergeRoot($rootPath);
-    }
 
     public function testSuccess(): void
     {
@@ -39,7 +27,6 @@ class MessageCreatorTest extends TestCase
 
         $twig->expects($this->once())->method('render')->with($template)->willReturn($expectedHtml);
 
-
         $message = $creator->create($recipient);
 
         self::assertEquals([new Address($recipient->getEmail()->getValue())], $message->getTo());
@@ -50,7 +37,7 @@ class MessageCreatorTest extends TestCase
     public function testAttachment(): void
     {
         $recipient = new Recipient(new EmailMessage('user@email.ru'), 'subject');
-        $recipient->addAttachment($this->file);
+        $recipient->addAttachment($attachment = 'attachment');
 
         $creator = new MessageCreator(
             $this->createMock(Environment::class),
@@ -58,17 +45,7 @@ class MessageCreatorTest extends TestCase
         );
 
         $message = $creator->create($recipient);
-        self::assertEquals([new DataPart(new \Symfony\Component\Mime\Part\File($this->file->getFile()))], $message->getAttachments());
+        self::assertEquals([new DataPart(new \Symfony\Component\Mime\Part\File($attachment))], $message->getAttachments());
     }
 
-    private function tempFile(): string
-    {
-        $tempFile = tempnam($this->tempDir->getValue(), 'test');
-        return basename($tempFile);
-    }
-
-    public function tearDown(): void
-    {
-        $this->tempDir->clear();
-    }
 }

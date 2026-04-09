@@ -2,8 +2,8 @@
 
 namespace App\Product\Fixture;
 
-use App\Product\Entity\File;
 use App\Product\Entity\Amount;
+use App\Product\Entity\Filename;
 use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
@@ -21,7 +21,7 @@ class ProductFixture extends AbstractFixture
             new ProductId('e2ff37fb-8690-46e5-82fa-75b5ceca8b61'),
             'Система управления охраной труда',
             new Amount(550.00, new Currency('RUB')),
-            'suot200.1.rar',
+            new Filename('suot200.5.rar'),
             'suot200.1',
             new Slug('suot'),
             new \DateTimeImmutable('now'),
@@ -35,7 +35,7 @@ class ProductFixture extends AbstractFixture
             new ProductId('63beafba-d948-4ddf-9463-54da074ae903'),
             'Комплект документов по обучению требованиям охраны труда',
             new Amount(750.00, new Currency('RUB')),
-            new File('/edu/templates.txt'),
+            new Filename('template100.2.rar'),
             'edu2026.1',
             new Slug('edu2026'),
             new \DateTimeImmutable(),
@@ -49,7 +49,7 @@ class ProductFixture extends AbstractFixture
             new ProductId('658f2bb4-14e5-472e-a543-e3091c231eee'),
             'Служба охраны труда',
             new Amount(250.00, new Currency('RUB')),
-            new File('/safety/service/serv100.1.rar'),
+            new Filename('serv100.1.rar'),
             'serv100.1',
             new Slug('service'),
             new \DateTimeImmutable(),

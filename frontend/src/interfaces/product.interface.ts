@@ -4,7 +4,7 @@ export interface CreateProductDTO extends Product{
   name: string,
   cipher: string,
   amount: string,
-  path: string,
+  filename: string,
   updatedAt: string
   slug: string,
   file: File | null,
@@ -17,7 +17,7 @@ export interface UpdateProductDTO extends Product {
   name: string,
   cipher: string,
   amount: string,
-  path: string,
+  filename: string
   updatedAt: string
   slug: string,
   file: File | null
@@ -29,8 +29,8 @@ export interface ProductDTO extends Product {
   id: string,
   name: string,
   cipher: string,
-  formattedPrice: string,
-  path: string,
+  amount: string,
+  filename: string,
   updatedAt: string
   slug: string,
   file: string,

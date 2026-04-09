@@ -66,7 +66,7 @@ return [
 
 
                 App\Product\Entity\AmountType::NAME => App\Product\Entity\AmountType::class,
-                App\Product\Entity\FileType::NAME => App\Product\Entity\FileType::class,
+                App\Product\Entity\FilenameType::NAME => App\Product\Entity\FilenameType::class,
                 App\Product\Entity\ProductIdType::NAME => App\Product\Entity\ProductIdType::class,
                 App\Product\Entity\SlugType::NAME => App\Product\Entity\SlugType::class,
 
