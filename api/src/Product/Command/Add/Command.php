@@ -18,7 +18,7 @@ class Command
         #[Assert\Positive]
         public float $amount,
         #[Assert\NotBlank]
-        public string $path,
+        public string $filename,
         #[Assert\NotBlank]
         public string $slug,
         #[Assert\NotBlank]
@@ -54,8 +54,8 @@ class Command
     #[Assert\Callback]
     public function validateFileAndFilename(ExecutionContextInterface $context): void
     {
-        if(basename($this->path) !== $this->file->getClientFilename()){
-            $context->buildViolation('Name of uploaded file and path is not equal.')
+        if(basename($this->filename) !== $this->file->getClientFilename()){
+            $context->buildViolation('Name of uploaded file and filename is not equal.')
                 ->atPath('path')
                 ->addViolation();
         }
