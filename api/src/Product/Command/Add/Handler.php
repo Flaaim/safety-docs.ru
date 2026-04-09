@@ -12,14 +12,12 @@ use App\Product\Entity\ProductRepository;
 use App\Product\Entity\Slug;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\Currency;
-use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 
 class Handler
 {
     public function __construct(
         private readonly ProductRepository $products,
         private readonly Flusher $flusher,
-        private readonly FileSystemPathInterface $fileSystemPath,
         private readonly FileUploaderInterface   $uploader,
     ){
     }
@@ -38,9 +36,7 @@ class Handler
             throw new \DomainException('Filename and name of file name is not equals.');
         }
 
-        $absoluteFileDir = $this->fileSystemPath->getValue() . DIRECTORY_SEPARATOR . $productId->getValue();
-
-        $this->uploader->upload($absoluteFileDir, $command->file);
+        $this->uploader->upload($productId->getValue(), $command->file);
 
         $formatEnums = array_map(
             static fn(string $format) => FormatDocument::from($format),
