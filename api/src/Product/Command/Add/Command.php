@@ -56,7 +56,7 @@ class Command
     {
         if(basename($this->filename) !== $this->file->getClientFilename()){
             $context->buildViolation('Name of uploaded file and filename is not equal.')
-                ->atPath('path')
+                ->atPath('filename')
                 ->addViolation();
         }
     }

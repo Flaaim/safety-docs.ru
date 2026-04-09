@@ -27,7 +27,7 @@ class RequestActionTest extends WebTestCase
                 'name' => 'Медосмотры комплект документов',
                 'cipher' => 'serv100.1',
                 'amount' => 500.00,
-                'path' => 'safety/medical/med100.1.rar',
+                'filename' => 'med100.1.rar',
                 'slug' => 'medical',
                 'updatedAt' => '2019-01-01',
                 'totalDocuments' => 10,
@@ -37,8 +37,6 @@ class RequestActionTest extends WebTestCase
         ));
 
         $this->assertEquals(201, $response->getStatusCode());
-
-        self::assertFileExists('/tmp/phpunit_test_/safety/medical/med100.1.rar');
     }
     public function testInvalidNamesFile(): void
     {
@@ -50,7 +48,7 @@ class RequestActionTest extends WebTestCase
                 'name' => 'Медосмотры комплект документов',
                 'cipher' => 'serv100.1',
                 'amount' => 500.00,
-                'path' => 'safety/firstaid/first100.1.rar',
+                'filename' => 'first100.1.rar',
                 'slug' => 'medical',
                 'updatedAt' => '2019-01-01',
                 'totalDocuments' => 10,
@@ -67,7 +65,7 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals([
             'errors' => [
-                'path' => 'Name of uploaded file and path is not equal.'
+                'filename' => 'Name of uploaded file and filename is not equal.'
             ]
         ], $data);
     }
@@ -82,7 +80,7 @@ class RequestActionTest extends WebTestCase
                     'name' => '',
                     'cipher' => '',
                     'amount' => 0,
-                    'path' => '',
+                    'filename' => '',
                     'slug' => '',
                     'updatedAt' => '',
                     'totalDocuments' => -5,
@@ -102,11 +100,12 @@ class RequestActionTest extends WebTestCase
                 'name' => 'This value is too short. It should have 5 characters or more.',
                 'cipher' => 'This value should not be blank.',
                 'amount' => 'This value should be positive.',
-                'path' => 'This value should not be blank.',
+                'filename' => 'This value should not be blank.',
                 'slug' => 'This value should not be blank.',
                 'updatedAt' => 'This value should not be blank.',
                 'file' => 'The extension of the file is invalid (txt). Allowed extensions are rar.',
                 'totalDocuments' => 'This value should be greater than 0.',
+                'formatDocuments' => 'This value should not be blank.',
             ]
         ], $data);
     }
@@ -161,7 +160,7 @@ class RequestActionTest extends WebTestCase
             'name' => 'Электробезопасность 1 группа',
             'cipher' => 'serv100.1',
             'amount' => 500.00,
-            'path' => 'safety/electrical/electr100.1.rar',
+            'filename' => 'electr100.1.rar',
             'slug' => 'electrical',
             'updatedAt' => '2019-01-01',
             'totalDocuments' => 10,

@@ -4,6 +4,7 @@ namespace Test\Functional\Product\Update;
 
 use App\Product\Entity\File;
 use App\Product\Entity\Amount;
+use App\Product\Entity\Filename;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
 use App\Product\Test\ProductBuilder;
@@ -21,7 +22,7 @@ class RequestFixture extends AbstractFixture
             ->withName('Служба охраны труда')
             ->withCipher('serv100.1')
             ->withPrice(new Amount(550.00, new Currency('RUB')))
-            ->withFile(new File('safety/service/serv100.1.rar'))
+            ->withFilename(new Filename('serv100.1.rar'))
             ->withSlug(new Slug('service'))
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
@@ -31,7 +32,7 @@ class RequestFixture extends AbstractFixture
             ->withName('Система управления охраной труда - комплект документов')
             ->withCipher('suot200.1')
             ->withPrice(new Amount(350.00, new Currency('RUB')))
-            ->withFile(new File('safety/suot/suot200.1.rar'))
+            ->withFilename(new Filename('suot200.1.rar'))
             ->withSlug(new Slug('suot'))
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();

@@ -27,11 +27,11 @@ class RequestActionTest extends WebTestCase
             'products' => [
                 [
                     'name' => 'Служба охраны труда',
-                    'price' => '550.00 RUB',
+                    'amount' => '550.00 RUB',
                     'cipher' => 'serv100.1',
-                    'file' => 'safety/service/serv100.1.rar',
+                    'filename' => 'serv100.1.rar',
                     'id' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f',
-                    'updatedAt' => (new \DateTimeImmutable())->format('d.m.Y'),
+                    'updatedAt' => (new \DateTimeImmutable())->format('Y-m-d'),
                 ]
             ],
             'total' => 1,
