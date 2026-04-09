@@ -21,7 +21,7 @@ class ProductFixture extends AbstractFixture
             new ProductId('e2ff37fb-8690-46e5-82fa-75b5ceca8b61'),
             'Система управления охраной труда',
             new Amount(550.00, new Currency('RUB')),
-            new File('/safety/suot/suot200.1'),
+            'suot200.1.rar',
             'suot200.1',
             new Slug('suot'),
             new \DateTimeImmutable('now'),

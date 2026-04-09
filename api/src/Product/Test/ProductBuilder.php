@@ -2,15 +2,13 @@
 
 namespace App\Product\Test;
 
-use App\Product\Entity\File;
+use App\Product\Entity\Filename;
 use App\Product\Entity\Amount;
 use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\Currency;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 class ProductBuilder
 {
@@ -18,7 +16,7 @@ class ProductBuilder
     private string $name;
     private string $cipher;
     private Amount $price;
-    private File $file;
+    private Filename $filename;
     private Slug $slug;
     private int $totalDocuments;
     private array $formatDocument;
@@ -31,7 +29,7 @@ class ProductBuilder
         $this->name = "Оказание первой помощи пострадавшим";
         $this->cipher = "ОТ 201.18";
         $this->price = new Amount(350.00, new Currency('RUB'));
-        $this->file = new File("201/ot201.18.docx");
+        $this->filename = new Filename("ot201.18.doc");
         $this->slug = new Slug("201");
         $this->updatedAt = new \DateTimeImmutable();
         $this->totalDocuments = 22;
@@ -58,9 +56,9 @@ class ProductBuilder
         $this->price = $price;
         return $this;
     }
-    public function withFile(File $file): self
+    public function withFile(Filename $filename): self
     {
-        $this->file = $file;
+        $this->filename = $filename;
         return $this;
     }
     public function withSlug(Slug $slug): self
@@ -94,7 +92,7 @@ class ProductBuilder
             $this->id,
             $this->name,
             $this->price,
-            $this->file,
+            $this->filename,
             $this->cipher,
             $this->slug,
             $this->updatedAt,

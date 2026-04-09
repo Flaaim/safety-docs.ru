@@ -14,7 +14,7 @@ class ProductDTO
         public string $slug,
         public string $formattedPrice,
         public string $updatedAt,
-        public string $file,
+        public string $filename,
         public int $totalDocuments,
         public array $formatDocuments,
     ){
@@ -30,7 +30,7 @@ class ProductDTO
             $product->getSlug()->getValue(),
             $product->getAmount()->formatted(),
             $product->getUpdatedAt()->format('Y-m-d'),
-            $product->getFile()->getValue(),
+            $product->getFilename()->getValue(),
             $product->getTotalDocuments(),
             array_map(function (FormatDocument $document) {
                 return $document->value;

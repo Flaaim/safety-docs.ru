@@ -2,8 +2,6 @@
 
 namespace App\Product\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
@@ -23,8 +21,8 @@ class Product
         private string $name,
         #[ORM\Column(type: 'amount')]
         private Amount $amount,
-        #[ORM\Column(type: 'file')]
-        private File $file,
+        #[ORM\Column(type: 'string', length: 50)]
+        private Filename $filename,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,
         #[ORM\Column(type: 'product_slug', length: 35)]
@@ -52,9 +50,9 @@ class Product
     {
         return $this->amount;
     }
-    public function getFile(): File
+    public function getFilename(): Filename
     {
-        return $this->file;
+        return $this->filename;
     }
     public function getCipher(): string
     {
@@ -111,7 +109,7 @@ class Product
         string $cipher,
         Slug $slug,
         Amount $amount,
-        File $file,
+        Filename $filename,
         int $totalDocuments,
         array $formatDocuments,
         \DateTimeImmutable $updatedAt = new \DateTimeImmutable(),
@@ -121,7 +119,7 @@ class Product
         $this->cipher = $cipher;
         $this->slug = $slug;
         $this->amount = $amount;
-        $this->file = $file;
+        $this->filename = $filename;
         $this->updatedAt = $updatedAt;
         $this->formatDocuments = $formatDocuments;
         $this->totalDocuments = $totalDocuments;
