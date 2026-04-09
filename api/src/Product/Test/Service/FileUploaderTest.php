@@ -15,7 +15,7 @@ class FileUploaderTest extends TestCase
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_
-        $this->handler = new FileUploader();
+        $this->handler = new FileUploader($this->tempDir);
     }
 
     public function testErrorUpload(): void
@@ -24,21 +24,21 @@ class FileUploaderTest extends TestCase
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Error uploading file '. $uploadFile->getError());
-        $this->handler->upload($this->tempDir->getValue(), $uploadFile);
+        $this->handler->upload('error_file.txt', $uploadFile);
     }
 
 
     public function testUpload(): void
     {
         $uploadFile = $this->createMock(UploadedFileInterface::class);
-        $uploadFile->expects(self::once())->method('getClientFilename')->willReturn('text.txt');
-
-        $uploadedDir = $this->tempDir->getValue(). DIRECTORY_SEPARATOR . 'safety/service';
-
+        $uploadFile->expects(self::once())->method('getClientFilename')->willReturn('text.rar');
+        
+        $expectedPath = '/tmp/phpunit_test_/directory/text.rar';
+        
         $uploadFile->expects(self::once())->method('moveTo')
-            ->with($this->equalTo($uploadedDir . DIRECTORY_SEPARATOR . 'text.txt'));
+            ->with($this->equalTo($expectedPath));
 
-        $this->handler->upload($uploadedDir, $uploadFile);
+        $this->handler->upload('directory', $uploadFile);
 
     }
 
