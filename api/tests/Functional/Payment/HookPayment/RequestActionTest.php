@@ -4,21 +4,27 @@ namespace Test\Functional\Payment\HookPayment;
 
 use App\Http\JsonResponse;
 use App\Payment\Command\HookPayment\Handler;
+use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
+use Psr\Http\Message\UploadedFileInterface;
+use Slim\Psr7\UploadedFile;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 
 class RequestActionTest extends WebTestCase
 {
+    private InMemoryFileSystemPath $fileSystem;
     protected function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([
             RequestFixture::class,
         ]);
+        $this->fileSystem = InMemoryFileSystemPath::create();
     }
     public function testSuccess(): void
     {
         $this->mailer()->clear();
+        $this->createFile('ot201.18.rar', 'test content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::json('POST', '/v1/payments/payment-webhook',
             $this->getRequestBody()
@@ -63,5 +69,19 @@ class RequestActionTest extends WebTestCase
                 ]
             ]
         ];
+    }
+
+    private function createFile(string $name, string $content): void
+    {
+        $pathToFile = $this->fileSystem->getValue(). '/b38e76c0-ac23-4c48-85fd-975f32c8801f/'. $name;
+        mkdir(dirname($pathToFile), 0777, true);
+        $result = file_put_contents($pathToFile, $content);
+        if(!$result){
+            throw new \RuntimeException('Unable to write file');
+        }
+    }
+    public function tearDown(): void
+    {
+        $this->fileSystem->clear();
     }
 }

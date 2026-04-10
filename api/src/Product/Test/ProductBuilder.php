@@ -29,7 +29,7 @@ class ProductBuilder
         $this->name = "Оказание первой помощи пострадавшим";
         $this->cipher = "ОТ 201.18";
         $this->price = new Amount(350.00, new Currency('RUB'));
-        $this->filename = new Filename("ot201.1.rar");
+        $this->filename = new Filename("ot201.18.rar");
         $this->slug = new Slug("201");
         $this->updatedAt = new \DateTimeImmutable();
         $this->totalDocuments = 22;
