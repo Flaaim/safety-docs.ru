@@ -13,16 +13,16 @@ test-unit: unit-test
 test-functional: functional-test api-fixtures
 
 docker-up:
-	docker-compose up -d
+	docker compose up -d
 
 docker-down:
-	docker-compose down --remove-orphans
+	docker compose down --remove-orphans
 
 docker-down-clear:
-	docker-compose down -v --remove-orphans
+	docker compose down -v --remove-orphans
 
 docker-pull:
-	docker-compose pull
+	docker compose pull
 
 frontend-init: frontend-yarn-install frontend-ready
 
@@ -33,15 +33,15 @@ frontend-ready:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
 
 frontend-yarn-install:
-	docker-compose run --rm frontend-node-cli yarn install
+	docker compose run --rm frontend-node-cli yarn install
 
 frontend-lint:
-	docker-compose run --rm frontend-node-cli yarn eslint
-	docker-compose run --rm frontend-node-cli yarn stylelint
+	docker compose run --rm frontend-node-cli yarn eslint
+	docker compose run --rm frontend-node-cli yarn stylelint
 
 frontend-lint-fix:
-	docker-compose run --rm frontend-node-cli yarn eslint-fix
-	docker-compose run --rm frontend-node-cli yarn stylelint-fix
+	docker compose run --rm frontend-node-cli yarn eslint-fix
+	docker compose run --rm frontend-node-cli yarn stylelint-fix
 
 frontend-test:
 	docker compose run --rm frontend-node-cli yarn test
@@ -55,26 +55,26 @@ api-permission:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod -R 777 bin var/cache var/log public/templates
 
 composer-install:
-	docker-compose run --rm api-php-cli composer install
+	docker compose run --rm api-php-cli composer install
 
 api-wait-for-db:
-	docker-compose run --rm api-php-cli wait-for-it mysql:3306 -t 30
+	docker compose run --rm api-php-cli wait-for-it mysql:3306 -t 30
 
 api-migrations:
-	docker-compose run --rm api-php-cli composer app migrations:migrate -- --no-interaction
+	docker compose run --rm api-php-cli composer app migrations:migrate -- --no-interaction
 
 api-fixtures:
-	docker-compose run --rm api-php-cli composer app fixtures:load
+	docker compose run --rm api-php-cli composer app fixtures:load
 
 unit-test:
-	docker-compose run --rm api-php-cli composer test -- --testsuite=Unit
+	docker compose run --rm api-php-cli composer test -- --testsuite=Unit
 
 functional-test:
-	docker-compose run --rm api-php-cli composer test -- --testsuite=Functional
+	docker compose run --rm api-php-cli composer test -- --testsuite=Functional
 
 
 docker-build:
-	docker-compose build
+	docker compose build
 
 build: build-gateway build-frontend build-api
 
