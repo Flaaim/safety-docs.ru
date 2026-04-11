@@ -10,3 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.0.0
+
+      - name: Dev Init
+        run: make init
