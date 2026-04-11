@@ -23,7 +23,7 @@ class DirectionRepository
 
     public function findBySlug(Slug $slug): ?Direction
     {
-        return $this->repo->findOneBy(['slug' => $slug->getValue()]);
+        return $this->repo->findOneBy(['slug' => $slug]);
     }
 
     /** @return array<Direction> */
