@@ -1,5 +1,4 @@
 
-import {getDirectionBySlug, getAllDirections } from "../../../../../api/direction";
 import {notFound} from "next/navigation";
 import {Htag} from "@/components";
 import React from "react";
@@ -10,7 +9,7 @@ import Link from "next/link";
 import {ChevronRight} from "lucide-react";
 import {DirectionDTO} from "@/interfaces/direction.interface";
 import {CategoryDTO} from "@/interfaces/category.interface";
-
+import {getAllDirections, getDirectionBySlug} from "@api/direction";
 
 type Props = {
   params: Promise<{ slug: string[] }>;
@@ -52,21 +51,29 @@ const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: s
   </>
 
 );
+
+export const dynamicParams = true;
 export  async function generateStaticParams() {
-  const data = await getAllDirections();
+  try{
+    const data = await getAllDirections();
 
-  const paths: { slug: string[] }[] = [];
+    const paths: { slug: string[] }[] = [];
 
-  data.directions.forEach((dir) => {
+    data.directions.forEach((dir) => {
 
-    paths.push({ slug: [dir.slug] });
+      paths.push({ slug: [dir.slug] });
 
-    dir.categories.forEach((cat) => {
-      paths.push({ slug: [dir.slug, cat.slug] });
+      dir.categories.forEach((cat) => {
+        paths.push({ slug: [dir.slug, cat.slug] });
+      });
     });
-  });
 
-  return paths;
+    return paths;
+  }catch (e){
+    console.warn("API недоступно при сборке, пропускаю генерацию путей");
+    return []
+  }
+
 }
 
 

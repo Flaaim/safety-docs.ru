@@ -9,14 +9,21 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - frontend
+      - frontend-node
       - api
 
-
-  frontend:
-    image: ${REGISTRY}/stub-project-frontend:${IMAGE_TAG}
+  frontend-node:
+    image: ${REGISTRY}/stub-project-frontend-node:${IMAGE_TAG}
     restart: always
-
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BACKEND_URL=https://api.safety-docs.ru
+      - INTERNAL_BACKEND_URL=http://api
+      - PORT=3000
+    expose:
+      - "3000"
+    depends_on:
+      - api
 
   api:
     image: ${REGISTRY}/stub-project-api:${IMAGE_TAG}

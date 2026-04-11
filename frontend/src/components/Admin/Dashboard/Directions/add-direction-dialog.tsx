@@ -77,7 +77,7 @@ export default function AddDirectionDialog(){
           </div>
           <div className="grid gap-2">
             <Label htmlFor="description">Описание</Label>
-            <Textarea id="description" name="description" rows='5' required></Textarea>
+            <Textarea id="description" name="description" required></Textarea>
           </div>
           <div className="grid gap-2" data-color-mode="light">
             <MDEditor

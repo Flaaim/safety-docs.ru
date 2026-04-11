@@ -4,12 +4,13 @@ import {JSX, useEffect, useState} from "react";
 import {ProductInfoProps} from "@/components/ProductInfo/ProductInfo.props";
 import {Roboto_Mono} from "next/font/google";
 
-import {DefItem, Deflisttag, DownloadButton, SimpleDialog, Spantag} from "@/components";
+import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
 import cn from "classnames";
 
 import {Status} from "@/components/Status/Status";
-import {ProductInfoData} from "@/interfaces/product.interface";
-import {getProductBySlug} from "../../../api/product";
+import {ProductDTO} from "@/interfaces/product.interface";
+import {getProductBySlug} from "@api/product";
+
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
@@ -19,7 +20,7 @@ const robotoMono = Roboto_Mono({
 
 export const ProductInfo = ({slug, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
   const [error, setError] = useState<string | null>(null);
-  const [productInfoData, setProductInfoData] = useState<ProductInfoData | null>(null);
+  const [productInfoData, setProductInfoData] = useState<ProductDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -57,7 +58,7 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
   return (<div className={cn(robotoMono.variable)}>
     <Deflisttag >
       <DefItem term='Название' definition={productInfoData.name} />
-      <DefItem term='Стоимость' definition={productInfoData.formattedPrice} />
+      <DefItem term='Стоимость' definition={productInfoData.amount} />
       <DefItem term='Обновлен' definition={productInfoData.updatedAt} />
       <DefItem term='Количество' definition={countFiles} />
       <DefItem term='Формат' definition={formatFiles} />
@@ -66,7 +67,7 @@ export const ProductInfo = ({slug, countFiles, formatFiles, description}: Produc
 
     <DownloadButton
       headline={productInfoData.name}
-      productId={productInfoData.productId}>
+      productId={productInfoData.id}>
       <Spantag size='s' > Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>

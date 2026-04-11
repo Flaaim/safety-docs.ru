@@ -49,8 +49,8 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
           const categoryDTO = await getCategoryBySlug(slug, directionId, token);
           setCategoryData(categoryDTO);
           setTextValue(categoryDTO.text || '');
-        }catch (error){
-          toast.error('Не удалось загрузить категорию');
+        }catch (error: any){
+          toast.error(error.message);
         }finally {
           setLoading(false);
         }
@@ -59,8 +59,8 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
         try{
           const directionCollection = await getAllDirections(token);
           setDirectionCollection(directionCollection);
-        }catch (error){
-          toast.error('Не удалось загрузить директории');
+        }catch (error: any){
+          toast.error(error.message);
         }
       };
 
@@ -126,7 +126,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
             </div>
             <div className="grid gap-2">
               <Label htmlFor="description">Описание</Label>
-              <Textarea id="description" name="description" rows='5' defaultValue={categoryData.description} required></Textarea>
+              <Textarea id="description" name="description" defaultValue={categoryData.description} required></Textarea>
             </div>
             <div className="grid gap-2" data-color-mode="light">
               <MDEditor

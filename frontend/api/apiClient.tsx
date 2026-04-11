@@ -2,25 +2,23 @@ interface fetchOptions extends RequestInit {
   token?: string
 }
 
-export async function apiFetch<T = void>(url: string, options: FetchOptions = {}): Promise<T> {
+export async function apiFetch<T = void>(url: string, options: fetchOptions = {}): Promise<T> {
   const { token, headers: customHeaders, body, ...restOptions } = options;
 
-  const headers: HeadersInit = {
-    ...customHeaders
-  };
+  const headers = new Headers(customHeaders);
 
-  if (!(body instanceof FormData)) {
-    headers['Content-Type'] = 'application/json';
+  if (!headers.has('Content-Type')) {
+    headers.set('Content-Type', 'application/json');
   }
 
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers.set('Authorization', `Bearer ${token}`);
   }
 
   const response = await fetch(url, {
-    headers,
+    ...restOptions,
+    headers: Object.fromEntries(headers.entries()),
     body,
-    ...restOptions
   });
 
   if (!response.ok) {
@@ -42,7 +40,12 @@ export async function apiFetch<T = void>(url: string, options: FetchOptions = {}
 
   try {
     const text = await response.text();
-    return text ? JSON.parse(text) : undefined;
+
+    if (!text) {
+      return undefined as unknown as T;
+    }
+
+    return JSON.parse(text) as T;
   } catch (error) {
     return undefined as unknown as T;
   }

@@ -109,7 +109,7 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
             </div>
             <div className="grid gap-2">
               <Label htmlFor="description">Описание</Label>
-              <Textarea id="description" name="description" rows='5' defaultValue={directionData.description} required></Textarea>
+              <Textarea id="description" name="description" defaultValue={directionData.description} required></Textarea>
             </div>
             <div className="grid gap-2" data-color-mode="light">
               <MDEditor

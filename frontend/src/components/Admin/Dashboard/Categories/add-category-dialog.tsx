@@ -45,7 +45,7 @@ export default function AddCategoryDialog(){
 
           setDirectionCollection(data);
 
-        }catch (error: Error){
+        }catch (error: any){
           toast.error(error.message);
           setError(error);
         }finally {
@@ -79,7 +79,7 @@ export default function AddCategoryDialog(){
       toast.success("Направление добавлено");
       setOpen(false);
       router.refresh();
-    } catch (error: Error) {
+    } catch (error: any) {
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -107,7 +107,7 @@ export default function AddCategoryDialog(){
           </div>
           <div className="grid gap-2">
             <Label htmlFor="description">Описание</Label>
-            <Textarea id="description" name="description" rows='5' required></Textarea>
+            <Textarea id="description" name="description" required></Textarea>
           </div>
           <div className="grid gap-2" data-color-mode="light">
             <MDEditor

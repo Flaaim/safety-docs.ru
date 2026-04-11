@@ -82,7 +82,7 @@ build-gateway:
 	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-gateway:${IMAGE_TAG} gateway/docker
 
 build-frontend:
-	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-frontend:${IMAGE_TAG} frontend
+	docker --log-level=debug build --pull --file=frontend/docker/production/node/Dockerfile --tag=${REGISTRY}/stub-project-frontend-node:${IMAGE_TAG} frontend
 
 
 build-api:
@@ -99,7 +99,7 @@ push-gateway:
 	docker push ${REGISTRY}/stub-project-gateway:${IMAGE_TAG}
 
 push-frontend:
-	docker push ${REGISTRY}/stub-project-frontend:${IMAGE_TAG}
+	docker push ${REGISTRY}/stub-project-frontend-node:${IMAGE_TAG}
 
 push-api:
 	docker push ${REGISTRY}/stub-project-api:${IMAGE_TAG}
