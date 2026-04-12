@@ -71,7 +71,7 @@ export  async function generateStaticParams() {
     return paths;
   }catch (e){
     console.warn("API недоступно при сборке, пропускаю генерацию путей");
-    return []
+    return [];
   }
 
 }

@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import {useEffect, useState} from "react"
-import { Button } from "@/components/ui/button"
+import {useEffect, useState} from "react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {ChevronDown} from "lucide-react";
 import {formatsProduct} from "@/interfaces/product.interface";
 
@@ -17,24 +17,24 @@ export interface ProductMultipleFormatsProps {
 }
 
 export function ProductMultipleFormats({ formats = [], onChange }: ProductMultipleFormatsProps) {
-  const [selectedValues, setSelectedValues] = useState<string[]>(formats)
+  const [selectedValues, setSelectedValues] = useState<string[]>(formats);
 
   useEffect(() => {
-    setSelectedValues(formats)
-  }, [formats])
+    setSelectedValues(formats);
+  }, [formats]);
 
 
   const handleSelect = (value: string) => {
     const newValues = selectedValues.includes(value)
       ? selectedValues.filter(v => v !== value)
-      : [...selectedValues, value]
+      : [...selectedValues, value];
 
-    setSelectedValues(newValues)
+    setSelectedValues(newValues);
 
     if (onChange) {
-      onChange(newValues)
+      onChange(newValues);
     }
-  }
+  };
   return (
     <div onClick={(e) => e.stopPropagation()}>
       <DropdownMenu>
@@ -63,7 +63,7 @@ export function ProductMultipleFormats({ formats = [], onChange }: ProductMultip
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }
 
 

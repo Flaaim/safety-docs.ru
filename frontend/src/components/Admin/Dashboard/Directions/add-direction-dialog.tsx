@@ -25,7 +25,7 @@ import MDEditor from '@uiw/react-md-editor';
 export default function AddDirectionDialog(){
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [textValue, setTextValue] = useState<string>('')
+  const [textValue, setTextValue] = useState<string>('');
 
   const router = useRouter();
 

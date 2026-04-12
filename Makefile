@@ -7,7 +7,7 @@ up: docker-up
 down: docker-down
 restart: down up
 validate: api-validate-schema
-lint: frontend-lint
+lint: api-lint frontend-lint
 lint-fix: frontend-lint-fix
 api-test: unit-test functional-test api-fixtures
 test-unit: unit-test
@@ -48,6 +48,9 @@ frontend-test:
 	docker compose run --rm frontend-node-cli yarn test
 
 api-init: api-permission composer-install api-wait-for-db api-migrations api-fixtures
+
+api-lint:
+	docker compose run --rm api-php-cli composer lint
 
 api-validate-schema:
 	docker compose run --rm api-php-cli composer app orm:validate-schema

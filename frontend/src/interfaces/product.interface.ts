@@ -54,4 +54,4 @@ export const formatsProduct = [
   'docx',
   'doc',
   'excel'
-] as const
+] as const;

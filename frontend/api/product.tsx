@@ -40,7 +40,7 @@ export async function getFreeProducts(token: string | undefined): Promise<Produc
 }
 
 export async function addProduct(token:string | undefined, product:Partial<CreateProductDTO>): Promise<void>{
-  const formData = handleFormData(product)
+  const formData = handleFormData(product);
 
   return await apiFetch<void>(API.product.add(), {
     method: "POST",
@@ -51,7 +51,7 @@ export async function addProduct(token:string | undefined, product:Partial<Creat
 
 export async function updateProduct(token: string|undefined, product:Partial<UpdateProductDTO>):Promise<void> {
 
-  const formData = handleFormData(product)
+  const formData = handleFormData(product);
 
   const productId = product.id || '';
 
@@ -82,5 +82,5 @@ function handleFormData(product: Product): FormData {
     }
   });
 
-  return formData
+  return formData;
 }
