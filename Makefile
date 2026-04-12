@@ -48,6 +48,9 @@ frontend-test:
 
 api-init: api-permission composer-install api-wait-for-db api-migrations api-fixtures
 
+api-validate-schema:
+	docker compose run --rm api-php-cli composer app orm:validate-schema
+
 api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
 
@@ -79,16 +82,16 @@ docker-build:
 build: build-gateway build-frontend build-api
 
 build-gateway:
-	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-gateway:${IMAGE_TAG} gateway/docker
+	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/safety-docs-gateway:${IMAGE_TAG} gateway/docker
 
 build-frontend:
-	docker --log-level=debug build --pull --file=frontend/docker/production/node/Dockerfile --tag=${REGISTRY}/stub-project-frontend-node:${IMAGE_TAG} frontend
+	docker --log-level=debug build --pull --file=frontend/docker/production/node/Dockerfile --tag=${REGISTRY}/safety-docs-frontend-node:${IMAGE_TAG} frontend
 
 
 build-api:
-	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/stub-project-api:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/stub-project-api-php-fpm:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/stub-project-api-php-cli:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/safety-docs-api:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG} api
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
@@ -96,15 +99,15 @@ try-build:
 push: push-gateway push-frontend push-api
 
 push-gateway:
-	docker push ${REGISTRY}/stub-project-gateway:${IMAGE_TAG}
+	docker push ${REGISTRY}/safety-docs-gateway:${IMAGE_TAG}
 
 push-frontend:
-	docker push ${REGISTRY}/stub-project-frontend-node:${IMAGE_TAG}
+	docker push ${REGISTRY}/safety-docs-frontend-node:${IMAGE_TAG}
 
 push-api:
-	docker push ${REGISTRY}/stub-project-api:${IMAGE_TAG}
-	docker push ${REGISTRY}/stub-project-api-php-fpm:${IMAGE_TAG}
-	docker push ${REGISTRY}/stub-project-api-php-cli:${IMAGE_TAG}
+	docker push ${REGISTRY}/safety-docs-api:${IMAGE_TAG}
+	docker push ${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG}
+	docker push ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
 
 
 ifneq ("$(wildcard .env.production)","")
