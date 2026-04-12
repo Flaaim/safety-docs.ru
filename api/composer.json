@@ -35,7 +35,8 @@
   },
   "scripts": {
     "app": "php bin/app.php --ansi",
-    "test": "phpunit --display-warnings"
+    "test": "phpunit --display-warnings",
+    "lint": "phplint --configuration=.phplint.yml"
   },
   "require-dev": {
     "phpunit/phpunit": "^10.5",
