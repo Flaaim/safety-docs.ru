@@ -29,7 +29,7 @@ export interface ProductDTO extends Product {
   id: string,
   name: string,
   cipher: string,
-  amount: string,
+  formattedPrice: string,
   filename: string,
   updatedAt: string
   slug: string,

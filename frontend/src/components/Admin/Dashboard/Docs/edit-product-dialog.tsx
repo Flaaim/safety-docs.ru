@@ -50,7 +50,7 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
     }else {
       setProductData(null);
     }
-  }, [open]);
+  }, [open, token]);
 
   useEffect(() => {
     if (productData) {
@@ -118,7 +118,7 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="amount">Цена</Label>
-              <Input id="amount" type='number' name="amount"  defaultValue={productData.amount ? parseFloat(productData.amount) : 0} required />
+              <Input id="amount" type='number' name="amount"  defaultValue={productData.formattedPrice ? parseFloat(productData.formattedPrice) : 0} required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="updatedAt">Дата обновления</Label>
