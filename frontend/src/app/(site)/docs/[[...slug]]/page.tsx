@@ -69,8 +69,7 @@ export  async function generateStaticParams() {
     });
 
     return paths;
-  }catch (e){
-    console.warn("API недоступно при сборке, пропускаю генерацию путей");
+  }catch {
     return [];
   }
 
@@ -97,7 +96,7 @@ export async function generateMetadata({ params }: Props) {
       title: `${direction.title} | Образцы документов`,
       description: `Комплекты документов по направлению: ${direction.title}.`,
     };
-  }catch (error){
+  }catch {
     return {
       title: "Не найдено",
     };
@@ -108,23 +107,21 @@ export default async function DirectionPage({ params }: Props) {
   const { slug } = await params;
 
   const [dirSlug, catSlug] = slug;
+  let direction;
 
-  try{
-    const direction = await getCachedDirection(dirSlug);
-
-    if(catSlug){
-      const category = direction.categories.find(c => c.slug === catSlug);
-      if (!category) notFound();
-
-      return <CategoryView category={category} dirSlug={dirSlug} />;
-    }
-
-    return <DirectionView direction={direction} />;
-  }catch (error){
-    console.error(error);
-    return;
+  try {
+    direction = await getCachedDirection(dirSlug);
+  }catch {
     notFound();
   }
 
+  if(catSlug){
+    const category = direction.categories.find(c => c.slug === catSlug);
+    if (!category) notFound();
+
+    return <CategoryView category={category} dirSlug={dirSlug} />;
+  }
+
+  return <DirectionView direction={direction} />;
 
 }
