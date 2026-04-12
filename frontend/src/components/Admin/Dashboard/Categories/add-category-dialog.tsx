@@ -45,8 +45,8 @@ export default function AddCategoryDialog(){
 
           setDirectionCollection(data);
 
-        }catch (error: any){
-          toast.error(error.message);
+        }catch (error){
+          toast.error(error instanceof Error ? error.message : "Ошибка при получении данных");
           setError(error);
         }finally {
           setLoading(false);
@@ -58,7 +58,7 @@ export default function AddCategoryDialog(){
     }
 
 
-  }, [open]);
+  }, [open, token]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -79,8 +79,8 @@ export default function AddCategoryDialog(){
       toast.success("Направление добавлено");
       setOpen(false);
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Ошибка при сохранении");
     } finally {
       setLoading(false);
     }
