@@ -28,8 +28,8 @@ export async function apiFetch<T = void>(url: string, options: fetchOptions = {}
       if (errorData && errorData.message) {
         errorMessage = errorData.message;
       }
-    } catch (e) {
-      console.error("Не удалось распарсить JSON ошибки:", e);
+    } catch {
+
     }
     throw new Error(errorMessage);
   }
@@ -46,7 +46,7 @@ export async function apiFetch<T = void>(url: string, options: fetchOptions = {}
     }
 
     return JSON.parse(text) as T;
-  } catch (error) {
+  } catch {
     return undefined as unknown as T;
   }
 }
