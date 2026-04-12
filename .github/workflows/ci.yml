@@ -41,6 +41,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build FRONTEND-NODE Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/docker/production/node/Dockerfile
+          tags: ${{ env.REGISTRY }}/stub-project-frontend-node:${{ env.IMAGE_TAG }}
+          push: false
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Cache API Composer dependencies
         uses: actions/cache@v4
         with:
