@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
-import {ProductCollection, ProductDTO, ProductFree, ProductFreeCollection} from "@/interfaces/product.interface";
+import {ProductFree, ProductFreeCollection} from "@/interfaces/product.interface";
 import {toast} from "sonner";
 import {Label} from "@/components/ui/label";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
@@ -40,7 +40,7 @@ export default function AssignProductDialog({categoryId}:AssignProductDialogProp
           const productFreeCollection = await getFreeProducts(token);
           setProductFreeCollection(productFreeCollection);
         }catch (error){
-          toast.error('Не удалось загрузить продукты');
+          toast.error(error instanceof Error ? error.message : "Ошибка загрузки продуктов");
         }finally {
           setLoading(false);
         }
@@ -50,7 +50,7 @@ export default function AssignProductDialog({categoryId}:AssignProductDialogProp
       setLoading(false);
       setProductFreeCollection([]);
     }
-  }, [open]);
+  }, [open, token]);
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -71,8 +71,8 @@ export default function AssignProductDialog({categoryId}:AssignProductDialogProp
       setOpen(false);
 
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Ошибка при при привязке продукта");
     } finally {
       setLoading(false);
     }
