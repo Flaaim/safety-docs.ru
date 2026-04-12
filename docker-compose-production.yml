@@ -1,6 +1,6 @@
 services:
   gateway:
-    image: ${REGISTRY}/stub-project-gateway:${IMAGE_TAG}
+    image: ${REGISTRY}/safety-docs-gateway:${IMAGE_TAG}
     restart: always
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -13,7 +13,7 @@ services:
       - api
 
   frontend-node:
-    image: ${REGISTRY}/stub-project-frontend-node:${IMAGE_TAG}
+    image: ${REGISTRY}/safety-docs-frontend-node:${IMAGE_TAG}
     restart: always
     environment:
       - NODE_ENV=production
@@ -26,7 +26,7 @@ services:
       - api
 
   api:
-    image: ${REGISTRY}/stub-project-api:${IMAGE_TAG}
+    image: ${REGISTRY}/safety-docs-api:${IMAGE_TAG}
     restart: always
     depends_on:
       - api-php-fpm
@@ -35,7 +35,7 @@ services:
       - /home/deploy/storage/templates:/app/public/templates
 
   api-php-fpm:
-    image: ${REGISTRY}/stub-project-api-php-fpm:${IMAGE_TAG}
+    image: ${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG}
     restart: always
     volumes:
       - /home/deploy/storage/templates:/app/public/templates
@@ -65,7 +65,7 @@ services:
 
 
   api-php-cli:
-    image: ${REGISTRY}/stub-project-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
     environment:
       APP_DEBUG: 0
       SITE_URL: ${API_SITE_URL}
