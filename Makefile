@@ -6,6 +6,7 @@ api-init frontend-init
 up: docker-up
 down: docker-down
 restart: down up
+validate: api-validate-schema
 lint: frontend-lint
 lint-fix: frontend-lint-fix
 api-test: unit-test functional-test api-fixtures
