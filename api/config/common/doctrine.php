@@ -23,6 +23,10 @@ return [
             null
         );
 
+        $config->setSchemaAssetsFilter(function (string $assetName): bool {
+            return $assetName !== 'doctrine_migration_versions';
+        });
+
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 
         foreach ($settings['types'] as $name => $class) {

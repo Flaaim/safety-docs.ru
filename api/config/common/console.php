@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Command\FixturesLoadCommand;
-use App\Command\ProductSendCommand;
 use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\Migrations\Tools\Console\Command\LatestCommand;
@@ -11,6 +10,7 @@ use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\Migrations\Tools\Console\Command\UpToDateCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Psr\Container\ContainerInterface;
 
@@ -31,6 +31,7 @@ return [
             'commands' => [
                 FixturesLoadCommand::class,
                 ValidateSchemaCommand::class,
+                UpdateCommand::class,
 
                 DiffCommand::class,
                 ExecuteCommand::class,
