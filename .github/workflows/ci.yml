@@ -80,7 +80,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-fpm/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-api-php-fpm:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/stub-project-api-php-fpm:${{ github.run_id }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -90,9 +90,46 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/docker/production/node/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-frontend-node:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/stub-project-frontend-node:${{ github.run_id }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add Server to Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.SERVER_PORT }} -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Server
+        run: make deploy
+        env:
+          HOST: ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
+          PORT: ${{ secrets.SERVER_PORT }}
+          BUILD_NUMBER: ${{ github.run_id }}
+          REGISTRY: ${{ env.REGISTRY }}
+
+          COMPOSE_PROJECT_NAME: ${{ secrets.COMPOSE_PROJECT_NAME }}
+          API_SITE_URL: ${{ secrets.API_SITE_URL }}
+          API_SITE_NAME: ${{ secrets.API_SITE_NAME }}
+          API_DB_PASSWORD: ${{ secrets.API_DB_PASSWORD }}
+          API_MAILER_HOST: ${{ secrets.API_MAILER_HOST }}
+          API_MAILER_PORT: ${{ secrets.API_MAILER_PORT }}
+          API_MAILER_USER: ${{ secrets.API_MAILER_USER }}
+          API_MAILER_PASSWORD: ${{ secrets.API_MAILER_PASSWORD }}
+          API_MAILER_FROM_EMAIL: ${{ secrets.API_MAILER_FROM_EMAIL }}
+          API_MAILER_FROM_NAME: ${{ secrets.API_MAILER_FROM_NAME }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          AUTH_LOGIN: ${{ secrets.AUTH_LOGIN }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+          YOOKASSA_SHOP_ID: ${{ secrets.YOOKASSA_SHOP_ID }}
+          YOOKASSA_SECRET_KEY: ${{ secrets.YOOKASSA_SECRET_KEY }}
+          YOOKASSA_RETURN_URL: ${{ secrets.YOOKASSA_RETURN_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
 
