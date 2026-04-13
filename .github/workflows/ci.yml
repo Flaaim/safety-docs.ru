@@ -112,6 +112,7 @@ jobs:
           PORT: ${{ secrets.SERVER_PORT }}
           BUILD_NUMBER: ${{ github.run_id }}
           REGISTRY: ${{ env.REGISTRY }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
           COMPOSE_PROJECT_NAME: ${{ secrets.COMPOSE_PROJECT_NAME }}
           API_SITE_URL: ${{ secrets.API_SITE_URL }}
