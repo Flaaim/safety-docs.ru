@@ -15,7 +15,8 @@ const config = {
           "variant"
         ]
       }
-    ]
+    ],
+    "import-notation": "string"
   }
 };
 
