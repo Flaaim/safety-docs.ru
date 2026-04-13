@@ -42,7 +42,7 @@ export default function AddProductDialog() {
     setLoading(true);
     const formData = new FormData(e.currentTarget);
 
-    const product: Partial<CreateProductDTO> = {
+    const product: CreateProductDTO = {
       name: formData.get('name') as string,
       cipher: formData.get('cipher') as string,
       amount: formData.get('amount') as string,

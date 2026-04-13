@@ -46,8 +46,9 @@ export default function AddCategoryDialog(){
           setDirectionCollection(data);
 
         }catch (error){
-          toast.error(error instanceof Error ? error.message : "Ошибка при получении данных");
-          setError(error);
+          const err = error instanceof Error ? error : new Error("Ошибка при получении данных");
+          toast.error(err.message);
+          setError(err);
         }finally {
           setLoading(false);
         }

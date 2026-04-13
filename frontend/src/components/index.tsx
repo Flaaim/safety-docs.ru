@@ -13,6 +13,5 @@ export * from './ProductModal/ProductModal';
 export * from '@/components/Navigation/Section/Section';
 export * from '@/components/Navigation/Navigation';
 export * from './PaymentResult/PaymentResult';
-export * from './Gallery/StaticGallery';
 export * from './SimpleCard/SimpleCard';
 export * from './Dialog/SimpleDialog';

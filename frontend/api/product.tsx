@@ -39,7 +39,7 @@ export async function getFreeProducts(token: string | undefined): Promise<Produc
   });
 }
 
-export async function addProduct(token:string | undefined, product:Partial<CreateProductDTO>): Promise<void>{
+export async function addProduct(token:string | undefined, product:CreateProductDTO): Promise<void>{
   const formData = handleFormData(product);
 
   return await apiFetch<void>(API.product.add(), {
@@ -49,7 +49,7 @@ export async function addProduct(token:string | undefined, product:Partial<Creat
   });
 }
 
-export async function updateProduct(token: string|undefined, product:Partial<UpdateProductDTO>):Promise<void> {
+export async function updateProduct(token: string|undefined, product:UpdateProductDTO):Promise<void> {
 
   const formData = handleFormData(product);
 

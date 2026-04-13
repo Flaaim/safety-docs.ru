@@ -8,9 +8,8 @@ export const Sidebar = ({className, ...props}:SidebarProps): JSX.Element => {
   return (
     <aside {...props} className={classNames(className)}>
       <div className="grid grid-cols-1 gap-4 justify-items-center">
-        <Avatar size='lg'>
-          <AvatarImage src="/avatar/homer.jpg" alt='Блог охраны труда' />
-          <AvatarFallback>CN</AvatarFallback>
+        <Avatar size='sm'>
+
         </Avatar>
         <SimpleSeparator />
       </div>

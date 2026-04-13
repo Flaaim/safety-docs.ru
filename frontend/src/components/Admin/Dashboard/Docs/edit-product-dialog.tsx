@@ -64,7 +64,7 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
 
     const formData = new FormData(e.currentTarget);
 
-    const product: Partial<UpdateProductDTO> = {
+    const product: UpdateProductDTO = {
       id: productId,
       name: formData.get('name') as string,
       cipher: formData.get('cipher') as string,
