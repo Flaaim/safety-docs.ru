@@ -20,13 +20,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Docker Login
-        uses: docker/login-action@v4
-        with:
-          registry: ${{ secrets.REGISTRY }}
-          username: ${{ secrets.REGISTRY_USER }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-
       - name: Cache API Composer dependencies
         uses: actions/cache@v4
         with:
@@ -43,41 +36,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Build API PHP-CLI Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./api
-          file: ./api/docker/production/php-cli/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-api-php-cli:${{ env.IMAGE_TAG }}
-          push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build API PHP-FPM Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./api
-          file: ./api/docker/production/php-fpm/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-api-php-fpm:${{ env.IMAGE_TAG }}
-          push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Build FRONTEND-NODE Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          file: ./frontend/docker/production/node/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-frontend-node:${{ env.IMAGE_TAG }}
-          push: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Dev Init
         run: make init
         env:
-          REGISTRY: ${{ env.REGISTRY }}
-          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          REGISTRY: local-registry
+          IMAGE_TAG: test
 
       - name: Validate
         run: make api-validate-schema
@@ -87,3 +51,48 @@ jobs:
 
       - name: Frontend lint
         run: make frontend-lint
+
+      - name: API tests
+        run: make api-test
+
+      - name: Dev down
+        run: make docker-down-clear
+
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and Push API PHP-CLI Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/docker/production/php-cli/Dockerfile
+          tags: ${{ env.REGISTRY }}/stub-project-api-php-cli:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push API PHP-FPM Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/docker/production/php-fpm/Dockerfile
+          tags: ${{ env.REGISTRY }}/stub-project-api-php-fpm:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Push FRONTEND-NODE Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          file: ./frontend/docker/production/node/Dockerfile
+          tags: ${{ env.REGISTRY }}/stub-project-frontend-node:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+
