@@ -1,5 +1,7 @@
 /** @type {import('stylelint').Config} */
-export default {
+const config = {
   extends: ["stylelint-config-standard", "stylelint-order-config-standard"],
   plugins: ["stylelint-order"]
 };
+
+export default config;

@@ -2,6 +2,7 @@
 
 import {StaticGalleryProps} from "@/components/Gallery/StaticGallery.props";
 import {useState} from "react";
+import Image from "next/image";
 import styles from './StaticGallery.module.css';
 
 export const StaticGallery = ({images, title}:StaticGalleryProps) => {
@@ -14,7 +15,6 @@ export const StaticGallery = ({images, title}:StaticGalleryProps) => {
       </div>
     );
   }
-  console.log(images);
   return (
     <>
       <div className={styles.container}>
@@ -27,7 +27,7 @@ export const StaticGallery = ({images, title}:StaticGalleryProps) => {
               className={styles.imageButton}
               aria-label={`Просмотреть ${image.name}`}
             >
-              <img
+              <Image
                 src={image.src}
                 alt={image.name}
                 className={styles.image}
@@ -43,7 +43,7 @@ export const StaticGallery = ({images, title}:StaticGalleryProps) => {
           onClick={() => setSelectedImage(null)}
         >
           <div className={styles.lightboxContent}>
-            <img
+            <Image
               src={selectedImage}
               alt="Просмотр"
               className={styles.lightboxImage}

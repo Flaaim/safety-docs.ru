@@ -38,8 +38,8 @@ export default function RefuseProductDialog({categoryId}:RefuseProductDialogProp
       toast.success('Продукт успешно отвязан');
       setLoading(false);
       router.refresh();
-    } catch (error: any) {
-        toast.error(error.message);
+    } catch (error) {
+        toast.error(error instanceof Error ? error.message : "Ошибка. Продукт не отвязан.");
     }finally {
       setLoading(false);
     }

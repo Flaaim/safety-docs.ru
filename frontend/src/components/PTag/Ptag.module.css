@@ -1,9 +1,11 @@
 .p {
   margin: 0 0 20px;
 }
+
 .es {
   font-size: 10px;
 }
+
 .s {
   font-size: 14px;
 }
@@ -11,13 +13,17 @@
 .m {
   font-size: 16px;
 }
+
 .bold {
   color: var(--heading-color);
+
   font-weight: 700;
 }
+
 .italic {
   font-style: italic;
 }
+
 .strikethrough {
   text-decoration: line-through;
 }

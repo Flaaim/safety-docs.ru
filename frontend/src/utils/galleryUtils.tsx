@@ -15,8 +15,7 @@ export async function getImagesFromFolder(folderName: string): Promise<ImageMeta
           name: file.replace(/\.[^/.]+$/, ""),
           fullName: file
         }));
-    }catch (error) {
-      console.error(`Error reading folder ${folderName}:`, error);
+    }catch {
       return [];
     }
   }

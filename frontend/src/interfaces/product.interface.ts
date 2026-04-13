@@ -1,41 +1,31 @@
-export interface Product {}
+export interface Product {
+  name: string;
+  cipher: string;
+  filename: string;
+  slug: string;
+  totalDocuments: number;
+  formatDocuments: string[];
+}
 
 export interface CreateProductDTO extends Product{
-  name: string,
-  cipher: string,
   amount: string,
-  filename: string,
   updatedAt: string
-  slug: string,
   file: File | null,
-  totalDocuments: number
-  formatDocuments: string[]
+
 }
 
 export interface UpdateProductDTO extends Product {
   id: string,
-  name: string,
-  cipher: string,
   amount: string,
-  filename: string
   updatedAt: string
-  slug: string,
   file: File | null
-  totalDocuments: number
-  formatDocuments: string[]
 }
 
 export interface ProductDTO extends Product {
   id: string,
-  name: string,
-  cipher: string,
   formattedPrice: string,
-  filename: string,
   updatedAt: string
-  slug: string,
   file: string,
-  totalDocuments: number,
-  formatDocuments: string[]
 }
 export interface ProductCollection {
   products: ProductDTO[]

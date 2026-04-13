@@ -49,8 +49,8 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
           const categoryDTO = await getCategoryBySlug(slug, directionId, token);
           setCategoryData(categoryDTO);
           setTextValue(categoryDTO.text || '');
-        }catch (error: any){
-          toast.error(error.message);
+        }catch (error){
+          toast.error(error instanceof Error ? error.message : "Ошибка загрузки категорий");
         }finally {
           setLoading(false);
         }
@@ -59,8 +59,8 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
         try{
           const directionCollection = await getAllDirections(token);
           setDirectionCollection(directionCollection);
-        }catch (error: any){
-          toast.error(error.message);
+        }catch (error){
+          toast.error(error instanceof Error ? error.message : "Ошибка при загрузке директорий");
         }
       };
 
@@ -72,7 +72,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       setDirectionCollection({directions: [], total: 0});
       setTextValue('');
     }
-  }, [open]);
+  }, [open, token, slug, directionId]);
 
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -97,7 +97,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
 
       router.refresh();
     } catch (error) {
-      toast.error('Не удалось обновить категорию');
+      toast.error(error instanceof Error ? error.message : 'Не удалось обновить категорию');
     } finally {
       setLoading(false);
     }

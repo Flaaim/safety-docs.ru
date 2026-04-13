@@ -1,43 +1,52 @@
 .status {
-  font-family: var(--font-roboto-mono), sans-serif;
-  color: var(--status-color);
-  padding: 8px 15px;
-  background: var(--status-background);
-  border-radius: 5px;
-  border: 1px solid var(--status-border-color);
   overflow-x: auto;
+
   margin: 5px 0;
+  padding: 8px 15px;
+
+  color: var(--status-color);
+  border: 1px solid var(--status-border-color);
+  border-radius: 5px;
+  background: var(--status-background);
+
+  font-family: var(--font-roboto-mono), sans-serif;
 }
 
 .success {
-  background-color: var(--status-background-success);
-  border: 1px solid var(--status-border-color-success);
   color: var(--status-color-success);
+  border: 1px solid var(--status-border-color-success);
+  background-color: var(--status-background-success);
 }
 
 .failed, .error {
-  background-color: var(--status-background-failed);
-  border: 1px solid var(--status-border-color-failed);
   color: var(--status-color-failed);
+  border: 1px solid var(--status-border-color-failed);
+  background-color: var(--status-background-failed);
 }
 
 .pending {
-  background-color: var(--status-background-pending);
-  border: 1px solid var(--status-border-color-pending);
   color: var(--status-color-pending);
+  border: 1px solid var(--status-border-color-pending);
+  background-color: var(--status-background-pending);
 }
+
 .loading{
-  background-color: var(--status-background-loading);
-  border: 1px solid var(--status-border-color-loading);
   color: var(--status-color-loading);
+  border: 1px solid var(--status-border-color-loading);
+  background-color: var(--status-background-loading);
 }
+
 .loading::before {
-  content: '⟳';
   display: inline-block;
+
   margin-right: 8px;
-  font-weight: bold;
+
+  content: '⟳';
   animation: spin 1.5s linear infinite;
+
+  font-weight: bold;
 }
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

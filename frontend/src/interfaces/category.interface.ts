@@ -1,4 +1,4 @@
-import {ProductDTO, ProductFree} from "@/interfaces/product.interface";
+import {ProductDTO} from "@/interfaces/product.interface";
 
 export interface CategoryCollection {
   categories: CategoryDTO[]

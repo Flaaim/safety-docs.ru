@@ -2,10 +2,13 @@
   display: grid;
   grid-template-columns: 1fr auto auto;
   gap: 10px 40px;
+
   padding: 25px 30px;
+
   font-size: 16px;
   line-height: 20px;
 }
+
 .header a {
   text-decoration: none;
 }
@@ -13,5 +16,6 @@
 .link {
   margin: 5px 10px;
   padding: 0 3px;
+
   border-bottom: 3px solid var(--heading-color);
 }

@@ -1,16 +1,21 @@
 .s {
   font-size: 11px;
 }
+
 .m {
   font-size: 14px;
 }
+
 .bold {
   color: var(--heading-color);
+
   font-weight: 700;
 }
+
 .italic {
   font-style: italic;
 }
+
 .strikethrough {
   text-decoration: line-through;
 }

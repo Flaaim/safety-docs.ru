@@ -50,7 +50,7 @@ export default function AddDirectionDialog(){
       setOpen(false);
       router.refresh();
     }catch (error){
-      toast.error("Не удалось добавить направление");
+      toast.error(error instanceof Error ? error.message : "Не удалось добавить направление");
     }finally {
       setLoading(false);
     }

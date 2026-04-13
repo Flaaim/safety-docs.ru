@@ -63,8 +63,8 @@ export default function AddProductDialog() {
       setOpen(false);
       router.refresh();
 
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Ошибка при добавлении продукта");
     } finally {
       setLoading(false);
     }

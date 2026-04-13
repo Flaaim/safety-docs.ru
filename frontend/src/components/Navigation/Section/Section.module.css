@@ -1,14 +1,17 @@
 .section {
-  cursor: pointer;
-  padding: 8px 12px;
-  margin: 10px 5px;
   box-sizing: border-box;
-  line-height: 1;
-  color: var(--downloads-text-color);
+  margin: 10px 5px;
+  padding: 8px 12px;
+
+  cursor: pointer;
   text-align: center;
-  background: var(--downloads-background);
-  border-radius: 5px;
+
+  color: var(--downloads-text-color);
   border: 1px solid var(--downloads-border-color);
+  border-radius: 5px;
+  background: var(--downloads-background);
+
+  line-height: 1;
 }
 
 

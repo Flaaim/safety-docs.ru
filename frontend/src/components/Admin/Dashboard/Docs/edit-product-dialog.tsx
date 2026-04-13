@@ -40,8 +40,8 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
         try{
           const product = await getProductById(productId);
           setProductData(product);
-        }catch (error: any){
-          toast.error(error.message);
+        }catch (error){
+          toast.error(error instanceof Error ? error.message : "Ошибка при загрузке продукта.");
         }finally {
           setLoading(false);
         }
@@ -50,13 +50,13 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
     }else {
       setProductData(null);
     }
-  }, [open, token]);
+  }, [open, token, productId]);
 
   useEffect(() => {
     if (productData) {
       setSelectedFormats(productData.formatDocuments || []);
     }
-  }, [productData]);
+  }, [productData, productId]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -83,8 +83,8 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
       toast.success("Продукт успешно обновлен.");
       setOpen(false);
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Ошибка обновления продукта.");
     } finally {
       setLoading(false);
     }

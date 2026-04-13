@@ -45,7 +45,7 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
           setDirectionData(directionDTO);
           setTextValue(directionDTO.text || '');
         }catch (error){
-          toast.error('Не удалось загрузить направление');
+          toast.error(error instanceof Error ? error.message : 'Не удалось загрузить направление');
         }finally {
           setLoading(false);
         }
@@ -56,7 +56,7 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
       setTextValue('');
     }
 
-  }, [open]);
+  }, [open, slug, token]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
@@ -81,7 +81,7 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
       }, 100);
 
     }catch (error){
-      toast.error('Не удалось обновить направление');
+      toast.error(error instanceof Error ? error.message : 'Не удалось обновить направление');
     }finally {
       setLoading(false);
     }

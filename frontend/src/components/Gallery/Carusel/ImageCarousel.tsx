@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useState } from "react";
+import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -38,7 +39,7 @@ export function ImageCarousel({images, title}: ImageCarouselProps) {
                 onClick={() => setSelectedImg(image.src)}
               >
                 <CardContent className="flex aspect-video items-center justify-center p-0 overflow-hidden rounded-md">
-                  <img
+                  <Image
                     src={image.src}
                     alt={image.name}
                     className={styles.image}
@@ -59,7 +60,7 @@ export function ImageCarousel({images, title}: ImageCarouselProps) {
         <div className={styles.lightbox} onClick={() => setSelectedImg(null)}>
           <button className={styles.closeButton}>&times;</button>
           <div className={styles.lightboxContent}>
-            <img src={selectedImg} className={styles.lightboxImage} alt="Zoomed" />
+            <Image src={selectedImg} className={styles.lightboxImage} alt="Zoomed" />
           </div>
         </div>
       )}
