@@ -23,17 +23,6 @@ return [
             null
         );
 
-        $config->setSchemaAssetsFilter(function (string $assetName): bool {
-            global $argv;
-
-            $isValidate = isset($argv[1]) && str_contains($argv[1], 'orm:schema-validate');
-
-            if ($isValidate && $assetName === 'doctrine_migration_versions') {
-                return false;
-            }
-            return true;
-        });
-
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 
         foreach ($settings['types'] as $name => $class) {

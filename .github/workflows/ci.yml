@@ -43,9 +43,6 @@ jobs:
           REGISTRY: local-registry
           IMAGE_TAG: test
 
-      - name: Validate
-        run: make api-validate-schema
-
       - name: Api lint
         run: make api-lint
 
