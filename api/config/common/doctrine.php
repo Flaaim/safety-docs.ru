@@ -18,7 +18,7 @@ return [
 
         $config = ORMSetup::createAttributeMetadataConfiguration(
             $settings['metadata_dirs'],
-            $settings['dev_mode'],
+            true,
             $settings['proxy_dir'],
             null
         );
