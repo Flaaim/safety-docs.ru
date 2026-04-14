@@ -95,6 +95,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build and Push GATEWAY Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./gateway
+          file: ./gateway/docker/production/nginx/Dockerfile
+          tags: ${{ env.REGISTRY }}/stub-project-gateway:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Setup SSH Agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
