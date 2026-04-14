@@ -70,7 +70,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-cli/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-api-php-cli:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/safety-docs-api-php-cli:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -80,7 +80,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-fpm/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-api-php-fpm:${{ github.run_id }}
+          tags: ${{ env.REGISTRY }}/safety-docs-api-php-fpm:${{ github.run_id }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -90,7 +90,7 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/docker/production/node/Dockerfile
-          tags: ${{ env.REGISTRY }}/stub-project-frontend-node:${{ github.run_id }}
+          tags: ${{ env.REGISTRY }}/safety-docs-frontend-node:${{ github.run_id }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
