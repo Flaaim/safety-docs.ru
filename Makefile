@@ -125,6 +125,8 @@ deploy:
 
 	scp -P ${PORT} docker-compose-production.yml ${HOST}:site_${BUILD_NUMBER}/docker-compose.yml
 
+	ssh ${HOST} -p ${PORT} 'echo "${REGISTRY_PASSWORD}" | docker login ${REGISTRY} -u "${REGISTRY_USER}" --password-stdin'
+
 	envsubst < .env.template > .env.local
 	scp -P ${PORT} .env.local ${HOST}:site_${BUILD_NUMBER}/.env
 	rm .env.local
