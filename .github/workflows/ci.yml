@@ -85,6 +85,16 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build and Push API NGINX Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          file: ./api/docker/production/nginx/Dockerfile
+          tags: ${{ env.REGISTRY }}/safety-docs-api:${{ env.IMAGE_TAG }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Build and Push FRONTEND-NODE Image
         uses: docker/build-push-action@v5
         with:
