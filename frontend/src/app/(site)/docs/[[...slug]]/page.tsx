@@ -135,10 +135,10 @@ export default async function DirectionPage({ params }: Props) {
     const category = direction.categories.find(c => c.slug === catSlug);
     if (!category) notFound();
 
-    let product = null
+    let product = null;
 
     if(category.productId !== null){
-      product = await getProductById(category.productId)
+      product = await getProductById(category.productId);
     }
 
     return <CategoryView
