@@ -45,10 +45,10 @@ export default function Home() {
         />
         <SimpleCard
           icon={<Zap className="inline-block"  size={24}/>}
-          title='Энеретическая безопасность'
+          title='Энергетическая безопасность'
           short_description='Подборки документов по энергетической безопасности'
           description='Все что относиться к обесечению энергетической безопасности, допуски, проверки, аттестации, группы допуска по электробзопасности и т.д.'
-          link={'#'}
+          link={'/docs/energy'}
         />
       </Navigation>
     </div>
