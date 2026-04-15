@@ -15,6 +15,7 @@ class CategoryDTOMapper
             $category->getText(),
             $category->getSlug()->getValue(),
             $category->getDirection()->getId()->getValue(),
+            $category->getProduct()->getId()->getValue(),
         );
     }
 

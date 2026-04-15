@@ -11,6 +11,7 @@ class CategoryDTO
         public string $text,
         public string $slug,
         public string $directionId,
+        public ?string $productId
     ){
     }
 }
