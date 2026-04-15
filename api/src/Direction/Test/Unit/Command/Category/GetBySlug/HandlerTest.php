@@ -55,6 +55,7 @@ class HandlerTest extends TestCase
         self::assertEquals('service', $categoryDTO->slug);
         self::assertEquals('e42b8e4f-0ac3-4cca-984d-4f1dc983e970', $categoryDTO->directionId);
         self::assertEquals('8aa8f453-b19b-4b53-915b-1f04c83a9aee', $categoryDTO->id);
+        self::assertEquals('Охрана труда', $categoryDTO->directionTitle);
     }
 
     private function getCategory(): Category

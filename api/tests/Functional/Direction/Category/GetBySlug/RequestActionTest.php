@@ -33,7 +33,9 @@ class RequestActionTest extends WebTestCase
             'text' => 'Some text',
             'slug' => 'service',
             'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970',
+            'directionTitle' => 'Охрана труда',
             'productId' => null,
+            'productTitle' => null,
         ], $data);
     }
     public function testSuccessWithProduct(): void
@@ -56,7 +58,9 @@ class RequestActionTest extends WebTestCase
             'text' => 'Some text',
             'slug' => 'medical',
             'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970',
+            'directionTitle' => 'Охрана труда',
             'productId' => 'bffa46d9-6644-42d9-9c76-1e601c22d40b',
+            'productTitle' => '5 документов медосмотров',
         ], $data);
     }
     public function testNotFound(): void

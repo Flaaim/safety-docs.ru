@@ -13,15 +13,19 @@ class CategoryDTO
         public string $text,
         public string $slug,
         public string $directionId,
+        public string $directionTitle,
         public ?string $productId = null,
+        public ?string $productTitle = null,
     ){
     }
 
     public static function fromCategory(Category $category): self
     {
         $product = $category->getProduct();
+
         if($product !== null) {
             $productId = $product->getId();
+            $productTitle = $product->getName();
         }
         return new CategoryDTO(
             $category->getId(),
@@ -30,7 +34,9 @@ class CategoryDTO
             $category->getText(),
             $category->getSlug()->getValue(),
             $category->getDirection()->getId()->getValue(),
+            $category->getDirection()->getTitle(),
             $productId ?? null,
+            $productTitle ?? null,
         );
     }
 }

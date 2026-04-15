@@ -36,6 +36,7 @@ class RequestFixture extends AbstractFixture
 
         $product = (new ProductBuilder())
             ->withId(new ProductId('bffa46d9-6644-42d9-9c76-1e601c22d40b'))
+            ->withName('5 документов медосмотров')
             ->build();
 
         $categoryWithProduct = new Category(
