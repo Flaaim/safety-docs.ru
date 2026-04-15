@@ -8,15 +8,7 @@ class CategoryDTOMapper
 {
     public function map(Category $category): CategoryDTO
     {
-        return new CategoryDTO(
-            $category->getId(),
-            $category->getTitle(),
-            $category->getDescription(),
-            $category->getText(),
-            $category->getSlug()->getValue(),
-            $category->getDirection()->getId()->getValue(),
-            $category->getProduct()->getId()->getValue(),
-        );
+        return CategoryDTO::fromCategory($category);
     }
 
     public function mapCollection(array $categories): array
