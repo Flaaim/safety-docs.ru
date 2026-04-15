@@ -25,7 +25,7 @@ class Product
         private Filename $filename,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,
-        #[ORM\Column(type: 'product_slug', length: 35)]
+        #[ORM\Column(type: 'product_slug', length: 150)]
         private Slug $slug,
         #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
         private \DateTimeImmutable $updatedAt,

@@ -19,6 +19,7 @@ class Command
         public float $amount,
         #[Assert\NotBlank]
         public string $filename,
+        #[Assert\Length(min: 5, max: 150)]
         #[Assert\NotBlank]
         public string $slug,
         #[Assert\NotBlank]
