@@ -1,74 +1,29 @@
-'use client';
-
-import {JSX, useEffect, useState} from "react";
-import {ProductInfoProps} from "@/components/ProductInfo/ProductInfo.props";
+import {JSX} from "react";
 import {Roboto_Mono} from "next/font/google";
-
 import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
 import cn from "classnames";
-
-import {Status} from "@/components/Status/Status";
 import {ProductDTO} from "@/interfaces/product.interface";
-import {getProductBySlug} from "@api/product";
-
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["cyrillic"]
 });
 
+export const ProductInfo = ({name, formattedPrice, updatedAt, totalDocuments, formatDocuments, id }: ProductDTO): JSX.Element => {
 
-export const ProductInfo = ({slug, countFiles, formatFiles, description}: ProductInfoProps): JSX.Element => {
-  const [error, setError] = useState<string | null>(null);
-  const [productInfoData, setProductInfoData] = useState<ProductDTO | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const initProductInfo = async () => {
-      setLoading(true);
-      setError(null);
-
-      try{
-        const data = await getProductBySlug(slug);
-        if (!controller.signal.aborted) {
-          setProductInfoData(data);
-        }
-      }catch (err: unknown){
-        if (!controller.signal.aborted) {
-          const errorMessage = err instanceof Error ? err.message : 'Неизвестная ошибка';
-          setError(errorMessage);
-        }
-      }finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    };
-    initProductInfo();
-    return () => controller.abort();
-  }, [slug]);
-
-  if(loading){
-    return <Status appearance='loading'>Загрузка...</Status>;
-  }
-  if(error || productInfoData === null){
-    return <Status appearance='error'>{error}</Status>;
-  }
   return (<div className={cn(robotoMono.variable)}>
     <Deflisttag >
-      <DefItem term='Название' definition={productInfoData.name} />
-      <DefItem term='Стоимость' definition={productInfoData.formattedPrice} />
-      <DefItem term='Обновлен' definition={productInfoData.updatedAt} />
-      <DefItem term='Количество' definition={countFiles} />
-      <DefItem term='Формат' definition={formatFiles} />
-      <DefItem term='Описание' definition={description} />
+      <DefItem term='Название' definition={name} />
+      <DefItem term='Стоимость' definition={formattedPrice} />
+      <DefItem term='Обновлен' definition={new Date(updatedAt).toLocaleDateString('ru-RU')} />
+      <DefItem term='Кол-во документов' definition={totalDocuments + ` шт.`} />
+      <DefItem term='Формат файлов' definition={formatDocuments.join(', ') || ''} />
     </Deflisttag>
 
     <DownloadButton
-      headline={productInfoData.name}
-      productId={productInfoData.id}>
-      <Spantag size='s' > Скачать </Spantag> <br />
+      headline={name}
+      productId={id}>
+      <Spantag size='s'> Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>
   </div>);

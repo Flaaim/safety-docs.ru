@@ -10,6 +10,9 @@ import {ChevronRight} from "lucide-react";
 import {DirectionDTO} from "@/interfaces/direction.interface";
 import {CategoryDTO} from "@/interfaces/category.interface";
 import {getAllDirections, getDirectionBySlug} from "@api/direction";
+import {ProductInfo} from "@/components/ProductInfo/ProductInfo";
+import {getProductById} from "@api/product";
+import {ProductDTO} from "@/interfaces/product.interface";
 
 type Props = {
   params: Promise<{ slug: string[] }>;
@@ -41,12 +44,25 @@ const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
   </>
 );
 
-const CategoryView = ({ category, dirSlug }: { category: CategoryDTO; dirSlug: string }) => (
+const CategoryView = ({ category, dirSlug, product }: { category: CategoryDTO; dirSlug: string, product: ProductDTO | null }) => (
   <>
     <Link href={`/docs/${dirSlug}`} className="text-sm text-muted-foreground hover:underline mb-4 block">
       ← Назад
     </Link>
     <Htag tag="h1">{category.title}</Htag>
+      {product && (<ProductInfo
+        id={product.id}
+        formattedPrice={product.formattedPrice}
+        updatedAt={product.updatedAt}
+        file={product.file}
+        name={product.name}
+        cipher={product.cipher}
+        filename={product.filename}
+        slug={product.slug}
+        totalDocuments={product.totalDocuments}
+        formatDocuments={product.formatDocuments}
+      />)}
+
       <MarkdownRenderer content={normalizeMarkdown(category.text)} />
   </>
 
@@ -119,7 +135,17 @@ export default async function DirectionPage({ params }: Props) {
     const category = direction.categories.find(c => c.slug === catSlug);
     if (!category) notFound();
 
-    return <CategoryView category={category} dirSlug={dirSlug} />;
+    let product = null
+
+    if(category.productId !== null){
+      product = await getProductById(category.productId)
+    }
+
+    return <CategoryView
+      category={category}
+      dirSlug={dirSlug}
+      product={product}
+     />;
   }
 
   return <DirectionView direction={direction} />;
