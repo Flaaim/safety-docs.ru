@@ -13,7 +13,7 @@ export interface CategoryDTO {
   slug: string
   directionTitle: string,
   directionId: string,
-  product: ProductDTO | null
+  productId: string | null
 }
 
 export interface AssignCategory {
