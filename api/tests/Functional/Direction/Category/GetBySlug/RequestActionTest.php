@@ -32,10 +32,33 @@ class RequestActionTest extends WebTestCase
             'description' => 'Служба охраны труда - комплект документов',
             'text' => 'Some text',
             'slug' => 'service',
-            'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970'
+            'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970',
+            'productId' => null,
         ], $data);
     }
+    public function testSuccessWithProduct(): void
+    {
+        $response = $this->app()->handle(self::json(
+            'GET',
+            '/v1/directions/e42b8e4f-0ac3-4cca-984d-4f1dc983e970/categories/s/medical')
+        );
 
+        self::assertEquals(200, $response->getStatusCode());
+
+        self::assertJson($body = (string) $response->getBody());
+
+        $data = Json::decode($body);
+
+        self::assertEquals([
+            'id' => '040794de-7a19-47be-947a-e5ed74b579b8',
+            'title' => 'Медицинские осмотры',
+            'description' => 'Медицинские осмотры - комплект документов',
+            'text' => 'Some text',
+            'slug' => 'medical',
+            'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970',
+            'productId' => 'bffa46d9-6644-42d9-9c76-1e601c22d40b',
+        ], $data);
+    }
     public function testNotFound(): void
     {
         $response = $this->app()->handle(self::json(
