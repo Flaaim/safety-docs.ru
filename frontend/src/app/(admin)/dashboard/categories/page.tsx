@@ -44,7 +44,7 @@ export default async function CategoriesPage() {
                 </TableCell>
                 <TableCell className="whitespace-normal break-words font-medium">{cat.directionTitle}</TableCell>
                 <TableCell className="whitespace-normal break-words font-medium">
-                  {cat.product ? (<div>{cat.product.name} <RefuseProductDialog categoryId={cat.id}></RefuseProductDialog>
+                  {cat.productId ? (<div>{cat.productTitle} <RefuseProductDialog categoryId={cat.id}></RefuseProductDialog>
                   </div>) :
                     <AssignProductDialog categoryId={cat.id}></AssignProductDialog>}
                 </TableCell>

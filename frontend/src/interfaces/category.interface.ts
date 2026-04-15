@@ -1,5 +1,3 @@
-import {ProductDTO} from "@/interfaces/product.interface";
-
 export interface CategoryCollection {
   categories: CategoryDTO[]
   total: number
@@ -13,6 +11,7 @@ export interface CategoryDTO {
   slug: string
   directionTitle: string,
   directionId: string,
+  productTitle: string | null
   productId: string | null
 }
 
