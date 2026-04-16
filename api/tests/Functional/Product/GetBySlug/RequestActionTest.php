@@ -53,7 +53,7 @@ class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/products/s/124'));
+        $response = $this->app()->handle(self::json('GET', '/v1/products/s/124!!'));
 
         self::assertEquals(404, $response->getStatusCode());
 

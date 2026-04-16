@@ -84,7 +84,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::json(
             'GET',
-            '/v1/directions/e42b8e4f-0ac3-4cca-984d-4f1dc983e970/categories/s/sout12'
+            '/v1/directions/e42b8e4f-0ac3-4cca-984d-4f1dc983e970/categories/s/sout12!!'
         ));
 
         self::assertEquals(404, $response->getStatusCode());
