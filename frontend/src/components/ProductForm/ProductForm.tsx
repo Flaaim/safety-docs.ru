@@ -55,10 +55,18 @@ export const ProductForm = ({headline, productId, className}: ProductFormProps):
     const createPaymentDTO: CreatePaymentDTO = {
       email: formData.get('email') as string,
       productId: productId,
+    };
+
+    const parsed = schema.safeParse(createPaymentDTO);
+
+    if (!parsed.success) {
+      setError(parsed.error.issues[0].message);
+      setLoading(false);
+      return;
     }
 
     try {
-      const paymentResponse = await createPayment(createPaymentDTO, abortControllerRef.current.signal);
+      const paymentResponse = await createPayment(parsed.data, abortControllerRef.current.signal);
       window.location.href = paymentResponse.returnUrl;
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'AbortError') return;
