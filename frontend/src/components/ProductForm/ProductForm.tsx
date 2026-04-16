@@ -9,7 +9,8 @@ import {InputFormProps} from "./InputForm.props";
 import {LabelFormProps} from "./LabelForm.props";
 import {ButtonProps} from "./Button.props";
 import {Status} from "@/components/Status/Status";
-import {createPayment} from "../../../api/payment";
+import {createPayment} from "@api/payment";
+import {CreatePaymentDTO} from "@/interfaces/payment.interface";
 
 const schema = z.object({
   email: z.string().email('Некорректный email адрес'),
@@ -51,23 +52,14 @@ export const ProductForm = ({headline, productId, className}: ProductFormProps):
 
     const formData = new FormData(e.currentTarget);
 
-    const data = {
-      email: formData.get('email'),
+    const createPaymentDTO: CreatePaymentDTO = {
+      email: formData.get('email') as string,
       productId: productId,
-    };
-
-    const parsed = schema.safeParse(data);
-
-    if (!parsed.success) {
-      setError(parsed.error.issues[0].message);
-      setLoading(false);
-      return;
     }
 
-
     try {
-      const payment = await createPayment(parsed.data.email, parsed.data.productId, abortControllerRef.current.signal);
-      window.location.href = payment.returnUrl;
+      const paymentResponse = await createPayment(createPaymentDTO, abortControllerRef.current.signal);
+      window.location.href = paymentResponse.returnUrl;
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'AbortError') return;
 

@@ -3,7 +3,7 @@
 import {z} from 'zod';
 import {JSX, useEffect, useState} from "react";
 import {Status} from "@/components/Status/Status";
-import {PaymentData} from "@/interfaces/payment.interface";
+import {PaymentResultDTO} from "@/interfaces/payment.interface";
 import { Suspense } from "react";
 import {useSearchParams} from "next/navigation";
 import {getPaymentByToken} from "@api/payment";
@@ -14,7 +14,7 @@ const PaymentResultContent = (): JSX.Element => {
   const searchParams = useSearchParams();
 
   const [error, setError] = useState<string | null>(null);
-  const [paymentData, setPaymentData] = useState<PaymentData| null>(null);
+  const [paymentResult, setPaymentData] = useState<PaymentResultDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
   const token = searchParams.get('token');
@@ -36,9 +36,9 @@ const PaymentResultContent = (): JSX.Element => {
       }
 
       try{
-        const data = await getPaymentByToken(token, controller.signal);
+        const paymentResult = await getPaymentByToken(token, controller.signal);
         if(!controller.signal.aborted){
-          setPaymentData(data);
+          setPaymentData(paymentResult);
         }
       }catch (err: unknown){
         if (err instanceof Error && err.name === 'AbortError') return;
@@ -63,11 +63,11 @@ const PaymentResultContent = (): JSX.Element => {
   if(loading){
     return <Status appearance='loading'>Загрузка...</Status>;
   }
-  if(error || paymentData === null){
+  if(error || paymentResult === null){
     return <Status appearance='error'>{error}</Status>;
   }
 
-  switch (paymentData.status) {
+  switch (paymentResult.status) {
     case 'failed' :
       return <Status appearance='failed'> Не удалось получить информацию о платеже</Status>;
     case 'pending':

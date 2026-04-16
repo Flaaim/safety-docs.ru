@@ -1,15 +1,15 @@
-
-
-export interface PaymentData {
+export interface PaymentResultDTO {
   status: 'succeeded' | 'pending' | 'failed'
   email: string
   returnToken: string
-  message: string
+  message?: string
 }
 
-export interface ProcessedPayment {
-  amount: string
-  currency: string,
-  status: string,
+export interface PaymentInitResponse {
   returnUrl: string
+}
+
+export interface CreatePaymentDTO {
+  email: string,
+  productId: string
 }
