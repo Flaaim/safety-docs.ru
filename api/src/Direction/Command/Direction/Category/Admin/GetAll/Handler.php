@@ -3,13 +3,15 @@
 namespace App\Direction\Command\Direction\Category\Admin\GetAll;
 
 use App\Direction\Entity\Category\CategoryRepository;
-use App\Direction\Entity\Category\DTO\Admin\CategoryPaginatedDTOMapping;
+use App\Direction\Entity\Category\DTO\Admin\CategoryPaginatedDTOMapper;
+use App\Direction\Entity\Category\DTO\CategoryDTOMapper;
 
 class Handler
 {
     public function __construct(
-        private readonly CategoryRepository          $categories,
-        private readonly CategoryPaginatedDTOMapping $dtoMapping
+        private readonly CategoryRepository         $categories,
+        private readonly CategoryPaginatedDTOMapper $paginatedDTOMapper,
+        private readonly CategoryDTOMapper          $categoryDTOMapper
     ){
     }
 
@@ -17,7 +19,10 @@ class Handler
     {
         $categories = $this->categories->getAllPaginated();
 
-        $categoryPaginatedDTO = $this->dtoMapping->map($categories, $command->page, $command->perPage);
+        $categoriesDTO = $this->categoryDTOMapper->mapCollection($categories);
+
+        $categoryPaginatedDTO = $this->paginatedDTOMapper
+            ->map($categoriesDTO, $command->page, $command->perPage);
 
         return Response::fromResult($categoryPaginatedDTO);
     }

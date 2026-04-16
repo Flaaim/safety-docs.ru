@@ -4,6 +4,7 @@ namespace App\Direction\Command\Direction\Category\Admin\GetAll;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\DTO\Admin\CategoryPaginatedDTO;
+use App\Direction\Entity\Category\DTO\CategoryDTO;
 use App\Product\Entity\DTO\ProductDTOMapper;
 
 class Response implements \JsonSerializable
@@ -31,15 +32,16 @@ class Response implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'categories' => array_map(fn(Category $category) => [
-                'id' => $category->getId()->getValue(),
-                'title' => $category->getTitle(),
-                'description' => $category->getDescription(),
-                'text' => $category->getText(),
-                'slug' => $category->getSlug()->getValue(),
-                'directionTitle' => $category->getDirection()->getTitle(),
-                'directionId' => $category->getDirection()->getId()->getValue(),
-                'product' => (new ProductDTOMapper())->map($category->getProduct())
+            'categories' => array_map(fn(CategoryDTO $category) => [
+                'id' => $category->id,
+                'title' => $category->title,
+                'description' => $category->description,
+                'text' => $category->text,
+                'slug' => $category->slug,
+                'directionTitle' => $category->directionTitle,
+                'directionId' => $category->directionId,
+                'productTitle' => $category->productTitle,
+                'productId' => $category->productId,
             ], $this->categories),
             'total' => $this->total,
             'currentPage' => $this->currentPage,

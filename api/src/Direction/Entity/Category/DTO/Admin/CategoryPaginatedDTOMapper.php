@@ -2,7 +2,7 @@
 
 namespace App\Direction\Entity\Category\DTO\Admin;
 
-class CategoryPaginatedDTOMapping
+class CategoryPaginatedDTOMapper
 {
     public function map(
        array $categories,
