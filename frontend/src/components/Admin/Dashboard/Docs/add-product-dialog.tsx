@@ -56,7 +56,7 @@ export default function AddProductDialog() {
 
     try {
       await addProduct(token, product);
-      e.currentTarget.reset();
+
       toast.success('Продукт успешно добавлен.');
 
       setSelectedFormats([]);
