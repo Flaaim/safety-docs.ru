@@ -8,7 +8,7 @@ use App\Product\Entity\Product;
 class ProductDTO
 {
     public function __construct(
-        public string $productId,
+        public string $id,
         public string $name,
         public string $cipher,
         public string $slug,

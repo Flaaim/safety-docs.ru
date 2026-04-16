@@ -32,7 +32,7 @@ class Response implements \JsonSerializable
     {
         return [
             'products' => array_map(fn(ProductDTO $product) => [
-                'id' => $product->productId,
+                'id' => $product->id,
                 'name' => $product->name,
                 'amount' => $product->formattedPrice,
                 'cipher' => $product->cipher,
