@@ -19,6 +19,7 @@ export async function apiFetch<T = void>(url: string, options: fetchOptions = {}
     ...restOptions,
     headers: Object.fromEntries(headers.entries()),
     body,
+    cache: 'no-store'
   });
 
   if (!response.ok) {
