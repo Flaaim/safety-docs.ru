@@ -18,8 +18,7 @@ export async function apiFetch<T = void>(url: string, options: fetchOptions = {}
   const response = await fetch(url, {
     ...restOptions,
     headers: Object.fromEntries(headers.entries()),
-    body,
-    cache: 'no-store'
+    body
   });
 
   if (!response.ok) {
