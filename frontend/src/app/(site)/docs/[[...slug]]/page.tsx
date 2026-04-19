@@ -24,6 +24,9 @@ const getCachedDirection = cache(async (slug: string) => {
 
 const DirectionView = ({ direction }: { direction: DirectionDTO }) => (
   <>
+    <Link href={`/`} className="text-sm text-muted-foreground hover:underline mb-4 block">
+      ← Назад
+    </Link>
     <Htag tag='h1'>{direction.title}</Htag>
     <MarkdownRenderer
       content={normalizeMarkdown(direction.text)}
