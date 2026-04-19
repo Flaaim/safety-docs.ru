@@ -41,7 +41,7 @@ export default function Home() {
           title='Промышленная безопасность'
           short_description='Подборки документов по промышленной безопасности'
           description='Все что относиться к безопасной эксплуатации ОПО: аттестация, производственный контроль, грузоподъемные механизмы, сосуды и т.д.'
-          link={'#'}
+          link={'/docs/industrial'}
         />
         <SimpleCard
           icon={<Zap className="inline-block"  size={24}/>}
