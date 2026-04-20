@@ -82,7 +82,7 @@ class Product
     }
     public function getImages(): array
     {
-        return $this->images;
+        return array_values($this->images);
     }
     public function attachImage(string $imagePath): void
     {
