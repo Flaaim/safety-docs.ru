@@ -12,13 +12,22 @@ class FileUploader implements FileUploaderInterface
         private readonly DirectoryCreatorInterface $directoryCreator
     ){
     }
-    public function upload(string $relativePathDir, UploadedFileInterface $uploadedFile): void
+    public function upload(
+        string $relativePathDir,
+        UploadedFileInterface $uploadedFile,
+        ?FileNameGeneratorInterface $nameGenerator = null
+    ): void
     {
         if($uploadedFile->getError() !== UPLOAD_ERR_OK){
             throw new \DomainException('Error uploading file '. $uploadedFile->getError());
         }
+
+        $filename = $nameGenerator
+            ? $nameGenerator->generate($uploadedFile)
+            : $uploadedFile->getClientFilename();
+
         $filePath = $this->fileSystemPath->getValue() . DIRECTORY_SEPARATOR . $relativePathDir
-             . DIRECTORY_SEPARATOR . $uploadedFile->getClientFilename();
+             . DIRECTORY_SEPARATOR . $filename;
 
         $this->directoryCreator->createDirectory(dirname($filePath));
 
