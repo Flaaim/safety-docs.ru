@@ -17,6 +17,7 @@ class ProductDTO
         public string $filename,
         public int $totalDocuments,
         public array $formatDocuments,
+        public array $images,
     ){
     }
 
@@ -35,6 +36,9 @@ class ProductDTO
             array_map(function (FormatDocument $document) {
                 return $document->value;
             }, $product->getFormatDocuments()),
+            array_map(function ($image){
+                return $image;
+            }, $product->getImages()),
         );
     }
 }

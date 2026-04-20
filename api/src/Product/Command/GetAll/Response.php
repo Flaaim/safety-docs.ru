@@ -34,10 +34,11 @@ class Response implements \JsonSerializable
             'products' => array_map(fn(ProductDTO $product) => [
                 'id' => $product->id,
                 'name' => $product->name,
-                'amount' => $product->formattedPrice,
+                'formattedPrice' => $product->formattedPrice,
                 'cipher' => $product->cipher,
                 'updatedAt' => $product->updatedAt,
                 'filename' => $product->filename,
+                'images' => $product->images,
             ], $this->products),
             'total' => $this->total,
             'currentPage' => $this->currentPage,

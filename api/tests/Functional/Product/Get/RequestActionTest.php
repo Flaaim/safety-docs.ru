@@ -35,6 +35,7 @@ class RequestActionTest extends WebTestCase
             'slug' => 'service',
             'totalDocuments' => 10,
             'formatDocuments' => ['docx', 'pdf'],
+            'images' => []
         ], $data);
     }
 
