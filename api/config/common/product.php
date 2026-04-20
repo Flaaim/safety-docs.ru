@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Product\Command\Images\GetAll\Handler as GetAllImagesHandler;
 use App\Product\Entity\ProductRepository;
 use App\Product\Query\ProductQuery;
 use App\Product\Service\File\DirectoryCreator;
@@ -15,6 +16,7 @@ use App\Product\Service\File\RandomFileNameGenerator;
 use App\Shared\Domain\Query\ProductQueryInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
+use App\Shared\Domain\ValueObject\FileSystem\ImageSystemPath;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
@@ -30,5 +32,17 @@ return [
     FileSystemPathInterface::class => DI\get(FileSystemPath::class),
     DirectoryCreatorInterface::class => DI\get(DirectoryCreator::class),
     FileNameGeneratorInterface::class => DI\get(RandomFileNameGenerator::class),
+
+    GetAllImagesHandler::class => function (ContainerInterface $container) {
+        $em = $container->get(EntityManagerInterface::class);
+
+        $productRepository = new ProductRepository($em);
+        $imagePath = $container->get(ImageSystemPath::class);
+
+        return new GetAllImagesHandler(
+            $productRepository,
+            $imagePath
+        );
+    }
 
 ];
