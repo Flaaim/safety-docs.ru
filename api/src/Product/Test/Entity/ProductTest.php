@@ -28,4 +28,14 @@ class ProductTest extends TestCase
 
         self::assertEquals('image1.jpg', $product->getImages()[0]);
     }
+
+    public function testClearImages(): void
+    {
+        $product = (new ProductBuilder())->build();
+        $product->attachImage('image.jpg');
+        $product->attachImage('image1.jpg');
+
+        $product->clearImages();
+        self::assertCount(0, $product->getImages());
+    }
 }

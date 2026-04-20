@@ -100,6 +100,11 @@ class Product
 
         $this->updatedAt = new \DateTimeImmutable();
     }
+    public function clearImages(): void
+    {
+        $this->images = [];
+        $this->updatedAt = new \DateTimeImmutable();
+    }
     public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
