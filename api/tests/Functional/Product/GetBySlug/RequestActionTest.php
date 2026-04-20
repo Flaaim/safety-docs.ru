@@ -1,6 +1,6 @@
 <?php
 
-namespace Functional\Product\GetBySlug;
+namespace Test\Functional\Product\GetBySlug;
 
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Test\Functional\Json;

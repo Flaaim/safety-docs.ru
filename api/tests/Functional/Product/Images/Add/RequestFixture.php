@@ -1,9 +1,10 @@
 <?php
 
-namespace Test\Functional\Product\GetBySlug;
+namespace Test\Functional\Product\Images\Add;
 
 use App\Product\Entity\Amount;
 use App\Product\Entity\Filename;
+use App\Product\Entity\FormatDocument;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\Slug;
 use App\Product\Test\ProductBuilder;
@@ -19,13 +20,13 @@ class RequestFixture extends AbstractFixture
         $product = (new ProductBuilder())
             ->withId(new ProductId('b38e76c0-ac23-4c48-85fd-975f32c8801f'))
             ->withName('Служба охраны труда')
-            ->withCipher('serv100.1')
+            ->withCipher('ОТСЛЖБ100')
             ->withPrice(new Amount(550.00, new Currency('RUB')))
             ->withFilename(new Filename('serv100.1.rar'))
             ->withSlug(new Slug('service'))
-            ->withUpdatedAt(new \DateTimeImmutable())
-            ->withFormatDocument(['pdf', 'docx'])
             ->withTotalDocuments(10)
+            ->withFormatDocument([FormatDocument::DOCX, FormatDocument::PDF])
+            ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 
         $manager->persist($product);
