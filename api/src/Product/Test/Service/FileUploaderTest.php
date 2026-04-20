@@ -2,6 +2,7 @@
 
 namespace App\Product\Test\Service;
 
+use App\Product\Service\File\DirectoryCreator;
 use App\Product\Service\File\FileUploader;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
@@ -11,11 +12,13 @@ use Slim\Psr7\UploadedFile;
 class FileUploaderTest extends TestCase
 {
     private InMemoryFileSystemPath $tempDir;
+    private DirectoryCreator $dirCreator;
     private FileUploader $handler;
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_
-        $this->handler = new FileUploader($this->tempDir);
+        $this->dirCreator = $this->createMock(DirectoryCreator::class);
+        $this->handler = new FileUploader($this->tempDir, $this->dirCreator);
     }
 
     public function testErrorUpload(): void
@@ -34,7 +37,9 @@ class FileUploaderTest extends TestCase
         $uploadFile->expects(self::once())->method('getClientFilename')->willReturn('text.rar');
         
         $expectedPath = '/tmp/phpunit_test_/directory/text.rar';
-        
+
+        $this->dirCreator->expects($this->once())->method('createDirectory');
+
         $uploadFile->expects(self::once())->method('moveTo')
             ->with($this->equalTo($expectedPath));
 
