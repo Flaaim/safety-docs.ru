@@ -9,7 +9,7 @@ class FileUploader implements FileUploaderInterface
 {
     public function __construct(
         private readonly FileSystemPathInterface $fileSystemPath,
-        private readonly DirectoryCreator $directoryCreator
+        private readonly DirectoryCreatorInterface $directoryCreator
     ){
     }
     public function upload(string $relativePathDir, UploadedFileInterface $uploadedFile): void

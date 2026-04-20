@@ -2,7 +2,7 @@
 
 namespace App\Product\Test\Service;
 
-use App\Product\Service\File\DirectoryCreator;
+use App\Product\Service\File\DirectoryCreatorInterface;
 use App\Product\Service\File\FileUploader;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
@@ -12,12 +12,12 @@ use Slim\Psr7\UploadedFile;
 class FileUploaderTest extends TestCase
 {
     private InMemoryFileSystemPath $tempDir;
-    private DirectoryCreator $dirCreator;
+    private DirectoryCreatorInterface $dirCreator;
     private FileUploader $handler;
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_
-        $this->dirCreator = $this->createMock(DirectoryCreator::class);
+        $this->dirCreator = $this->createMock(DirectoryCreatorInterface::class);
         $this->handler = new FileUploader($this->tempDir, $this->dirCreator);
     }
 
