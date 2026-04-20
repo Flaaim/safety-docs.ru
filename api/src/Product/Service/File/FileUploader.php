@@ -16,7 +16,7 @@ class FileUploader implements FileUploaderInterface
         string $relativePathDir,
         UploadedFileInterface $uploadedFile,
         ?FileNameGeneratorInterface $nameGenerator = null
-    ): void
+    ): string
     {
         if($uploadedFile->getError() !== UPLOAD_ERR_OK){
             throw new \DomainException('Error uploading file '. $uploadedFile->getError());
@@ -32,6 +32,8 @@ class FileUploader implements FileUploaderInterface
         $this->directoryCreator->createDirectory(dirname($filePath));
 
         $uploadedFile->moveTo($filePath);
+
+        return $filename;
     }
 
 }

@@ -10,5 +10,5 @@ interface FileUploaderInterface
         string $relativePathDir,
         UploadedFileInterface $uploadedFile,
         ?FileNameGeneratorInterface $nameGenerator = null
-    ): void;
+    ): string;
 }
