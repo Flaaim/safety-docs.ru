@@ -3,7 +3,6 @@ import {Roboto_Mono} from "next/font/google";
 import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
 import cn from "classnames";
 import {ProductDTO} from "@/interfaces/product.interface";
-import {getImagesFromFolder} from "@/utils/galleryUtils";
 import {Gallery} from "@/components/Gallery";
 
 const robotoMono = Roboto_Mono({

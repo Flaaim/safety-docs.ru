@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
@@ -14,7 +14,8 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog";
 import Dropzone from "react-dropzone";
-import {ImageCollection, ProductImages} from "@/interfaces/product.interface";
+import {ProductImages} from "@/interfaces/product.interface";
+import Image from 'next/image';
 import {toast} from "sonner";
 import {addImages} from "@api/product";
 
@@ -35,21 +36,21 @@ export default function AddImagesDialog({productId}: AddImageDialogProps) {
   const token = Cookies.get("admin_token");
 
   const handleDrop = (acceptedFiles: File[]) => {
-    setFiles(acceptedFiles)
+    setFiles(acceptedFiles);
 
-    const newPreviews = acceptedFiles.map(file => URL.createObjectURL(file))
+    const newPreviews = acceptedFiles.map(file => URL.createObjectURL(file));
     setPreviews(newPreviews);
 
 
-  }
+  };
 
   useEffect(() => {
     if(!open){
-      files.forEach(file => URL.revokeObjectURL(file));
+      previews.forEach(url => URL.revokeObjectURL(url));
       setFiles([]);
       setPreviews([]);
     }
-  }, [open]);
+  }, [open, previews]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
@@ -60,20 +61,20 @@ export default function AddImagesDialog({productId}: AddImageDialogProps) {
 
       files.forEach((file) => {
         formData.append(`images`, file);
-      })
+      });
 
       const uploadedImages:ProductImages = {
         productId: productId as string,
         images: files
-      }
+      };
 
-      await addImages(token, uploadedImages)
+      await addImages(token, uploadedImages);
 
-      toast.success('Изображения успешно загружены.')
-      setFiles([])
-      setOpen(false)
+      toast.success('Изображения успешно загружены.');
+      setFiles([]);
+      setOpen(false);
 
-      router.refresh()
+      router.refresh();
 
     }catch (error){
       toast.error(error instanceof Error ? error.message : "Ошибка при загрузке изображений");
@@ -122,7 +123,7 @@ export default function AddImagesDialog({productId}: AddImageDialogProps) {
         {previews.length > 0 && (
           <div className="grid grid-cols-3 gap-2 mt-4">
             {previews.map((preview, idx) => (
-              <img key={idx} src={preview} className="w-full h-20 object-cover rounded"  alt='Изображение'/>
+              <Image key={idx} src={preview} className="w-full h-20 object-cover rounded"  alt='Изображение'/>
             ))}
           </div>
         )}

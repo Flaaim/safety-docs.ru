@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -73,4 +73,4 @@ export const Gallery = ({ images, productId }: GalleryProps) => {
       )}
     </div>
   );
-}
+};

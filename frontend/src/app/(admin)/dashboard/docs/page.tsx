@@ -6,7 +6,7 @@ import AddProductDialog from "@/components/Admin/Dashboard/Docs/add-product-dial
 import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-dialog";
 import AddImagesDialog from "@/components/Admin/Dashboard/Docs/Images/add-images-dialog";
 import ClearImagesDialog from "@/components/Admin/Dashboard/Docs/Images/clear-images-dialog";
-
+import Image from 'next/image';
 
 export default async function ProductPage() {
   const cookieStore = await cookies();
@@ -45,7 +45,7 @@ export default async function ProductPage() {
                       <>
                       <div className="flex -space-x-2">
                         {prod.images.slice(0, 3).map((image, idx) => (
-                          <img
+                          <Image
                             key={idx}
                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${prod.id}/${image}`}
                             alt=""
