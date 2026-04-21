@@ -16,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/docs/energy/15-prikazov-po-electrobezopastnosti`, lastModified: new Date() },
     { url: `${baseUrl}/docs/energy/13-zhurnalov-otvetstvennogo-za-elektrohozyajstvo`, lastModified: new Date() },
     { url: `${baseUrl}/docs/industrial/boiler-room-dogovor-arendy-complect`, lastModified: new Date() },
+    { url: `${baseUrl}/docs/industrial/blasting-operations-set-documents`, lastModified: new Date() },
+    { url: `${baseUrl}/docs/industrial/kran-dogovor-arendy-complect`, lastModified: new Date() },
     { url: `${baseUrl}/success`, lastModified: new Date() },
   ];
 }
