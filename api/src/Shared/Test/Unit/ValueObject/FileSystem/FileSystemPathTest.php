@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Test\Unit;
+namespace App\Shared\Test\Unit\ValueObject\FileSystem;
 
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use PHPUnit\Framework\Attributes\CoversClass;

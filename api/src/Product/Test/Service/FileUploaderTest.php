@@ -36,7 +36,7 @@ class FileUploaderTest extends TestCase
         $uploadFile = $this->createMock(UploadedFileInterface::class);
         $uploadFile->expects(self::once())->method('getClientFilename')->willReturn('text.rar');
         
-        $expectedPath = '/tmp/phpunit_test_/directory/text.rar';
+        $expectedPath = 'vfs://storage/directory/text.rar';
 
         $this->dirCreator->expects($this->once())->method('createDirectory');
 

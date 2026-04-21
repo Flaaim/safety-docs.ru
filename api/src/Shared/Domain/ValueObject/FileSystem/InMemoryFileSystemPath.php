@@ -2,15 +2,17 @@
 
 namespace App\Shared\Domain\ValueObject\FileSystem;
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+
 class InMemoryFileSystemPath implements FileSystemPathInterface
 {
     private string $value;
+    private vfsStreamDirectory $root;
     private function __construct()
     {
-        $this->value = sys_get_temp_dir(). DIRECTORY_SEPARATOR . 'phpunit_test_';
-        if(!file_exists($this->value)){
-            mkdir($this->value, 0777, true);
-        }
+        $this->root = vfsStream::setup('storage');
+        $this->value = vfsStream::url('storage');
     }
     public static function create(): self
     {
@@ -22,28 +24,6 @@ class InMemoryFileSystemPath implements FileSystemPathInterface
     }
     public function clear(): void
     {
-        $this->removeDirectory($this->value);
-    }
-    private function removeDirectory(string $dir): void
-    {
-        if (!is_dir($dir)) {
-            return;
-        }
-        $items = array_diff(scandir($dir), ['.', '..']);
-
-        foreach ($items as $item) {
-            $path = $dir . DIRECTORY_SEPARATOR . $item;
-
-            if(is_dir($path)) {
-                $this->removeDirectory($path);
-                rmdir($path);
-            }else{
-                unlink($path);
-            }
-        }
-
-        if($dir === $this->value) {
-            rmdir($dir);
-        }
+        vfsStream::setup('storage');
     }
 }
