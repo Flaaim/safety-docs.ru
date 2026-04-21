@@ -18,6 +18,7 @@ export async function generateStaticParams() {
     const data = await getAllDirections();
     return data.directions.map((dir) => ({ dirSlug: dir.slug }));
   } catch {
+    console.error("ОШИБКА ПРИ ПОЛУЧЕНИИ СТАТИЧЕСКИХ ПУТЕЙ:", error);
     return [];
   }
 }
@@ -29,6 +30,7 @@ export default async function DirectionPage({ params }: { params: Promise<{ dirS
   try {
     direction = await getCachedDirection(dirSlug);
   } catch {
+    console.error(`ОШИБКА API ДЛЯ НАПРАВЛЕНИЯ ${dirSlug}:`, error);
     notFound();
   }
 
