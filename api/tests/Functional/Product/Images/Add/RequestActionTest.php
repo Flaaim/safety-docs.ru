@@ -2,6 +2,8 @@
 
 namespace Test\Functional\Product\Images\Add;
 
+use App\Product\Entity\ProductId;
+use App\Product\Entity\ProductRepository;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\UploadedFile;
@@ -11,27 +13,38 @@ use Test\Functional\WebTestCase;
 class RequestActionTest extends WebTestCase
 {
     private InMemoryFileSystemPath $fileSystem;
+    private ProductRepository $products;
     public function setUp(): void
     {
         parent::setUp();
         $this->loadFixtures([RequestFixture::class]);
         $this->fileSystem = InMemoryFileSystemPath::create();
+        $this->products = $this->container->get(ProductRepository::class);
     }
     public function testSuccess(): void
     {
         $image1 = $this->createUploadFile('image1.jpg', 'content', 'image/jpeg', UPLOAD_ERR_OK);
         $image2 = $this->createUploadFile('image2.jpg', 'content', 'image/jpeg', UPLOAD_ERR_OK);
+        $productId = 'b38e76c0-ac23-4c48-85fd-975f32c8801f';
 
         $response = $this->app()->handle(self::formData(
             'POST',
-            '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f/images',
+            '/v1/products/'.$productId.'/images',
             [],
             ['images' => [$image1, $image2]]
         ));
 
         self::assertEquals(201, $response->getStatusCode());
 
-        self::assertDirectoryExists('/tmp/phpunit_test_/b38e76c0-ac23-4c48-85fd-975f32c8801f');
+        $product = $this->products->get(new ProductId($productId));
+
+        self::assertCount(2, $product->getImages());
+        self::assertFileExists(
+            $this->fileSystem->getValue(). DIRECTORY_SEPARATOR . $productId . DIRECTORY_SEPARATOR . $product->getImages()[0]
+        );
+        self::assertFileExists(
+            $this->fileSystem->getValue(). DIRECTORY_SEPARATOR . $productId . DIRECTORY_SEPARATOR . $product->getImages()[1]
+        );
     }
     public function testInvalid(): void
     {
