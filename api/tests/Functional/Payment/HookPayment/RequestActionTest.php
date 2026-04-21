@@ -2,11 +2,9 @@
 
 namespace Test\Functional\Payment\HookPayment;
 
-use App\Http\JsonResponse;
-use App\Payment\Command\HookPayment\Handler;
+use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
+use App\Shared\Domain\ValueObject\FileSystem\ImageSystemPath;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
-use Psr\Http\Message\UploadedFileInterface;
-use Slim\Psr7\UploadedFile;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 
@@ -19,12 +17,16 @@ class RequestActionTest extends WebTestCase
         $this->loadFixtures([
             RequestFixture::class,
         ]);
-        $this->fileSystem = InMemoryFileSystemPath::create();
+        $this->fileSystem = InMemoryFileSystemPath::createReal();
+        $container = $this->container;
+        $container->set(InMemoryFileSystemPath::class, $this->fileSystem);
+        $container->set(FileSystemPath::class, $this->fileSystem);
+        $container->set(ImageSystemPath::class, $this->fileSystem);
     }
     public function testSuccess(): void
     {
         $this->mailer()->clear();
-        $this->createFile('ot201.18.rar', 'test content', 'application/vnd.rar', UPLOAD_ERR_OK);
+        $this->createFile('ot201.18.rar', 'test content');
 
         $response = $this->app()->handle(self::json('POST', '/v1/payments/payment-webhook',
             $this->getRequestBody()
@@ -82,6 +84,6 @@ class RequestActionTest extends WebTestCase
     }
     public function tearDown(): void
     {
-        $this->fileSystem->clear();
+        //$this->fileSystem->clear();
     }
 }
