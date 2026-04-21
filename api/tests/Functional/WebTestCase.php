@@ -16,7 +16,7 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 class WebTestCase extends TestCase
 {
     private ?MailerClient $mailer = null;
-
+    protected ?ContainerInterface $container = null;
     protected static function json(string $method, string $path, array $body = []): ServerRequestInterface
     {
         $request = self::request($method, $path)
@@ -45,7 +45,10 @@ class WebTestCase extends TestCase
     private function container(): ContainerInterface
     {
         /** @var ContainerInterface */
-        return require __DIR__ . '/../../config/container.php';
+        if ($this->container === null) {
+            $this->container = require __DIR__ . '/../../config/container.php';
+        }
+        return $this->container;
     }
     protected function app(): App
     {
@@ -73,5 +76,7 @@ class WebTestCase extends TestCase
         $em = $container->get(EntityManagerInterface::class);
         $executor = new ORMExecutor($em, new ORMPurger($em));
         $executor->execute($loader->getFixtures());
+
+        $em->clear();
     }
 }
