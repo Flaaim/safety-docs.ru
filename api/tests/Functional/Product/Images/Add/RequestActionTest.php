@@ -23,7 +23,7 @@ class RequestActionTest extends WebTestCase
         $image2 = $this->createUploadFile('image2.jpg', 'content', 'image/jpeg', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData(
-            'PUT',
+            'POST',
             '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f/images',
             [],
             ['images' => [$image1, $image2]]
@@ -38,7 +38,7 @@ class RequestActionTest extends WebTestCase
         $image1 = $this->createUploadFile('image1.jpg', 'content', 'application/vnd.rar', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData(
-            'PUT',
+            'POST',
             '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f/images',
             [],
             ['images' => [$image1]]
@@ -60,7 +60,7 @@ class RequestActionTest extends WebTestCase
         $image1 = $this->createUploadFile('image1.jpg', 'content', 'image/jpeg', UPLOAD_ERR_OK);
 
         $response = $this->app()->handle(self::formData(
-            'PUT',
+            'POST',
             '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f/images',
             [],
             ['images' => []]
