@@ -33,6 +33,7 @@ services:
       - api-php-cli
     volumes:
       - /home/deploy/storage/templates:/app/public/templates
+      - /home/deploy/storage/images:/app/public/images
 
   api-php-fpm:
     image: ${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG}
