@@ -3,13 +3,15 @@ import {Roboto_Mono} from "next/font/google";
 import {DefItem, Deflisttag, DownloadButton, Spantag} from "@/components";
 import cn from "classnames";
 import {ProductDTO} from "@/interfaces/product.interface";
+import {getImagesFromFolder} from "@/utils/galleryUtils";
+import {Gallery} from "@/components/Gallery";
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["cyrillic"]
 });
 
-export const ProductInfo = ({name, formattedPrice, updatedAt, totalDocuments, formatDocuments, id }: ProductDTO): JSX.Element => {
+export const ProductInfo = ({name, formattedPrice, updatedAt, totalDocuments, formatDocuments, id, images }: ProductDTO): JSX.Element => {
 
   return (<div className={cn(robotoMono.variable)}>
     <Deflisttag >
@@ -26,5 +28,7 @@ export const ProductInfo = ({name, formattedPrice, updatedAt, totalDocuments, fo
       <Spantag size='s'> Скачать </Spantag> <br />
       <Spantag appearance='bold' size='m'>RAR Архив</Spantag>
     </DownloadButton>
+
+    <Gallery images={images} productId={id}/>
   </div>);
 };
