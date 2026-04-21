@@ -11,7 +11,8 @@ export const API = {
     getById: (id: string) =>  BASE_URL + `/v1/products/${id}`,
     getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`,
     update: (id: string) => BASE_URL + `/v1/products/${id}`,
-    addImages: (id: string) => BASE_URL + `/v1/products/${id}/images`
+    addImages: (id: string) => BASE_URL + `/v1/products/${id}/images`,
+    clearImages: (id: string) => BASE_URL + `/v1/products/${id}/images`
   },
   payment: {
     create: () => BASE_URL + `/v1/payments/process-payment`,

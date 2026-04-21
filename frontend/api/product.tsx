@@ -74,7 +74,12 @@ export async function addImages(token: string|undefined, uploadedImages: Product
   });
 }
 
-
+export async function clearImages(token: string|undefined, productId: string):Promise<void> {
+  return await apiFetch<void>(API.product.clearImages(productId), {
+    method: "DELETE",
+    token
+  });
+}
 function handleFormData(product: Product | ProductImages): FormData {
 
   const formData = new FormData();
