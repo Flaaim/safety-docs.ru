@@ -47,6 +47,8 @@ return static function(App $app): void {
                 $group->post('', Product\Images\Add\RequestAction::class);
                 $group->get('', Product\Images\GetAll\RequestAction::class);
 
+                $group->delete('', Product\Images\Clear\RequestAction::class);
+
             })->add(AuthMiddleware::class);
 
             $group->group('{productId:'.$uuidPattern.'}', function (RouteCollectorProxy $group): void {
