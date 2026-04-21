@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Flusher;
 use App\Product\Command\Images\GetAll\Handler as GetAllImagesHandler;
 use App\Product\Command\Images\Add\Handler as AddImagesHandler;
+use App\Product\Command\Images\Clear\Handler as ClearImagesHandler;
 use App\Product\Entity\ProductRepository;
 use App\Product\Query\ProductQuery;
 use App\Product\Service\File\DirectoryCreator;
@@ -58,6 +59,19 @@ return [
             $flusher,
             new FileUploader($imagePath, new DirectoryCreator()),
             new RandomFileNameGenerator()
+        );
+    },
+    ClearImagesHandler::class => function (ContainerInterface $container) {
+        $em = $container->get(EntityManagerInterface::class);
+
+        $productRepository = new ProductRepository($em);
+        $flusher = new Flusher($em);
+        $imagePath = $container->get(ImageSystemPath::class);
+
+        return new ClearImagesHandler(
+            $productRepository,
+            $flusher,
+            new FileRemover($imagePath),
         );
     }
 
