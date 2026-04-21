@@ -33,7 +33,7 @@ const CategoryView = ({ category, dirSlug, product }: { category: CategoryDTO; d
       slug={product.slug}
       totalDocuments={product.totalDocuments}
       formatDocuments={product.formatDocuments}
-    />)}
+      images={product.images}/>)}
 
     <MarkdownRenderer content={normalizeMarkdown(category.text)} />
   </>

@@ -5,6 +5,7 @@ import {ProductDTO} from "@/interfaces/product.interface";
 import AddProductDialog from "@/components/Admin/Dashboard/Docs/add-product-dialog";
 import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-dialog";
 import AddImagesDialog from "@/components/Admin/Dashboard/Docs/Images/add-images-dialog";
+import ClearImagesDialog from "@/components/Admin/Dashboard/Docs/Images/clear-images-dialog";
 
 
 export default async function ProductPage() {
@@ -55,8 +56,9 @@ export default async function ProductPage() {
                       {prod.images.length > 3 && (
                         <span className="text-xs text-gray-500">
                         +{prod.images.length - 3}
-                      </span>
-                      )}
+                      </span>)}
+                      {<ClearImagesDialog  productId={prod.id}/>}
+
                       </>
                       ) : (<><span className="text-gray-400 text-sm">Нет фото</span>{<AddImagesDialog productId={prod.id} />}</>)}
                   </div>
