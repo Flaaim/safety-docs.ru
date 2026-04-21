@@ -32,6 +32,7 @@ class RequestActionTest extends WebTestCase
                     'filename' => 'serv100.1.rar',
                     'id' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f',
                     'updatedAt' => (new \DateTimeImmutable())->format('Y-m-d'),
+                    'images' => []
                 ]
             ],
             'total' => 1,
