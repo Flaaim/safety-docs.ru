@@ -4,7 +4,7 @@ import {
   CreateProductDTO, Product,
   ProductCollection,
   ProductDTO,
-  ProductFreeCollection,
+  ProductFreeCollection, ProductImages,
   UpdateProductDTO
 } from "@/interfaces/product.interface";
 import {apiFetch} from "@api/apiClient";
@@ -62,8 +62,20 @@ export async function updateProduct(token: string|undefined, product:UpdateProdu
   });
 }
 
+export async function addImages(token: string|undefined, uploadedImages: ProductImages):Promise<void> {
+  const formData = handleFormData(uploadedImages);
 
-function handleFormData(product: Product): FormData {
+  const productId = uploadedImages.productId || '';
+
+  return await apiFetch<void>(API.product.addImages(productId), {
+    method: "POST",
+    token: token,
+    body: formData
+  });
+}
+
+
+function handleFormData(product: Product | ProductImages): FormData {
 
   const formData = new FormData();
 
@@ -71,7 +83,16 @@ function handleFormData(product: Product): FormData {
     if (value === undefined || value === null) {
       return;
     }
-    if (value instanceof File) {
+
+    if (Array.isArray(value) && value[0] instanceof File) {
+      value.forEach((file) => {
+        formData.append(`${key}[]`, file);
+      });
+    }else if(Array.isArray(value)){
+      value.forEach((item) => {
+        formData.append(`${key}[]`, String(item));
+      });
+    }else if (value instanceof File) {
       formData.append(key, value);
     }else if (Array.isArray(value)) {
       value.forEach((item) => {

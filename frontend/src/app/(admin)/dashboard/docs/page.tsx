@@ -4,6 +4,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {ProductDTO} from "@/interfaces/product.interface";
 import AddProductDialog from "@/components/Admin/Dashboard/Docs/add-product-dialog";
 import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-dialog";
+import AddImagesDialog from "@/components/Admin/Dashboard/Docs/Images/add-images-dialog";
 
 
 export default async function ProductPage() {
@@ -25,6 +26,7 @@ export default async function ProductPage() {
               <TableHead>Название</TableHead>
               <TableHead>Шифр</TableHead>
               <TableHead>Цена</TableHead>
+              <TableHead>Галерея</TableHead>
               <TableHead>Обновлен</TableHead>
               <TableHead>Имя файла</TableHead>
               <TableHead className="text-right">Действия</TableHead>
@@ -36,6 +38,29 @@ export default async function ProductPage() {
                 <TableCell className="font-medium">{prod.name}</TableCell>
                 <TableCell className="font-medium">{prod.cipher}</TableCell>
                 <TableCell className="font-medium">{prod.formattedPrice}</TableCell>
+                <TableCell className="font-medium">
+                  <div className="flex items-center gap-2">
+                    {prod.images.length > 0 ? (
+                      <>
+                      <div className="flex -space-x-2">
+                        {prod.images.slice(0, 3).map((image, idx) => (
+                          <img
+                            key={idx}
+                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${prod.id}/${image}`}
+                            alt=""
+                            className="w-8 h-8 rounded border-2 border-white object-cover"
+                          />
+                        ))}
+                      </div>
+                      {prod.images.length > 3 && (
+                        <span className="text-xs text-gray-500">
+                        +{prod.images.length - 3}
+                      </span>
+                      )}
+                      </>
+                      ) : (<><span className="text-gray-400 text-sm">Нет фото</span>{<AddImagesDialog productId={prod.id} />}</>)}
+                  </div>
+                </TableCell>
                 <TableCell className="font-medium">{prod.updatedAt}</TableCell>
                 <TableCell className="font-medium">{prod.filename}</TableCell>
                 <TableCell className="text-right">

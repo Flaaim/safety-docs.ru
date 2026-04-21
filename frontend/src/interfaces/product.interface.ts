@@ -26,6 +26,7 @@ export interface ProductDTO extends Product {
   formattedPrice: string,
   updatedAt: string
   file: string,
+  images: string[]
 }
 export interface ProductCollection {
   products: ProductDTO[]
@@ -45,3 +46,8 @@ export const formatsProduct = [
   'doc',
   'excel'
 ] as const;
+
+export interface ProductImages {
+  productId: string,
+  images: File[]
+}

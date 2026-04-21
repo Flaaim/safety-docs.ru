@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Flusher;
 use App\Product\Command\Images\GetAll\Handler as GetAllImagesHandler;
+use App\Product\Command\Images\Add\Handler as AddImagesHandler;
 use App\Product\Entity\ProductRepository;
 use App\Product\Query\ProductQuery;
 use App\Product\Service\File\DirectoryCreator;
@@ -42,6 +44,20 @@ return [
         return new GetAllImagesHandler(
             $productRepository,
             $imagePath
+        );
+    },
+    AddImagesHandler::class => function (ContainerInterface $container) {
+        $em = $container->get(EntityManagerInterface::class);
+
+        $productRepository = new ProductRepository($em);
+        $imagePath = $container->get(ImageSystemPath::class);
+        $flusher = new Flusher($em);
+
+        return new AddImagesHandler(
+            $productRepository,
+            $flusher,
+            new FileUploader($imagePath, new DirectoryCreator()),
+            new RandomFileNameGenerator()
         );
     }
 
