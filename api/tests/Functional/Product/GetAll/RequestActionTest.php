@@ -27,7 +27,7 @@ class RequestActionTest extends WebTestCase
             'products' => [
                 [
                     'name' => 'Служба охраны труда',
-                    'amount' => '550.00 RUB',
+                    'formattedPrice' => '550.00 RUB',
                     'cipher' => 'serv100.1',
                     'filename' => 'serv100.1.rar',
                     'id' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f',
