@@ -1,7 +1,10 @@
 <?php
 
-namespace Functional\Product\Add;
+namespace Test\Functional\Product\Add;
 
+
+use App\Product\Entity\ProductRepository;
+use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\UploadedFile;
@@ -23,38 +26,20 @@ class RequestActionTest extends WebTestCase
         $response = $this->app()->handle(self::formData(
             'POST',
             '/v1/products',
-            [
-                'name' => 'Медосмотры комплект документов',
-                'cipher' => 'serv100.1',
-                'amount' => 500.00,
-                'slug' => 'medical',
-                'updatedAt' => '2019-01-01',
-                'totalDocuments' => 10,
-                'formatDocuments' => ['pdf', 'doc', 'docx'],
-            ],
+            $this->getProductData(),
             ['file' => $file]
         ));
 
         $this->assertEquals(201, $response->getStatusCode());
-
-
     }
-    public function testInvalid(): void
+    public function testEmpty(): void
     {
         $file = $this->createUploadFile('fire100.1.txt', 'test content', 'text/plain', UPLOAD_ERR_OK);
         $response = $this->app()->handle(
             self::formData(
                 'POST',
                 '/v1/products',
-                [
-                    'name' => '',
-                    'cipher' => '',
-                    'amount' => 0,
-                    'slug' => '',
-                    'updatedAt' => '',
-                    'totalDocuments' => -5,
-                    'formatDocuments' => [],
-                ],
+                [],
                 ['file' => $file]
             ));
 
@@ -100,7 +85,7 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'message' => 'Product with slug electrical already exists.'
+            'message' => 'Product with slug functional-test-add already exists.'
         ], $data);
     }
 
@@ -128,7 +113,7 @@ class RequestActionTest extends WebTestCase
             'name' => 'Электробезопасность 1 группа',
             'cipher' => 'serv100.1',
             'amount' => 500.00,
-            'slug' => 'electrical',
+            'slug' => 'functional-test-add',
             'updatedAt' => '2019-01-01',
             'totalDocuments' => 10,
             'formatDocuments' => ['docx', 'pdf'],
