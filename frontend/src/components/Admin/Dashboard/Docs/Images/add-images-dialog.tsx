@@ -50,7 +50,7 @@ export default function AddImagesDialog({productId}: AddImageDialogProps) {
       setFiles([]);
       setPreviews([]);
     }
-  }, [open, previews]);
+  }, [open]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
@@ -123,7 +123,11 @@ export default function AddImagesDialog({productId}: AddImageDialogProps) {
         {previews.length > 0 && (
           <div className="grid grid-cols-3 gap-2 mt-4">
             {previews.map((preview, idx) => (
-              <Image key={idx} src={preview} className="w-full h-20 object-cover rounded"  alt='Изображение'/>
+              <Image key={idx} src={preview}
+                     className="w-full h-20 object-cover rounded"  alt='Изображение'
+                     width='15'
+                     height='15'
+              />
             ))}
           </div>
         )}
