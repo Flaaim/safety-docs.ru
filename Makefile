@@ -139,6 +139,8 @@ deploy:
 
 	ssh ${HOST} -p ${PORT} 'rm -f site'
 	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'
+	ssh ${HOST} -p ${PORT} 'docker image prune -af'
+	ssh ${HOST} -p ${PORT} 'cd /home/deploy && ls -dt site_* | tail -n +4 | xargs rm -rf'
 
 
 rollback:
