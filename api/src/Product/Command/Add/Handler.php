@@ -32,10 +32,6 @@ class Handler
 
         $productId = ProductId::generate();
 
-        if($command->filename !== $command->file->getClientFilename()){
-            throw new \DomainException('Filename and name of file name is not equals.');
-        }
-
         $this->uploader->upload($productId->getValue(), $command->file);
 
         $formatEnums = array_map(
@@ -47,7 +43,7 @@ class Handler
             $productId,
             $command->name,
             new Amount($command->amount, new Currency('RUB')),
-            new Filename($command->filename),
+            new Filename($command->file->getClientFilename()),
             $command->cipher,
             $slug,
             new \DateTimeImmutable($command->updatedAt),

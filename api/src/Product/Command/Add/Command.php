@@ -18,9 +18,6 @@ class Command
         #[Assert\Positive]
         public float $amount,
         #[Assert\NotBlank]
-        public string $filename,
-        #[Assert\Length(min: 5, max: 150)]
-        #[Assert\NotBlank]
         public string $slug,
         #[Assert\NotBlank]
         #[Assert\DateTime(format: 'Y-m-d')]
@@ -51,14 +48,4 @@ class Command
         /** @var string[] */
         public array $formatDocuments
     ){}
-
-    #[Assert\Callback]
-    public function validateFileAndFilename(ExecutionContextInterface $context): void
-    {
-        if(basename($this->filename) !== $this->file->getClientFilename()){
-            $context->buildViolation('Name of uploaded file and filename is not equal.')
-                ->atPath('filename')
-                ->addViolation();
-        }
-    }
 }

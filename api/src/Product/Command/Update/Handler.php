@@ -26,7 +26,11 @@ class Handler
     public function handle(Command $command): void
     {
         $productId = new ProductId($command->productId);
-        $product = $this->products->get($productId);
+        $product = $this->products->findById($productId);
+
+        if($product === null) {
+            throw new \DomainException('Product not found.');
+        }
 
         $slug = new Slug($command->slug);
         $existingProduct = $this->products->findBySlug($slug);

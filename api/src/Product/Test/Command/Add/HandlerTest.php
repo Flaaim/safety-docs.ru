@@ -49,31 +49,11 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
     }
-    public function testFilenameFileNotEquals(): void
-    {
-        $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $command = $this->createCommand($uploadedFile, 'test100.1.rar');
-        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn('test200.1.rar');
-
-        $slug = new Slug($command->slug);
-
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
-            ->willReturn(null);
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Filename and name of file name is not equals.');
-
-        $this->flusher->expects(self::never())->method('flush');
-        $this->products->expects(self::never())->method('add');
-
-        $this->handler->handle($command);
-    }
     public function testSuccess(): void
     {
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn($filename = 'test100.1.rar');
-        $command = $this->createCommand($uploadedFile, $filename);
+        $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn('test100.1.rar');
+        $command = $this->createCommand($uploadedFile);
 
         $slug = new Slug($command->slug);
 
@@ -100,13 +80,12 @@ class HandlerTest extends TestCase
         $this->handler->handle($command);
     }
 
-    private function createCommand(UploadedFileInterface $uploadedFile, string $filename = 'test100.1.rar'): Command
+    private function createCommand(UploadedFileInterface $uploadedFile): Command
     {
         return new Command(
             'Обучение по охране труда - комплект документов',
             'edu300.1',
             550.00,
-            $filename,
             'education',
             (new \DateTimeImmutable())->format('d.m.Y'),
             $uploadedFile,

@@ -36,18 +36,20 @@ class HandlerTest extends TestCase
     public function testSuccess(): void
     {
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $uploadedFile->expects($this->once())->method('getClientFilename')->willReturn('serv100.1.rar');
-        $filename = new Filename('serv100.1.rar');
+        $uploadedFile->expects($this->once())->method('getClientFilename')->willReturn('new01.1.rar');
+
+        $oldUploadedFile = $this->createMock(UploadedFileInterface::class);
+        $oldUploadedFile->expects($this->once())->method('getClientFilename')->willReturn('old01.1.rar');
+        $oldFilename = new Filename($oldUploadedFile->getClientFilename());
+
         $slug = new Slug('education');
 
-        $oldFilename = new Filename('oldfilename200.1.rar');
-
-        $command = $this->createCommand($slug, $uploadedFile, $filename);
+        $command = $this->createCommand($slug, $uploadedFile);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withFilename($oldFilename)->withId($productId)->build();
 
-        $this->products->expects(self::once())->method('get')
+        $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
             ->willReturn($product);
 
@@ -56,10 +58,10 @@ class HandlerTest extends TestCase
             ->willReturn(null);
 
         $this->uploader->expects(self::once())->method('upload')
-            ->with($this->equalTo('876675c9-6dfb-4db5-bc90-72b73b75616d'), $this->equalTo($uploadedFile));
+            ->with($this->equalTo($productId->getValue()), $this->equalTo($uploadedFile));
 
         $this->fileRemover->expects(self::once())->method('remove')
-            ->with($this->equalTo('876675c9-6dfb-4db5-bc90-72b73b75616d/oldfilename200.1.rar'));
+            ->with($this->equalTo($productId->getValue() . DIRECTORY_SEPARATOR . $oldFilename->getValue()));
 
         $this->flusher->expects(self::once())->method('flush');
 
@@ -69,12 +71,12 @@ class HandlerTest extends TestCase
     {
         $filename = new Filename('serv100.1.rar');
         $slug = new Slug('education');
-        $command = $this->createCommand($slug, null, $filename);
+        $command = $this->createCommand($slug);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withId($productId)->build();
 
-        $this->products->expects(self::once())->method('get')
+        $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
             ->willReturn($product);
 
@@ -93,7 +95,7 @@ class HandlerTest extends TestCase
         $filename = new Filename('serv100.1.rar');
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
         $slug = new Slug('education');
-        $command = $this->createCommand($slug, $uploadedFile, $filename);
+        $command = $this->createCommand($slug, $uploadedFile);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withId($productId)->build();
@@ -101,7 +103,7 @@ class HandlerTest extends TestCase
 
         $existingProduct = (new ProductBuilder())->withSlug($slug)->build();
 
-        $this->products->expects(self::once())->method('get')
+        $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
             ->willReturn($product);
 
@@ -126,7 +128,7 @@ class HandlerTest extends TestCase
         $uploadedFile->expects($this->once())->method('getClientFilename')->willReturn($filename->getValue());
         $slug = new Slug('education');
 
-        $command = $this->createCommand($slug, $uploadedFile, $filename);
+        $command = $this->createCommand($slug, $uploadedFile);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
 
@@ -135,7 +137,7 @@ class HandlerTest extends TestCase
             ->withFilename($filename)
             ->withId($productId)->build();
 
-        $this->products->expects(self::once())->method('get')
+        $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
             ->willReturn($product);
 
@@ -157,14 +159,13 @@ class HandlerTest extends TestCase
         self::assertEquals('education', $product->getSlug()->getValue());
     }
 
-    private function createCommand(Slug $slug, ?UploadedFileInterface $uploadedFile, Filename $filename): Command
+    private function createCommand(Slug $slug, ?UploadedFileInterface $uploadedFile = null): Command
     {
         return new Command(
             new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d'),
             'Обучение по охране труда - комплект документов',
             'edu300.1',
             550.00,
-            $filename->getValue(),
             $slug->getValue(),
             (new \DateTimeImmutable())->format('d.m.Y'),
             22,
