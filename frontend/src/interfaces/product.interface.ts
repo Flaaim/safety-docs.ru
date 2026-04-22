@@ -1,7 +1,6 @@
 export interface Product {
   name: string;
   cipher: string;
-  filename: string;
   slug: string;
   totalDocuments: number;
   formatDocuments: string[];
@@ -25,7 +24,7 @@ export interface ProductDTO extends Product {
   id: string,
   formattedPrice: string,
   updatedAt: string
-  file: string,
+  filename: string,
   images: string[]
 }
 export interface ProductCollection {

@@ -42,11 +42,11 @@ export default function AddProductDialog() {
     setLoading(true);
     const formData = new FormData(e.currentTarget);
 
+
     const product: CreateProductDTO = {
       name: formData.get('name') as string,
       cipher: formData.get('cipher') as string,
       amount: formData.get('amount') as string,
-      filename: formData.get('filename') as string,
       updatedAt: formData.get('updatedAt') as string,
       slug: formData.get('slug') as string,
       file: formData.get('file') as File,
@@ -96,10 +96,6 @@ export default function AddProductDialog() {
           <div className="grid gap-2">
             <Label htmlFor="amount">Цена</Label>
             <Input id="amount" type='number' name="amount"  required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="filename">Имя файла</Label>
-            <Input id="filename"  name="filename" placeholder="Например: med100.1.rar" required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="updatedAt">Дата обновления</Label>

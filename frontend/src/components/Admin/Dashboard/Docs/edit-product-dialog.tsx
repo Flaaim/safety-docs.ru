@@ -69,7 +69,6 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
       name: formData.get('name') as string,
       cipher: formData.get('cipher') as string,
       amount: formData.get('amount') as string,
-      filename: formData.get('filename') as string,
       updatedAt: formData.get('updatedAt') as string,
       slug: formData.get('slug') as string,
       file: formData.get('file') as File,
@@ -128,10 +127,6 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
             <div className="grid gap-2">
               <Label htmlFor="slug">Slug</Label>
               <Input id="slug" type='text' name="slug" defaultValue={productData.slug}  required />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="slug">Имя файла</Label>
-              <Input id="filename" type='text' name="filename" defaultValue={productData.filename}  required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="file">Файл</Label>
