@@ -49,6 +49,8 @@ export default async function ProductPage() {
                             key={idx}
                             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${prod.id}/${image}`}
                             alt=""
+                            width='10'
+                            height='10'
                             className="w-8 h-8 rounded border-2 border-white object-cover"
                           />
                         ))}
