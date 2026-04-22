@@ -26,7 +26,6 @@ const CategoryView = ({ category, dirSlug, product }: { category: CategoryDTO; d
       id={product.id}
       formattedPrice={product.formattedPrice}
       updatedAt={product.updatedAt}
-      file={product.file}
       name={product.name}
       cipher={product.cipher}
       filename={product.filename}
