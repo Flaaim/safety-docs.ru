@@ -9,7 +9,7 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-unused-vars": "error",
       "react/style-prop-object": "error",
-      "no-console": "warn",
+      "no-console": ["warn", { "allow": ["warn", "error"] }],
       "prefer-const": "error",
       "semi": "error",
       "consistent-return": ["error", { "treatUndefinedAsUnspecified": true }],
