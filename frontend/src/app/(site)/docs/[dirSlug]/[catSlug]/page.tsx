@@ -74,8 +74,9 @@ export async function generateMetadata({ params }: { params: Promise<{ dirSlug: 
     return {
       title: category.title,
       description: category.description
-    }
+    };
   }catch (error){
+    console.error(`Ошибка загрузки метаданных категории ${catSlug}:`, error);
     return {
       title: "Ошибка загрузки",
       description: "Произошла ошибка при загрузке данных о направлении.",
