@@ -6,10 +6,13 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getAllDirections, getDirectionBySlug } from "@api/direction";
 import { cache } from 'react';
+import {Metadata} from "next";
 
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });
+
+
 
 export const dynamicParams = true;
 
@@ -20,6 +23,31 @@ export async function generateStaticParams() {
   } catch(error) {
     console.error("ОШИБКА ПРИ ПОЛУЧЕНИИ СТАТИЧЕСКИХ ПУТЕЙ:", error);
     return [];
+  }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ dirSlug: string }>}): Promise<Metadata> {
+  const { dirSlug } = await params;
+
+  try{
+    const direction = await getCachedDirection(dirSlug);
+
+    if(!direction){
+      return {
+        title: "Направление не найдено",
+        description: "Запрашиваемое направление не существует.",
+      };
+    }
+
+    return {
+      title: direction.title,
+      description: direction.description
+    }
+  }catch (error){
+    return {
+      title: "Ошибка загрузки",
+      description: "Произошла ошибка при загрузке данных о направлении.",
+    };
   }
 }
 
