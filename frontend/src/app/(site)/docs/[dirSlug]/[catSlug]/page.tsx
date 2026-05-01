@@ -9,6 +9,7 @@ import normalizeMarkdown from "@/utils/normalizeMarkdown";
 import { ProductInfo } from "@/components/ProductInfo/ProductInfo";
 import { CategoryDTO } from "@/interfaces/category.interface";
 import { ProductDTO } from "@/interfaces/product.interface";
+import {Metadata} from "next";
 
 
 const getCachedDirection = cache(async (slug: string) => {
@@ -55,6 +56,33 @@ export async function generateStaticParams() {
     return [];
   }
 }
+
+export async function generateMetadata({ params }: { params: Promise<{ dirSlug: string; catSlug: string }>}): Promise<Metadata> {
+  const { dirSlug, catSlug } = await params;
+
+  try{
+    const direction = await getCachedDirection(dirSlug);
+    const category = direction.categories.find(c => c.slug === catSlug);
+
+    if(!category){
+      return {
+        title: "Категория не найдена",
+        description: "Запрашиваемая категория не существует.",
+      };
+    }
+
+    return {
+      title: category.title,
+      description: category.description
+    }
+  }catch (error){
+    return {
+      title: "Ошибка загрузки",
+      description: "Произошла ошибка при загрузке данных о направлении.",
+    };
+  }
+}
+
 
 export default async function CategoryPage({ params }: { params: Promise<{ dirSlug: string; catSlug: string }> }) {
   const { dirSlug, catSlug } = await params;
