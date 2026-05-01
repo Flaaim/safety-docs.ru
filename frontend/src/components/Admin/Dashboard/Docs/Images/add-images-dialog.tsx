@@ -45,12 +45,12 @@ export default function AddImagesDialog({productId}: AddImageDialogProps) {
   };
 
   useEffect(() => {
-    if(!open){
+    if(!open && previews.length > 0){
       previews.forEach(url => URL.revokeObjectURL(url));
       setFiles([]);
       setPreviews([]);
     }
-  }, [open]);
+  }, [open, previews]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
