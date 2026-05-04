@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<psalm  errorLevel="4"
+        resolveFromConfigFile="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        phpVersion="8.1"
+        errorBaseline="psalm-baseline.xml"
+        findUnusedIssueHandlerSuppression="false"
+        cacheDirectory="./var/cache/.psalm"
+>
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+                <directory name="src/Direction/Test"/>
+                <directory name="src/Payment/Test"/>
+                <directory name="src/Product/Test"/>
+                <directory name="src/Sender/Test"/>
+                <directory name="src/Shared/Test"/>
+                <directory name="src/Http/Test"/>
+            </errorLevel>
+        </UndefinedClass>
+
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="src/Data/Migration" />
+                <directory name="src/Direction/Fixture" />
+                <directory name="src/Payment/Fixture" />
+                <directory name="src/Product/Fixture" />
+            </errorLevel>
+        </UnusedClass>
+
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="src/Http/Action" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+    </issueHandlers>
+
+    <plugins>
+
+    </plugins>
+</psalm>
