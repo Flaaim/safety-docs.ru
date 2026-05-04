@@ -20,7 +20,8 @@
     "symfony/validator": "^6.4",
     "doctrine/dbal": "3.8.*",
     "carbonphp/carbon-doctrine-types": "^2.1",
-    "doctrine/doctrine-migrations-bundle": "^3.4.2"
+    "doctrine/doctrine-migrations-bundle": "^3.4.2",
+    "nesbot/carbon": "^3.11"
   },
   "autoload": {
     "psr-4": {
