@@ -6,8 +6,9 @@ api-init frontend-init
 up: docker-up
 down: docker-down
 restart: down up
-api-check: validate lint api-test
+api-check: validate api-analyze api-lint api-test
 validate: api-validate-schema
+analyze: api-analyze
 lint: api-lint frontend-lint
 lint-fix: frontend-lint-fix
 api-test: unit-test functional-test api-fixtures
@@ -49,6 +50,9 @@ frontend-test:
 	docker compose run --rm frontend-node-cli yarn test
 
 api-init: api-permission composer-install api-wait-for-db api-migrations api-fixtures
+
+api-analyze:
+	docker compose run --rm api-php-cli composer psalm
 
 api-lint:
 	docker compose run --rm api-php-cli composer lint
