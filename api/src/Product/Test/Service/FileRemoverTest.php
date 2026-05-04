@@ -11,7 +11,6 @@ use Slim\Psr7\UploadedFile;
 class FileRemoverTest extends TestCase
 {
     private InMemoryFileSystemPath $tempDir;
-    private FileRemover $remover;
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_

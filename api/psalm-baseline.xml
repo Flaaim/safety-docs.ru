@@ -337,9 +337,6 @@
       <code><![CDATA[$this->handler]]></code>
       <code><![CDATA[$this->handler]]></code>
     </UndefinedThisPropertyFetch>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
     <UnusedVariable>
       <code><![CDATA[$existingCategory]]></code>
     </UnusedVariable>
@@ -362,9 +359,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Direction/Test/Unit/Command/Category/GetBySlug/HandlerTest.php">
     <MissingOverrideAttribute>
@@ -374,9 +368,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Direction/Test/Unit/Command/Category/RefuseProduct/HandlerTest.php">
     <MissingOverrideAttribute>
@@ -390,9 +381,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Direction/Test/Unit/Command/Category/Update/HandlerTest.php">
     <MissingOverrideAttribute>
@@ -422,9 +410,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Direction/Test/Unit/Command/Direction/Add/HandlerTest.php">
     <MissingOverrideAttribute>
@@ -438,9 +423,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
     <UnusedVariable>
       <code><![CDATA[$direction]]></code>
     </UnusedVariable>
@@ -458,9 +440,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Direction/Test/Unit/Command/Direction/GetBySlug/HandlerTest.php">
     <MissingOverrideAttribute>
@@ -477,9 +456,6 @@
       <code><![CDATA[$this->handler]]></code>
       <code><![CDATA[$this->handler]]></code>
     </UndefinedThisPropertyFetch>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Direction/Test/Unit/Command/Direction/Update/HandlerTest.php">
     <MissingOverrideAttribute>
@@ -498,34 +474,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Direction/Test/Unit/Entity/CategoryIdTest.php">
-    <UnusedClass>
-      <code><![CDATA[CategoryIdTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Direction/Test/Unit/Entity/CategoryTest.php">
-    <UnusedClass>
-      <code><![CDATA[CategoryTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Direction/Test/Unit/Entity/DirectionIdTest.php">
-    <UnusedClass>
-      <code><![CDATA[DirectionIdTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Direction/Test/Unit/Entity/DirectionTest.php">
-    <UnusedClass>
-      <code><![CDATA[DirectionTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Direction/Test/Unit/Entity/SlugTest.php">
-    <UnusedClass>
-      <code><![CDATA[SlugTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/ErrorHandler/LogErrorHandler.php">
     <MissingOverrideAttribute>
@@ -774,31 +722,6 @@
       <code><![CDATA[public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface]]></code>
     </MissingOverrideAttribute>
   </file>
-  <file src="src/Http/Test/Unit/EmptyResponseTest.php">
-    <UnusedClass>
-      <code><![CDATA[EmptyResponseTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Http/Test/Unit/Middleware/ClearInputHandlerTest.php">
-    <UnusedClass>
-      <code><![CDATA[ClearInputHandlerTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Http/Test/Unit/Middleware/DomainExceptionHandlerTest.php">
-    <UnusedClass>
-      <code><![CDATA[DomainExceptionHandlerTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Http/Test/Unit/Middleware/UploadFileHandlerTest.php">
-    <UnusedClass>
-      <code><![CDATA[UploadFileHandlerTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Http/Test/Unit/Middleware/ValidationExceptionHandlerTest.php">
-    <UnusedClass>
-      <code><![CDATA[ValidationExceptionHandlerTest]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Http/Test/Unit/Validator/SlimUploadedFileValidatorTest.php">
     <InvalidScalarArgument>
       <code><![CDATA[$maxFileSize]]></code>
@@ -813,9 +736,6 @@
     <MissingTemplateParam>
       <code><![CDATA[SlimUploadedFileValidatorTest]]></code>
     </MissingTemplateParam>
-    <UnusedClass>
-      <code><![CDATA[SlimUploadedFileValidatorTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Http/Validator/SlimUploadedFile.php">
     <MissingOverrideAttribute>
@@ -950,16 +870,6 @@
       <code><![CDATA[public function load(ObjectManager $manager): void]]></code>
     </MissingOverrideAttribute>
   </file>
-  <file src="src/Payment/Test/Entity/EmailTest.php">
-    <UnusedClass>
-      <code><![CDATA[EmailTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Payment/Test/Entity/PaymentStatusTest.php">
-    <UnusedClass>
-      <code><![CDATA[PaymentStatusTest]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Payment/Test/Entity/TokenTest.php">
     <ImplicitToStringCast>
       <code><![CDATA[$value]]></code>
@@ -972,9 +882,6 @@
       <code><![CDATA[Id::generate()]]></code>
       <code><![CDATA[Id::generate()]]></code>
     </ImplicitToStringCast>
-    <UnusedClass>
-      <code><![CDATA[TokenTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Command/Get/Handler.php">
     <PossiblyUnusedMethod>
@@ -1132,14 +1039,6 @@
     <UndefinedThisPropertyFetch>
       <code><![CDATA[$this->uploader]]></code>
     </UndefinedThisPropertyFetch>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Product/Test/Command/GetAll/HandlerTest.php">
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Command/Images/Add/TestHandler.php">
     <MissingOverrideAttribute>
@@ -1161,9 +1060,6 @@
       <code><![CDATA[$this->flusher]]></code>
       <code><![CDATA[$this->flusher]]></code>
     </UndefinedThisPropertyFetch>
-    <UnusedClass>
-      <code><![CDATA[TestHandler]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Command/Images/Clear/HandlerTest.php">
     <ImplicitToStringCast>
@@ -1185,9 +1081,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
     <UnusedVariable>
       <code><![CDATA[$productId]]></code>
     </UnusedVariable>
@@ -1203,9 +1096,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[TestHandler]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Command/Update/HandlerTest.php">
     <ImplicitToStringCast>
@@ -1241,23 +1131,10 @@
       <code><![CDATA[$this->uploader]]></code>
       <code><![CDATA[$this->uploader]]></code>
     </UndefinedThisPropertyFetch>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
     <UnusedVariable>
       <code><![CDATA[$filename]]></code>
       <code><![CDATA[$filename]]></code>
     </UnusedVariable>
-  </file>
-  <file src="src/Product/Test/Entity/AmountTest.php">
-    <UnusedClass>
-      <code><![CDATA[AmountTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Product/Test/Entity/CurrencyTest.php">
-    <UnusedClass>
-      <code><![CDATA[CurrencyTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Entity/FilenameTest.php">
     <MissingOverrideAttribute>
@@ -1266,24 +1143,6 @@
     <UndefinedThisPropertyAssignment>
       <code><![CDATA[$this->tempDir]]></code>
     </UndefinedThisPropertyAssignment>
-    <UnusedClass>
-      <code><![CDATA[FilenameTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Product/Test/Entity/ProductIdTest.php">
-    <UnusedClass>
-      <code><![CDATA[ProductIdTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Product/Test/Entity/ProductTest.php">
-    <UnusedClass>
-      <code><![CDATA[ProductTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Product/Test/Entity/SlugTest.php">
-    <UnusedClass>
-      <code><![CDATA[SlugTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/ProductBuilder.php">
     <PossiblyUnusedMethod>
@@ -1300,9 +1159,6 @@
       <code><![CDATA[public function setUp(): void]]></code>
       <code><![CDATA[public function tearDown(): void]]></code>
     </MissingOverrideAttribute>
-    <UnusedClass>
-      <code><![CDATA[DirectoryCreatorTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Service/FileRemoverTest.php">
     <FalsableReturnStatement>
@@ -1318,9 +1174,6 @@
     <UndefinedThisPropertyFetch>
       <code><![CDATA[$this->fileRemover]]></code>
     </UndefinedThisPropertyFetch>
-    <UnusedClass>
-      <code><![CDATA[FileRemoverTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Service/FileUploaderTest.php">
     <MissingOverrideAttribute>
@@ -1330,9 +1183,6 @@
     <UndefinedInterfaceMethod>
       <code><![CDATA[expects]]></code>
     </UndefinedInterfaceMethod>
-    <UnusedClass>
-      <code><![CDATA[FileUploaderTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Sender/Entity/EmailMessageType.php">
     <MissingOverrideAttribute>
@@ -1432,34 +1282,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedClass>
-      <code><![CDATA[HandlerTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Sender/Test/Unit/Entity/EmailMessageTest.php">
-    <UnusedClass>
-      <code><![CDATA[EmailMessageTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Sender/Test/Unit/Entity/MessageIdTest.php">
-    <UnusedClass>
-      <code><![CDATA[MessageIdTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Sender/Test/Unit/Entity/MessageStatusTest.php">
-    <UnusedClass>
-      <code><![CDATA[MessageStatusTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Sender/Test/Unit/Entity/RecipientTest.php">
-    <UnusedClass>
-      <code><![CDATA[RecipientTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Sender/Test/Unit/Service/Message/MessageCreatorTest.php">
-    <UnusedClass>
-      <code><![CDATA[MessageCreatorTest]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Shared/Domain/Event/Payment/PaymentSubscriber.php">
     <MissingOverrideAttribute>
@@ -1601,21 +1423,6 @@
     </MissingOverrideAttribute>
     <UnusedClass>
       <code><![CDATA[UpdatedAtType]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Shared/Test/Unit/ValueObject/FileSystem/FileSystemPathTest.php">
-    <UnusedClass>
-      <code><![CDATA[FileSystemPathTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Shared/Test/Unit/ValueObject/IdTest.php">
-    <UnusedClass>
-      <code><![CDATA[IdTest]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Shared/Test/Unit/ValueObject/UpdatedAtTest.php">
-    <UnusedClass>
-      <code><![CDATA[UpdatedAtTest]]></code>
     </UnusedClass>
   </file>
 </files>
