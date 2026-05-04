@@ -2,9 +2,6 @@
 
 namespace Test\Functional\Product\Add;
 
-
-use App\Product\Entity\ProductRepository;
-use App\Product\Entity\Slug;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\UploadedFile;
@@ -26,7 +23,7 @@ class RequestActionTest extends WebTestCase
         $response = $this->app()->handle(self::formData(
             'POST',
             '/v1/products',
-            $this->getProductData(),
+            $this->getProductData('add-product-slug'),
             ['file' => $file]
         ));
 
@@ -67,14 +64,14 @@ class RequestActionTest extends WebTestCase
         $this->app()->handle(self::formData(
             'POST',
             '/v1/products',
-            $this->getProductData(),
+            $this->getProductData('existing-slug'),
             ['file' => $this->createUploadFile('electr100.1.rar', 'test content', 'application/vnd.rar', UPLOAD_ERR_OK)]
         ));
 
         $response = $this->app()->handle(self::formData(
             'POST',
             '/v1/products',
-            $this->getProductData(),
+            $this->getProductData('existing-slug'),
             ['file' => $this->createUploadFile('electr100.1.rar', 'test content', 'application/vnd.rar', UPLOAD_ERR_OK)]
         ));
 
@@ -85,14 +82,14 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'message' => 'Product with slug functional-test-add already exists.'
+            'message' => 'Product with slug existing-slug already exists.'
         ], $data);
     }
 
     public function testEmptyFileField(): void
     {
         $response = $this->app()->handle(
-            self::formData('POST', '/v1/products', $this->getProductData())
+            self::formData('POST', '/v1/products', $this->getProductData('product-slug'))
         );
 
         self::assertEquals(400, $response->getStatusCode());
@@ -107,13 +104,13 @@ class RequestActionTest extends WebTestCase
 
     }
 
-    private function getProductData(): array
+    private function getProductData(string $slug): array
     {
         return [
             'name' => 'Электробезопасность 1 группа',
             'cipher' => 'serv100.1',
             'amount' => 500.00,
-            'slug' => 'functional-test-add',
+            'slug' => $slug,
             'updatedAt' => '2019-01-01',
             'totalDocuments' => 10,
             'formatDocuments' => ['docx', 'pdf'],
