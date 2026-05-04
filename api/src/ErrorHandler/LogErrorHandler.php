@@ -2,25 +2,10 @@
 
 namespace App\ErrorHandler;
 
-use Monolog\Logger;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Log\LoggerInterface;
 use Slim\Handlers\ErrorHandler;
-use Slim\Interfaces\CallableResolverInterface;
 
 class LogErrorHandler extends ErrorHandler
 {
-    protected LoggerInterface $logger;
-    public function __construct(
-        CallableResolverInterface $callableResolver,
-        ResponseFactoryInterface $responseFactory,
-        LoggerInterface $logger
-    )
-    {
-        parent::__construct($callableResolver, $responseFactory);
-        $this->logger = $logger;
-    }
-
     protected function writeToErrorLog(): void
     {
         $this->logger->error($this->exception->getMessage(), [
