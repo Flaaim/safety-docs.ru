@@ -4,6 +4,7 @@ namespace App\Direction\Test\Unit\Entity;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
+use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
@@ -12,16 +13,88 @@ use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
 {
-    public function testUpdate(): void
+    public function testCategory(): void
     {
-        $serviceCategory = $this->getServiceCategory();
+        $direction = $this->getDirection();
+        $serviceCategory = $this->getCategory($direction);
 
-        $fireDirection = (new DirectionBuilder())
-            ->withId(new DirectionId('d3a46a04-fdeb-4efa-b7d2-593d38bbf33d'))
-            ->withTitle('Пожарная безопасность')
-            ->build();
+        self::assertEquals('Служба охраны труда', $serviceCategory->getTitle());
+        self::assertEquals('Служба охраны труда, комплект документов', $serviceCategory->getDescription());
 
-        $serviceCategory->update(
+        self::assertNull($serviceCategory->getParent());
+    }
+    public function testCategoryWithParent(): void
+    {
+        $direction = $this->getDirection();
+        $parent = $this->getCategory($direction);
+
+        $serviceCategory = new Category(
+            CategoryId::generate(),
+            'Title',
+            'Description',
+            'Text',
+            new Slug('title'),
+            $direction,
+            $parent
+        );
+
+        self::assertTrue($serviceCategory->isChild());
+    }
+    public function testCategoryTheOwnParent(): void
+    {
+        $safetyDirection = $this->getDirection();
+        $parent = $this->getCategory($safetyDirection);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A category cannot be its own parent.');
+
+        new Category(
+            $parent->getId(),
+            'Title',
+            'Description',
+            'Text',
+            new Slug('title'),
+            $safetyDirection,
+            $parent
+        );
+
+    }
+    public function testCategoryDifferentDirection(): void
+    {
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
+
+        $parentCategory = new Category(
+            CategoryId::generate(),
+            'Parent category',
+            'Parent description category',
+            'Text',
+            new Slug('title'),
+            $safetyDirection,
+        );
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Child category cannot be from different direction.');
+
+        new Category(
+            CategoryId::generate(),
+            'Child category',
+            'Child description category',
+            'Text',
+            new Slug('title'),
+            $fireDirection,
+            $parentCategory
+        );
+
+    }
+    public function testUpdateParent(): void
+    {
+        $safetyDirection = $this->getDirection('4c075222-bef7-48d2-9cdf-efd7f58b226b', 'Safety');
+        $category = $this->getCategory($safetyDirection);
+
+        $fireDirection = $this->getDirection('171af8ca-86f0-452f-b94b-5b62cc72998a', 'Fire');
+
+        $category->update(
             'Обучение по пожарной безопасности',
             'Обучение по пожарной безопасности, комплект документов',
             'Some text',
@@ -29,29 +102,78 @@ class CategoryTest extends TestCase
             $fireDirection
         );
 
-        self::assertEquals('Обучение по пожарной безопасности', $serviceCategory->getTitle());
-        self::assertEquals('Обучение по пожарной безопасности, комплект документов', $serviceCategory->getDescription());
-        self::assertEquals('Some text', $serviceCategory->getText());
-        self::assertEquals('education', $serviceCategory->getSlug()->getValue());
+        self::assertEquals('Обучение по пожарной безопасности', $category->getTitle());
+        self::assertEquals('Обучение по пожарной безопасности, комплект документов', $category->getDescription());
+        self::assertEquals('Some text', $category->getText());
+        self::assertEquals('education', $category->getSlug()->getValue());
+        self::assertEquals('171af8ca-86f0-452f-b94b-5b62cc72998a', $category->getDirection()->getId()->getValue());
+        self::assertEquals('Fire', $category->getDirection()->getTitle());
     }
 
-    public function testUpdateDirectionSuccess(): void
+    public function testUpdateChildren(): void
     {
-        $newDirection = (new DirectionBuilder())
-            ->withTitle('Охрана труда')
-            ->withId(new DirectionId('2b03bff3-061d-4576-a29c-9376e15c572b'))->build();
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
 
-        $category = $this->getServiceCategory();
+        $parentCategory = $this->getCategory($safetyDirection, 'parent');
+        $childCategory = $this->getCategory($safetyDirection, 'children', $parentCategory);
 
-        $category->updateDirection($newDirection);
+        $childCategory->update(
+            'New title',
+            'New description',
+            'New text',
+            new Slug('title'),
+            $fireDirection
+        );
 
-        self::assertEquals($newDirection, $category->getDirection());
-        self::assertCount(1, $newDirection->getCategories());
-        self::assertEquals('Охрана труда', $category->getDirection()->getTitle());
+        self::assertEquals('New title', $childCategory->getTitle());
+        self::assertEquals('New description', $childCategory->getDescription());
+        self::assertEquals('New text', $childCategory->getText());
+    }
+    public function testUpdateUpdateChildrenWithDifferentDirection(): void
+    {
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
+
+        $category1 = $this->getCategory($safetyDirection, 'parent');
+
+        $category2 = $this->getCategory($safetyDirection, 'children');
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Child category cannot be from different direction.');
+
+        $category2->update(
+            'New title',
+            'New description',
+            'New text',
+            new Slug('title'),
+            $fireDirection,
+            $category1
+        );
+    }
+    public function testUpdateRefuseParent(): void
+    {
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
+
+        $parentCategory = $this->getCategory($safetyDirection, 'parent');
+        $child = $this->getCategory($safetyDirection, 'children', $parentCategory);
+
+        $child->update(
+            'New title',
+            'New description',
+            'New text',
+            new Slug('title'),
+            $fireDirection,
+        );
+
+        self::assertNull($child->getParent());
+        self::assertEquals('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', $child->getDirection()->getId()->getValue());
     }
     public function testAssign(): void
     {
-        $category = $this->getServiceCategory();
+        $direction = $this->getDirection();
+        $category = $this->getCategory($direction);
 
         $product = (new ProductBuilder())->build();
 
@@ -62,7 +184,8 @@ class CategoryTest extends TestCase
     }
     public function testAssignAlready(): void
     {
-        $category = $this->getServiceCategory();
+        $direction = $this->getDirection();
+        $category = $this->getCategory($direction);
         $product = (new ProductBuilder())->build();
 
         $category->assignProduct($product);
@@ -75,14 +198,16 @@ class CategoryTest extends TestCase
     }
     public function testRefuseNotAssigned(): void
     {
-        $category = $this->getServiceCategory();
+        $direction = $this->getDirection();
+        $category = $this->getCategory($direction);
 
         self::expectException(\DomainException::class);
         $category->refuseProduct();
     }
     public function testRefuse(): void
     {
-        $category = $this->getServiceCategory();
+        $direction = $this->getDirection();
+        $category = $this->getCategory($direction);
 
         $product = (new ProductBuilder())->build();
         $category->assignProduct($product);
@@ -92,21 +217,25 @@ class CategoryTest extends TestCase
 
         self::assertNull($category->getProduct());
     }
-    private function getServiceCategory(): Category
+    private function getCategory(Direction $direction, string $slug = 'service', ?Category $parent = null): Category
     {
-        $safetyDirection = (new DirectionBuilder())
-            ->withId(new DirectionId('a393dded-51c5-4049-91ff-414b37ddf917'))
-            ->withTitle('Пожарная безопасность')
-            ->build();
-
         return new Category(
-            new CategoryId('d5288bf5-6919-41cf-912b-5ec1ae4649d7'),
+            CategoryId::generate(),
             'Служба охраны труда',
             'Служба охраны труда, комплект документов',
             'some text',
-            new Slug('service'),
-            $safetyDirection
+            new Slug($slug),
+            $direction,
+            $parent
         );
+    }
+
+    private function getDirection(string $uuid = 'a393dded-51c5-4049-91ff-414b37ddf917', string $title = 'Охрана труда'): Direction
+    {
+        return (new DirectionBuilder())
+            ->withId(new DirectionId($uuid))
+            ->withTitle($title)
+            ->build();
     }
 
 

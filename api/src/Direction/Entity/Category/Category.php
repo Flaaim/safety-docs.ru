@@ -5,6 +5,8 @@ namespace App\Direction\Entity\Category;
 use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Slug;
 use App\Product\Entity\Product;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -14,7 +16,11 @@ class Category
     #[ORM\OneToOne(targetEntity: Product::class)]
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Product $product = null;
-
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private ?Category $parent = null;
+    /** @var Collection<int, Category> $children */
+    private Collection $children;
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'category_id', unique: true)]
@@ -30,8 +36,20 @@ class Category
         #[ORM\ManyToOne(targetEntity: Direction::class, inversedBy: 'categories')]
         #[ORM\JoinColumn(name: 'direction_id', referencedColumnName: 'id', nullable: false, onDelete: "RESTRICT")]
         private Direction $direction,
-
+        ?Category $parent = null
     ){
+        $this->children = new ArrayCollection();
+
+        if($parent !== null){
+            if($parent->getDirection() !== $this->direction){
+                throw new \DomainException('Child category cannot be from different direction.');
+            }
+
+            if($categoryId->equals($parent->getId())){
+                throw new \DomainException('A category cannot be its own parent.');
+            }
+        }
+        $this->parent = $parent;
         $direction->addCategory($this);
     }
     public function getId(): CategoryId
@@ -59,13 +77,31 @@ class Category
         return $this->direction;
     }
 
-    public function update(string $title, string $description, string $text, Slug $slug, Direction $direction): void
+    public function update(
+        string $title,
+        string $description,
+        string $text,
+        Slug $slug,
+        Direction $direction,
+        ?Category $parent = null
+    ): void
     {
+        if($parent !== null){
+            if($this->categoryId->equals($parent->getId())){
+                throw new \DomainException('A category cannot be its own parent.');
+            }
+
+            if(!$parent->getDirection()->getId()->equals($direction->getId())){
+                throw new \DomainException('Child category cannot be from different direction.');
+            }
+        }
+
         $this->title = $title;
         $this->description = $description;
         $this->text = $text;
         $this->slug = $slug;
         $this->updateDirection($direction);
+        $this->parent = $parent;
     }
     private function appendDirection(Direction $direction): void
     {
@@ -99,4 +135,21 @@ class Category
     {
         return $this->product;
     }
+    public function getParent(): ?Category
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @return array<Category>
+     */
+    public function getChildren(): array
+    {
+        return $this->children->toArray();
+    }
+    public function isChild(): bool
+    {
+        return $this->parent !== null;
+    }
+
 }
