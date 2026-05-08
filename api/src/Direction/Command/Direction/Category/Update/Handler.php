@@ -40,12 +40,23 @@ class Handler
             throw new \DomainException('Category with slug '. $slug->getValue() .' is exists.');
         }
 
+        $parentCategory = null;
+
+        if($command->parentId !== null) {
+            $parentCategory = $this->categories->findById(new CategoryId($command->parentId));
+
+            if($parentCategory === null) {
+                throw new \DomainException('Parent category not found.');
+            }
+        }
+
         $category->update(
             $command->title,
             $command->description,
             $command->text,
             $slug,
             $direction,
+            $parentCategory
         );
 
         $this->flusher->flush();

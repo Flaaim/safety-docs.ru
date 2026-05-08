@@ -21,6 +21,8 @@ class Command
         #[Assert\Uuid]
         #[Assert\NotBlank]
         public string $directionId,
+        #[Assert\Uuid]
+        public ?string $parentId
     ){
     }
 }

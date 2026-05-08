@@ -31,7 +31,8 @@ class RequestAction implements RequestHandlerInterface
             $data['description'] ?? '',
             $data['text'] ?? '',
             $data['slug'] ?? '',
-            $route->getArgument('directionId', '')
+            $route->getArgument('directionId', ''),
+            $data['parentId'] ?? null
         );
         $this->validator->validate($command);
 

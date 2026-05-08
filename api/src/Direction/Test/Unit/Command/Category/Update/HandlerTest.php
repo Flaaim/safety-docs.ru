@@ -32,7 +32,10 @@ class HandlerTest extends TestCase
 
     public function testDirectionNotFound(): void
     {
-        $command = $this->getCommand();
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874',
+            'f29f16f3-cbf1-415a-9ec6-760930ba8780'
+        );
         $directionId = new DirectionId($command->directionId);
 
         $this->directions->expects(self::once())->method('findById')
@@ -41,6 +44,7 @@ class HandlerTest extends TestCase
 
         $this->categories->expects(self::never())->method('findById');
         $this->categories->expects(self::never())->method('findBySlug');
+        $this->categories->expects(self::never())->method('findById');
         $this->flusher->expects(self::never())->method('flush');
 
         self::expectExceptionMessage('Direction not found.');
@@ -50,7 +54,10 @@ class HandlerTest extends TestCase
 
     public function testCategoryNotFound(): void
     {
-        $command = $this->getCommand();
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874',
+            'f29f16f3-cbf1-415a-9ec6-760930ba8780'
+        );
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
@@ -59,7 +66,6 @@ class HandlerTest extends TestCase
         $this->directions->expects(self::once())->method('findById')
             ->with($this->equalTo($directionId))
             ->willReturn($direction);
-
 
         $this->categories->expects($this->once())->method('findById')
             ->with($this->equalTo($categoryId))
@@ -73,17 +79,152 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
     }
-
-    public function testSuccessWithNewSlug(): void
+    public function testParentCategoryNotFound(): void
     {
-        $command = $this->getCommand();
+        $parentCategoryId =  new CategoryId('44f6861d-952a-4c6a-acf8-77631d5cae23');
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874',
+            $parentCategoryId->getValue()
+        );
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
 
+        $direction = (new DirectionBuilder())->withId($directionId)->build();
+
+        $childCategory =  new Category(
+            $categoryId,
+            'Инструкция о мерах пожбезопасности',
+            'Описание инструкции',
+            'Some text',
+            new Slug('child-slug'),
+            $direction
+        );
+
+        $this->directions->expects(self::once())->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($direction);
+
+        $this->categories->expects($this->exactly(2))->method('findById')
+            ->willReturnCallback(function (CategoryId $id) use($childCategory) {
+                if ($id->getValue() === $childCategory->getId()->getValue()) {
+                    return $childCategory;
+                }
+                return null;
+            });
+
+        $this->flusher->expects(self::never())->method('flush');
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Parent category not found.');
+        $this->handler->handle($command);
+    }
+    public function testCannotBeOwnParent(): void
+    {
+        $parentCategoryId =  new CategoryId('79e25e47-6259-475f-8240-b1e52ef20874');
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874',
+            $parentCategoryId->getValue()
+        );
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
         $direction = (new DirectionBuilder())->withId($directionId)->build();
 
         $category =  new Category(
+            $categoryId,
+            'Инструкция о мерах пожбезопасности',
+            'Описание инструкции',
+            'Some text',
+            new Slug('child-slug'),
+            $direction
+        );
+
+        $this->directions->expects(self::once())->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($direction);
+
+        $this->categories->expects($this->exactly(2))->method('findById')
+            ->willReturnCallback(function (CategoryId $id) use($category) {
+                if ($id->getValue() === $category->getId()->getValue()) {
+                    return $category;
+                }
+                return null;
+            });
+        $this->categories->expects(self::once())->method('findBySlug')->willReturn(null);
+        $this->flusher->expects(self::never())->method('flush');
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A category cannot be its own parent.');
+        $this->handler->handle($command);
+    }
+    public function testParentFromDifferentDirection(): void
+    {
+        $parentCategoryId = new CategoryId('44f6861d-952a-4c6a-acf8-77631d5cae23');
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874',
+            $parentCategoryId->getValue()
+        );
+
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
+        $anotherDirectionId = new DirectionId('b6725986-789a-4341-9f57-2e779cd686d1');
+
+        $direction = (new DirectionBuilder())->withId($directionId)->build();
+        $anotherDirection = (new DirectionBuilder())->withId($anotherDirectionId)->build();
+
+        $parentCategory =  new Category(
+            $parentCategoryId,
+            'Пожарная безопасность',
+            'Комплект документов',
+            'Some text',
+            new Slug('parent-slug'),
+            $anotherDirection
+        );
+
+        $childCategory = new Category(
+            $categoryId,
+            'Инструкция о мерах пожбезопасности',
+            'Описание инструкции',
+            'Some text',
+            new Slug('child-slug'),
+            $direction
+        );
+        $this->directions->expects(self::once())
+            ->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($direction);
+
+        $this->categories->expects($this->exactly(2))->method('findById')
+            ->willReturnCallback(function (CategoryId $id) use($parentCategory, $childCategory) {
+                if ($id->getValue() === $childCategory->getId()->getValue()) {
+                    return $childCategory;
+                }
+                if($id->getValue() === $parentCategory->getId()->getValue()){
+                    return $parentCategory;
+                }
+                return null;
+            });
+
+        $this->categories->expects(self::once())->method('findBySlug')
+            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->willReturn(null);
+
+        $this->flusher->expects(self::never())->method('flush');
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Child category cannot be from different direction.');
+        $this->handler->handle($command);
+    }
+    public function testSuccessParentWithNewSlug(): void
+    {
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874'
+        );
+
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
+
+        $direction = (new DirectionBuilder())->withId($directionId)->build();
+
+        $parentCategory =  new Category(
             new CategoryId($command->categoryId),
             'Пожарная безопасность',
             'Комплект документов',
@@ -98,20 +239,80 @@ class HandlerTest extends TestCase
 
         $this->categories->expects($this->once())->method('findById')
             ->with($this->equalTo($categoryId))
-            ->willReturn($category);
+            ->willReturn($parentCategory);
+
+        $this->categories->expects(self::once())->method('findBySlug')
+            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->willReturn(null);
 
         $this->flusher->expects(self::once())->method('flush');
 
         $this->handler->handle($command);
 
-        self::assertEquals($command->title, $category->getTitle());
-        self::assertEquals($command->description, $category->getDescription());
-        self::assertEquals($command->slug, $category->getSlug()->getValue());
-        self::assertEquals($command->text, $category->getText());
+        self::assertEquals($command->title, $parentCategory->getTitle());
+        self::assertEquals($command->description, $parentCategory->getDescription());
+        self::assertEquals($command->slug, $parentCategory->getSlug()->getValue());
+        self::assertEquals($command->text, $parentCategory->getText());
     }
+
+    public function testSuccessChildrenWithNewSlug(): void
+    {
+        $parentCategoryId =  new CategoryId('44f6861d-952a-4c6a-acf8-77631d5cae23');
+        $command = $this->getCommand(
+            '79e25e47-6259-475f-8240-b1e52ef20874',
+            $parentCategoryId->getValue()
+        );
+        $categoryId = new CategoryId($command->categoryId);
+        $directionId = new DirectionId($command->directionId);
+
+        $direction = (new DirectionBuilder())->withId($directionId)->build();
+
+        $parentCategory =  new Category(
+            $parentCategoryId,
+            'Пожарная безопасность',
+            'Комплект документов',
+            'Some text',
+            new Slug('parent-slug'),
+            $direction
+        );
+        $childCategory =  new Category(
+            $categoryId,
+            'Инструкция о мерах пожбезопасности',
+            'Описание инструкции',
+            'Some text',
+            new Slug('child-slug'),
+            $direction
+        );
+
+        $this->directions->expects(self::once())->method('findById')
+            ->with($this->equalTo($directionId))
+            ->willReturn($direction);
+
+        $this->categories->expects($this->exactly(2))->method('findById')
+            ->willReturnCallback(function (CategoryId $id) use($parentCategory, $childCategory) {
+                if ($id->getValue() === $childCategory->getId()->getValue()) {
+                    return $childCategory;
+                }
+                if($id->getValue() === $parentCategory->getId()->getValue()){
+                    return $parentCategory;
+                }
+                return null;
+            });
+
+        $this->flusher->expects(self::once())->method('flush');
+
+        $this->handler->handle($command);
+
+        self::assertEquals($command->title, $childCategory->getTitle());
+        self::assertEquals($command->description, $childCategory->getDescription());
+        self::assertEquals($command->slug, $childCategory->getSlug()->getValue());
+        self::assertEquals($command->text, $childCategory->getText());
+        self::assertEquals($parentCategoryId, $childCategory->getParent()->getId());
+    }
+
     public function testSuccessWithSameSlug(): void
     {
-        $command = $this->getCommand();
+        $command = $this->getCommand('79e25e47-6259-475f-8240-b1e52ef20874');
 
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
@@ -151,7 +352,7 @@ class HandlerTest extends TestCase
 
     public function testAlreadyTakenAnotherCategory(): void
     {
-        $command = $this->getCommand();
+        $command = $this->getCommand('79e25e47-6259-475f-8240-b1e52ef20874');
         $slug = new Slug($command->slug);
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
@@ -196,7 +397,7 @@ class HandlerTest extends TestCase
 
     public function testSuccessWithNewDirection(): void
     {
-        $command = $this->getCommand();
+        $command = $this->getCommand('79e25e47-6259-475f-8240-b1e52ef20874');
 
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
@@ -239,15 +440,16 @@ class HandlerTest extends TestCase
     }
 
 
-    private function getCommand(): Command
+    private function getCommand(string $categoryId, ?string $parentId = null): Command
     {
         return new Command(
-            'fca9967e-2db1-45bf-afc3-bb121d622348',
+            $categoryId,
             'Служба охраны труда',
             'Служба охраны труда - комплект документов',
             'Some text',
             'service',
-            '3b30a1da-2ce1-49d8-a994-d0fb222ad827'
+            '3b30a1da-2ce1-49d8-a994-d0fb222ad827',
+            $parentId
         );
     }
 }
