@@ -45,8 +45,9 @@ class CategoryRepository
     }
     public function findAllWithChildren(): array
     {
-        return $this->em->createQueryBuilder('c')
+        return $this->em->createQueryBuilder()
             ->select('c', 'children')
+            ->from(Category::class, 'c')
             ->leftJoin('c.children', 'children')
             ->where('c.parent IS NULL')
             ->getQuery()
