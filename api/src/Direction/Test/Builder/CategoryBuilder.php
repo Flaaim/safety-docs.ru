@@ -4,6 +4,7 @@ namespace App\Direction\Test\Builder;
 
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
+use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Slug;
 use App\Product\Entity\Product;
 use App\Product\Test\ProductBuilder;
@@ -15,8 +16,8 @@ class CategoryBuilder
     private string $title;
     private string $description;
     private string $text;
-
     private ?Product $product = null;
+    private ?Category $parent = null;
 
     public function __construct()
     {
@@ -56,7 +57,12 @@ class CategoryBuilder
         $this->product = $product;
         return $this;
     }
-    public function build(): Category
+    function withParent(Category $category): self
+    {
+        $this->parent = $category;
+        return $this;
+    }
+    public function build(Direction $direction): Category
     {
         $category = new Category(
             $this->categoryId,
@@ -64,7 +70,8 @@ class CategoryBuilder
             $this->description,
             $this->text,
             $this->slug,
-            (new DirectionBuilder())->build()
+            $direction,
+            $this->parent
         );
 
         if($this->product !== null) {

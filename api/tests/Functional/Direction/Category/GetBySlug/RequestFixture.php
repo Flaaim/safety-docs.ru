@@ -6,6 +6,7 @@ use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
+use App\Direction\Test\Builder\CategoryBuilder;
 use App\Direction\Test\Builder\DirectionBuilder;
 use App\Product\Entity\ProductId;
 use App\Product\Test\ProductBuilder;
@@ -25,7 +26,7 @@ class RequestFixture extends AbstractFixture
             ->withSlug(new Slug('safety'))
             ->build();
 
-        $category = new Category(
+        $emptyCategory = new Category(
             new CategoryId('8aa8f453-b19b-4b53-915b-1f04c83a9aee'),
             'Служба охраны труда',
             'Служба охраны труда - комплект документов',
@@ -39,21 +40,27 @@ class RequestFixture extends AbstractFixture
             ->withName('5 документов медосмотров')
             ->build();
 
+        $parentCategory = (new CategoryBuilder())
+            ->withSlug(new Slug('parent'))
+            ->build($direction);
+
         $categoryWithProduct = new Category(
             new CategoryId('040794de-7a19-47be-947a-e5ed74b579b8'),
             'Медицинские осмотры',
             'Медицинские осмотры - комплект документов',
             'Some text',
             new Slug('medical'),
-            $direction
+            $direction,
+            $parentCategory
         );
+
         $categoryWithProduct->assignProduct($product);
 
         $manager->persist($categoryWithProduct);
 
         $manager->persist($direction);
 
-        $manager->persist($category);
+        $manager->persist($emptyCategory);
 
         $manager->persist($product);
 

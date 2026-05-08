@@ -43,4 +43,13 @@ class CategoryRepository
             'direction' => $directionId->getValue()
         ]);
     }
+    public function findAllWithChildren(): array
+    {
+        return $this->em->createQueryBuilder('c')
+            ->select('c', 'children')
+            ->leftJoin('c.children', 'children')
+            ->where('c.parent IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }

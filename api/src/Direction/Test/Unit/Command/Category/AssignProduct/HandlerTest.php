@@ -6,7 +6,9 @@ use App\Direction\Command\Direction\Category\AssignProduct\Command;
 use App\Direction\Command\Direction\Category\AssignProduct\Handler;
 use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Category\CategoryRepository;
+use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\CategoryBuilder;
+use App\Direction\Test\Builder\DirectionBuilder;
 use App\Flusher;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
@@ -49,8 +51,8 @@ class HandlerTest extends TestCase
         $command = new Command('534f82af-22ba-4899-8508-1e4f17f17224', '2fbb615f-54d0-4233-98f2-3c438e5b0ae7');
         $productId = new ProductId($command->productId);
         $categoryId = new CategoryId($command->categoryId);
-
-        $category = (new CategoryBuilder())->withCategoryId($categoryId)->build();
+        $direction = (new DirectionBuilder())->build();
+        $category = (new CategoryBuilder())->withCategoryId($categoryId)->build($direction);
 
         $this->categories->expects(self::once())->method('findById')
             ->with($categoryId)
@@ -74,7 +76,14 @@ class HandlerTest extends TestCase
         $categoryId = new CategoryId($command->categoryId);
 
         $product = (new ProductBuilder())->withId($productId)->build();
-        $category = (new CategoryBuilder())->withCategoryId(($categoryId))->build();
+        $direction = (new DirectionBuilder())->build();
+        $parentCategory = (new CategoryBuilder())->withSlug(new Slug('parent-category'))
+            ->build($direction);
+
+        $childCategory = (new CategoryBuilder())->withCategoryId(($categoryId))
+            ->withSlug(new Slug('child-category'))
+            ->withParent($parentCategory)
+            ->build($direction);
 
         $this->products->expects(self::once())->method('findById')
             ->with($productId)
@@ -82,13 +91,13 @@ class HandlerTest extends TestCase
 
         $this->categories->expects(self::once())->method('findById')
             ->with($categoryId)
-            ->willReturn($category);
+            ->willReturn($childCategory);
 
         $this->flusher->expects(self::once())->method('flush');
 
         $this->handler->handle($command);
 
-        self::assertEquals($product, $category->getProduct());
+        self::assertEquals($product, $childCategory->getProduct());
     }
 
     public function testAssignedProductAlready(): void
@@ -98,10 +107,16 @@ class HandlerTest extends TestCase
         $categoryId = new CategoryId($command->categoryId);
 
         $product = (new ProductBuilder())->withId($productId)->build();
-        $category = (new CategoryBuilder())
-            ->withCategoryId(($categoryId))
+        $direction = (new DirectionBuilder())->build();
+        $parentCategory = (new CategoryBuilder())
+            ->withSlug(new Slug('parent-category'))
+            ->build($direction);
+
+        $childCategory = (new CategoryBuilder())->withCategoryId(($categoryId))
+            ->withSlug(new Slug('child-category'))
             ->withProduct($product)
-            ->build();
+            ->withParent($parentCategory)
+            ->build($direction);
 
         $this->products->expects(self::once())->method('findById')
             ->with($productId)
@@ -109,7 +124,7 @@ class HandlerTest extends TestCase
 
         $this->categories->expects(self::once())->method('findById')
             ->with($categoryId)
-            ->willReturn($category);
+            ->willReturn($childCategory);
 
         $this->flusher->expects(self::never())->method('flush');
 
