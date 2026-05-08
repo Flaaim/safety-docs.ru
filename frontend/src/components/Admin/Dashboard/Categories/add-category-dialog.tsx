@@ -21,29 +21,37 @@ import {getAllDirections} from "@api/direction";
 import {toast} from "sonner";
 import Cookies from "js-cookie";
 import {CategoryDTO} from "@/interfaces/category.interface";
-import {addCategory} from "@api/category";
+import {addCategory, getAllCategories} from "@api/category";
 import MDEditor from '@uiw/react-md-editor';
 
 export default function AddCategoryDialog(){
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+
   const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0});
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+
+  // === КОНТРОЛИРУЕМЫЕ СТЕЙТЫ ДЛЯ СЕЛЕКТОВ ===
+  const [selectedDirectionId, setSelectedDirectionId] = useState<string>("");
+  const [selectedParentId, setSelectedParentId] = useState<string>("none"); // По умолчанию "none"
   const [textValue, setTextValue] = useState<string>('');
+
   const router = useRouter();
-
-
   const token = Cookies.get("admin_token");
-
 
   useEffect(() => {
     if(open){
       setLoading(true);
-      const initDirectionCollection = async () => {
+      const initData = async () => {
         try{
-          const data = await getAllDirections(token);
+          const [dirData, catData] = await Promise.all([
+            getAllDirections(token),
+            getAllCategories(token)
+          ]);
 
-          setDirectionCollection(data);
+          setDirectionCollection(dirData);
+          setCategories(catData.categories);
 
         }catch (error){
           const err = error instanceof Error ? error : new Error("Ошибка при получении данных");
@@ -53,12 +61,14 @@ export default function AddCategoryDialog(){
           setLoading(false);
         }
       };
-      initDirectionCollection();
-    }else {
+      initData();
+    } else {
       setDirectionCollection({directions: [], total: 0});
+      setCategories([]);
+      setSelectedDirectionId("");
+      setSelectedParentId("none"); // Обязательно сбрасываем при закрытии
+      setTextValue("");
     }
-
-
   }, [open, token]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -67,17 +77,19 @@ export default function AddCategoryDialog(){
 
     const formData = new FormData(e.currentTarget);
 
+    // Собираем данные: тексты берем из FormData, а ID берем из надежных React стейтов
     const category: Partial<CategoryDTO> = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       text: textValue,
       slug: formData.get('slug') as string,
-      directionId: formData.get('directionId') as string
+      directionId: selectedDirectionId, // Берем из стейта
+      parentId: selectedParentId === "none" ? undefined : selectedParentId, // Конвертируем "none" в undefined
     };
+
     try {
       await addCategory(token, category);
-
-      toast.success("Направление добавлено");
+      toast.success("Категория добавлена");
       setOpen(false);
       router.refresh();
     } catch (error) {
@@ -87,6 +99,8 @@ export default function AddCategoryDialog(){
     }
   }
 
+  const filteredParents = categories.filter(cat => cat.directionId === selectedDirectionId);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -94,7 +108,7 @@ export default function AddCategoryDialog(){
           <Plus className="mr-2 h-4 w-4" /> Добавить
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Новая категория</DialogTitle>
           <DialogDescription>
@@ -114,7 +128,7 @@ export default function AddCategoryDialog(){
             <MDEditor
               value={textValue}
               onChange={(val) => setTextValue(val || '')}
-              height={300}
+              height={250}
               textareaProps={{
                 placeholder: 'Введите текст в формате Markdown...'
               }}
@@ -124,27 +138,60 @@ export default function AddCategoryDialog(){
             <Label htmlFor="slug">Slug (URL)</Label>
             <Input id="slug" name="slug" placeholder="education" required />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="directionId">Направление</Label>
-            {error  ? (<div className="text-destructive text-sm">Ошибка загрузки: {error.message}</div>) : (
-              <Select name='directionId'>
-              <SelectTrigger className="w-full" disabled={loading || !directionCollection.directions.length}>
-                <SelectValue placeholder={loading ? "Загрузка..." : "Выберите направление"} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {directionCollection.directions.map((dir: DirectionDTO) => (
-                    <SelectItem key={dir.slug} value={dir.id}>{dir.title}</SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            )}
 
+          <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="directionId">Направление</Label>
+              {error ? (<div className="text-destructive text-sm">Ошибка загрузки</div>) : (
+                <Select
+                  name="directionId"
+                  value={selectedDirectionId} // Привязка стейта
+                  onValueChange={(val) => {
+                    setSelectedDirectionId(val);
+                    setSelectedParentId("none"); // СБРОС родителя при смене направления!
+                  }}
+                >
+                  <SelectTrigger className="w-full" disabled={loading || !directionCollection.directions.length}>
+                    <SelectValue placeholder={loading ? "Загрузка..." : "Выберите направление"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {directionCollection.directions.map((dir: DirectionDTO) => (
+                        <SelectItem key={dir.slug} value={dir.id}>{dir.title}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
 
+            <div className="grid gap-2">
+              <Label htmlFor="parentId">Родительская категория</Label>
+              <Select
+                name="parentId"
+                value={selectedParentId} // Привязка стейта
+                onValueChange={setSelectedParentId} // Обновление стейта
+                disabled={!selectedDirectionId || loading}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder={!selectedDirectionId ? "Сначала выберите направление" : "Без родителя"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="none" className="text-muted-foreground italic">Без родителя (корневая)</SelectItem>
+                    {filteredParents.map((cat: CategoryDTO) => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
+
           <DialogFooter>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading || !selectedDirectionId}>
               {loading ? "Сохранение..." : "Создать"}
             </Button>
           </DialogFooter>

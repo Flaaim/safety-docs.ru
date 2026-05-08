@@ -1,3 +1,4 @@
+import React from "react";
 import {cookies} from "next/headers";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {getAllCategories} from "@api/category";
@@ -7,19 +8,17 @@ import EditCategoryDialog from "@/components/Admin/Dashboard/Categories/edit-cat
 import AssignProductDialog from "@/components/Admin/Dashboard/Categories/assign-product-dialog";
 import RefuseProductDialog from "@/components/Admin/Dashboard/Categories/refuse-product-dialog";
 
-
-
 export default async function CategoriesPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
   const data  = await getAllCategories(token);
-
+  console.log(data)
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Категории</h1>
-       <AddCategoryDialog />
+        <AddCategoryDialog />
       </div>
       <div className="rounded-md border bg-white">
         <Table>
@@ -35,29 +34,61 @@ export default async function CategoriesPage() {
           </TableHeader>
           <TableBody>
             {data.categories.map((cat: CategoryDTO) => (
-              <TableRow key={cat.slug}>
-                <TableCell className="font-medium">{cat.title}</TableCell>
-                <TableCell className="max-w-[400px] font-medium">
-                  <div className="whitespace-normal break-words text-sm text-muted-foreground">
-                    {cat.description}
-                  </div>
-                </TableCell>
-                <TableCell className="whitespace-normal break-words font-medium">{cat.directionTitle}</TableCell>
-                <TableCell className="whitespace-normal break-words font-medium">
-                  {cat.productId ? (<div>{cat.productTitle} <RefuseProductDialog categoryId={cat.id}></RefuseProductDialog>
-                  </div>) :
-                    <AssignProductDialog categoryId={cat.id}></AssignProductDialog>}
-                </TableCell>
-                <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
-                <TableCell className="text-right">
-                  {<EditCategoryDialog slug={cat.slug} id={cat.id} directionId={cat.directionId}/>}
-                </TableCell>
-              </TableRow>
+              <React.Fragment key={cat.slug}>
+                {/* === РОДИТЕЛЬСКАЯ КАТЕГОРИЯ === */}
+                <TableRow className="bg-muted/20"> {/* Легкий фон для выделения корня */}
+                  <TableCell className="font-semibold">{cat.title}</TableCell>
+                  <TableCell className="max-w-[400px]">
+                    <div className="whitespace-normal break-words text-sm text-muted-foreground">
+                      {cat.description}
+                    </div>
+                  </TableCell>
+                  <TableCell className="whitespace-normal break-words font-medium">{cat.directionTitle}</TableCell>
+                  <TableCell className="whitespace-normal break-words font-medium"></TableCell>
+                  <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
+                  <TableCell className="text-right">
+                    <EditCategoryDialog slug={cat.slug} id={cat.id} directionId={cat.directionId}/>
+                  </TableCell>
+                </TableRow>
+                {/* === ДОЧЕРНИЕ КАТЕГОРИИ === */}
+                {cat.children && cat.children.length > 0 && cat.children.map((child: CategoryDTO) => (
+                  <TableRow key={child.slug}>
+                    {/* Визуальный отступ и стрелочка для подкатегории */}
+                    <TableCell className="font-medium pl-8 relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
+                        ↳
+                      </span>
+                      {child.title}
+                    </TableCell>
+                    <TableCell className="max-w-[400px]">
+                      <div className="whitespace-normal break-words text-sm text-muted-foreground">
+                        {child.description}
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-normal break-words text-muted-foreground">
+                      {child.directionTitle}
+                    </TableCell>
+                    <TableCell className="whitespace-normal break-words font-medium">
+                      {child.productId ? (
+                        <div className="flex items-center gap-2">
+                          {child.productTitle}
+                          <RefuseProductDialog categoryId={child.id} />
+                        </div>
+                      ) : (
+                        <AssignProductDialog categoryId={child.id} />
+                      )}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{child.slug}</TableCell>
+                    <TableCell className="text-right">
+                      <EditCategoryDialog slug={child.slug} id={child.id} directionId={child.directionId}/>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>
       </div>
-
     </div>
   );
 }

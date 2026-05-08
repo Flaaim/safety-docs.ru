@@ -22,6 +22,7 @@ export async function addCategory(token: string | undefined, category:Partial<Ca
       description: category.description,
       text: category.text,
       slug: category.slug,
+      parentId: category.parentId
     })
   });
 }

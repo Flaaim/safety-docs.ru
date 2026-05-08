@@ -13,6 +13,8 @@ export interface CategoryDTO {
   directionId: string,
   productTitle: string | null
   productId: string | null
+  parentId: string | null
+  children?: CategoryDTO[];
 }
 
 export interface AssignCategory {
