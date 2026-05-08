@@ -6,9 +6,11 @@ use App\Direction\Command\Direction\Category\Add\Command;
 use App\Direction\Command\Direction\Category\Add\Handler;
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
+use App\Direction\Entity\Category\CategoryRepository;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Direction\DirectionRepository;
 use App\Direction\Entity\Slug;
+use App\Direction\Test\Builder\CategoryBuilder;
 use App\Direction\Test\Builder\DirectionBuilder;
 use App\Flusher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,22 +20,26 @@ class HandlerTest extends TestCase
 {
     private DirectionRepository $directions;
     private Flusher $flusher;
+    private CategoryRepository $categories;
 
     public function setUp(): void
     {
         $this->directions = $this->createMock(DirectionRepository::class);
         $this->flusher = $this->createMock(Flusher::class);
-        $this->handler = new Handler($this->directions, $this->flusher);
+        $this->categories = $this->createMock(CategoryRepository::class);
+        $this->handler = new Handler($this->directions, $this->categories, $this->flusher);
     }
     public function testDirectionNotFound(): void
     {
-        $command = $this->createCommand();
+        $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
+        $command = $this->createCommand($directionId);
         $directionId = new DirectionId($command->directionId);
         $this->directions->expects(self::once())
             ->method('findById')
             ->with($this->equalTo($directionId))
             ->willReturn(null);
 
+        $this->categories->expects(self::never())->method('findById');
         $this->flusher->expects(self::never())->method('flush');
 
         self::expectException(\DomainException::class);
@@ -41,25 +47,28 @@ class HandlerTest extends TestCase
         $this->handler->handle($command);
     }
 
-    public function testDuplicateCategory(): void
+    public function testCategorySlugExist(): void
     {
-        $command = $this->createCommand();
+        $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
+        $slug = new Slug('service');
+        $command = $this->createCommand($directionId, $slug->getValue());
         $directionId = new DirectionId($command->directionId);
 
+
         $direction = (new DirectionBuilder())
-            ->withId(new DirectionId('1f271404-e5af-4bb8-8416-81642e66fc6b'))
+            ->withId(new DirectionId($directionId))
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
-            ->withSlug(new Slug('safety'))
+            ->withSlug(new Slug('direction'))
             ->build();
 
-        $existingCategory = new Category(
+        new Category(
             new CategoryId('80d53e36-49ad-48e7-b2c5-c4d5b8fa3de1'),
             'Обучение охраны труда',
             'Обучение охраны труда - комплект документов',
             'Some text',
-            new Slug('service'),
+            $slug,
             $direction
         );
 
@@ -76,7 +85,9 @@ class HandlerTest extends TestCase
     }
     public function testSuccess(): void
     {
-        $command = $this->createCommand();
+        $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
+        $command = $this->createCommand($directionId);
+        $slug = new Slug('service');
         $directionId = new DirectionId($command->directionId);
 
         $direction = (new DirectionBuilder())
@@ -84,7 +95,7 @@ class HandlerTest extends TestCase
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
-            ->withSlug(new Slug('safety'))
+            ->withSlug($slug)
             ->build();
 
 
@@ -103,16 +114,89 @@ class HandlerTest extends TestCase
         self::assertEquals($command->text, $direction->getCategories()[0]->getText());
 
     }
+    public function testSuccessWithParentCategory(): void
+    {
+        $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
+        $parentCategoryId = '79e25e47-6259-475f-8240-b1e52ef20874';
+        $slug = new Slug('safety');
 
+        $command = $this->createCommand($directionId, $slug->getValue(), $parentCategoryId);
 
-    private function createCommand(): Command
+        $direction = (new DirectionBuilder())
+            ->withId(new DirectionId($directionId))
+            ->withTitle('Охрана труда')
+            ->withDescription('Описание охрана труда')
+            ->withText('Текст охрана труда')
+            ->withSlug(new Slug('safety'))
+            ->build();
+
+        $parentCategory = (new CategoryBuilder())
+            ->withCategoryId(new CategoryId($parentCategoryId))
+            ->build($direction);
+
+        $this->directions->expects(self::once())
+            ->method('findById')
+            ->with($this->equalTo(new DirectionId($directionId)))
+            ->willReturn($direction);
+
+        $this->categories->expects(self::once())
+            ->method('findById')
+            ->with($this->equalTo(new CategoryId($parentCategoryId)))
+            ->willReturn($parentCategory);
+
+        $this->flusher->expects(self::once())->method('flush');
+
+        $this->handler->handle($command);
+
+        $createdCategories = $direction->getCategories();
+        self::assertCount(2, $createdCategories);
+
+        $newCategory = $createdCategories[1];
+        self::assertNotNull($newCategory->getParent());
+        self::assertEquals($parentCategoryId, $newCategory->getParent()->getId()->getValue());
+    }
+    public function testParentCategoryNotFound(): void
+    {
+        $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
+        $parentCategoryId = '79e25e47-6259-475f-8240-b1e52ef20874';
+        $slug = new Slug('safety');
+
+        $command = $this->createCommand($directionId, $slug->getValue(), $parentCategoryId);
+
+        $direction = (new DirectionBuilder())
+            ->withId(new DirectionId($directionId))
+            ->withTitle('Охрана труда')
+            ->withDescription('Описание охрана труда')
+            ->withText('Текст охрана труда')
+            ->withSlug(new Slug('safety'))
+            ->build();
+
+        $this->directions->expects(self::once())
+            ->method('findById')
+            ->with($this->equalTo(new DirectionId($directionId)))
+            ->willReturn($direction);
+
+        $this->categories->expects(self::once())
+            ->method('findById')
+            ->with($this->equalTo(new CategoryId($parentCategoryId)))
+            ->willReturn(null);
+
+        $this->flusher->expects(self::never())->method('flush');
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Parent category not found.');
+
+        $this->handler->handle($command);
+    }
+    private function createCommand(string $directionId, string $slug = 'service', string $parentId = null): Command
     {
         return new Command(
-          'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5',
+            $directionId,
             'Служба охраны труда',
             'Описание службы охраны труда',
             'Текст службы охраны труда',
-            'service'
+            $slug,
+            $parentId
         );
     }
 }
