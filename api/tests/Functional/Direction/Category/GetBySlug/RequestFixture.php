@@ -41,6 +41,7 @@ class RequestFixture extends AbstractFixture
             ->build();
 
         $parentCategory = (new CategoryBuilder())
+            ->withCategoryId(new CategoryId('9582c2ff-e788-46f6-94f9-6b7d73b309bd'))
             ->withSlug(new Slug('parent'))
             ->build($direction);
 

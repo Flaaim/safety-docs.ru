@@ -16,6 +16,7 @@ class CategoryDTO
         public string $directionTitle,
         public ?string $productId = null,
         public ?string $productTitle = null,
+        public ?string $parentId = null,
     ){
     }
 
@@ -27,6 +28,9 @@ class CategoryDTO
             $productId = $product->getId();
             $productTitle = $product->getName();
         }
+        if($category->getParent() !== null) {
+            $parentId = $category->getParent()->getId()->getValue();
+        }
         return new CategoryDTO(
             $category->getId(),
             $category->getTitle(),
@@ -37,6 +41,7 @@ class CategoryDTO
             $category->getDirection()->getTitle(),
             $productId ?? null,
             $productTitle ?? null,
+            $parentId ?? null,
         );
     }
 }

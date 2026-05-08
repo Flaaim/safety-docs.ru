@@ -17,7 +17,7 @@ class Handler
 
     public function handle(Command $command): Response
     {
-        $categories = $this->categories->getAllPaginated();
+        $categories = $this->categories->findAllWithChildren();
 
         $categoriesDTO = $this->categoryDTOMapper->mapCollection($categories);
 
