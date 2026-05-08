@@ -173,28 +173,40 @@ class CategoryTest extends TestCase
     public function testAssign(): void
     {
         $direction = $this->getDirection();
-        $category = $this->getCategory($direction);
-
+        $parentCategory = $this->getCategory($direction);
+        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
         $product = (new ProductBuilder())->build();
 
-        self::assertNull($category->getProduct());
-        $category->assignProduct($product);
+        self::assertNull($childCategory->getProduct());
+        $childCategory->assignProduct($product);
 
-        self::assertEquals($product, $category->getProduct());
+        self::assertEquals($product, $childCategory->getProduct());
     }
     public function testAssignAlready(): void
     {
         $direction = $this->getDirection();
-        $category = $this->getCategory($direction);
+        $parentCategory = $this->getCategory($direction);
+        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
         $product = (new ProductBuilder())->build();
 
-        $category->assignProduct($product);
+        $childCategory->assignProduct($product);
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Product already assigned. You must delete it first.');
 
-        $category->assignProduct($product);
+        $childCategory->assignProduct($product);
 
+    }
+    public function testAssignParentCategory(): void
+    {
+        $direction = $this->getDirection();
+        $parentCategory = $this->getCategory($direction, 'parent');
+
+        $product = (new ProductBuilder())->build();
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Product can be assigned to only child category.');
+        $parentCategory->assignProduct($product);
     }
     public function testRefuseNotAssigned(): void
     {
@@ -207,15 +219,16 @@ class CategoryTest extends TestCase
     public function testRefuse(): void
     {
         $direction = $this->getDirection();
-        $category = $this->getCategory($direction);
+        $parentCategory = $this->getCategory($direction);
+        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
 
         $product = (new ProductBuilder())->build();
-        $category->assignProduct($product);
-        self::assertEquals($product, $category->getProduct());
+        $childCategory->assignProduct($product);
+        self::assertEquals($product, $childCategory->getProduct());
 
-        $category->refuseProduct();
+        $childCategory->refuseProduct();
 
-        self::assertNull($category->getProduct());
+        self::assertNull($childCategory->getProduct());
     }
     private function getCategory(Direction $direction, string $slug = 'service', ?Category $parent = null): Category
     {

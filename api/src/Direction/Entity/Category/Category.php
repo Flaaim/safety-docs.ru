@@ -17,8 +17,9 @@ class Category
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Product $product = null;
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
-    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'category_id', nullable: true, onDelete: 'CASCADE')]
     private ?Category $parent = null;
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     /** @var Collection<int, Category> $children */
     private Collection $children;
     public function __construct(
@@ -121,6 +122,9 @@ class Category
     {
         if($this->product !== null) {
             throw new \DomainException('Product already assigned. You must delete it first.');
+        }
+        if(!$this->isChild()){
+            throw new \DomainException('Product can be assigned to only child category.');
         }
         $this->product = $product;
     }
