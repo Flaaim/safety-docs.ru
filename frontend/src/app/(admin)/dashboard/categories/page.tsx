@@ -13,7 +13,6 @@ export default async function CategoriesPage() {
   const token = cookieStore.get("admin_token")?.value;
 
   const data  = await getAllCategories(token);
-  console.log(data)
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

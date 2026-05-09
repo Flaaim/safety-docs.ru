@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import {Edit} from "lucide-react";
-import {getCategoryBySlug, updateCategory} from "@api/category";
+import {getAllCategories, getCategoryBySlug, updateCategory} from "@api/category";
 import {toast} from "sonner";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
@@ -35,8 +35,16 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [categoryData, setCategoryData] = useState<CategoryDTO | null>(null);
+
   const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({directions: [], total: 0});
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+
+  const [selectedDirectionId, setSelectedDirectionId] = useState<string>("");
+  const [selectedParentId, setSelectedParentId] = useState<string>("none");
+
   const [textValue, setTextValue] = useState<string>('');
+
+
   const router = useRouter();
 
   const token = Cookies.get("admin_token");
@@ -46,9 +54,20 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       setLoading(true);
       const initCategory = async () => {
         try{
-          const categoryDTO = await getCategoryBySlug(slug, directionId, token);
+          const [categoryDTO, catData, dirCollection] = await Promise.all([
+            getCategoryBySlug(slug, directionId, token),
+            getAllCategories(token),
+            getAllDirections(token)
+          ]);
+
+          setCategories(catData.categories);
+          setDirectionCollection(dirCollection);
           setCategoryData(categoryDTO);
+
           setTextValue(categoryDTO.text || '');
+
+          setSelectedDirectionId(categoryDTO.directionId);
+          setSelectedParentId(categoryDTO.parentId || "none");
         }catch (error){
           toast.error(error instanceof Error ? error.message : "Ошибка загрузки категорий");
         }finally {
@@ -69,7 +88,10 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
 
     }else{
       setCategoryData(null);
+      setCategories([]);
       setDirectionCollection({directions: [], total: 0});
+      setSelectedDirectionId("");
+      setSelectedParentId("none");
       setTextValue('');
     }
   }, [open, token, slug, directionId]);
@@ -87,7 +109,8 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       description: formData.get('description') as string,
       text: textValue,
       slug: formData.get('slug') as string,
-      directionId: formData.get('directionId') as string
+      directionId: selectedDirectionId,
+      parentId: selectedParentId === "none" ? undefined : selectedParentId,
     };
 
     try {
@@ -102,6 +125,9 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       setLoading(false);
     }
   }
+  const filteredParents = categories.filter(
+    cat => cat.directionId === selectedDirectionId && cat.id !== id
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -142,7 +168,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
               <Label htmlFor="slug">Slug (URL)</Label>
               <Input id="slug" name="slug" placeholder="ohrana-truda" defaultValue={categoryData.slug} required/>
             </div>
-            <div className="grid gap-2">
+            {!categoryData.parentId ? (<div className="grid gap-2">
               <Label htmlFor="direction">Направление</Label>
               <Select name='directionId' defaultValue={categoryData.directionId}>
                 <SelectTrigger className="w-full">
@@ -156,7 +182,30 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>
+            </div>) : (<div className="grid gap-2">
+              <Label htmlFor="parentId">Родительская категория</Label>
+              <Select
+                name="parentId"
+                value={selectedParentId}
+                onValueChange={setSelectedParentId}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Без родителя" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="none" className="text-muted-foreground italic">Без родителя (корневая)</SelectItem>
+                    {filteredParents.map((cat: CategoryDTO) => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.title}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>)}
+
+
             <DialogFooter>
               <Button type="submit" disabled={loading}>
                 {loading ? "Сохранение..." : "Сохранить"}
