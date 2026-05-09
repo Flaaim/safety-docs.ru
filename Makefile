@@ -6,7 +6,9 @@ api-init frontend-init
 up: docker-up
 down: docker-down
 restart: down up
+check: api-check frontend-check
 api-check: validate api-analyze api-lint api-test
+frontend-check: frontend-lint
 validate: api-validate-schema
 analyze: api-analyze
 lint: api-lint frontend-lint
