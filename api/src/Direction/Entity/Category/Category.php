@@ -51,6 +51,11 @@ class Category
             }
         }
         $this->parent = $parent;
+
+        if($this->parent !== null){
+            $this->parent->addChild($this);
+        }
+
         $direction->addCategory($this);
     }
     public function getId(): CategoryId
@@ -98,13 +103,16 @@ class Category
                 throw new \DomainException('Child category cannot be from different direction.');
             }
         }
-
         $this->title = $title;
         $this->description = $description;
         $this->text = $text;
         $this->slug = $slug;
         $this->updateDirection($direction);
         $this->parent = $parent;
+
+        if ($this->parent !== null) {
+            $this->parent->addChild($this);
+        }
     }
     private function appendDirection(Direction $direction): void
     {
@@ -149,15 +157,15 @@ class Category
     {
         return $this->parent;
     }
-    public function assignChildren(Category $category): void
+    public function addChild(Category $child): void
     {
-        /** @var array<Category> $child */
-        foreach($this->children as $child){
-           if($child->getId()->equals($category->getId())){
-               throw new \DomainException('A category child already assigned.');
-           }
+        $isAlreadyAssigned = $this->children->exists(function (int $key, Category $existingChild) use ($child) {
+            return $existingChild->getId()->getValue() === $child->getId()->getValue();
+        });
+        if($isAlreadyAssigned){
+            throw new \DomainException('A category child already assigned.');
         }
-        $this->children->add($category);
+        $this->children->add($child);
     }
     /**
      * @return array<Category>

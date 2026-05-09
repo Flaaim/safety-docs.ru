@@ -154,17 +154,41 @@ class CategoryTest extends TestCase
     }
     public function testCannotMoveCategoryWithChildren(): void
     {
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $categoryId1 = new CategoryId('727d77c0-fef1-443a-9487-60d5a61404f8');
+
+        $child1 = (new CategoryBuilder())
+            ->withSlug(new Slug('child'))
+            ->withCategoryId($categoryId1)
+            ->build($safetyDirection);
+
+        $parentCategory1 = (new CategoryBuilder())
+            ->withChildren([$child1])
+            ->build($safetyDirection);
+
+        $parentCategory2 = $this->getCategory($safetyDirection, 'parentCategory2');
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Cannot move a category with children under another parent. Delete or move its children first.');
+        $parentCategory1->update(
+            'New title',
+            'New description',
+            'New text',
+            new Slug('title'),
+            $safetyDirection,
+            $parentCategory2
+        );
     }
-    public function testAssignChild(): void
+    public function testAddChild(): void
     {
         $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
         $parentCategory1 = (new CategoryBuilder())->build($safetyDirection);
 
-        $parentCategory2 = $this->getCategory($safetyDirection, 'parentCategory2');
-        $parentCategory3 = $this->getCategory($safetyDirection, 'parentCategory3');
+        $child1 = $this->getCategory($safetyDirection, 'parentCategory2');
+        $child2 = $this->getCategory($safetyDirection, 'parentCategory3');
 
-        $parentCategory1->assignChildren($parentCategory2);
-        $parentCategory1->assignChildren($parentCategory3);
+        $parentCategory1->addChild($child1);
+        $parentCategory1->addChild($child2);
 
         self::assertCount(2, $parentCategory1->getChildren());
     }
@@ -181,7 +205,7 @@ class CategoryTest extends TestCase
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('A category child already assigned.');
-        $parentCategory1->assignChildren($child1);
+        $parentCategory1->addChild($child1);
     }
     public function testUpdateRefuseParent(): void
     {
