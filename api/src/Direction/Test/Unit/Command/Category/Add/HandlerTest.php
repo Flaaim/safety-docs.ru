@@ -14,13 +14,18 @@ use App\Direction\Test\Builder\CategoryBuilder;
 use App\Direction\Test\Builder\DirectionBuilder;
 use App\Flusher;
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase
 {
+    /** @var DirectionRepository&MockObject  */
     private DirectionRepository $directions;
+    /** @var Flusher&MockObject  */
     private Flusher $flusher;
+    /** @var CategoryRepository&MockObject  */
     private CategoryRepository $categories;
+    private Handler $handler;
 
     public function setUp(): void
     {
@@ -34,6 +39,7 @@ class HandlerTest extends TestCase
         $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
         $command = $this->createCommand($directionId);
         $directionId = new DirectionId($command->directionId);
+
         $this->directions->expects(self::once())
             ->method('findById')
             ->with($this->equalTo($directionId))
@@ -54,9 +60,8 @@ class HandlerTest extends TestCase
         $command = $this->createCommand($directionId, $slug->getValue());
         $directionId = new DirectionId($command->directionId);
 
-
         $direction = (new DirectionBuilder())
-            ->withId(new DirectionId($directionId))
+            ->withId($directionId)
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
@@ -91,7 +96,7 @@ class HandlerTest extends TestCase
         $directionId = new DirectionId($command->directionId);
 
         $direction = (new DirectionBuilder())
-            ->withId(new DirectionId($command->directionId))
+            ->withId($directionId)
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')

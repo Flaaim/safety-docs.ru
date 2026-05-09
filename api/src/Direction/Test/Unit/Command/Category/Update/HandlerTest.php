@@ -13,13 +13,17 @@ use App\Direction\Entity\Direction\DirectionRepository;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
 use App\Flusher;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase
 {
+    /** @var CategoryRepository&MockObject  */
     private CategoryRepository $categories;
+    /** @var DirectionRepository&MockObject  */
     private DirectionRepository $directions;
     private Handler $handler;
+    /** @var Flusher&MockObject  */
     private Flusher $flusher;
     public function setUp(): void
     {

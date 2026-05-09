@@ -13,12 +13,16 @@ use App\Flusher;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Product\Test\ProductBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase
 {
+    /** @var ProductRepository&MockObject */
     private ProductRepository $products;
+    /** @var CategoryRepository&MockObject */
     private CategoryRepository $categories;
+    /** @var Flusher&MockObject  */
     private Flusher $flusher;
     private Handler $handler;
 

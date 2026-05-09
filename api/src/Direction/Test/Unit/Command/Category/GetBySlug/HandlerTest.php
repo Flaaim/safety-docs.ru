@@ -10,10 +10,12 @@ use App\Direction\Entity\Category\CategoryRepository;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
 use App\Direction\Test\Builder\DirectionBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class HandlerTest extends TestCase
 {
+    /** @var CategoryRepository&MockObject  */
     private CategoryRepository $categories;
     private Handler $handler;
     public function setUp(): void
