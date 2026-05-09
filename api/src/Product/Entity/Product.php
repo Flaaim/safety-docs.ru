@@ -25,8 +25,6 @@ class Product
         private Filename $filename,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,
-        #[ORM\Column(type: 'product_slug', length: 150)]
-        private Slug $slug,
         #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
         private \DateTimeImmutable $updatedAt,
         #[ORM\Column(type: 'integer')]
@@ -57,10 +55,6 @@ class Product
     public function getCipher(): string
     {
         return $this->cipher;
-    }
-    public function getSlug(): Slug
-    {
-        return $this->slug;
     }
     public function getTotalDocuments(): int
     {
@@ -112,7 +106,6 @@ class Product
     public function update(
         string $name,
         string $cipher,
-        Slug $slug,
         Amount $amount,
         Filename $filename,
         int $totalDocuments,
@@ -122,7 +115,6 @@ class Product
     {
         $this->name = $name;
         $this->cipher = $cipher;
-        $this->slug = $slug;
         $this->amount = $amount;
         $this->filename = $filename;
         $this->updatedAt = $updatedAt;

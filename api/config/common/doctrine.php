@@ -72,7 +72,6 @@ return [
                 App\Product\Entity\AmountType::NAME => App\Product\Entity\AmountType::class,
                 App\Product\Entity\FilenameType::NAME => App\Product\Entity\FilenameType::class,
                 App\Product\Entity\ProductIdType::NAME => App\Product\Entity\ProductIdType::class,
-                App\Product\Entity\SlugType::NAME => App\Product\Entity\SlugType::class,
 
                 App\Payment\Entity\EmailType::NAME => App\Payment\Entity\EmailType::class,
                 App\Payment\Entity\PaymentStatusType::NAME => App\Payment\Entity\PaymentStatusType::class,

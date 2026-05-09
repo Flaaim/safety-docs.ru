@@ -39,7 +39,6 @@ return static function(App $app): void {
                 ->add(AuthMiddleware::class);
 
             $group->get('/{productId:'.$uuidPattern.'}', Product\Get\RequestAction::class);
-            $group->get('/s/{slug:[a-z0-9-]+}', Product\GetBySlug\RequestAction::class);
 
             $group->get('/free', Product\GetAllFree\RequestAction::class)->add(AuthMiddleware::class);
 
@@ -51,9 +50,6 @@ return static function(App $app): void {
 
             })->add(AuthMiddleware::class);
 
-            $group->group('{productId:'.$uuidPattern.'}', function (RouteCollectorProxy $group): void {
-
-            });
         });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {

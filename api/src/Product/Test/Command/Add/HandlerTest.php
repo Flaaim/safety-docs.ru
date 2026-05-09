@@ -8,17 +8,18 @@ use App\Product\Command\Add\Handler;
 use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductRepository;
-use App\Product\Entity\Slug;
 use App\Product\Service\File\FileUploaderInterface;
-use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 
 #[CoversClass(Handler::class)]
 class HandlerTest extends TestCase
 {
+    /** @var ProductRepository&MockObject  */
     private ProductRepository $products;
+    /** @var Flusher&MockObject  */
     private Flusher $flusher;
     private Handler $handler;
     public function setUp(): void
@@ -29,37 +30,11 @@ class HandlerTest extends TestCase
         $this->handler = new Handler($this->products, $this->flusher,  $this->uploader);
     }
 
-    public function testSlugExists(): void
-    {
-        $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $command = $this->createCommand($uploadedFile);
-
-        $slug = new Slug($command->slug);
-        $product = (new ProductBuilder())->build();
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
-            ->willReturn($product);
-
-        $this->flusher->expects(self::never())->method('flush');
-        $this->products->expects(self::never())->method('add');
-
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Product with slug '.$command->slug.' already exists');
-
-        $this->handler->handle($command);
-    }
     public function testSuccess(): void
     {
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
         $uploadedFile->expects(self::once())->method('getClientFilename')->willReturn('test100.1.rar');
         $command = $this->createCommand($uploadedFile);
-
-        $slug = new Slug($command->slug);
-
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
-            ->willReturn(null);
 
         $this->products->expects(self::once())->method('add')
             ->with(self::callback(function(Product $product) {
@@ -67,7 +42,6 @@ class HandlerTest extends TestCase
                 self::assertEquals('edu300.1', $product->getCipher());
                 self::assertEquals(550.00, $product->getAmount()->getValue());
                 self::assertEquals('test100.1.rar', $product->getFilename()->getValue());
-                self::assertEquals('education', $product->getSlug()->getValue());
                 self::assertEquals(22, $product->getTotalDocuments());
                 self::assertEquals([FormatDocument::DOCX, FormatDocument::PDF], $product->getFormatDocuments());
                 return true;
@@ -86,7 +60,6 @@ class HandlerTest extends TestCase
             'Обучение по охране труда - комплект документов',
             'edu300.1',
             550.00,
-            'education',
             (new \DateTimeImmutable())->format('d.m.Y'),
             $uploadedFile,
             22,

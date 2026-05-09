@@ -25,10 +25,6 @@ class ProductRepository
         /** @var Product $product */
         return $product;
     }
-    public function findBySlug(Slug $slug): ?Product
-    {
-        return $this->repo->findOneBy(['slug' => $slug->getValue()]);
-    }
     public function add(Product $product): void
     {
         $this->em->persist($product);

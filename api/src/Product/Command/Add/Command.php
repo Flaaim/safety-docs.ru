@@ -18,8 +18,6 @@ class Command
         #[Assert\Positive]
         public float $amount,
         #[Assert\NotBlank]
-        public string $slug,
-        #[Assert\NotBlank]
         #[Assert\DateTime(format: 'Y-m-d')]
         public string $updatedAt,
         #[Assert\NotNull]

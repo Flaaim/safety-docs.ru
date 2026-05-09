@@ -51,38 +51,11 @@ class RequestActionTest extends WebTestCase
                 'name' => 'This value is too short. It should have 5 characters or more.',
                 'cipher' => 'This value should not be blank.',
                 'amount' => 'This value should be positive.',
-                'slug' => 'This value should not be blank.',
                 'updatedAt' => 'This value should not be blank.',
                 'file' => 'The extension of the file is invalid (txt). Allowed extensions are rar.',
                 'totalDocuments' => 'This value should be greater than 0.',
                 'formatDocuments' => 'This value should not be blank.',
             ]
-        ], $data);
-    }
-    public function testSlugExist(): void
-    {
-        $this->app()->handle(self::formData(
-            'POST',
-            '/v1/products',
-            $this->getProductData('existing-slug'),
-            ['file' => $this->createUploadFile('electr100.1.rar', 'test content', 'application/vnd.rar', UPLOAD_ERR_OK)]
-        ));
-
-        $response = $this->app()->handle(self::formData(
-            'POST',
-            '/v1/products',
-            $this->getProductData('existing-slug'),
-            ['file' => $this->createUploadFile('electr100.1.rar', 'test content', 'application/vnd.rar', UPLOAD_ERR_OK)]
-        ));
-
-        self::assertEquals(400, $response->getStatusCode());
-
-        self::assertJson($body = (string)$response->getBody());
-
-        $data = Json::decode($body);
-
-        self::assertEquals([
-            'message' => 'Product with slug existing-slug already exists.'
         ], $data);
     }
 
@@ -110,7 +83,6 @@ class RequestActionTest extends WebTestCase
             'name' => 'Электробезопасность 1 группа',
             'cipher' => 'serv100.1',
             'amount' => 500.00,
-            'slug' => $slug,
             'updatedAt' => '2019-01-01',
             'totalDocuments' => 10,
             'formatDocuments' => ['docx', 'pdf'],

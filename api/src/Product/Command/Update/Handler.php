@@ -32,13 +32,6 @@ class Handler
             throw new \DomainException('Product not found.');
         }
 
-        $slug = new Slug($command->slug);
-        $existingProduct = $this->products->findBySlug($slug);
-
-        if ($existingProduct && !$existingProduct->getId()->equals($productId)) {
-            throw new \DomainException('Product with this slug already exists.');
-        }
-
         $filename = $product->getFilename()->getValue();
 
         if($command->file !== null){
@@ -55,7 +48,6 @@ class Handler
         $product->update(
             $command->name,
             $command->cipher,
-            new Slug($command->slug),
             new Amount($command->amount, new Currency('RUB')),
             new Filename($filename),
             $command->totalDocuments,

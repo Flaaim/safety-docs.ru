@@ -254,11 +254,6 @@
       <code><![CDATA[RequestAction]]></code>
     </UnusedClass>
   </file>
-  <file src="src/Http/Action/V1/Product/GetBySlug/RequestAction.php">
-    <UnusedClass>
-      <code><![CDATA[RequestAction]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Http/Action/V1/Product/Images/Add/RequestAction.php">
     <UnusedClass>
       <code><![CDATA[RequestAction]]></code>
@@ -432,11 +427,6 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Product/Command/GetBySlug/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Product/Entity/AmountType.php">
     <UnusedClass>
       <code><![CDATA[AmountType]]></code>
@@ -445,7 +435,6 @@
   <file src="src/Product/Entity/DTO/ProductDTO.php">
     <PossiblyUnusedProperty>
       <code><![CDATA[$formatDocuments]]></code>
-      <code><![CDATA[$slug]]></code>
       <code><![CDATA[$totalDocuments]]></code>
     </PossiblyUnusedProperty>
   </file>
@@ -474,11 +463,6 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Product/Entity/SlugType.php">
-    <UnusedClass>
-      <code><![CDATA[SlugType]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Product/Entity/UnassignedProductsFetcher.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
@@ -506,14 +490,6 @@
     </UnusedClass>
   </file>
   <file src="src/Product/Test/Command/Add/HandlerTest.php">
-    <UndefinedMethod>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-    </UndefinedMethod>
     <UndefinedThisPropertyAssignment>
       <code><![CDATA[$this->uploader]]></code>
     </UndefinedThisPropertyAssignment>
@@ -573,37 +549,6 @@
     <ImplicitToStringCast>
       <code><![CDATA[new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d')]]></code>
     </ImplicitToStringCast>
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-    </UndefinedInterfaceMethod>
-    <UndefinedMethod>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-    </UndefinedMethod>
-    <UndefinedThisPropertyAssignment>
-      <code><![CDATA[$this->uploader]]></code>
-    </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch>
-      <code><![CDATA[$this->uploader]]></code>
-      <code><![CDATA[$this->uploader]]></code>
-      <code><![CDATA[$this->uploader]]></code>
-      <code><![CDATA[$this->uploader]]></code>
-    </UndefinedThisPropertyFetch>
-    <UnusedVariable>
-      <code><![CDATA[$filename]]></code>
-      <code><![CDATA[$filename]]></code>
-    </UnusedVariable>
   </file>
   <file src="src/Product/Test/Entity/FilenameTest.php">
     <UndefinedThisPropertyAssignment>

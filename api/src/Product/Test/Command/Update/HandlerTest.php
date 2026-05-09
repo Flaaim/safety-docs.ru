@@ -8,20 +8,24 @@ use App\Product\Command\Update\Handler;
 use App\Product\Entity\Filename;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
-use App\Product\Entity\Slug;
 use App\Product\Service\File\FileRemoverInterface;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Product\Test\ProductBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 
 class HandlerTest extends TestCase
 {
+    /** @var ProductRepository&MockObject  */
     private ProductRepository $products;
+    /** @var Flusher&MockObject  */
     private Flusher $flusher;
     private Handler $handler;
-
+    /** @var FileRemoverInterface&MockObject  */
     private FileRemoverInterface $fileRemover;
+    /** @var FileUploaderInterface&MockObject  */
+    private FileUploaderInterface $uploader;
 
     public function setUp(): void
     {
@@ -42,9 +46,7 @@ class HandlerTest extends TestCase
         $oldUploadedFile->expects($this->once())->method('getClientFilename')->willReturn('old01.1.rar');
         $oldFilename = new Filename($oldUploadedFile->getClientFilename());
 
-        $slug = new Slug('education');
-
-        $command = $this->createCommand($slug, $uploadedFile);
+        $command = $this->createCommand($uploadedFile);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withFilename($oldFilename)->withId($productId)->build();
@@ -52,10 +54,6 @@ class HandlerTest extends TestCase
         $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
             ->willReturn($product);
-
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
-            ->willReturn(null);
 
         $this->uploader->expects(self::once())->method('upload')
             ->with($this->equalTo($productId->getValue()), $this->equalTo($uploadedFile));
@@ -69,54 +67,17 @@ class HandlerTest extends TestCase
     }
     public function testSuccessWithoutFile(): void
     {
-        $filename = new Filename('serv100.1.rar');
-        $slug = new Slug('education');
-        $command = $this->createCommand($slug);
-
+        $command = $this->createCommand();
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
         $product = (new ProductBuilder())->withId($productId)->build();
 
         $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
             ->willReturn($product);
-
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
-            ->willReturn(null);
 
         $this->uploader->expects(self::never())->method('upload');
         $this->fileRemover->expects(self::never())->method('remove');
         $this->flusher->expects(self::once())->method('flush');
-
-        $this->handler->handle($command);
-    }
-    public function testExistsAnotherProductWithSlug(): void
-    {
-        $filename = new Filename('serv100.1.rar');
-        $uploadedFile = $this->createMock(UploadedFileInterface::class);
-        $slug = new Slug('education');
-        $command = $this->createCommand($slug, $uploadedFile);
-
-        $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
-        $product = (new ProductBuilder())->withId($productId)->build();
-
-
-        $existingProduct = (new ProductBuilder())->withSlug($slug)->build();
-
-        $this->products->expects(self::once())->method('findById')
-            ->with($this->equalTo($productId))
-            ->willReturn($product);
-
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
-            ->willReturn($existingProduct);
-
-        $this->flusher->expects(self::never())->method('flush');
-        $uploadedFile->expects($this->never())->method('getClientFilename');
-        $this->uploader->expects(self::never())->method('upload');
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Product with this slug already exists.');
 
         $this->handler->handle($command);
     }
@@ -126,23 +87,17 @@ class HandlerTest extends TestCase
         $filename = new Filename('serv100.1.rar');
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
         $uploadedFile->expects($this->once())->method('getClientFilename')->willReturn($filename->getValue());
-        $slug = new Slug('education');
 
-        $command = $this->createCommand($slug, $uploadedFile);
+        $command = $this->createCommand($uploadedFile);
 
         $productId = new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d');
 
         $product = (new ProductBuilder())
-            ->withSlug($slug)
             ->withFilename($filename)
             ->withId($productId)->build();
 
         $this->products->expects(self::once())->method('findById')
             ->with($this->equalTo($productId))
-            ->willReturn($product);
-
-        $this->products->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo($slug))
             ->willReturn($product);
 
         $this->uploader->expects(self::once())->method('upload')
@@ -156,17 +111,15 @@ class HandlerTest extends TestCase
         self::assertEquals('edu300.1', $product->getCipher());
         self::assertEquals(550.00, $product->getAmount()->getValue());
         self::assertEquals('serv100.1.rar', $product->getFilename()->getValue());
-        self::assertEquals('education', $product->getSlug()->getValue());
     }
 
-    private function createCommand(Slug $slug, ?UploadedFileInterface $uploadedFile = null): Command
+    private function createCommand(?UploadedFileInterface $uploadedFile = null): Command
     {
         return new Command(
             new ProductId('876675c9-6dfb-4db5-bc90-72b73b75616d'),
             'Обучение по охране труда - комплект документов',
             'edu300.1',
             550.00,
-            $slug->getValue(),
             (new \DateTimeImmutable())->format('d.m.Y'),
             22,
             ['pdf', 'docx'],

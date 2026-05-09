@@ -22,7 +22,6 @@ class RequestFixture extends AbstractFixture
             ->withCipher('serv100.1')
             ->withPrice(new Amount(550.00, new Currency('RUB')))
             ->withFilename(new Filename('serv100.1.rar'))
-            ->withSlug(new Slug('service'))
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 

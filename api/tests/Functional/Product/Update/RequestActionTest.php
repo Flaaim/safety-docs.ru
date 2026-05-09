@@ -14,7 +14,7 @@ class RequestActionTest extends WebTestCase
         parent::setUp();
         $this->loadFixtures([RequestFixture::class]);
     }
-    public function testSuccessSameSlug(): void
+    public function testSuccessSame(): void
     {
         $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('service')));
 
@@ -22,23 +22,7 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals('', $response->getBody()->getContents());
     }
-    public function testSlugAlreadyExists(): void
-    {
-        $existingSlug = 'suot';
-        $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData($existingSlug)));
 
-        self::assertEquals(400, $response->getStatusCode());
-
-        self::assertJson($body = (string)$response->getBody());
-
-        $data = Json::decode($body);
-
-        self::assertEquals([
-            'message' => 'Product with this slug already exists.'
-        ], $data);
-
-
-    }
     public function testSuccess(): void
     {
         $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('fire')));
@@ -77,7 +61,7 @@ class RequestActionTest extends WebTestCase
 
     }
 
-    private function getProductData(string $slug): array
+    private function getProductData(): array
     {
         return [
             'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f',
@@ -85,7 +69,6 @@ class RequestActionTest extends WebTestCase
             'cipher' => 'serv200.1',
             'amount' => 500.00,
             'filename' => 'serv200.1.rar',
-            'slug' => $slug,
             'updatedAt' => '2025-01-01',
             'totalDocuments' => 10,
             'formatDocuments' => ['pdf', 'doc', 'docx'],

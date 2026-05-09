@@ -9,7 +9,6 @@ use App\Product\Entity\FormatDocument;
 use App\Product\Entity\Product;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
-use App\Product\Entity\Slug;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\Currency;
 
@@ -24,12 +23,6 @@ class Handler
 
     public function handle(Command $command): void
     {
-        $slug = new Slug($command->slug);
-        $product = $this->products->findBySlug($slug);
-        if($product) {
-            throw new \DomainException("Product with slug " .$command->slug. " already exists.");
-        }
-
         $productId = ProductId::generate();
 
         $this->uploader->upload($productId->getValue(), $command->file);
@@ -45,7 +38,6 @@ class Handler
             new Amount($command->amount, new Currency('RUB')),
             new Filename($command->file->getClientFilename()),
             $command->cipher,
-            $slug,
             new \DateTimeImmutable($command->updatedAt),
             $command->totalDocuments,
             $formatEnums

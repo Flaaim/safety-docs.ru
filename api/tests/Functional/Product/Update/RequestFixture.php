@@ -23,7 +23,6 @@ class RequestFixture extends AbstractFixture
             ->withCipher('serv100.1')
             ->withPrice(new Amount(550.00, new Currency('RUB')))
             ->withFilename(new Filename('serv100.1.rar'))
-            ->withSlug(new Slug('service'))
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 
@@ -33,7 +32,6 @@ class RequestFixture extends AbstractFixture
             ->withCipher('suot200.1')
             ->withPrice(new Amount(350.00, new Currency('RUB')))
             ->withFilename(new Filename('suot200.1.rar'))
-            ->withSlug(new Slug('suot'))
             ->withUpdatedAt(new \DateTimeImmutable())
             ->build();
 
