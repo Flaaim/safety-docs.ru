@@ -120,12 +120,9 @@ class Category
     }
     public function updateDirection(Direction $direction): void
     {
-        if($this->direction->getId()->getValue() !== $direction->getId()->getValue()) {
-            if($this->direction->isCategoryExist($this->slug)) {
-                $this->direction->removeCategory($this->slug);
-                $this->appendDirection($direction);
-                $this->direction->addCategory($this);
-            }
+        if ($this->direction->getId()->getValue() !== $direction->getId()->getValue()) {
+
+            $this->direction = $direction;
 
             foreach ($this->children as $child) {
                 $child->updateDirection($direction);

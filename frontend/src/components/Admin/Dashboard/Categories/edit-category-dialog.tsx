@@ -168,44 +168,85 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
               <Label htmlFor="slug">Slug (URL)</Label>
               <Input id="slug" name="slug" placeholder="ohrana-truda" defaultValue={categoryData.slug} required/>
             </div>
-            {!categoryData.parentId ? (<div className="grid gap-2">
-              <Label htmlFor="direction">Направление</Label>
-              <Select name='directionId' defaultValue={categoryData.directionId}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Выберите направление" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {directionCollection.directions.map((dir: DirectionDTO) => (
-                      <SelectItem key={dir.id} value={dir.id}>{dir.title}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>) : (<div className="grid gap-2">
-              <Label htmlFor="parentId">Родительская категория</Label>
-              <Select
-                name="parentId"
-                value={selectedParentId}
-                onValueChange={setSelectedParentId}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Без родителя" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="none" className="text-muted-foreground italic">Без родителя (корневая)</SelectItem>
-                    {filteredParents.map((cat: CategoryDTO) => (
-                      <SelectItem key={cat.id} value={cat.id}>
-                        {cat.title}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>)}
+            {categoryData.children && categoryData.children.length > 0 ? (
+              // 1. ЕСЛИ ЕСТЬ ДЕТИ: Показываем только Направление + предупреждение
+              <div className="grid gap-2">
+                <Label htmlFor="directionId">Направление (Категория имеет подкатегории)</Label>
+                <Select
+                  name="directionId"
+                  value={selectedDirectionId}
+                  onValueChange={(val) => {
+                    setSelectedDirectionId(val);
+                    setSelectedParentId("none"); // На всякий случай сбрасываем родителя
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Выберите направление" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {directionCollection.directions.map((dir: DirectionDTO) => (
+                        <SelectItem key={dir.id} value={dir.id}>{dir.title}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Чтобы сделать эту категорию дочерней, сначала удалите или перенесите её подкатегории.
+                </p>
+              </div>
+            ) : (
+              // 2. ЕСЛИ ДЕТЕЙ НЕТ (Пустая корневая или дочерняя): Разрешаем менять всё
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="directionId">Направление</Label>
+                  <Select
+                    name="directionId"
+                    value={selectedDirectionId}
+                    onValueChange={(val) => {
+                      setSelectedDirectionId(val);
+                      setSelectedParentId("none"); // При смене направления обязательно сбрасываем родителя!
+                    }}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Выберите направление" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {directionCollection.directions.map((dir: DirectionDTO) => (
+                          <SelectItem key={dir.id} value={dir.id}>{dir.title}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-
+                <div className="grid gap-2">
+                  <Label htmlFor="parentId">Родительская категория</Label>
+                  <Select
+                    name="parentId"
+                    value={selectedParentId}
+                    onValueChange={setSelectedParentId}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Без родителя" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="none" className="text-muted-foreground italic">
+                          Без родителя (корневая)
+                        </SelectItem>
+                        {filteredParents.map((cat: CategoryDTO) => (
+                          <SelectItem key={cat.id} value={cat.id}>
+                            {cat.title}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
             <DialogFooter>
               <Button type="submit" disabled={loading}>
                 {loading ? "Сохранение..." : "Сохранить"}
