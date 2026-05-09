@@ -9,7 +9,6 @@ export const API = {
     getAllFree: () => BASE_URL + `/v1/products/free`,
     add: () => BASE_URL + `/v1/products`,
     getById: (id: string) =>  BASE_URL + `/v1/products/${id}`,
-    getBySlug: (slug: string) => BASE_URL + `/v1/products/get/${slug}`,
     update: (id: string) => BASE_URL + `/v1/products/${id}`,
     addImages: (id: string) => BASE_URL + `/v1/products/${id}/images`,
     clearImages: (id: string) => BASE_URL + `/v1/products/${id}/images`

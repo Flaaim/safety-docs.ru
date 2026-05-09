@@ -110,7 +110,7 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       text: textValue,
       slug: formData.get('slug') as string,
       directionId: selectedDirectionId,
-      parentId: selectedParentId === "none" ? undefined : selectedParentId,
+      parentId: selectedParentId === "none" ? null : selectedParentId,
     };
 
     try {

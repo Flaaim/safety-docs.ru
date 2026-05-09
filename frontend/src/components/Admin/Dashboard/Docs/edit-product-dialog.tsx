@@ -70,7 +70,6 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
       cipher: formData.get('cipher') as string,
       amount: formData.get('amount') as string,
       updatedAt: formData.get('updatedAt') as string,
-      slug: formData.get('slug') as string,
       file: formData.get('file') as File,
       totalDocuments: Number(formData.get('totalDocuments')),
       formatDocuments: selectedFormats
@@ -125,16 +124,12 @@ export default function EditProductDialog({productId}: EditProductDialogProps) {
                      defaultValue={productData.updatedAt ? new Date(productData.updatedAt).toISOString().split('T')[0] : ''} required />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="slug">Slug</Label>
-              <Input id="slug" type='text' name="slug" defaultValue={productData.slug}  required />
-            </div>
-            <div className="grid gap-2">
               <Label htmlFor="file">Файл</Label>
               <Input id="file" type="file" name="file" />
               <p className="text-xs text-muted-foreground">Оставьте пустым, чтобы не менять файл</p>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="totalDocuments">Количество док-тов в архиве</Label>
+              <Label htmlFor="totalDocuments">Количество док-тов</Label>
               <Input id="totalDocuments" type="number" name="totalDocuments" defaultValue={productData.totalDocuments}></Input>
             </div>
             <div className="grid gap-2">

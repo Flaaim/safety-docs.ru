@@ -9,13 +9,6 @@ import {
 } from "@/interfaces/product.interface";
 import {apiFetch} from "@api/apiClient";
 
-
-export async function getProductBySlug(slug: string): Promise<ProductDTO> {
-  return await apiFetch<ProductDTO>(API.product.getBySlug(slug), {
-    method: "GET",
-  });
-}
-
 export async function getProductById(id: string): Promise<ProductDTO> {
   return await apiFetch<ProductDTO>(API.product.getById(id), {
     method: "GET"

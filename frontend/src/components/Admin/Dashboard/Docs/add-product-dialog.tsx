@@ -48,7 +48,6 @@ export default function AddProductDialog() {
       cipher: formData.get('cipher') as string,
       amount: formData.get('amount') as string,
       updatedAt: formData.get('updatedAt') as string,
-      slug: formData.get('slug') as string,
       file: formData.get('file') as File,
       totalDocuments: Number(formData.get('totalDocuments')),
       formatDocuments: selectedFormats
@@ -100,10 +99,6 @@ export default function AddProductDialog() {
           <div className="grid gap-2">
             <Label htmlFor="updatedAt">Дата обновления</Label>
             <Input id="updatedAt" type='date' name="updatedAt"  required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="slug">Slug</Label>
-            <Input id="slug" name="slug" placeholder='Например: medical'  required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="file">Приложить архив с файлами</Label>

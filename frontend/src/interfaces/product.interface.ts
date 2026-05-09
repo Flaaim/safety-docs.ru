@@ -1,7 +1,6 @@
 export interface Product {
   name: string;
   cipher: string;
-  slug: string;
   totalDocuments: number;
   formatDocuments: string[];
 }
@@ -10,7 +9,6 @@ export interface CreateProductDTO extends Product{
   amount: string,
   updatedAt: string
   file: File | null,
-
 }
 
 export interface UpdateProductDTO extends Product {
