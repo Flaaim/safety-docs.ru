@@ -116,6 +116,10 @@ class Category
                 $this->appendDirection($direction);
                 $this->direction->addCategory($this);
             }
+
+            foreach ($this->children as $child) {
+                $child->updateDirection($direction);
+            }
         }
     }
     public function assignProduct(Product $product): void
