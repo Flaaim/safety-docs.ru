@@ -91,7 +91,9 @@ class Category
             if($this->categoryId->equals($parent->getId())){
                 throw new \DomainException('A category cannot be its own parent.');
             }
-
+            if(!$this->children->isEmpty()){
+                throw new \DomainException('Cannot move a category with children under another parent. Delete or move its children first.');
+            }
             if(!$parent->getDirection()->getId()->equals($direction->getId())){
                 throw new \DomainException('Child category cannot be from different direction.');
             }
@@ -147,7 +149,16 @@ class Category
     {
         return $this->parent;
     }
-
+    public function assignChildren(Category $category): void
+    {
+        /** @var array<Category> $child */
+        foreach($this->children as $child){
+           if($child->getId()->equals($category->getId())){
+               throw new \DomainException('A category child already assigned.');
+           }
+        }
+        $this->children->add($category);
+    }
     /**
      * @return array<Category>
      */

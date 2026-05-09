@@ -7,6 +7,7 @@ use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Slug;
+use App\Direction\Test\Builder\CategoryBuilder;
 use App\Direction\Test\Builder\DirectionBuilder;
 use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
@@ -150,6 +151,37 @@ class CategoryTest extends TestCase
             $fireDirection,
             $category1
         );
+    }
+    public function testCannotMoveCategoryWithChildren(): void
+    {
+    }
+    public function testAssignChild(): void
+    {
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $parentCategory1 = (new CategoryBuilder())->build($safetyDirection);
+
+        $parentCategory2 = $this->getCategory($safetyDirection, 'parentCategory2');
+        $parentCategory3 = $this->getCategory($safetyDirection, 'parentCategory3');
+
+        $parentCategory1->assignChildren($parentCategory2);
+        $parentCategory1->assignChildren($parentCategory3);
+
+        self::assertCount(2, $parentCategory1->getChildren());
+    }
+    public function testAssignChildrenAlready(): void
+    {
+        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
+        $categoryId1 = new CategoryId('727d77c0-fef1-443a-9487-60d5a61404f8');
+
+        $child1 = (new CategoryBuilder())->withSlug(new Slug('child'))->withCategoryId($categoryId1)->build($safetyDirection);
+
+        $parentCategory1 = (new CategoryBuilder())
+            ->withChildren([$child1])
+            ->build($safetyDirection);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A category child already assigned.');
+        $parentCategory1->assignChildren($child1);
     }
     public function testUpdateRefuseParent(): void
     {

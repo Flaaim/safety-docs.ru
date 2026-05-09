@@ -7,7 +7,6 @@ use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Slug;
 use App\Product\Entity\Product;
-use App\Product\Test\ProductBuilder;
 
 class CategoryBuilder
 {
@@ -18,6 +17,8 @@ class CategoryBuilder
     private string $text;
     private ?Product $product = null;
     private ?Category $parent = null;
+    /** @var array<int, Category> $children */
+    private array $children;
 
     public function __construct()
     {
@@ -62,6 +63,11 @@ class CategoryBuilder
         $this->parent = $category;
         return $this;
     }
+    function withChildren(array $children): self
+    {
+        $this->children = $children;
+        return $this;
+    }
     public function build(Direction $direction): Category
     {
         $category = new Category(
@@ -78,6 +84,11 @@ class CategoryBuilder
             $category->assignProduct($this->product);
         }
 
+        if(!empty($this->children)) {
+            foreach($this->children as $child){
+                $category->assignChildren($child);
+            }
+        }
         return $category;
     }
 }
