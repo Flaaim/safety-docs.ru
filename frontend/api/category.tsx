@@ -47,7 +47,7 @@ export async function updateCategory(token: string | undefined, category:Partial
       description: category.description,
       text: category.text,
       slug: category.slug,
-      parentId: category.parentId,
+      parentId: category.parentId !== undefined ? category.parentId : null,
       directionId: category.directionId
     })
   });

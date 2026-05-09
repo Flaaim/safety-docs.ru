@@ -108,15 +108,24 @@ class Category
         $this->text = $text;
         $this->slug = $slug;
         $this->updateDirection($direction);
+
+        $oldParent = $this->parent;
+
+
+
+        if ($oldParent !== null && $oldParent !== $parent) {
+            $oldParent->removeChild($this);
+        }
+
         $this->parent = $parent;
 
-        if ($this->parent !== null) {
+        if ($this->parent !== null && $oldParent !== $this->parent) {
             $this->parent->addChild($this);
         }
-    }
-    private function appendDirection(Direction $direction): void
-    {
-        $this->direction = $direction;
+
+        if($parent === null && $this->product !== null){
+            $this->refuseProduct();
+        }
     }
     public function updateDirection(Direction $direction): void
     {
@@ -163,6 +172,12 @@ class Category
             throw new \DomainException('A category child already assigned.');
         }
         $this->children->add($child);
+    }
+    public function removeChild(Category $child): void
+    {
+        if ($this->children->contains($child)) {
+            $this->children->removeElement($child);
+        }
     }
     /**
      * @return array<Category>
