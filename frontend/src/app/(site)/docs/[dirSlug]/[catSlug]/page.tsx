@@ -80,12 +80,7 @@ const CategoryView = ({
                       <FileText className="text-primary/70 group-hover:text-primary" size={22} />
                     </div>
                     <div>
-                      <h3 className="font-bold leading-tight group-hover:text-primary transition-colors">
-                        {child.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-2 line-clamp-2 italic">
-                        {child.description}
-                      </p>
+                      <Htag tag='h3'>{child.title}</Htag>
                     </div>
                   </CardContent>
                 </Card>
