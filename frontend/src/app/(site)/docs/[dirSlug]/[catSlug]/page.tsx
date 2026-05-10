@@ -10,8 +10,7 @@ import { ProductInfo } from "@/components/ProductInfo/ProductInfo";
 import { CategoryDTO } from "@/interfaces/category.interface";
 import { ProductDTO } from "@/interfaces/product.interface";
 import {Metadata} from "next";
-import {Card, CardContent} from "@/components/ui/card";
-import {ArrowLeft, ChevronRight, FileText} from "lucide-react";
+import {ArrowLeft, ChevronRight, FileText, SquareArrowOutUpRight} from "lucide-react";
 
 
 const getCachedDirection = cache(async (slug: string) => {
@@ -43,7 +42,7 @@ const CategoryView = ({
       <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
         {isParent ? (
           <Link href={`/docs/${dirSlug}`} className="flex items-center gap-1 hover:text-primary transition-colors">
-            <ArrowLeft size={14} /> Назад к направлению
+            <ArrowLeft size={14} /> Назад к разделу
           </Link>
         ) : (
           <>
@@ -73,17 +72,13 @@ const CategoryView = ({
 
           <div className="grid gap-4 sm:grid-cols-2">
             {children.map((child) => (
-              <Link key={child.id} href={`/docs/${dirSlug}/${child.slug}`}>
-                <Card className="hover:border-primary hover:shadow-md transition-all h-full group">
-                  <CardContent className="p-5 flex items-start gap-4">
-                    <div className="mt-1 p-2 rounded-lg bg-primary/5 group-hover:bg-primary/10 transition-colors">
-                      <FileText className="text-primary/70 group-hover:text-primary" size={22} />
-                    </div>
-                    <div>
-                      <Htag tag='h3'>{child.title}</Htag>
-                    </div>
-                  </CardContent>
-                </Card>
+              <Link
+                key={child.id}
+                href={`/docs/${dirSlug}/${child.slug}`}
+                className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm">
+                  <FileText className="text-primary/70 group-hover:text-primary" size={32} />
+                  <span className="font-medium px-3">{child.title}</span>
+                  <SquareArrowOutUpRight className="text-primary/70 group-hover:text-primary" size={32} />
               </Link>
             ))}
           </div>
