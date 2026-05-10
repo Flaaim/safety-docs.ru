@@ -1,23 +1,37 @@
 import type { MetadataRoute } from 'next';
+import {getAllDirections} from "@api/direction";
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://safety-docs.ru';
-  return [
-    { url: `${baseUrl}/`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/safety`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/energy`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/safety/syot-complect-documentov`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/safety/safety-education-complect-documentov`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/safety/sluzhba-ohrany-truda-komplekt-dokumentov`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/safety/iot-and-pravila-po-ohrane-truda-complect`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/energy/15-prikazov-po-electrobezopastnosti`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/energy/13-zhurnalov-otvetstvennogo-za-elektrohozyajstvo`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/industrial/boiler-room-dogovor-arendy-complect`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/industrial/blasting-operations-set-documents`, lastModified: new Date() },
-    { url: `${baseUrl}/docs/industrial/kran-dogovor-arendy-complect`, lastModified: new Date() },
-    { url: `${baseUrl}/success`, lastModified: new Date() },
+
+  const staticPages: MetadataRoute.Sitemap = [
+    {url: `${baseUrl}/`, lastModified: new Date()},
+    {url: `${baseUrl}/success`, lastModified: new Date()},
+    {url: `${baseUrl}/terms`, lastModified: new Date()},
   ];
+
+  try {
+    const data = await getAllDirections();
+    const directionUrls: MetadataRoute.Sitemap = data.directions.map((dir) => ({
+      url: `${baseUrl}/docs/${dir.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    }));
+
+    const categoryUrls: MetadataRoute.Sitemap = data.directions.flatMap((dir) =>
+      dir.categories.map((cat) => ({
+        url: `${baseUrl}/docs/${dir.slug}/${cat.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.6,
+      }))
+    );
+    return [...staticPages, ...directionUrls, ...categoryUrls];
+  } catch (error) {
+    console.error('Ошибка при генерации sitemap:', error);
+    return staticPages;
+  }
 }
