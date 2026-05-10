@@ -16,15 +16,15 @@ return [
 
         $level = $config['debug'] ? Level::Debug : Level::Info;
 
-        $log = new Logger('payment-service');
+        $log = new Logger('safety-docs');
 
-        if($telegramConfig['token'] && $telegramConfig['chatId']) {
-            $log->pushHandler(new TelegramBotHandler(
-                $telegramConfig['token'],
-                $telegramConfig['chatId'],
-                Level::Warning,
-            ));
-        }
+//        if($telegramConfig['token'] && $telegramConfig['chatId']) {
+//            $log->pushHandler(new TelegramBotHandler(
+//                $telegramConfig['token'],
+//                $telegramConfig['chatId'],
+//                Level::Warning,
+//            ));
+//        }
 
 
         if ($config['stderr']) {

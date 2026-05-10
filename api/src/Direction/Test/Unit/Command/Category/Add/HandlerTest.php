@@ -56,8 +56,8 @@ class HandlerTest extends TestCase
     public function testCategorySlugExist(): void
     {
         $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
-        $slug = new Slug('service');
-        $command = $this->createCommand($directionId, $slug->getValue());
+        $command = $this->createCommand($directionId);
+        $slug = Slug::generate($command->title);
         $directionId = new DirectionId($command->directionId);
 
         $direction = (new DirectionBuilder())
@@ -65,7 +65,6 @@ class HandlerTest extends TestCase
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
-            ->withSlug(new Slug('direction'))
             ->build();
 
         new Category(
@@ -85,14 +84,14 @@ class HandlerTest extends TestCase
         $this->flusher->expects(self::never())->method('flush');
 
         self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Category with slug service is exists.');
+        self::expectExceptionMessage('Category with slug sluzba-ohrany-truda is exists.');
         $this->handler->handle($command);
     }
     public function testSuccess(): void
     {
         $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
         $command = $this->createCommand($directionId);
-        $slug = new Slug('service');
+        $slug = Slug::generate($command->title);
         $directionId = new DirectionId($command->directionId);
 
         $direction = (new DirectionBuilder())
@@ -100,7 +99,6 @@ class HandlerTest extends TestCase
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
-            ->withSlug($slug)
             ->build();
 
 
@@ -115,7 +113,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $direction->getCategories()[0]->getTitle());
         self::assertEquals($command->description, $direction->getCategories()[0]->getDescription());
-        self::assertEquals($command->slug, $direction->getCategories()[0]->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $direction->getCategories()[0]->getSlug()->getValue());
         self::assertEquals($command->text, $direction->getCategories()[0]->getText());
 
     }
@@ -123,16 +121,14 @@ class HandlerTest extends TestCase
     {
         $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
         $parentCategoryId = '79e25e47-6259-475f-8240-b1e52ef20874';
-        $slug = new Slug('safety');
-
-        $command = $this->createCommand($directionId, $slug->getValue(), $parentCategoryId);
+        $command = $this->createCommand($directionId, $parentCategoryId);
+        Slug::generate($command->title);
 
         $direction = (new DirectionBuilder())
             ->withId(new DirectionId($directionId))
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         $parentCategory = (new CategoryBuilder())
@@ -164,16 +160,14 @@ class HandlerTest extends TestCase
     {
         $directionId = 'ebd10adf-e9e1-42c3-a0ae-5e14d2be4ff5';
         $parentCategoryId = '79e25e47-6259-475f-8240-b1e52ef20874';
-        $slug = new Slug('safety');
-
-        $command = $this->createCommand($directionId, $slug->getValue(), $parentCategoryId);
+        $command = $this->createCommand($directionId, $parentCategoryId);
+        Slug::generate($command->title);
 
         $direction = (new DirectionBuilder())
             ->withId(new DirectionId($directionId))
             ->withTitle('Охрана труда')
             ->withDescription('Описание охрана труда')
             ->withText('Текст охрана труда')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         $this->directions->expects(self::once())
@@ -193,14 +187,13 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
     }
-    private function createCommand(string $directionId, string $slug = 'service', string $parentId = null): Command
+    private function createCommand(string $directionId, string $parentId = null): Command
     {
         return new Command(
             $directionId,
             'Служба охраны труда',
             'Описание службы охраны труда',
             'Текст службы охраны труда',
-            $slug,
             $parentId
         );
     }

@@ -39,7 +39,7 @@ class Handler
             $command->title,
             $command->description,
             $command->text,
-            new Slug($command->slug),
+            Slug::generate($command->title),
             $direction,
             $parentCategory
         );

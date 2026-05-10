@@ -16,8 +16,6 @@ class Command
         public string $description,
         #[Assert\NotBlank]
         public string $text,
-        #[Assert\Length(min: 1, max: 125)]
-        public string $slug,
         #[Assert\Uuid]
         public ?string $parentId,
     ){

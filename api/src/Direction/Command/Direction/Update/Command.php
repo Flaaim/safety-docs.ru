@@ -16,7 +16,5 @@ class Command
         public string $description,
         #[Assert\NotBlank]
         public string $text,
-        #[Assert\Length(min: 1, max: 35)]
-        public string $slug,
     ){}
 }

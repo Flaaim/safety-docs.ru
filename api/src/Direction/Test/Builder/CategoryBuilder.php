@@ -23,7 +23,7 @@ class CategoryBuilder
     public function __construct()
     {
         $this->categoryId = new CategoryId('9582c2ff-e788-46f6-94f9-6b7d73b309bd');
-        $this->slug = new Slug('service');
+        $this->slug = Slug::generate('service');
         $this->title = 'Служба охраны труда - образцы документов';
         $this->description = 'Служба охраны труда - образцы документов описание документов';
         $this->text = 'Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите должность специалиста, оформив приказ и утвердив Положение о службе';

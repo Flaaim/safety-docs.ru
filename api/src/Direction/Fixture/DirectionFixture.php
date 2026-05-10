@@ -24,7 +24,7 @@ class DirectionFixture extends AbstractFixture
             'Охрана труда — документация по направлениям',
             'Собраны комплекты образцов документов по основным направлениями работы по охране труда и техники безопасности.',
             $text,
-            new Slug('safety')
+            Slug::generate('Охрана труда'),
         );
 
         $fireDirection = new Direction(
@@ -32,7 +32,7 @@ class DirectionFixture extends AbstractFixture
             'Пожарная безопасность — документация по направлениям',
             'Собраны коллекции документов по направлению работы пожарной безопасности',
             'Все что относиться к организации обеспечения пожарной безопасности на предприятии, инструктажи, обучение, первичные средства пожаротушения, тренировки эвакуации и т.д.',
-            new Slug('fire-safety')
+            Slug::generate('Пожарная безопасность')
         );
 
         $category = new Category(
@@ -40,7 +40,7 @@ class DirectionFixture extends AbstractFixture
             'Служба охраны труда',
             'Описание службы охраны труда',
             'Текст службы охраны труда',
-            new Slug('service'),
+            Slug::generate('Служба охраны труда'),
             $safetyDirection
         );
 

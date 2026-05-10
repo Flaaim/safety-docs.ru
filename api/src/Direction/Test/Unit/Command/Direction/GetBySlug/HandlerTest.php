@@ -28,7 +28,7 @@ class HandlerTest extends TestCase
     public function testNotFoundDirection(): void
     {
         $command = new Command('safety');
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->slug);
         $this->directions->expects(self::once())->method('findBySlug')
             ->with($this->equalTo($slug))
             ->willReturn(null);
@@ -42,7 +42,7 @@ class HandlerTest extends TestCase
     public function testSuccess(): void
     {
         $command = new Command('safety');
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->slug);
 
         $direction = $this->getDirection();
 
@@ -55,7 +55,7 @@ class HandlerTest extends TestCase
         self::assertEquals('Охрана труда', $directionDTO->title);
         self::assertEquals('Охрана труда описание', $directionDTO->description);
         self::assertEquals('Охрана труда текст', $directionDTO->text);
-        self::assertEquals('safety', $directionDTO->slug);
+        self::assertEquals('ohrana-truda', $directionDTO->slug);
 
         self::assertCount(2, $directionDTO->categories);
 
@@ -69,24 +69,23 @@ class HandlerTest extends TestCase
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Охрана труда текст')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         new Category(
             CategoryId::generate(),
-            'Служба охраны труда',
+            $title = 'Служба охраны труда',
             'Category Description',
             'Category Text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
 
         new Category(
             CategoryId::generate(),
-            'Медосмотры',
+            $title = 'Медосмотры',
             'Category Description',
             'Category Text',
-            new Slug('medical'),
+            Slug::generate($title),
             $direction
         );
 

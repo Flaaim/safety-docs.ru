@@ -19,7 +19,7 @@ class Handler
 
     public function handle(Command $command): void
     {
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
         $directionId = new DirectionId($command->directionId);
 
         $direction = $this->directions->findById($directionId);

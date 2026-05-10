@@ -18,7 +18,6 @@ class RequestActionTest extends WebTestCase
             'title' => 'Обучение охраны труда - комплект документов',
             'description' => 'Собраны комплекты образцов документов по организации обучения по охране труда',
             'text' => 'Another simple text',
-            'slug' => 'education',
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
@@ -27,10 +26,9 @@ class RequestActionTest extends WebTestCase
     public function testAddExisting(): void
     {
         $response = $this->app()->handle(self::json('POST', '/v1/directions/37e9c865-8401-4339-bb23-73a25b85e7b3/categories', [
-            'title' => 'Обучение охраны труда - комплект документов',
-            'description' => 'Собраны комплекты образцов документов по организации обучения по охране труда',
+            'title' => 'Служба охраны труда',
+            'description' => 'Собраны комплекты образцов документов по организации на предприятии службы охраны труда',
             'text' => 'Another simple text',
-            'slug' => 'service',
         ]));
 
         self::assertEquals(400, $response->getStatusCode());
@@ -40,7 +38,7 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'message' => 'Category with slug service is exists.'
+            'message' => 'Category with slug sluzba-ohrany-truda is exists.'
         ], $data);
     }
 }

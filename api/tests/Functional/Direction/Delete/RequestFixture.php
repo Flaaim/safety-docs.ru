@@ -18,7 +18,6 @@ class RequestFixture extends AbstractFixture
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Текст охраны труда описание')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         $manager->persist($directionSafety);

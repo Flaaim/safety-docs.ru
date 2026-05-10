@@ -23,7 +23,6 @@ class RequestFixture extends AbstractFixture
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Охрана труда текст')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         $emptyCategory = new Category(

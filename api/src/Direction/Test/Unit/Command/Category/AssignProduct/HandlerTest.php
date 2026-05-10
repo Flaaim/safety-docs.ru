@@ -81,11 +81,11 @@ class HandlerTest extends TestCase
 
         $product = (new ProductBuilder())->withId($productId)->build();
         $direction = (new DirectionBuilder())->build();
-        $parentCategory = (new CategoryBuilder())->withSlug(new Slug('parent-category'))
+        $parentCategory = (new CategoryBuilder())->withSlug(Slug::generate('parent-category'))
             ->build($direction);
 
         $childCategory = (new CategoryBuilder())->withCategoryId(($categoryId))
-            ->withSlug(new Slug('child-category'))
+            ->withSlug(Slug::generate('child-category'))
             ->withParent($parentCategory)
             ->build($direction);
 
@@ -116,11 +116,11 @@ class HandlerTest extends TestCase
         $product = (new ProductBuilder())->withId($productId)->build();
         $direction = (new DirectionBuilder())->build();
         $parentCategory = (new CategoryBuilder())
-            ->withSlug(new Slug('parent-category'))
+            ->withSlug(Slug::generate('parent-category'))
             ->build($direction);
 
         $childCategory = (new CategoryBuilder())->withCategoryId(($categoryId))
-            ->withSlug(new Slug('child-category'))
+            ->withSlug(Slug::generate('child-category'))
             ->withProduct($product)
             ->withParent($parentCategory)
             ->build($direction);
@@ -154,7 +154,7 @@ class HandlerTest extends TestCase
         $direction = (new DirectionBuilder())->build();
         $parentCategory = (new CategoryBuilder())
             ->withCategoryId($categoryId)
-            ->withSlug(new Slug('parent-category'))
+            ->withSlug(Slug::generate('parent-category'))
             ->build($direction);
 
         $this->products->expects(self::once())->method('findById')

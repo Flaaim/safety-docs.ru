@@ -15,10 +15,10 @@ class RequestFixture extends AbstractFixture
     {
         $direction = new Direction(
             new DirectionId('a597bffd-cdbe-4ac2-b565-639e96957977'),
-            'Охрана труда',
+            $title = 'Охрана труда',
             'Собраны комплекты документов',
             'some text',
-            new Slug('safety')
+            Slug::generate($title)
         );
         $manager->persist($direction);
 

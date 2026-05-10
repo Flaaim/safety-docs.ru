@@ -18,10 +18,10 @@ class Handler
 
     public function handle(Command $command): void
     {
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
         $direction = $this->directions->findBySlug($slug);
         if($direction){
-            throw new \DomainException("Direction with slug ".$command->slug." is exists");
+            throw new \DomainException("Direction with slug ".$slug->getValue()." is exists");
         }
         $direction = new Direction(
             DirectionId::generate(),

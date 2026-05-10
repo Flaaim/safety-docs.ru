@@ -17,7 +17,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/directions/s/safety'));
+        $response = $this->app()->handle(self::json('GET', '/v1/directions/s/ohrana-truda'));
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -27,7 +27,7 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals([
             'id' => 'a597bffd-cdbe-4ac2-b565-639e96957977',
-            'slug' => 'safety',
+            'slug' => 'ohrana-truda',
             'title' => $data['title'],
             'description' => $data['description'],
             'text' => $data['text'],

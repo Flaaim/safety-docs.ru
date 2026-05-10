@@ -7,7 +7,6 @@ use App\Direction\Command\Direction\Category\Update\Handler;
 use App\Direction\Entity\Category\Category;
 use App\Direction\Entity\Category\CategoryId;
 use App\Direction\Entity\Category\CategoryRepository;
-use App\Direction\Entity\Direction\Direction;
 use App\Direction\Entity\Direction\DirectionId;
 use App\Direction\Entity\Direction\DirectionRepository;
 use App\Direction\Entity\Slug;
@@ -95,12 +94,14 @@ class HandlerTest extends TestCase
 
         $direction = (new DirectionBuilder())->withId($directionId)->build();
 
-        $childCategory =  new Category(
+        $slug = Slug::generate($title = 'Инструкция о мерах пожбезопасности');
+
+        $childCategory = new Category(
             $categoryId,
-            'Инструкция о мерах пожбезопасности',
+            $title,
             'Описание инструкции',
             'Some text',
-            new Slug('child-slug'),
+            $slug,
             $direction
         );
 
@@ -133,12 +134,13 @@ class HandlerTest extends TestCase
 
         $direction = (new DirectionBuilder())->withId($directionId)->build();
 
+        $slug = Slug::generate($title = 'Инструкция о мерах пожбезопасности');
         $category =  new Category(
             $categoryId,
-            'Инструкция о мерах пожбезопасности',
+            $title,
             'Описание инструкции',
             'Some text',
-            new Slug('child-slug'),
+            $slug,
             $direction
         );
 
@@ -174,21 +176,23 @@ class HandlerTest extends TestCase
         $direction = (new DirectionBuilder())->withId($directionId)->build();
         $anotherDirection = (new DirectionBuilder())->withId($anotherDirectionId)->build();
 
+        $parentSlug = Slug::generate($title = 'Пожарная безопасность');
         $parentCategory =  new Category(
             $parentCategoryId,
-            'Пожарная безопасность',
+            $title,
             'Комплект документов',
             'Some text',
-            new Slug('parent-slug'),
+            $parentSlug,
             $anotherDirection
         );
 
+        $childSlug = Slug::generate($title = 'Инструкция о мерах пожбезопасности');
         $childCategory = new Category(
             $categoryId,
-            'Инструкция о мерах пожбезопасности',
+            $title,
             'Описание инструкции',
             'Some text',
-            new Slug('child-slug'),
+            $childSlug,
             $direction
         );
         $this->directions->expects(self::once())
@@ -208,7 +212,7 @@ class HandlerTest extends TestCase
             });
 
         $this->categories->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->with($this->equalTo(Slug::generate($command->title)), $this->equalTo($directionId))
             ->willReturn(null);
 
         $this->flusher->expects(self::never())->method('flush');
@@ -222,7 +226,7 @@ class HandlerTest extends TestCase
         $command = $this->getCommand(
             '79e25e47-6259-475f-8240-b1e52ef20874'
         );
-
+        $slug = Slug::generate($command->title);
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
@@ -230,10 +234,10 @@ class HandlerTest extends TestCase
 
         $parentCategory =  new Category(
             new CategoryId($command->categoryId),
-            'Пожарная безопасность',
+            $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            new Slug('old-slug'),
+            Slug::generate($title),
             $direction
         );
 
@@ -246,7 +250,7 @@ class HandlerTest extends TestCase
             ->willReturn($parentCategory);
 
         $this->categories->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->with($this->equalTo($slug), $this->equalTo($directionId))
             ->willReturn(null);
 
         $this->flusher->expects(self::once())->method('flush');
@@ -255,7 +259,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $parentCategory->getTitle());
         self::assertEquals($command->description, $parentCategory->getDescription());
-        self::assertEquals($command->slug, $parentCategory->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $parentCategory->getSlug()->getValue());
         self::assertEquals($command->text, $parentCategory->getText());
     }
 
@@ -266,6 +270,8 @@ class HandlerTest extends TestCase
             '79e25e47-6259-475f-8240-b1e52ef20874',
             $parentCategoryId->getValue()
         );
+        $slug = Slug::generate($command->title);
+
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
@@ -273,18 +279,18 @@ class HandlerTest extends TestCase
 
         $parentCategory =  new Category(
             $parentCategoryId,
-            'Пожарная безопасность',
+            $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            new Slug('parent-slug'),
+            Slug::generate($title),
             $direction
         );
         $childCategory =  new Category(
             $categoryId,
-            'Инструкция о мерах пожбезопасности',
+            $title = 'Инструкция о мерах пожбезопасности',
             'Описание инструкции',
             'Some text',
-            new Slug('child-slug'),
+            Slug::generate($title),
             $direction
         );
 
@@ -309,7 +315,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $childCategory->getTitle());
         self::assertEquals($command->description, $childCategory->getDescription());
-        self::assertEquals($command->slug, $childCategory->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $childCategory->getSlug()->getValue());
         self::assertEquals($command->text, $childCategory->getText());
         self::assertEquals($parentCategoryId, $childCategory->getParent()->getId());
     }
@@ -317,7 +323,7 @@ class HandlerTest extends TestCase
     public function testSuccessWithSameSlug(): void
     {
         $command = $this->getCommand('79e25e47-6259-475f-8240-b1e52ef20874');
-
+        $slug = Slug::generate($command->title);
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
@@ -325,10 +331,10 @@ class HandlerTest extends TestCase
 
         $category =  new Category(
             new CategoryId($command->categoryId),
-            'Пожарная безопасность',
+            $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
 
@@ -341,7 +347,7 @@ class HandlerTest extends TestCase
             ->willReturn($category);
 
         $this->categories->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->with($this->equalTo($slug), $this->equalTo($directionId))
             ->willReturn($category);
 
         $this->flusher->expects(self::once())->method('flush');
@@ -350,14 +356,14 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $category->getTitle());
         self::assertEquals($command->description, $category->getDescription());
-        self::assertEquals($command->slug, $category->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $category->getSlug()->getValue());
         self::assertEquals($command->text, $category->getText());
     }
 
     public function testAlreadyTakenAnotherCategory(): void
     {
         $command = $this->getCommand('79e25e47-6259-475f-8240-b1e52ef20874');
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
@@ -365,19 +371,19 @@ class HandlerTest extends TestCase
 
         $category =  new Category(
             new CategoryId($command->categoryId),
-            'Пожарная безопасность',
+            $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            new Slug('old-slug'),
+            Slug::generate($title),
             $direction
         );
 
         $anotherCategory =  new Category(
             new CategoryId('7f2cf3f7-9f47-4d04-ae5e-d73995d2e005'),
-            'Another category title',
+            $title = 'Another category title',
             'Another category description',
             'Some text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
 
@@ -394,7 +400,7 @@ class HandlerTest extends TestCase
             ->willReturn($anotherCategory);
 
         self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Category with slug service is exists.');
+        self::expectExceptionMessage('Category with slug sluzba-ohrany-truda is exists.');
 
         $this->handler->handle($command);
     }
@@ -402,7 +408,7 @@ class HandlerTest extends TestCase
     public function testSuccessWithNewDirection(): void
     {
         $command = $this->getCommand('79e25e47-6259-475f-8240-b1e52ef20874');
-
+        $slug = Slug::generate($command->title);
         $categoryId = new CategoryId($command->categoryId);
         $directionId = new DirectionId($command->directionId);
 
@@ -417,10 +423,10 @@ class HandlerTest extends TestCase
 
         $category =  new Category(
             new CategoryId($command->categoryId),
-            'Пожарная безопасность',
+            $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
 
@@ -433,7 +439,7 @@ class HandlerTest extends TestCase
             ->willReturn($category);
 
         $this->categories->expects(self::once())->method('findBySlug')
-            ->with($this->equalTo(new Slug($command->slug)), $this->equalTo($directionId))
+            ->with($this->equalTo($slug), $this->equalTo($directionId))
             ->willReturn(null);
 
         $this->flusher->expects(self::once())->method('flush');
@@ -451,7 +457,6 @@ class HandlerTest extends TestCase
             'Служба охраны труда',
             'Служба охраны труда - комплект документов',
             'Some text',
-            'service',
             '3b30a1da-2ce1-49d8-a994-d0fb222ad827',
             $parentId
         );

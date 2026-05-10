@@ -16,7 +16,7 @@ class Handler
 
     public function handle(Command $command): CategoryDTO
     {
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->slug);
         $directionId = new DirectionId($command->directionId);
 
         $category = $this->categories->findBySlug($slug, $directionId);

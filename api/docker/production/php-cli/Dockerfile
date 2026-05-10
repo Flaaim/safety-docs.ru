@@ -1,8 +1,5 @@
 FROM php:8.1-cli-alpine AS builder
 
-RUN apk add --no-cache mysql-dev \
-    && docker-php-ext-install pdo_mysql mysqli
-
 RUN apk add --no-cache unzip
 
 RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
@@ -13,7 +10,7 @@ WORKDIR /app
 
 COPY ./composer.json ./composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader \
+RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --ignore-platform-req=ext-intl \
      && rm -rf /root/.composer/cache
 
 ### CLI ###
@@ -22,6 +19,9 @@ FROM php:8.1-cli-alpine
 
 RUN apk add --no-cache mysql-dev bash coreutils \
     && docker-php-ext-install pdo_mysql mysqli
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions intl
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 

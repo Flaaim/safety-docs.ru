@@ -28,7 +28,6 @@ class HandlerTest extends TestCase
     public function testDirectionNotFound(): void
     {
         $command = $this->createValidCommand();
-
         $directionId = $command->directionId;
         $this->directions->expects(self::once())->method('findById')
             ->with($this->equalTo($directionId))
@@ -43,9 +42,10 @@ class HandlerTest extends TestCase
     }
     public function testSuccessWithNewSlug(): void
     {
-        $command = $this->createValidCommand('new-slug');
+        $command = $this->createValidCommand();
         $directionId = new DirectionId($command->directionId);
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
+
         $direction = (new DirectionBuilder())->build();
 
         $this->directions->expects(self::once())
@@ -64,7 +64,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $direction->getTitle());
         self::assertEquals($command->description, $direction->getDescription());
-        self::assertEquals($command->slug, $direction->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $direction->getSlug()->getValue());
         self::assertEquals($command->text, $direction->getText());
     }
 
@@ -72,16 +72,15 @@ class HandlerTest extends TestCase
 
     public function testSuccessWithSameSlug(): void
     {
-        $command = $this->createValidCommand('fire');
+        $command = $this->createValidCommand();
         $directionId = new DirectionId($command->directionId);
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
 
         $direction = (new DirectionBuilder())
             ->withId($directionId)
             ->withTitle('Старое название')
             ->withDescription('Старое описание')
             ->withText('Старый текст')
-            ->withSlug($slug)
             ->build();
 
 
@@ -99,25 +98,23 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $direction->getTitle());
         self::assertEquals($command->description, $direction->getDescription());
-        self::assertEquals($command->slug, $direction->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $direction->getSlug()->getValue());
         self::assertEquals($command->text, $direction->getText());
     }
 
     public function testSlugAlreadyTakenByAnotherDirection(): void
     {
-        $command = $this->createValidCommand('new-slug');
+        $command = $this->createValidCommand();
         $directionId = new DirectionId($command->directionId);
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
         $anotherDirectionId = new DirectionId('e019e716-3d33-47a9-8b1f-b6f62114b7ab');
 
         $direction = (new DirectionBuilder())
             ->withId($directionId)
-            ->withSlug(new Slug('old-slug'))
             ->build();
 
         $anotherDirection = (new DirectionBuilder())
             ->withId($anotherDirectionId)
-            ->withSlug($slug)
             ->build();
 
         $this->directions->expects(self::once())->method('findById')
@@ -135,17 +132,15 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
 
-
     }
 
-    private function createValidCommand(string $slug = 'fire'): Command
+    private function createValidCommand(): Command
     {
         return new Command(
             '5764bba3-dd03-4fe9-b188-98e4c40ecb94',
             'Пожарная безопасность',
             'Описание пожарная безопасность',
             'Текст пожарная безопасность',
-            $slug
         );
     }
 }

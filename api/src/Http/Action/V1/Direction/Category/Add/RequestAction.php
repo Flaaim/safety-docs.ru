@@ -32,7 +32,6 @@ class RequestAction implements RequestHandlerInterface
             $data['title'] ?? '',
             $data['description'] ?? '',
             $data['text'] ?? '',
-            $data['slug'] ?? '',
             $data['parentId'] ?? null
         );
 

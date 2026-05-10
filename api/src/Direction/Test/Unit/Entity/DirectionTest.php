@@ -17,13 +17,12 @@ class DirectionTest extends TestCase
             ->withId(new DirectionId('2a7a593a-ee23-4a73-bb07-b372438fb269'))
             ->withTitle('title')
             ->withDescription('description')
-            ->withSlug(new Slug('slug'))
             ->withText('text')
             ->build();
 
         self::assertEquals('title', $direction->getTitle());
         self::assertEquals('description', $direction->getDescription());
-        self::assertEquals('slug', $direction->getSlug()->getValue());
+        self::assertEquals('title', $direction->getSlug()->getValue());
         self::assertEquals('text', $direction->getText());
         self::assertEquals('2a7a593a-ee23-4a73-bb07-b372438fb269', $direction->getId()->getValue());
     }
@@ -32,7 +31,7 @@ class DirectionTest extends TestCase
     {
 
         $direction = (new DirectionBuilder())->build();
-        $direction->update('title1', 'description1', 'text1', new Slug('slug'));
+        $direction->update('title1', 'description1', 'text1', Slug::generate('slug'));
 
         self::assertEquals('title1', $direction->getTitle());
         self::assertEquals('description1', $direction->getDescription());
@@ -45,10 +44,10 @@ class DirectionTest extends TestCase
         $direction = (new DirectionBuilder())->build();
         $category = new Category(
             CategoryId::generate(),
-            'Category Title',
+            $title = 'Category Title',
             'Category Description',
             'Category Text',
-            new Slug('cat-slug'),
+            Slug::generate($title),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
@@ -59,21 +58,21 @@ class DirectionTest extends TestCase
         $direction = (new DirectionBuilder())->build();
         new Category(
             CategoryId::generate(),
-            'Category Title',
+            $title = 'Category Title',
             'Category Description',
             'Category Text',
-            new Slug('cat-slug'),
+            Slug::generate($title),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Category with slug cat-slug is exists.');
+        $this->expectExceptionMessage('Category with slug category-title is exists.');
         new Category(
             CategoryId::generate(),
-            'Category Title',
+            $title = 'Category Title',
             'Category Description',
             'Category Text',
-            new Slug('cat-slug'),
+            Slug::generate($title),
             $direction
         );
 
@@ -83,10 +82,10 @@ class DirectionTest extends TestCase
         $direction = (new DirectionBuilder())->build();
         new Category(
             CategoryId::generate(),
-            'Category Title',
+            $title = 'Category Title',
             'Category Description',
             'Category Text',
-            $slug = new Slug('cat-slug'),
+            $slug = Slug::generate($title),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
@@ -101,7 +100,7 @@ class DirectionTest extends TestCase
         self::expectException(\DomainException::class);
         $this->expectExceptionMessage('Category not found in this direction.');
 
-        $direction->removeCategory(new Slug('cat-slug'));
+        $direction->removeCategory(Slug::generate('cat-slug'));
     }
 
     public function testCanBeDeleted(): void
@@ -112,10 +111,10 @@ class DirectionTest extends TestCase
 
         new Category(
             CategoryId::generate(),
-            'Category Title',
+            $title = 'Category Title',
             'Category Description',
             'Category Text',
-            $slug = new Slug('cat-slug'),
+            $slug = Slug::generate($title),
             $direction
         );
         self::assertFalse($direction->canBeDeleted());
@@ -126,14 +125,14 @@ class DirectionTest extends TestCase
         $direction = (new DirectionBuilder())->build();
         new Category(
             CategoryId::generate(),
-            'Category Title',
+            $title = 'Category Title',
             'Category Description',
             'Category Text',
-            new Slug('cat-slug'),
+            Slug::generate($title),
             $direction
         );
 
-        $newSlug = new Slug('new-slug');
+        $newSlug = Slug::generate('new-slug');
 
         self::assertFalse($direction->isCategoryExist($newSlug));
     }

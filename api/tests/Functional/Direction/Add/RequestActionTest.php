@@ -19,7 +19,6 @@ class RequestActionTest extends WebTestCase
             'title' => 'Пожарная безопасность',
             'description' => 'Описание пожарная безопасность',
             'text' => 'Текст пожарная безопасность',
-            'slug' => 'firesafety'
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
@@ -29,10 +28,9 @@ class RequestActionTest extends WebTestCase
     public function testAddFailExisting(): void
     {
         $response = $this->app()->handle(self::json('POST', '/v1/directions', [
-            'title' => 'Пожарная безопасность',
-            'description' => 'Описание пожарная безопасность',
+            'title' => 'Охрана труда',
+            'description' => 'Охрана труда описание',
             'text' => 'Текст пожарная безопасность',
-            'slug' => 'safety'
         ]));
 
         self::assertEquals(400, $response->getStatusCode());
@@ -40,7 +38,7 @@ class RequestActionTest extends WebTestCase
         self::assertJson($body = (string)$response->getBody());
         $data = Json::decode($body);
 
-        self::assertEquals(['message' => "Direction with slug safety is exists"], $data);
+        self::assertEquals(['message' => "Direction with slug ohrana-truda is exists"], $data);
     }
 
 }

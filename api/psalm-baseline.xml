@@ -101,9 +101,6 @@
       <code><![CDATA[expects]]></code>
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
-    <UnusedVariable>
-      <code><![CDATA[$direction]]></code>
-    </UnusedVariable>
   </file>
   <file src="src/Direction/Test/Unit/Command/Direction/Delete/HandlerTest.php">
     <UndefinedMethod>

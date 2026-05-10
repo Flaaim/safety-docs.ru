@@ -31,10 +31,10 @@ class CategoryTest extends TestCase
 
         $serviceCategory = new Category(
             CategoryId::generate(),
-            'Title',
+            $title = 'Title',
             'Description',
             'Text',
-            new Slug('title'),
+            Slug::generate($title),
             $direction,
             $parent
         );
@@ -51,10 +51,10 @@ class CategoryTest extends TestCase
 
         new Category(
             $parent->getId(),
-            'Title',
+            $title = 'Title',
             'Description',
             'Text',
-            new Slug('title'),
+            Slug::generate($title),
             $safetyDirection,
             $parent
         );
@@ -67,10 +67,10 @@ class CategoryTest extends TestCase
 
         $parentCategory = new Category(
             CategoryId::generate(),
-            'Parent category',
+            $title = 'Parent category',
             'Parent description category',
             'Text',
-            new Slug('title'),
+            Slug::generate($title),
             $safetyDirection,
         );
 
@@ -79,10 +79,10 @@ class CategoryTest extends TestCase
 
         new Category(
             CategoryId::generate(),
-            'Child category',
+            $title = 'Child category',
             'Child description category',
             'Text',
-            new Slug('title'),
+            Slug::generate($title),
             $fireDirection,
             $parentCategory
         );
@@ -96,17 +96,17 @@ class CategoryTest extends TestCase
         $fireDirection = $this->getDirection('171af8ca-86f0-452f-b94b-5b62cc72998a', 'Fire');
 
         $category->update(
-            'Обучение по пожарной безопасности',
+            $title = 'Обучение по пожарной безопасности',
             'Обучение по пожарной безопасности, комплект документов',
             'Some text',
-            new Slug('education'),
+            Slug::generate($title),
             $fireDirection
         );
 
         self::assertEquals('Обучение по пожарной безопасности', $category->getTitle());
         self::assertEquals('Обучение по пожарной безопасности, комплект документов', $category->getDescription());
         self::assertEquals('Some text', $category->getText());
-        self::assertEquals('education', $category->getSlug()->getValue());
+        self::assertEquals('obucenie-po-pozarnoj-bezopasnosti', $category->getSlug()->getValue());
         self::assertEquals('171af8ca-86f0-452f-b94b-5b62cc72998a', $category->getDirection()->getId()->getValue());
         self::assertEquals('Fire', $category->getDirection()->getTitle());
     }
@@ -120,10 +120,10 @@ class CategoryTest extends TestCase
         $childCategory = $this->getCategory($safetyDirection, 'children', $parentCategory);
 
         $childCategory->update(
-            'New title',
+            $title = 'New title',
             'New description',
             'New text',
-            new Slug('title'),
+            Slug::generate($title),
             $fireDirection
         );
 
@@ -144,10 +144,10 @@ class CategoryTest extends TestCase
         self::expectExceptionMessage('Child category cannot be from different direction.');
 
         $category2->update(
-            'New title',
+            $title = 'New title',
             'New description',
             'New text',
-            new Slug('title'),
+            Slug::generate($title),
             $fireDirection,
             $category1
         );
@@ -158,7 +158,7 @@ class CategoryTest extends TestCase
         $categoryId1 = new CategoryId('727d77c0-fef1-443a-9487-60d5a61404f8');
 
         $child1 = (new CategoryBuilder())
-            ->withSlug(new Slug('child'))
+            ->withSlug(Slug::generate('child'))
             ->withCategoryId($categoryId1)
             ->build($safetyDirection);
 
@@ -171,10 +171,10 @@ class CategoryTest extends TestCase
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Cannot move a category with children under another parent. Delete or move its children first.');
         $parentCategory1->update(
-            'New title',
+            $title = 'New title',
             'New description',
             'New text',
-            new Slug('title'),
+            Slug::generate($title),
             $safetyDirection,
             $parentCategory2
         );
@@ -197,7 +197,7 @@ class CategoryTest extends TestCase
         $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
         $categoryId1 = new CategoryId('727d77c0-fef1-443a-9487-60d5a61404f8');
 
-        $child1 = (new CategoryBuilder())->withSlug(new Slug('child'))->withCategoryId($categoryId1)->build($safetyDirection);
+        $child1 = (new CategoryBuilder())->withSlug(Slug::generate('child'))->withCategoryId($categoryId1)->build($safetyDirection);
 
         $parentCategory1 = (new CategoryBuilder())
             ->withChildren([$child1])
@@ -216,10 +216,10 @@ class CategoryTest extends TestCase
         $child = $this->getCategory($safetyDirection, 'children', $parentCategory);
 
         $child->update(
-            'New title',
+            $title = 'New title',
             'New description',
             'New text',
-            new Slug('title'),
+            Slug::generate($title),
             $fireDirection,
         );
 
@@ -293,7 +293,7 @@ class CategoryTest extends TestCase
             'Служба охраны труда',
             'Служба охраны труда, комплект документов',
             'some text',
-            new Slug($slug),
+            Slug::generate($slug),
             $direction,
             $parent
         );

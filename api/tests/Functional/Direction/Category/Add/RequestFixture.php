@@ -17,10 +17,10 @@ class RequestFixture extends AbstractFixture
     {
         $category = new Category(
             new CategoryId('15823c37-3358-44be-96dc-363d56bde91c'),
-            'Служба охраны труда',
+            $title = 'Служба охраны труда',
             'Собраны комплекты образцов документов по организации на предприятии службы охраны труда',
             'Some simple text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction = (new DirectionBuilder())->withId(new DirectionId('37e9c865-8401-4339-bb23-73a25b85e7b3'))->build()
         );
 

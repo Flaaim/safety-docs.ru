@@ -26,7 +26,7 @@ class HandlerTest extends TestCase
 
     public function testNotFound(): void
     {
-        $command = new Command('service', 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970');
+        $command = new Command('sluzba-ohrany-truda', 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970');
 
         $this->categories->expects($this->once())->method('findBySlug')->willReturn(null);
 
@@ -38,13 +38,13 @@ class HandlerTest extends TestCase
 
     public function testSuccess(): void
     {
-        $command = new Command('service', 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970');
+        $command = new Command('sluzba-ohrany-truda', 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970');
 
         $category = $this->getCategory();
 
         $this->categories->expects($this->once())->method('findBySlug')
             ->with(
-                $this->equalTo(new Slug($command->slug)),
+                $this->equalTo(Slug::generate($command->slug)),
                 $this->equalTo(new DirectionId($command->directionId))
             )
             ->willReturn($category);
@@ -54,7 +54,7 @@ class HandlerTest extends TestCase
         self::assertEquals('Служба охраны труда', $categoryDTO->title);
         self::assertEquals('Служба охраны труда - комплект документов', $categoryDTO->description);
         self::assertEquals('Some text', $categoryDTO->text);
-        self::assertEquals('service', $categoryDTO->slug);
+        self::assertEquals('sluzba-ohrany-truda', $categoryDTO->slug);
         self::assertEquals('e42b8e4f-0ac3-4cca-984d-4f1dc983e970', $categoryDTO->directionId);
         self::assertEquals('8aa8f453-b19b-4b53-915b-1f04c83a9aee', $categoryDTO->id);
         self::assertEquals('Охрана труда', $categoryDTO->directionTitle);
@@ -67,15 +67,14 @@ class HandlerTest extends TestCase
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Охрана труда текст')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         return new Category(
             new CategoryId('8aa8f453-b19b-4b53-915b-1f04c83a9aee'),
-            'Служба охраны труда',
+            $title = 'Служба охраны труда',
             'Служба охраны труда - комплект документов',
             'Some text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
     }

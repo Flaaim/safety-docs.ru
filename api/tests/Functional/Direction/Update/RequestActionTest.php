@@ -12,25 +12,21 @@ class RequestActionTest extends WebTestCase
         parent::setUp();
         $this->loadFixtures([RequestFixture::class]);
     }
-    public function testSuccessWithSameSlug(): void
+    public function testSuccessWithSameTitle(): void
     {
         $response = $this->app()->handle(self::json('PUT', '/v1/directions/9dc41818-1c99-4b3c-b1bc-7c64ee7a0948', [
-            'directionId' => '9dc41818-1c99-4b3c-b1bc-7c64ee7a0948',
             'title' => 'Пожарная безопасность',
             'description' => 'Описание пожарная безопасность',
             'text' => 'Текст пожарная безопасность',
-            'slug' => 'safety'
         ]));
 
         self::assertEquals(204, $response->getStatusCode());
     }
-    public function testSuccessWithNewSlug(): void{
+    public function testSuccessWithTitle(): void{
         $response = $this->app()->handle(self::json('PUT', '/v1/directions/9dc41818-1c99-4b3c-b1bc-7c64ee7a0948', [
-            'directionId' => '9dc41818-1c99-4b3c-b1bc-7c64ee7a0948',
-            'title' => 'Пожарная безопасность',
-            'description' => 'Описание пожарная безопасность',
-            'text' => 'Текст пожарная безопасность',
-            'slug' => 'new-slug'
+            'title' => 'Экология',
+            'description' => 'Описание Экология',
+            'text' => 'Текст Экология',
         ]));
 
         self::assertEquals(204, $response->getStatusCode());
@@ -38,11 +34,9 @@ class RequestActionTest extends WebTestCase
     public function testDirectionNotFound(): void
     {
         $response = $this->app()->handle(self::json('PUT', '/v1/directions/9dc41818-1c99-4b3c-b1bc-7c64ee7a0950', [
-            'directionId' => '9dc41818-1c99-4b3c-b1bc-7c64ee7a0950',
             'title' => 'Пожарная безопасность',
             'description' => 'Описание пожарная безопасность',
             'text' => 'Текст пожарная безопасность',
-            'slug' => 'safety'
         ]));
 
         self::assertEquals(400, $response->getStatusCode());
@@ -51,11 +45,9 @@ class RequestActionTest extends WebTestCase
     public function testSlugAlreadyTakenAnotherDirection(): void
     {
         $response = $this->app()->handle(self::json('PUT', '/v1/directions/9dc41818-1c99-4b3c-b1bc-7c64ee7a0948', [
-            'directionId' => '9dc41818-1c99-4b3c-b1bc-7c64ee7a0948',
-            'title' => 'Пожарная безопасность',
-            'description' => 'Описание пожарная безопасность',
-            'text' => 'Текст пожарная безопасность',
-            'slug' => 'fire'
+            'title' => 'Промышленная безопасность',
+            'description' => 'Описание промышленная безопасность',
+            'text' => 'Текст промышленная безопасность',
         ]));
 
         self::assertEquals(400, $response->getStatusCode());

@@ -16,7 +16,7 @@ class Handler
     }
     public function handle(Command $command): DirectionDTO
     {
-        $direction = $this->directions->findBySlug(new Slug($command->slug));
+        $direction = $this->directions->findBySlug(Slug::generate($command->slug));
         if(null === $direction){
             throw new \DomainException('Direction not found.');
         }

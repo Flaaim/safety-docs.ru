@@ -26,19 +26,19 @@ class HandlerTest extends TestCase
             'Охрана труда',
             'Описание охрана труда',
             'Текст охрана труда',
-            $slug = 'safety'
         );
+        $slug = Slug::generate($command->title);
         $handler = new Handler($this->directions, $this->flusher);
 
         $this->directions->expects(self::once())->method('findBySlug')
-            ->with(self::equalTo(new Slug($slug)))
-            ->willReturn($direction = (new DirectionBuilder())->build());
+            ->with(self::equalTo($slug))
+            ->willReturn((new DirectionBuilder())->build());
 
         $this->directions->expects(self::never())->method('add');
         $this->flusher->expects(self::never())->method('flush');
 
         self::expectException(\DomainException::class);
-        self::expectExceptionMessage("Direction with slug ".$command->slug." is exists");
+        self::expectExceptionMessage("Direction with slug ".$slug->getValue()." is exists");
         $handler->handle($command);
     }
 
@@ -48,21 +48,20 @@ class HandlerTest extends TestCase
            'Охрана труда',
             'Описание охрана труда',
             'Текст охрана труда',
-           'safety'
         );
-
+        $slug = Slug::generate($command->title);
         $handler = new Handler($this->directions, $this->flusher);
 
         $this->directions->expects(self::once())->method('findBySlug')
-            ->with(self::equalTo(new Slug($command->slug)))
+            ->with(self::equalTo($slug))
             ->willReturn(null);
 
         $this->directions->expects(self::once())->method('add')->with(
-            self::callback(static function ($direction) use ($command) {
+            self::callback(static function ($direction) use ($command, $slug) {
                 self::assertEquals($command->title, $direction->getTitle());
                 self::assertEquals($command->description, $direction->getDescription());
                 self::assertEquals($command->text, $direction->getText());
-                self::assertEquals($command->slug, $direction->getSlug()->getValue());
+                self::assertEquals($slug->getValue(), $direction->getSlug()->getValue());
                 return true;
             })
         );

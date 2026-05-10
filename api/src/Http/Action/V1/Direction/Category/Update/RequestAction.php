@@ -30,7 +30,6 @@ class RequestAction implements RequestHandlerInterface
             $data['title'] ?? '',
             $data['description'] ?? '',
             $data['text'] ?? '',
-            $data['slug'] ?? '',
             $data['directionId'] ?? $route->getArgument('directionId', ''),
             $data['parentId'] ?? null
         );

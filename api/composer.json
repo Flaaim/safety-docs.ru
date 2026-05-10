@@ -21,7 +21,8 @@
     "doctrine/dbal": "3.8.*",
     "carbonphp/carbon-doctrine-types": "^2.1",
     "doctrine/doctrine-migrations-bundle": "^3.4.2",
-    "nesbot/carbon": "^3.11"
+    "nesbot/carbon": "^3.11",
+    "ext-intl": "*"
   },
   "autoload": {
     "psr-4": {

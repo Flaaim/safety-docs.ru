@@ -84,24 +84,23 @@ class HandlerTest extends TestCase
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Охрана труда текст')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         new Category(
             CategoryId::generate(),
-            'Служба охраны труда',
+            $title = 'Служба охраны труда',
             'Category Description',
             'Category Text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
 
         new Category(
             CategoryId::generate(),
-            'Медосмотры',
+            $title = 'Медосмотры',
             'Category Description',
             'Category Text',
-            new Slug('medical'),
+            Slug::generate($title),
             $direction
         );
 

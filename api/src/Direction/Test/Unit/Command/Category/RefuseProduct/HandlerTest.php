@@ -59,7 +59,7 @@ class HandlerTest extends TestCase
         $category = (new CategoryBuilder())
             ->withCategoryId(($categoryId))
             ->withProduct($product)
-            ->withParent((new CategoryBuilder())->withSlug(new Slug('parent'))->build($direction))
+            ->withParent((new CategoryBuilder())->withSlug(Slug::generate('parent'))->build($direction))
             ->build($direction);
 
 

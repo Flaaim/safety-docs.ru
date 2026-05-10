@@ -16,7 +16,7 @@ class Handler
     }
     public function handle(Command $command): void
     {
-        $slug = new Slug($command->slug);
+        $slug = Slug::generate($command->title);
         $directionId = new DirectionId($command->directionId);
         $direction = $this->directions->findById($directionId);
 
@@ -27,9 +27,8 @@ class Handler
         $existingDirection = $this->directions->findBySlug($slug);
 
         if($existingDirection && !$existingDirection->getId()->equals($directionId)) {
-                throw new \DomainException('Direction with this slug already exists.');
+            throw new \DomainException('Direction with this slug already exists.');
         }
-
 
         $direction->update(
             $command->title,

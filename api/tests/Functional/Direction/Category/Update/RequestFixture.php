@@ -20,7 +20,6 @@ class RequestFixture extends AbstractFixture
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Охрана труда текст')
-            ->withSlug(new Slug('safety'))
             ->build();
 
         $newDirection = (new DirectionBuilder())
@@ -28,24 +27,23 @@ class RequestFixture extends AbstractFixture
             ->withTitle('Пожарная безопасность')
             ->withDescription('Пожарная безопасность описание')
             ->withText('Пожарная безопасность текст')
-            ->withSlug(new Slug('fire'))
             ->build();
 
         $category = new Category(
             new CategoryId('8aa8f453-b19b-4b53-915b-1f04c83a9aee'),
-            'Служба охраны труда',
+            $title = 'Служба охраны труда',
             'Служба охраны труда - комплект документов',
             'Some text',
-            new Slug('service'),
+            Slug::generate($title),
             $direction
         );
 
         $anotherCategory = new Category(
             new CategoryId('8ccca2f8-5a57-47a6-82e1-c3d490e8f18b'),
-            'Обучение по охране труда',
+            $title = 'Обучение по охране труда',
             'Описание обучения по охране труда',
             'Some text',
-            new Slug('education'),
+            Slug::generate($title),
             $direction
         );
 

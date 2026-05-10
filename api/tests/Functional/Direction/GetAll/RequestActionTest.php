@@ -32,7 +32,7 @@ class RequestActionTest extends WebTestCase
                     'title' => 'Охрана труда',
                     'description' => 'Собраны комплекты документов',
                     'text' => 'some text',
-                    'slug' => 'safety',
+                    'slug' => 'ohrana-truda',
                     'categories' => []
                 ]
             ],
