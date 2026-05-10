@@ -10,7 +10,6 @@ export * from './DownloadButton/DownloadButton';
 export * from './DeflistTag/Deflisttag';
 export * from './ProductForm/ProductForm';
 export * from './ProductModal/ProductModal';
-export * from '@/components/Navigation/Section/Section';
 export * from '@/components/Navigation/Navigation';
 export * from './PaymentResult/PaymentResult';
 export * from './SimpleCard/SimpleCard';

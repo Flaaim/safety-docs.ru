@@ -4,53 +4,52 @@ import {
   Ptag,
 } from "@/components";
 import SimpleCard from "@/components/SimpleCard/SimpleCard";
-import {Factory, Flame, HardHat, Zap} from "lucide-react";
+import {HardHat,} from "lucide-react";
+import {IconsMap} from "@/interfaces/direction.interface";
+import {cache} from "react";
+import {getAllDirections} from "@api/direction";
 
 
+const getCachedDirections = cache(async () => {
+  return await getAllDirections();
+});
 
-export default function Home() {
+export default async function Home() {
+  const data = await getCachedDirections();
+
   return (
-    <div >
-      <Htag tag='h1'>Полный комплект ЛНА по охране труда на 2026 год</Htag>
+    <>
+      <Htag tag='h1'>Полный комплект ЛНА на 2026 год</Htag>
       <Ptag>
-        Локальные нормативные акты (ЛНА) — это внутренние документы вашей организации, которые регламентируют порядок работы, распределяют обязанности и обеспечивают выполнение требований закона в сфере охраны труда, промышленной, энергетической и пожарной безопасности.
+        Локальные нормативные акты (ЛНА) — это внутренние документы вашей организации, которые регламентируют порядок
+        работы, распределяют обязанности и обеспечивают выполнение требований закона в сфере охраны труда, промышленной,
+        энергетической и пожарной безопасности.
       </Ptag>
       <Ptag>
-        Разделяют обязательные ЛНА (их наличие прямо требуется законодательством) и рекомендуемые (которые работодатель вводит для эффективного управления и снижения рисков).
+        Разделяют обязательные ЛНА (их наличие прямо требуется законодательством) и рекомендуемые (которые работодатель
+        вводит для эффективного управления и снижения рисков).
       </Ptag>
       <Ptag>
         Все документы разбиты по следующим категориям:
       </Ptag>
-      <Navigation>
-        <SimpleCard
-          icon={<HardHat className="inline-block"  size={24}/>}
-          title='Охрана труда'
-          short_description='Подборки документов по охране труда'
-          description='Все что относиться к организации охраны труда, обучения, инструктажи, медосмотры, СУОТ, риски, СОУТ, расследование НС и т.д.'
-          link={'/docs/safety'}
-        />
-        <SimpleCard
-          icon={<Flame className="inline-block"  size={24}/>}
-          title='Пожарная безопасность'
-          short_description='Подборки документов по противопожарной профилактике'
-          description='Все что относиться к организации обеспечения пожарной безопасности на предприятии, инструктажи, обучение, первичные средства пожаротушения, тренировки эвакуации и т.д.'
-          link={'#'}
-        />
-        <SimpleCard
-          icon={<Factory className="inline-block"  size={24}/>}
-          title='Промышленная безопасность'
-          short_description='Подборки документов по промышленной безопасности'
-          description='Все что относиться к безопасной эксплуатации ОПО: аттестация, производственный контроль, грузоподъемные механизмы, сосуды и т.д.'
-          link={'/docs/industrial'}
-        />
-        <SimpleCard
-          icon={<Zap className="inline-block"  size={24}/>}
-          title='Энергетическая безопасность'
-          short_description='Подборки документов по энергетической безопасности'
-          description='Все что относиться к обесечению энергетической безопасности, допуски, проверки, аттестации, группы допуска по электробзопасности и т.д.'
-          link={'/docs/energy'}
-        />
-      </Navigation>
-    </div>
+      <div>
+        <Htag tag='h2'>Категории документов:</Htag>
+        <Navigation>
+        {data.directions.map((direction) => {
+          const IconComponent = IconsMap[direction.slug] || HardHat;
+          return (
+            <SimpleCard
+            key={direction.id}
+            icon={<IconComponent className="inline-block" size={24}/>}
+            title={direction.title}
+            short_description='Подборки документов по охране труда'
+            description={direction.description}
+            link={'/docs/' + direction.slug}
+          />
+          );
+        })}
+        </Navigation>
+      </div>
+    </>
   );
 }
