@@ -30,10 +30,10 @@ export default async function Home() {
         вводит для эффективного управления и снижения рисков).
       </Ptag>
       <Ptag>
-        Все документы разбиты по следующим категориям:
+        Все документы разбиты по следующим направлениям:
       </Ptag>
       <div>
-        <Htag tag='h2'>Категории документов:</Htag>
+        <Htag tag='h2'>Направления документации:</Htag>
         <Navigation>
         {data.directions.map((direction) => {
           const IconComponent = IconsMap[direction.slug] || HardHat;
@@ -42,7 +42,7 @@ export default async function Home() {
             key={direction.id}
             icon={<IconComponent className="inline-block" size={24}/>}
             title={direction.title}
-            short_description='Подборки документов по охране труда'
+            short_description='Подборки документов'
             description={direction.description}
             link={'/docs/' + direction.slug}
           />
