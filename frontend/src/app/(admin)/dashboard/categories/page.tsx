@@ -33,7 +33,7 @@ export default async function CategoriesPage() {
           </TableHeader>
           <TableBody>
             {data.categories.map((cat: CategoryDTO) => (
-              <React.Fragment key={cat.slug}>
+              <React.Fragment key={cat.id}>
                 {/* === РОДИТЕЛЬСКАЯ КАТЕГОРИЯ === */}
                 <TableRow className="bg-muted/20"> {/* Легкий фон для выделения корня */}
                   <TableCell className="font-semibold">{cat.title}</TableCell>
@@ -51,7 +51,7 @@ export default async function CategoriesPage() {
                 </TableRow>
                 {/* === ДОЧЕРНИЕ КАТЕГОРИИ === */}
                 {cat.children && cat.children.length > 0 && cat.children.map((child: CategoryDTO) => (
-                  <TableRow key={child.slug}>
+                  <TableRow key={child.id}>
                     {/* Визуальный отступ и стрелочка для подкатегории */}
                     <TableCell className="font-medium pl-8 relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/50">
