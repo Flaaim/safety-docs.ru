@@ -108,7 +108,6 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       text: textValue,
-      slug: formData.get('slug') as string,
       directionId: selectedDirectionId,
       parentId: selectedParentId === "none" ? null : selectedParentId,
     };
@@ -163,10 +162,6 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
                   placeholder: 'Введите текст в формате Markdown...'
                 }}
               />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="slug">Slug (URL)</Label>
-              <Input id="slug" name="slug" placeholder="ohrana-truda" defaultValue={categoryData.slug} required/>
             </div>
             {categoryData.children && categoryData.children.length > 0 ? (
               // 1. ЕСЛИ ЕСТЬ ДЕТИ: Показываем только Направление + предупреждение

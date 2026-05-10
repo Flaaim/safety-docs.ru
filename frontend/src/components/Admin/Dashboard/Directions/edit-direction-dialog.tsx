@@ -121,10 +121,6 @@ export default function EditDirectionDialog({slug, id}: EditDirectionDialogProps
                 }}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="slug">Slug (URL)</Label>
-              <Input id="slug" name="slug" placeholder="ohrana-truda" defaultValue={directionData.slug} required/>
-            </div>
             <DialogFooter>
               <Button type="submit" disabled={loading}>
                 {loading ? "Сохранение..." : "Сохранить"}

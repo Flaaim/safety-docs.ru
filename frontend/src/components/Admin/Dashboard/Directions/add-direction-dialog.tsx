@@ -38,8 +38,7 @@ export default function AddDirectionDialog(){
     const direction:Partial<DirectionDTO> = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
-      text: textValue,
-      slug: formData.get('slug') as string
+      text: textValue
     };
 
     const token = Cookies.get("admin_token");
@@ -88,10 +87,6 @@ export default function AddDirectionDialog(){
                 placeholder: 'Введите текст в формате Markdown...'
               }}
             />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="slug">Slug (URL)</Label>
-            <Input id="slug" name="slug" placeholder="ohrana-truda" required />
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>

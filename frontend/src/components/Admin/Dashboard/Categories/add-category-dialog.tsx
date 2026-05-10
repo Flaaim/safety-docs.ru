@@ -82,7 +82,6 @@ export default function AddCategoryDialog(){
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       text: textValue,
-      slug: formData.get('slug') as string,
       directionId: selectedDirectionId, // Берем из стейта
       parentId: selectedParentId === "none" ? undefined : selectedParentId, // Конвертируем "none" в undefined
     };
@@ -134,11 +133,6 @@ export default function AddCategoryDialog(){
               }}
             />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="slug">Slug (URL)</Label>
-            <Input id="slug" name="slug" placeholder="education" required />
-          </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="directionId">Направление</Label>

@@ -28,8 +28,7 @@ export async function addDirection(token: string | undefined, direction: Partial
     body: JSON.stringify({
       title: direction.title,
       description: direction.description,
-      text: direction.text,
-      slug: direction.slug
+      text: direction.text
     })
   });
 }
@@ -42,8 +41,7 @@ export async function updateDirection(token: string | undefined, id: string, dir
     body: JSON.stringify({
       title: direction.title,
       description: direction.description,
-      text: direction.text,
-      slug: direction.slug
+      text: direction.text
     })
   });
 }

@@ -21,7 +21,6 @@ export async function addCategory(token: string | undefined, category:Partial<Ca
       title: category.title,
       description: category.description,
       text: category.text,
-      slug: category.slug,
       parentId: category.parentId
     })
   });
@@ -46,7 +45,6 @@ export async function updateCategory(token: string | undefined, category:Partial
       title: category.title,
       description: category.description,
       text: category.text,
-      slug: category.slug,
       parentId: category.parentId !== undefined ? category.parentId : null,
       directionId: category.directionId
     })
