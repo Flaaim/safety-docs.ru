@@ -116,8 +116,10 @@ export default function EditCategoryDialog({slug, id, directionId}: EditCategory
       await updateCategory(token, category);
       toast.success('Категория обновлена');
       setOpen(false);
+      setTimeout(() => {
+        router.refresh();
+      }, 300)
 
-      router.refresh();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Не удалось обновить категорию');
     } finally {
