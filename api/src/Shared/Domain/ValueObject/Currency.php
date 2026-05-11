@@ -6,7 +6,7 @@ use Webmozart\Assert\Assert;
 
 class Currency
 {
-    const ALLOWED_CURRENCIES = [
+    private const ALLOWED_CURRENCIES = [
         'RUB'
     ];
     private string $value;

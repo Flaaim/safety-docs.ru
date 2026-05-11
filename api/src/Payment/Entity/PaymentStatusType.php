@@ -7,7 +7,7 @@ use Doctrine\DBAL\Types\StringType;
 
 class PaymentStatusType extends StringType
 {
-    const NAME = 'payment_status';
+    public const NAME = 'payment_status';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {

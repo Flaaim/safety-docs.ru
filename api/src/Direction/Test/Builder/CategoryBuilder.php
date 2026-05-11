@@ -26,7 +26,7 @@ class CategoryBuilder
         $this->slug = Slug::generate('service');
         $this->title = 'Служба охраны труда - образцы документов';
         $this->description = 'Служба охраны труда - образцы документов описание документов';
-        $this->text = 'Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите должность специалиста, оформив приказ и утвердив Положение о службе';
+        $this->text = 'Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите должность';
     }
     public function withCategoryId(CategoryId $categoryId): self
     {
@@ -53,17 +53,17 @@ class CategoryBuilder
         $this->text = $text;
         return $this;
     }
-    function withProduct(Product $product): self
+    public function withProduct(Product $product): self
     {
         $this->product = $product;
         return $this;
     }
-    function withParent(Category $category): self
+    public function withParent(Category $category): self
     {
         $this->parent = $category;
         return $this;
     }
-    function withChildren(array $children): self
+    public function withChildren(array $children): self
     {
         $this->children = $children;
         return $this;

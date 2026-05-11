@@ -46,8 +46,12 @@ class FileUploaderTest extends TestCase
         $this->handler->upload('directory', $uploadFile);
     }
 
-    private function createUploadFile(string $name = 'test.txt', string $type = 'text/plain', int $size = 1, int $error = UPLOAD_ERR_OK): UploadedFileInterface
-    {
+    private function createUploadFile(
+        string $name = 'test.txt',
+        string $type = 'text/plain',
+        int $size = 1,
+        int $error = UPLOAD_ERR_OK
+    ): UploadedFileInterface {
         $uploadFile = new UploadedFile(
             'some_content',
             $name,

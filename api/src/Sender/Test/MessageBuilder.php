@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Sender\Test;
+
 use App\Sender\Entity\EmailMessage;
 use App\Sender\Entity\Message;
 use App\Sender\Entity\MessageId;
@@ -11,7 +13,7 @@ class MessageBuilder
     private string $messageId;
     private Recipient $recipient;
     private MessageStatus $status;
-    private DateTimeImmutable $dateReceived;
+    private \DateTimeImmutable $dateReceived;
 
     public function __construct()
     {

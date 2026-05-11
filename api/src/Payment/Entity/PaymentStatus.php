@@ -6,7 +6,7 @@ use Webmozart\Assert\Assert;
 
 class PaymentStatus
 {
-    const ALLOWED_STATUSES = [
+    private const ALLOWED_STATUSES = [
         'pending',
         'cancelled',
         'succeeded',

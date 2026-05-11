@@ -6,9 +6,9 @@ use Webmozart\Assert\Assert;
 
 class MessageStatus
 {
-    const RECEIVED = 'received';
-    const FAILED = 'failed';
-    const PENDING = 'pending';
+    public const RECEIVED = 'received';
+    public const FAILED = 'failed';
+    public const PENDING = 'pending';
 
     public function __construct(
         private readonly string $value

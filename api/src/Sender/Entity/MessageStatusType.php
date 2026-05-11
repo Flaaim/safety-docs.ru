@@ -7,8 +7,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class MessageStatusType extends StringType
 {
-    const NAME = 'message_status';
-
+    public const NAME = 'message_status';
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return $value instanceof MessageStatus ? $value->getValue() : $value;
