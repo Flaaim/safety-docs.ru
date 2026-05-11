@@ -58,6 +58,7 @@ api-analyze:
 
 api-lint:
 	docker compose run --rm api-php-cli composer lint
+	docker compose run --rm api-php-cli composer phpcs
 
 api-validate-schema:
 	docker compose run --rm api-php-cli composer app orm:validate-schema
