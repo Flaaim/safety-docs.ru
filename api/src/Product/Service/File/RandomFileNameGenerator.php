@@ -6,7 +6,6 @@ use Psr\Http\Message\UploadedFileInterface;
 
 class RandomFileNameGenerator implements FileNameGeneratorInterface
 {
-
     public function generate(UploadedFileInterface $file): string
     {
         $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);

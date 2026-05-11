@@ -9,7 +9,7 @@ class SuccessfulPaymentEvent extends Event
 {
     public function __construct(
         private readonly Payment $payment
-    ){
+    ) {
     }
 
     public function getPayment(): Payment

@@ -9,7 +9,7 @@ class Handler
 {
     public function __construct(
         private readonly DirectionRepository $directions
-    ){
+    ) {
     }
     public function handle(): DirectionsCollection
     {

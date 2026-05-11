@@ -16,20 +16,20 @@ class Handler
         private readonly Flusher $flusher,
         private readonly FileUploaderInterface $uploader,
         private readonly FileNameGeneratorInterface $nameGenerator
-    ){
+    ) {
     }
 
     public function handle(Command $command): void
     {
         $product = $this->products->findById(new ProductId($command->productId));
 
-        if(null === $product){
+        if (null === $product) {
             throw new \DomainException('Product not found.');
         }
 
         foreach ($command->uploadedImages as $uploadedImage) {
-            if(!$uploadedImage instanceof UploadedFileInterface || $uploadedImage->getError() !== UPLOAD_ERR_OK){
-               throw new \DomainException('Error while uploading image.');
+            if (!$uploadedImage instanceof UploadedFileInterface || $uploadedImage->getError() !== UPLOAD_ERR_OK) {
+                throw new \DomainException('Error while uploading image.');
             }
 
             $filename = $this->uploader->upload($product->getId()->getValue(), $uploadedImage, $this->nameGenerator);

@@ -18,6 +18,6 @@ class Command
         public string $text,
         #[Assert\Uuid]
         public ?string $parentId,
-    ){
+    ) {
     }
 }

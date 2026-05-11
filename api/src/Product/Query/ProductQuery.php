@@ -11,7 +11,7 @@ class ProductQuery implements ProductQueryInterface
 {
     public function __construct(
         private readonly ProductRepository $products
-    ){
+    ) {
     }
     public function getProduct(string $id): ProductQueryDTO
     {

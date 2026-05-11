@@ -15,7 +15,6 @@ class FileRemoverTest extends TestCase
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_
         $this->fileRemover = new FileRemover($this->tempDir);
-
     }
     public function testFileRemove(): void
     {

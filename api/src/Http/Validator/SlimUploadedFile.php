@@ -7,7 +7,6 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 class SlimUploadedFile extends Constraint
 {
-
     public int|string|null $maxSize = null;
     public array $mimeTypes = [];
     public array $extensions = [];
@@ -27,15 +26,11 @@ class SlimUploadedFile extends Constraint
         int|string|null $maxSize = null,
         array $mimeTypes = [],
         array $extensions = [],
-    )
-    {
+    ) {
         parent::__construct($options, $groups, $payload);
 
         $this->maxSize = $maxSize ?? $this->maxSize;
         $this->mimeTypes = $mimeTypes ?? $this->mimeTypes;
         $this->extensions = $extensions ?? $this->extensions;
-
-
     }
-
 }

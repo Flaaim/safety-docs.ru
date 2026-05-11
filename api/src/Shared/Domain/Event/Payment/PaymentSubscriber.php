@@ -21,8 +21,8 @@ class PaymentSubscriber implements EventSubscriberInterface
         private readonly Handler $handler,
         private readonly ProductRepository $products,
         private readonly FileSystemPathInterface $fileSystemPath,
-    )
-    {}
+    ) {
+    }
 
     public static function getSubscribedEvents(): array
     {

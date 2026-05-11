@@ -12,7 +12,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 class AuthMiddleware implements MiddlewareInterface
 {
     public function __construct(private readonly ContainerInterface $container)
-    {}
+    {
+    }
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $token = $request->getHeader('Authorization');
@@ -20,7 +21,7 @@ class AuthMiddleware implements MiddlewareInterface
 
         $expectedToken = $this->container->get('config')['auth']['api_token'];
 
-        if($token !== $expectedToken) {
+        if ($token !== $expectedToken) {
             return new JsonResponse([
                 'message' => 'Unauthorized',
             ]);

@@ -13,6 +13,6 @@ class Command
         public string $description,
         #[Assert\NotBlank]
         public string $text,
-    ){
+    ) {
     }
 }

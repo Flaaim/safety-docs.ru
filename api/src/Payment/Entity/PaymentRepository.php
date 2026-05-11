@@ -14,7 +14,6 @@ class PaymentRepository
         $repo = $em->getRepository(Payment::class);
         $this->repo = $repo;
         $this->em = $em;
-
     }
     public function create(Payment $payment): void
     {
@@ -22,7 +21,7 @@ class PaymentRepository
     }
     public function getByExternalId(string $paymentId): Payment
     {
-        if(!$payment = $this->repo->findOneBy(['externalId' => $paymentId])){
+        if (!$payment = $this->repo->findOneBy(['externalId' => $paymentId])) {
             throw new \DomainException('Payment not found.');
         }
         return $payment;
@@ -40,7 +39,7 @@ class PaymentRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if(!$payment){
+        if (!$payment) {
             throw new \DomainException('Payment not found.');
         }
 

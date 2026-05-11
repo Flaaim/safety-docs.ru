@@ -10,7 +10,7 @@ class CategoryPaginatedDTO
         private readonly int $currentPage,
         private readonly int $perPage,
         private readonly int $totalPages
-    ){
+    ) {
     }
     public function getCategories(): array
     {

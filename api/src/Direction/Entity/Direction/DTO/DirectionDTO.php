@@ -11,7 +11,6 @@ class DirectionDTO
         public string $text,
         public string $slug,
         public array $categories,
-    ){
+    ) {
     }
-
 }

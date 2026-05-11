@@ -18,7 +18,7 @@ class CategoryDTO
         public ?string $productId = null,
         public ?string $productTitle = null,
         public ?string $parentId = null,
-    ){
+    ) {
     }
 
     public static function fromCategory(Category $category): self
@@ -27,12 +27,12 @@ class CategoryDTO
         $productId = null;
         $productTitle = null;
 
-        if($product !== null) {
+        if ($product !== null) {
             $productId = $product->getId()->getValue();
             $productTitle = $product->getName();
         }
         $parentId = null;
-        if($category->getParent() !== null) {
+        if ($category->getParent() !== null) {
             $parentId = $category->getParent()->getId()->getValue();
         }
 

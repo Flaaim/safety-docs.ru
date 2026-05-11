@@ -9,7 +9,7 @@ class DirectionsCollection implements \JsonSerializable
     public function __construct(
         public readonly array $directions,
         public readonly int $total,
-    ){
+    ) {
     }
 
     public function jsonSerialize(): array
@@ -28,9 +28,11 @@ class DirectionsCollection implements \JsonSerializable
                             'description' => $category->getDescription(),
                             'text' => $category->getText(),
                             'slug' => $category->getSlug()->getValue(),
-                        ], $direction->getCategories()->toArray()
+                        ],
+                        $direction->getCategories()->toArray()
                     )
-                ], $this->directions
+                ],
+                $this->directions
             ),
             'total' => $this->total,
         ];

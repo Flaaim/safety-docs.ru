@@ -2,7 +2,6 @@
 
 namespace App\Direction\Command\Direction\Category\AssignProduct;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Command
@@ -14,6 +13,6 @@ class Command
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $categoryId,
-    ){
+    ) {
     }
 }

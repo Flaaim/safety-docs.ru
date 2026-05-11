@@ -11,13 +11,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Routing\RouteContext;
 
-
 class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Validator $validator,
         private readonly Handler $handler
-    ){
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -41,5 +40,4 @@ class RequestAction implements RequestHandlerInterface
 
         return new EmptyResponse(201);
     }
-
 }

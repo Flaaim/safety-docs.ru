@@ -10,6 +10,6 @@ class Command
         #[Assert\Uuid]
         #[Assert\NotBlank]
         public string $directionId,
-    ){
+    ) {
     }
 }

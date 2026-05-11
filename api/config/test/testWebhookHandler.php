@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\Functional\Payment\TestPaymentProvider;
 
 return [
-    HookPaymentHandler::class => function(ContainerInterface $c){
+    HookPaymentHandler::class => function (ContainerInterface $c) {
 
         $yookassaWebhookParser = new YookassaWebhookParser();
 

@@ -12,7 +12,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class DirectionFixture extends AbstractFixture
 {
-
     public function load(ObjectManager $manager): void
     {
         $text  = <<<EOT

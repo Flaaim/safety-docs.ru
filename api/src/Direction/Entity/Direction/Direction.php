@@ -29,8 +29,7 @@ class Direction
         private Slug $slug,
         #[ORM\Embedded(class: Breadcrumb::class)]
         private ?Breadcrumb $breadcrumb = null,
-
-    ){
+    ) {
         $this->categories = new ArrayCollection();
     }
     public function getId(): DirectionId
@@ -68,17 +67,17 @@ class Direction
     public function addCategory(Category $category): void
     {
         foreach ($this->categories as $existingCategory) {
-            if($existingCategory->getSlug()->equals($category->getSlug())) {
-                throw new \DomainException("Category with slug ".$category->getSlug()->getValue()." is exists.");
+            if ($existingCategory->getSlug()->equals($category->getSlug())) {
+                throw new \DomainException("Category with slug " . $category->getSlug()->getValue() . " is exists.");
             }
         }
         $this->categories->add($category);
     }
     public function isCategoryExist(Slug $categorySlug): bool
     {
-        foreach($this->categories as $existingCategory) {
+        foreach ($this->categories as $existingCategory) {
             /** @var Category $existingCategory */
-            if($existingCategory->getSlug()->equals($categorySlug)) {
+            if ($existingCategory->getSlug()->equals($categorySlug)) {
                 return true;
             }
         }
@@ -87,7 +86,7 @@ class Direction
     public function removeCategory(Slug $slug): void
     {
         foreach ($this->categories as $category) {
-            if($category->getSlug()->equals($slug)) {
+            if ($category->getSlug()->equals($slug)) {
                 $this->categories->removeElement($category);
                 return;
             }
@@ -97,7 +96,7 @@ class Direction
 
     public function canBeDeleted(): bool
     {
-        if($this->categories->count() > 0){
+        if ($this->categories->count() > 0) {
             return false;
         }
         return true;
@@ -106,5 +105,4 @@ class Direction
     {
         return $this->breadcrumb;
     }
-
 }

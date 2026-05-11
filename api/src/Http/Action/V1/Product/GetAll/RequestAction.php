@@ -13,7 +13,7 @@ class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Handler $handler,
-    ){
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

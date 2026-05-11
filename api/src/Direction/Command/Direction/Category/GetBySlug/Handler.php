@@ -11,7 +11,7 @@ class Handler
 {
     public function __construct(
         private readonly CategoryRepository $categories
-    ){
+    ) {
     }
 
     public function handle(Command $command): CategoryDTO
@@ -21,7 +21,7 @@ class Handler
 
         $category = $this->categories->findBySlug($slug, $directionId);
 
-        if(null === $category){
+        if (null === $category) {
             throw new \DomainException('Category not found.');
         }
 

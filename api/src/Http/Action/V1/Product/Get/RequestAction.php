@@ -15,9 +15,8 @@ class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private Validator $validator,
-        private Handler   $handler
-    ){
-
+        private Handler $handler
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

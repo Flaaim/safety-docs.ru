@@ -15,7 +15,8 @@ class Handler
         private readonly CategoryRepository $categories,
         private readonly DirectionRepository $directions,
         private readonly Flusher $flusher
-    ){}
+    ) {
+    }
 
     public function handle(Command $command): void
     {
@@ -24,28 +25,28 @@ class Handler
 
         $direction = $this->directions->findById($directionId);
 
-        if($direction === null) {
+        if ($direction === null) {
             throw new \DomainException('Direction not found.');
         }
 
         $category = $this->categories->findById(new CategoryId($command->categoryId));
 
-        if($category === null) {
+        if ($category === null) {
             throw new \DomainException('Category not found.');
         }
 
         $existingCategory = $this->categories->findBySlug($slug, $directionId);
 
-        if($existingCategory && !$existingCategory->getId()->equals($category->getId())) {
-            throw new \DomainException('Category with slug '. $slug->getValue() .' is exists.');
+        if ($existingCategory && !$existingCategory->getId()->equals($category->getId())) {
+            throw new \DomainException('Category with slug ' . $slug->getValue() . ' is exists.');
         }
 
         $parentCategory = null;
 
-        if($command->parentId !== null) {
+        if ($command->parentId !== null) {
             $parentCategory = $this->categories->findById(new CategoryId($command->parentId));
 
-            if($parentCategory === null) {
+            if ($parentCategory === null) {
                 throw new \DomainException('Parent category not found.');
             }
         }
@@ -60,6 +61,5 @@ class Handler
         );
 
         $this->flusher->flush();
-
     }
 }

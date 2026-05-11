@@ -24,5 +24,4 @@ class CurrencyTest extends TestCase
         $currency = new Currency();
         $this->assertEquals('RUB', $currency->getValue());
     }
-
 }

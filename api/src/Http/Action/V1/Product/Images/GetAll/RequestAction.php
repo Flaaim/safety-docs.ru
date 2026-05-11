@@ -11,13 +11,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Routing\RouteContext;
 
-
 class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private Validator $validator,
         private Handler $handler
-    ){
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

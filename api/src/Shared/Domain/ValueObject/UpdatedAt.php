@@ -15,7 +15,7 @@ class UpdatedAt
     private function __construct(string $value, string $format)
     {
         $value = DateTimeImmutable::createFromFormat($format, trim($value));
-        if($value === false) {
+        if ($value === false) {
             throw new DomainException(sprintf('Invalid date format. Expected: %s', $format));
         }
         $errors = DateTimeImmutable::getLastErrors();

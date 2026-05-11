@@ -12,13 +12,13 @@ class Handler
     public function __construct(
         private readonly CategoryRepository $categories,
         private readonly CategoryDTOMapper $categoryDTOMapper,
-    ){
+    ) {
     }
 
     public function handle(Command $command): CategoriesCollection
     {
         $categories = $this->categories->findByDirectionId(new DirectionId($command->directionId));
-        if(empty($categories)) {
+        if (empty($categories)) {
             throw new \DomainException('Categories not found.');
         }
 

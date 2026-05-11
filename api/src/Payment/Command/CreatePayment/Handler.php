@@ -21,15 +21,14 @@ use Ramsey\Uuid\Uuid;
 
 class Handler
 {
-
     public function __construct(
         private readonly Flusher $flusher,
         private readonly ProductQueryInterface $productQuery,
         private readonly YookassaProvider $yookassaProvider,
         private readonly PaymentRepository $payments,
         private readonly LoggerInterface $logger
-    )
-    {}
+    ) {
+    }
     public function handle(Command $command): Response
     {
         $email = new Email($command->email);
@@ -55,7 +54,7 @@ class Handler
                 )
             );
             $payment->setExternalId($paymentInfo->paymentId);
-        }catch (PaymentException $e){
+        } catch (PaymentException $e) {
             $this->logger->error('Failed to create payment: ', ['error' => $e->getMessage()]);
             $payment->updateStatus(PaymentStatus::cancelled());
 
@@ -74,6 +73,5 @@ class Handler
             $payment->getStatus()->getValue(),
             $paymentInfo->redirectUrl,
         );
-
     }
 }

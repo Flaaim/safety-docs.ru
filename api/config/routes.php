@@ -11,7 +11,7 @@ use App\Http\Middleware\UploadFileHandler;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
-return static function(App $app): void {
+return static function (App $app): void {
 
     $app->group('/v1', function (RouteCollectorProxy $group): void {
 
@@ -22,7 +22,6 @@ return static function(App $app): void {
             $group->post('/payment-webhook', Payment\HookPayment\RequestAction::class);
 
             $group->get('/get/{token}', Payment\GetPaymentResult\RequestAction::class);
-
         });
 
         $group->group('/products', function (RouteCollectorProxy $group): void {
@@ -34,22 +33,20 @@ return static function(App $app): void {
 
             $group->get('', Product\GetAll\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->post('/{productId:'.$uuidPattern.'}', Product\Update\RequestAction::class)
+            $group->post('/{productId:' . $uuidPattern . '}', Product\Update\RequestAction::class)
                 ->add(UploadFileHandler::class)
                 ->add(AuthMiddleware::class);
 
-            $group->get('/{productId:'.$uuidPattern.'}', Product\Get\RequestAction::class);
+            $group->get('/{productId:' . $uuidPattern . '}', Product\Get\RequestAction::class);
 
             $group->get('/free', Product\GetAllFree\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->group('/{productId:'.$uuidPattern.'}/images', function (RouteCollectorProxy $group): void {
+            $group->group('/{productId:' . $uuidPattern . '}/images', function (RouteCollectorProxy $group): void {
                 $group->post('', Product\Images\Add\RequestAction::class);
                 $group->get('', Product\Images\GetAll\RequestAction::class);
 
                 $group->delete('', Product\Images\Clear\RequestAction::class);
-
             })->add(AuthMiddleware::class);
-
         });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {
@@ -60,22 +57,21 @@ return static function(App $app): void {
         $group->group('/directions', function (RouteCollectorProxy $group): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
-            $group->get('',  Direction\GetAll\RequestAction::class);
+            $group->get('', Direction\GetAll\RequestAction::class);
 
             $group->get('/s/{slug:[a-z0-9-]+}', Direction\GetBySlug\RequestAction::class);
             $group->post('', Direction\Add\RequestAction::class);
-            $group->delete('/{directionId:'.$uuidPattern.'}', Direction\Delete\RequestAction::class);
-            $group->put('/{directionId:'.$uuidPattern.'}', Direction\Update\RequestAction::class);
+            $group->delete('/{directionId:' . $uuidPattern . '}', Direction\Delete\RequestAction::class);
+            $group->put('/{directionId:' . $uuidPattern . '}', Direction\Update\RequestAction::class);
 
-            $group->group('/{directionId:'.$uuidPattern.'}/categories', function (RouteCollectorProxy $group) use ($uuidPattern) : void {
+            $group->group('/{directionId:' . $uuidPattern . '}/categories', function (RouteCollectorProxy $group) use ($uuidPattern): void {
 
                 $group->get('', Direction\Category\GetAll\RequestAction::class);
                 $group->get('/s/{slug:[a-z0-9-]+}', Direction\Category\GetBySlug\RequestAction::class);
 
                 $group->post('', Direction\Category\Add\RequestAction::class)->add(AuthMiddleware::class);
-                $group->put('/{categoryId:'.$uuidPattern.'}', Direction\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
+                $group->put('/{categoryId:' . $uuidPattern . '}', Direction\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
             });
-
         });
 
         $group->group('/categories', function (RouteCollectorProxy $group): void {
@@ -83,16 +79,10 @@ return static function(App $app): void {
 
             $group->get('', Direction\Category\Admin\GetAll\RequestAction::class)->add(AuthMiddleware::class);
 
-            $group->group('/{categoryId:'.$uuidPattern.'}', function (RouteCollectorProxy $group) : void {
+            $group->group('/{categoryId:' . $uuidPattern . '}', function (RouteCollectorProxy $group): void {
                 $group->put('/product', Direction\Category\AssignProduct\RequestAction::class)->add(AuthMiddleware::class);
                 $group->delete('/product', Direction\Category\RefuseProduct\RequestAction::class)->add(AuthMiddleware::class);
             });
-
-
         });
-
     });
-
-
-
 };

@@ -11,7 +11,7 @@ class Handler
     public function __construct(
         private readonly ProductRepository $products,
         private readonly FileSystemPathInterface $fileSystemPath
-    ){
+    ) {
     }
 
     public function handle(Command $command): array

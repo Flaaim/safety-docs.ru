@@ -19,7 +19,7 @@ class ProductRepository
 
     public function get(ProductId $id): Product
     {
-        if(!$product = $this->repo->find($id)) {
+        if (!$product = $this->repo->find($id)) {
             throw new \DomainException('Product not found.');
         }
         /** @var Product $product */

@@ -17,8 +17,8 @@ class Handler
     public function __construct(
         private readonly ProductRepository $products,
         private readonly Flusher $flusher,
-        private readonly FileUploaderInterface   $uploader,
-    ){
+        private readonly FileUploaderInterface $uploader,
+    ) {
     }
 
     public function handle(Command $command): void
@@ -46,6 +46,5 @@ class Handler
         $this->products->add($product);
 
         $this->flusher->flush();
-
     }
 }

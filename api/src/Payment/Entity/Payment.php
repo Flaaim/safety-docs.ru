@@ -74,7 +74,7 @@ class Payment
     }
     public function setStatus(PaymentStatus $newStatus): void
     {
-        if($this->status->getValue() === $newStatus->getValue()) {
+        if ($this->status->getValue() === $newStatus->getValue()) {
             throw new \DomainException('Status already set');
         }
         $this->status = $newStatus;

@@ -2,7 +2,6 @@
 
 namespace App\Http\Action\V1\Direction\Category\Admin\GetAll;
 
-
 use App\Direction\Command\Direction\Category\Admin\GetAll\Command;
 use App\Direction\Command\Direction\Category\Admin\GetAll\Handler;
 use App\Http\JsonResponse;
@@ -14,7 +13,7 @@ class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Handler $handler
-    ){
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

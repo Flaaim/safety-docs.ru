@@ -28,7 +28,8 @@ class Command
         #[Assert\Choice(
             callback: [FormatDocument::class, 'getValues'],
             multiple: true,
-            message: 'One or more selected document formats are invalid.')]
+            message: 'One or more selected document formats are invalid.'
+        )]
         public array $formatDocuments,
         #[SlimUploadedFileAssert(
             maxSize: '15M',
@@ -44,5 +45,6 @@ class Command
             ]
         )]
         public ?UploadedFileInterface $file = null,
-    ){}
+    ) {
+    }
 }

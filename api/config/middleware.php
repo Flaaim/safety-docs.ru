@@ -6,7 +6,7 @@ use App\Http\Middleware;
 use Slim\App;
 use Slim\Middleware\ErrorMiddleware;
 
-return static function(App $app): void {
+return static function (App $app): void {
     $app->add(Middleware\DomainExceptionHandler::class);
     $app->add(Middleware\ValidationExceptionHandler::class);
 
@@ -14,5 +14,4 @@ return static function(App $app): void {
     $app->addBodyParsingMiddleware();
 
     $app->add(ErrorMiddleware::class);
-
 };

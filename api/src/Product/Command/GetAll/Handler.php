@@ -13,7 +13,7 @@ class Handler
         private readonly ProductRepository $products,
         private readonly ProductPaginatedDTOMapping $mapper,
         private readonly ProductDTOMapper $productDTOMapper,
-    ){
+    ) {
     }
 
     public function handle(Command $command): Response

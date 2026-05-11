@@ -32,7 +32,6 @@ class TestHandler extends TestCase
         self::expectExceptionMessage('Product not found.');
         self::expectException(\DomainException::class);
         $this->handler->handle($command);
-
     }
 
     public function testSuccess(): void

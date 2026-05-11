@@ -27,7 +27,7 @@ class HandlerTest extends TestCase
         $this->products = $this->createMock(ProductRepository::class);
         $this->flusher = $this->createMock(Flusher::class);
         $this->uploader = $this->createMock(FileUploaderInterface::class);
-        $this->handler = new Handler($this->products, $this->flusher,  $this->uploader);
+        $this->handler = new Handler($this->products, $this->flusher, $this->uploader);
     }
 
     public function testSuccess(): void
@@ -37,7 +37,7 @@ class HandlerTest extends TestCase
         $command = $this->createCommand($uploadedFile);
 
         $this->products->expects(self::once())->method('add')
-            ->with(self::callback(function(Product $product) {
+            ->with(self::callback(function (Product $product) {
                 self::assertEquals('Обучение по охране труда - комплект документов', $product->getName());
                 self::assertEquals('edu300.1', $product->getCipher());
                 self::assertEquals(550.00, $product->getAmount()->getValue());

@@ -59,9 +59,9 @@ class HandlerTest extends TestCase
         $this->fileRemover->expects($matcher = self::exactly(2))
             ->method('remove')
             ->willReturnCallback(function (string $filePath) use ($matcher, $productId) {
-                $expected = match($matcher->numberOfInvocations()){
-                    1 => '89309b56-4c7b-4cda-886d-7f39765cd620'. DIRECTORY_SEPARATOR .'image1',
-                    2 => '89309b56-4c7b-4cda-886d-7f39765cd620'.DIRECTORY_SEPARATOR.'image2'
+                $expected = match ($matcher->numberOfInvocations()) {
+                    1 => '89309b56-4c7b-4cda-886d-7f39765cd620' . DIRECTORY_SEPARATOR . 'image1',
+                    2 => '89309b56-4c7b-4cda-886d-7f39765cd620' . DIRECTORY_SEPARATOR . 'image2'
                 };
                 $this->assertSame($expected, $filePath);
             });

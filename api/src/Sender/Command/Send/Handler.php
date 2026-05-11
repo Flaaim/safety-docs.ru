@@ -13,14 +13,13 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class Handler
 {
-
     public function __construct(
         private readonly MessageRepository $messages,
         private readonly Flusher $flusher,
         private readonly LoggerInterface $logger,
         private readonly CreatorInterface $creator,
         private readonly MailerInterface $mailer
-    ){
+    ) {
     }
 
     public function handle(Command $command): void
@@ -34,15 +33,13 @@ class Handler
 
         $this->messages->add($message);
 
-        try{
-
+        try {
             $mimeMessage = $this->creator->create($message->getRecipient());
 
             $this->mailer->send($mimeMessage);
 
             $message->updateStatus(MessageStatus::received());
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->logger->error('Failed to send message', [
                 'message_id' => $message->getId()->getValue(),
                 'recipient' => $message->getRecipient()->getEmail()->getValue(),
@@ -50,12 +47,10 @@ class Handler
                 'exception_class' => get_class($e),
             ]);
             $message->updateStatus(MessageStatus::failed());
-
         }
 
         $this->messages->update($message);
 
         $this->flusher->flush();
-
     }
 }

@@ -16,7 +16,7 @@ class RequestAction implements RequestHandlerInterface
     public function __construct(
         private Validator $validator,
         private Handler $handler
-    ){
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -35,6 +35,6 @@ class RequestAction implements RequestHandlerInterface
 
         $this->handler->handle($command);
 
-        return new EmptyResponse(201 );
+        return new EmptyResponse(201);
     }
 }

@@ -38,21 +38,21 @@ class Category
         #[ORM\JoinColumn(name: 'direction_id', referencedColumnName: 'id', nullable: false, onDelete: "RESTRICT")]
         private Direction $direction,
         ?Category $parent = null
-    ){
+    ) {
         $this->children = new ArrayCollection();
 
-        if($parent !== null){
-            if($parent->getDirection() !== $this->direction){
+        if ($parent !== null) {
+            if ($parent->getDirection() !== $this->direction) {
                 throw new \DomainException('Child category cannot be from different direction.');
             }
 
-            if($categoryId->equals($parent->getId())){
+            if ($categoryId->equals($parent->getId())) {
                 throw new \DomainException('A category cannot be its own parent.');
             }
         }
         $this->parent = $parent;
 
-        if($this->parent !== null){
+        if ($this->parent !== null) {
             $this->parent->addChild($this);
         }
 
@@ -90,16 +90,15 @@ class Category
         Slug $slug,
         Direction $direction,
         ?Category $parent = null
-    ): void
-    {
-        if($parent !== null){
-            if($this->categoryId->equals($parent->getId())){
+    ): void {
+        if ($parent !== null) {
+            if ($this->categoryId->equals($parent->getId())) {
                 throw new \DomainException('A category cannot be its own parent.');
             }
-            if(!$this->children->isEmpty()){
+            if (!$this->children->isEmpty()) {
                 throw new \DomainException('Cannot move a category with children under another parent. Delete or move its children first.');
             }
-            if(!$parent->getDirection()->getId()->equals($direction->getId())){
+            if (!$parent->getDirection()->getId()->equals($direction->getId())) {
                 throw new \DomainException('Child category cannot be from different direction.');
             }
         }
@@ -123,14 +122,13 @@ class Category
             $this->parent->addChild($this);
         }
 
-        if($parent === null && $this->product !== null){
+        if ($parent === null && $this->product !== null) {
             $this->refuseProduct();
         }
     }
     public function updateDirection(Direction $direction): void
     {
         if ($this->direction->getId()->getValue() !== $direction->getId()->getValue()) {
-
             $this->direction = $direction;
 
             foreach ($this->children as $child) {
@@ -140,17 +138,17 @@ class Category
     }
     public function assignProduct(Product $product): void
     {
-        if($this->product !== null) {
+        if ($this->product !== null) {
             throw new \DomainException('Product already assigned. You must delete it first.');
         }
-        if(!$this->isChild()){
+        if (!$this->isChild()) {
             throw new \DomainException('Product can be assigned to only child category.');
         }
         $this->product = $product;
     }
     public function refuseProduct(): void
     {
-        if($this->product === null) {
+        if ($this->product === null) {
             throw new \DomainException('Product not assigned.');
         }
         $this->product = null;
@@ -168,7 +166,7 @@ class Category
         $isAlreadyAssigned = $this->children->exists(function (int $key, Category $existingChild) use ($child) {
             return $existingChild->getId()->getValue() === $child->getId()->getValue();
         });
-        if($isAlreadyAssigned){
+        if ($isAlreadyAssigned) {
             throw new \DomainException('A category child already assigned.');
         }
         $this->children->add($child);
@@ -190,5 +188,4 @@ class Category
     {
         return $this->parent !== null;
     }
-
 }

@@ -4,8 +4,6 @@ namespace App\Shared\Domain\Service\Payment\WebhookParser;
 
 use App\Shared\Domain\Service\Payment\PaymentWebhookDataInterface;
 
-
-
 class YookassaWebhookData implements PaymentWebhookDataInterface
 {
     public function __construct(
@@ -14,8 +12,8 @@ class YookassaWebhookData implements PaymentWebhookDataInterface
         private readonly array $metadata,
         private readonly string $paymentId,
         private readonly string $currency
-    )
-    {}
+    ) {
+    }
     public function getStatus(): string
     {
         return $this->status;
@@ -23,7 +21,7 @@ class YookassaWebhookData implements PaymentWebhookDataInterface
 
     public function isPaid(): bool
     {
-       return $this->status === 'succeeded';
+        return $this->status === 'succeeded';
     }
 
     public function getMetadata(string $key): ?string

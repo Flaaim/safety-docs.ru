@@ -8,6 +8,6 @@ class PaymentResultDTO
         public string $returnToken,
         public string $status,
         public string $email
-    )
-    {}
+    ) {
+    }
 }

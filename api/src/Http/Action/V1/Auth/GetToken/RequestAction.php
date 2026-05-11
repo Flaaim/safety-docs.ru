@@ -12,15 +12,16 @@ use Psr\Http\Server\RequestHandlerInterface;
 class RequestAction implements RequestHandlerInterface
 {
     public function __construct(private readonly ContainerInterface $container)
-    {}
+    {
+    }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
             $data = $request->getParsedBody() ?? [];
             $config = $this->container->get('config')['auth'];
 
-            if(isset($data['login']) && isset($data['password'])) {
-                if($data['login'] === $config['login'] && $data['password'] === $config['password']) {
+            if (isset($data['login']) && isset($data['password'])) {
+                if ($data['login'] === $config['login'] && $data['password'] === $config['password']) {
                     return new JsonResponse([
                         'token' => $config['api_token'],
                         'type' => 'Bearer'
@@ -28,7 +29,7 @@ class RequestAction implements RequestHandlerInterface
                 }
             }
             return new EmptyResponse(401);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return new JsonResponse(['message' => $e->getMessage()], 500);
         }
     }

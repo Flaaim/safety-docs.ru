@@ -5,11 +5,12 @@ namespace App\Payment\Command\CreatePayment;
 class Response implements \JsonSerializable
 {
     public function __construct(
-        public float  $amount,
+        public float $amount,
         public string $currency,
         public string $status,
         public string $returnUrl,
-    ){}
+    ) {
+    }
 
     public function jsonSerialize(): array
     {

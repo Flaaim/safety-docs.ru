@@ -10,7 +10,7 @@ class ProductPaginatedDTO
         private readonly int $currentPage,
         private readonly int $perPage,
         private readonly int $totalPages
-    ){
+    ) {
     }
 
     public function getProducts(): array

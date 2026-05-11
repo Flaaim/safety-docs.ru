@@ -11,14 +11,14 @@ class Handler
 {
     public function __construct(
         private readonly ProductRepository $products,
-        private readonly Flusher            $flusher,
-        private readonly FileRemoverInterface  $fileRemover,
-    ){
+        private readonly Flusher $flusher,
+        private readonly FileRemoverInterface $fileRemover,
+    ) {
     }
     public function handle(Command $command): void
     {
         $product = $this->products->findById(new ProductId($command->productId));
-        if($product === null) {
+        if ($product === null) {
             throw new \DomainException('Product not found.');
         }
 

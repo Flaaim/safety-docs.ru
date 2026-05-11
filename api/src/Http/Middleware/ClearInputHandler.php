@@ -10,7 +10,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class ClearInputHandler implements MiddlewareInterface
 {
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $request = $request
@@ -30,7 +29,7 @@ class ClearInputHandler implements MiddlewareInterface
         foreach ($items as $key => $item) {
             if (is_string($item)) {
                 $result[$key] = trim($item);
-            }else{
+            } else {
                 $result[$key] = self::filterStrings($item);
             }
         }
@@ -43,11 +42,11 @@ class ClearInputHandler implements MiddlewareInterface
         $result = [];
 
         foreach ($items as $key => $item) {
-            if($item instanceof UploadedFileInterface) {
-                if($item->getError() !== UPLOAD_ERR_NO_FILE) {
+            if ($item instanceof UploadedFileInterface) {
+                if ($item->getError() !== UPLOAD_ERR_NO_FILE) {
                     $result[$key] = $item;
                 }
-            }else{
+            } else {
                 $result[$key] = self::filterFiles($item);
             }
         }

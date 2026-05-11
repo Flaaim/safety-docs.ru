@@ -13,7 +13,7 @@ class LogErrorHandler extends ErrorHandler
         CallableResolverInterface $callableResolver,
         ResponseFactoryInterface $responseFactory,
         ?LoggerInterface $logger
-    ){
+    ) {
         parent::__construct($callableResolver, $responseFactory);
         $this->logger = $logger;
     }

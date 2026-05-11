@@ -15,7 +15,6 @@ use Ramsey\Uuid\Uuid;
 
 class PaymentFixture extends AbstractFixture
 {
-
     public function load(ObjectManager $manager): void
     {
         $payment = new Payment(

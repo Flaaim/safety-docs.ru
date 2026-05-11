@@ -10,16 +10,15 @@ class FileUploader implements FileUploaderInterface
     public function __construct(
         private readonly FileSystemPathInterface $fileSystemPath,
         private readonly DirectoryCreatorInterface $directoryCreator
-    ){
+    ) {
     }
     public function upload(
         string $relativePathDir,
         UploadedFileInterface $uploadedFile,
         ?FileNameGeneratorInterface $nameGenerator = null
-    ): string
-    {
-        if($uploadedFile->getError() !== UPLOAD_ERR_OK){
-            throw new \DomainException('Error uploading file '. $uploadedFile->getError());
+    ): string {
+        if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
+            throw new \DomainException('Error uploading file ' . $uploadedFile->getError());
         }
 
         $filename = $nameGenerator
@@ -35,5 +34,4 @@ class FileUploader implements FileUploaderInterface
 
         return $filename;
     }
-
 }

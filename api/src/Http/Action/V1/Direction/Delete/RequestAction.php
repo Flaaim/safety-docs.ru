@@ -13,11 +13,10 @@ use Slim\Routing\RouteContext;
 
 class RequestAction implements RequestHandlerInterface
 {
-
     public function __construct(
-     private Handler $handler,
-     private Validator $validator
-    ){
+        private Handler $handler,
+        private Validator $validator
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

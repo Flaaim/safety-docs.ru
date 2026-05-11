@@ -15,7 +15,7 @@ class Recipient
         private readonly EmailMessage $email,
         #[ORM\Column(type: 'string')]
         private readonly string $subject
-    ){
+    ) {
         $this->attachments = [];
     }
 

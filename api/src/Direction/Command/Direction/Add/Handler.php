@@ -13,15 +13,15 @@ class Handler
     public function __construct(
         private readonly DirectionRepository $directions,
         private readonly Flusher $flusher
-    ){
+    ) {
     }
 
     public function handle(Command $command): void
     {
         $slug = Slug::generate($command->title);
         $direction = $this->directions->findBySlug($slug);
-        if($direction){
-            throw new \DomainException("Direction with slug ".$slug->getValue()." is exists");
+        if ($direction) {
+            throw new \DomainException("Direction with slug " . $slug->getValue() . " is exists");
         }
         $direction = new Direction(
             DirectionId::generate(),
@@ -34,5 +34,4 @@ class Handler
 
         $this->flusher->flush();
     }
-
 }

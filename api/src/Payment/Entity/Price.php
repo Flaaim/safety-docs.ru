@@ -2,7 +2,6 @@
 
 namespace App\Payment\Entity;
 
-
 use App\Shared\Domain\ValueObject\Currency;
 use Webmozart\Assert\Assert;
 

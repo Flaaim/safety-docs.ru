@@ -11,14 +11,14 @@ class Handler
     public function __construct(
         private CategoryRepository $categories,
         private Flusher $flusher
-    ){
+    ) {
     }
 
     public function handle(Command $command): void
     {
         $category = $this->categories->findById(new CategoryId($command->categoryId));
 
-        if(null === $category) {
+        if (null === $category) {
             throw new \DomainException('Category not found.');
         }
         $category->refuseProduct();

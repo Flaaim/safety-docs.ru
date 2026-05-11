@@ -27,7 +27,6 @@ class Command
         )]
         /** @var array<UploadedFileInterface> */
         public array $uploadedImages,
-    ){
-
+    ) {
     }
 }

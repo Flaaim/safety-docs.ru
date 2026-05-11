@@ -12,7 +12,7 @@ class MessageStatus
 
     public function __construct(
         private readonly string $value
-    ){
+    ) {
         Assert::oneOf($value, [self::RECEIVED, self::FAILED, self::PENDING]);
     }
 

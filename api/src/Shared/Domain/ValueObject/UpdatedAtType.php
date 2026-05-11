@@ -2,11 +2,9 @@
 
 namespace App\Shared\Domain\ValueObject;
 
-
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
-
 
 class UpdatedAtType extends DateTimeImmutableType
 {

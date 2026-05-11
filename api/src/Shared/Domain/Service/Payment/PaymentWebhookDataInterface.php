@@ -10,5 +10,4 @@ interface PaymentWebhookDataInterface
     public function getPaymentId(): string;
     public function getAmount(): float;
     public function getCurrency(): string;
-
 }

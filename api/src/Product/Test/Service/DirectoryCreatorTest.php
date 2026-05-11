@@ -6,7 +6,6 @@ use App\Product\Service\File\DirectoryCreator;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 
-
 class DirectoryCreatorTest extends TestCase
 {
     private InMemoryFileSystemPath $fileSystem;
@@ -17,7 +16,7 @@ class DirectoryCreatorTest extends TestCase
     public function testSuccess(): void
     {
         $creator = new DirectoryCreator();
-        $creator->createDirectory($dir = $this->fileSystem->getValue() .'/one');
+        $creator->createDirectory($dir = $this->fileSystem->getValue() . '/one');
 
         self::assertDirectoryExists($dir);
     }

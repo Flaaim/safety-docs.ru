@@ -23,10 +23,10 @@ class FileUploaderTest extends TestCase
 
     public function testErrorUpload(): void
     {
-        $uploadFile = $this->createUploadFile('error_file.txt', 'text/plain', 1,UPLOAD_ERR_NO_FILE);
+        $uploadFile = $this->createUploadFile('error_file.txt', 'text/plain', 1, UPLOAD_ERR_NO_FILE);
 
         self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Error uploading file '. $uploadFile->getError());
+        self::expectExceptionMessage('Error uploading file ' . $uploadFile->getError());
         $this->handler->upload('error_file.txt', $uploadFile);
     }
 
@@ -35,7 +35,7 @@ class FileUploaderTest extends TestCase
     {
         $uploadFile = $this->createMock(UploadedFileInterface::class);
         $uploadFile->expects(self::once())->method('getClientFilename')->willReturn('text.rar');
-        
+
         $expectedPath = 'vfs://storage/directory/text.rar';
 
         $this->dirCreator->expects($this->once())->method('createDirectory');
@@ -44,7 +44,6 @@ class FileUploaderTest extends TestCase
             ->with($this->equalTo($expectedPath));
 
         $this->handler->upload('directory', $uploadFile);
-
     }
 
     private function createUploadFile(string $name = 'test.txt', string $type = 'text/plain', int $size = 1, int $error = UPLOAD_ERR_OK): UploadedFileInterface

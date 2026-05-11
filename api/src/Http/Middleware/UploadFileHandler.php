@@ -10,7 +10,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class UploadFileHandler implements MiddlewareInterface
 {
-
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $uploadedFiles = $request->getUploadedFiles();
@@ -24,6 +23,5 @@ class UploadFileHandler implements MiddlewareInterface
         }
 
         return $handler->handle($request);
-
     }
 }

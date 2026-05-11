@@ -12,12 +12,12 @@ class Handler
     public function __construct(
         private readonly DirectionRepository $directions,
         private readonly CategoryDTOMapper $categoryDTOMapper,
-    ){
+    ) {
     }
     public function handle(Command $command): DirectionDTO
     {
         $direction = $this->directions->findBySlug(Slug::generate($command->slug));
-        if(null === $direction){
+        if (null === $direction) {
             throw new \DomainException('Direction not found.');
         }
 

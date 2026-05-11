@@ -13,19 +13,17 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class RequestAction implements RequestHandlerInterface
 {
-
     public function __construct(
         private Validator $validator,
-        private Handler   $handler
-    ){
-
+        private Handler $handler
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $data = $request->getParsedBody() ?? [];
         $file = $request->getAttribute('target_file');
 
-        if(null === $file) {
+        if (null === $file) {
             throw new \DomainException('File is required.');
         }
 
@@ -34,7 +32,7 @@ class RequestAction implements RequestHandlerInterface
             $data['cipher'] ?? '',
             $data['amount'] ?? 0,
             $data['updatedAt'] ?? '',
-                $file,
+            $file,
             $data['totalDocuments'] ?? 0,
             $data['formatDocuments'] ?? []
         );
@@ -43,6 +41,6 @@ class RequestAction implements RequestHandlerInterface
 
         $this->handler->handle($command);
 
-        return new EmptyResponse(201 );
+        return new EmptyResponse(201);
     }
 }

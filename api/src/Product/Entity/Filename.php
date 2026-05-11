@@ -22,5 +22,4 @@ class Filename
     {
         return $this->value;
     }
-
 }

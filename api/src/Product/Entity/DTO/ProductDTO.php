@@ -17,7 +17,7 @@ class ProductDTO
         public int $totalDocuments,
         public array $formatDocuments,
         public array $images,
-    ){
+    ) {
     }
 
     public static function fromProduct(Product $product): self
@@ -34,7 +34,7 @@ class ProductDTO
             array_map(function (FormatDocument $document) {
                 return $document->value;
             }, $product->getFormatDocuments()),
-            array_map(function ($image){
+            array_map(function ($image) {
                 return $image;
             }, $product->getImages()),
         );

@@ -11,7 +11,7 @@ class YookassaConfig
         private string $shopId,
         private string $secretKey,
         private string $returnUrl,
-    ){
+    ) {
         Assert::notEmpty($name);
         Assert::notEmpty($shopId);
         Assert::notEmpty($secretKey);
@@ -29,7 +29,8 @@ class YookassaConfig
     {
         return $this->secretKey;
     }
-    public function getReturnUrl(): string{
+    public function getReturnUrl(): string
+    {
         return $this->returnUrl;
     }
 }

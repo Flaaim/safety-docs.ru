@@ -14,10 +14,10 @@ class InMemoryFileSystemPath implements FileSystemPathInterface
     {
         $this->isVfs = $useVfs;
 
-        if($useVfs) {
+        if ($useVfs) {
             $this->root = vfsStream::setup('storage');
             $this->value = vfsStream::url('storage');
-        }else {
+        } else {
             $this->value = sys_get_temp_dir() . '/phpunit_real_storage';
             if (!is_dir($this->value)) {
                 mkdir($this->value, 0777, true);

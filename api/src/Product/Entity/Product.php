@@ -31,8 +31,8 @@ class Product
         private int $totalDocuments,
         #[ORM\Column(type: 'json', length: 255)]
         /** @var array<FormatDocument> */
-         array $formatDocuments
-    ){
+        array $formatDocuments
+    ) {
         Assert::greaterThanEq($this->totalDocuments, 0, 'Total documents cannot be negative.');
         $this->setFormatDocuments($formatDocuments);
     }
@@ -111,8 +111,7 @@ class Product
         int $totalDocuments,
         array $formatDocuments,
         \DateTimeImmutable $updatedAt = new \DateTimeImmutable(),
-    ): void
-    {
+    ): void {
         $this->name = $name;
         $this->cipher = $cipher;
         $this->amount = $amount;

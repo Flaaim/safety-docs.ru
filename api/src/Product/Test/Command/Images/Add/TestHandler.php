@@ -12,6 +12,7 @@ use App\Product\Service\File\FileUploaderInterface;
 use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
+
 use function PHPUnit\Framework\assertCount;
 
 class TestHandler extends TestCase
@@ -33,7 +34,6 @@ class TestHandler extends TestCase
             $this->uploader,
             $this->fileNameGenerator
         );
-
     }
 
 
@@ -74,7 +74,7 @@ class TestHandler extends TestCase
 
         $this->uploader->expects($this->exactly(2))->method('upload')
         ->willReturnCallback(
-            function ($path, $file) use ($image1, $image2, $expectedName1, $expectedName2){
+            function ($path, $file) use ($image1, $image2, $expectedName1, $expectedName2) {
                 if ($file === $image1) {
                     return $expectedName1;
                 }

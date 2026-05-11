@@ -4,7 +4,6 @@ namespace App\Shared\Domain\Service\Payment\WebhookParser;
 
 use App\Shared\Domain\Service\Payment\PaymentWebhookParserInterface;
 
-
 class YookassaWebhookParser implements PaymentWebhookParserInterface
 {
     const PROVIDER_NAME = 'Yookassa';
@@ -19,6 +18,5 @@ class YookassaWebhookParser implements PaymentWebhookParserInterface
         return isset($data['object']['id'])
             && isset($data['type'])
             && $data['type'] === self::NOTIFICATION_TYPE;
-
     }
 }

@@ -5,11 +5,10 @@ namespace App\Direction\Entity\Category\DTO\Admin;
 class CategoryPaginatedDTOMapper
 {
     public function map(
-       array $categories,
-       int $page,
-       int $perPage
-    ): CategoryPaginatedDTO
-    {
+        array $categories,
+        int $page,
+        int $perPage
+    ): CategoryPaginatedDTO {
         $total = count($categories);
         $offset = ($page - 1) * $perPage;
 

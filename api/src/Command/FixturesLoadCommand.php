@@ -45,5 +45,4 @@ class FixturesLoadCommand extends Command
 
         return Command::SUCCESS;
     }
-
 }

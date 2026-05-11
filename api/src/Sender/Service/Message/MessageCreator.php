@@ -11,7 +11,7 @@ class MessageCreator implements CreatorInterface
     public function __construct(
         private readonly Environment $twig,
         private readonly string $template = 'mail/template.html.twig'
-    ){
+    ) {
     }
     public function create(Recipient $recipient): Email
     {

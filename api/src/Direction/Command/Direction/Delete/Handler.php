@@ -11,17 +11,17 @@ class Handler
     public function __construct(
         private DirectionRepository $directions,
         private Flusher $flusher
-    ){
+    ) {
     }
 
     public function handle(Command $command): void
     {
         $direction = $this->directions->findById(new DirectionId($command->directionId));
-        if(null === $direction) {
+        if (null === $direction) {
             throw new \DomainException('Direction not found.');
         }
 
-        if(!$direction->canBeDeleted()) {
+        if (!$direction->canBeDeleted()) {
             throw new \DomainException('Direction cannot be deleted.');
         }
 

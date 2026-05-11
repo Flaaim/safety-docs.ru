@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 return [
-    HookPaymentHandler::class => function(ContainerInterface $c){
+    HookPaymentHandler::class => function (ContainerInterface $c) {
         $yookassaWebhookParser = new YookassaWebhookParser();
 
         $yookassaProvider = $c->get(YookassaProvider::class);

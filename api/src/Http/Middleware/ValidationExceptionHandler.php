@@ -15,13 +15,12 @@ class ValidationExceptionHandler implements MiddlewareInterface
     {
         try {
             return $handler->handle($request);
-        }catch (ValidationException $exception) {
+        } catch (ValidationException $exception) {
             $errors = [];
-            foreach ($exception->getViolations() as $violation){
+            foreach ($exception->getViolations() as $violation) {
                 $errors[$violation->getPropertyPath()] = $violation->getMessage();
             }
             return new JsonResponse(['errors' => $errors], 422);
         }
-
     }
 }

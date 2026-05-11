@@ -18,7 +18,7 @@ class Message
         private MessageStatus $status,
         #[ORM\Column(type: 'datetime_immutable')]
         private \DateTimeImmutable $dateReceived,
-    ){
+    ) {
     }
 
     public function getId(): MessageId

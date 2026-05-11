@@ -11,14 +11,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Routing\RouteContext;
 
-
 class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Handler $handler,
         private readonly Validator $validator
-    )
-    {}
+    ) {
+    }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
             $routeContext = RouteContext::fromRequest($request);
@@ -33,6 +32,5 @@ class RequestAction implements RequestHandlerInterface
             $response = $this->handler->handle($command);
 
             return new JsonResponse($response, 200);
-
     }
 }

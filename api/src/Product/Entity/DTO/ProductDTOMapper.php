@@ -8,7 +8,7 @@ class ProductDTOMapper
 {
     public function map(?Product $product): ?ProductDTO
     {
-        if(null === $product) {
+        if (null === $product) {
             return null;
         }
         return ProductDTO::fromProduct($product);

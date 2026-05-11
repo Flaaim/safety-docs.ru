@@ -91,7 +91,7 @@ class ProductBuilder
             $this->formatDocument
         );
 
-        if(!empty($this->images)) {
+        if (!empty($this->images)) {
             foreach ($this->images as $image) {
                 $product->attachImage($image);
             }

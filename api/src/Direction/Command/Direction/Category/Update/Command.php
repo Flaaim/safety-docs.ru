@@ -21,6 +21,6 @@ class Command
         public string $directionId,
         #[Assert\Uuid]
         public ?string $parentId
-    ){
+    ) {
     }
 }

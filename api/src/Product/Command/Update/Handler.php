@@ -18,9 +18,9 @@ class Handler
     public function __construct(
         private readonly ProductRepository $products,
         private readonly Flusher $flusher,
-        private readonly FileUploaderInterface   $uploader,
+        private readonly FileUploaderInterface $uploader,
         private readonly FileRemoverInterface $fileRemover,
-    ){
+    ) {
     }
 
     public function handle(Command $command): void
@@ -28,13 +28,13 @@ class Handler
         $productId = new ProductId($command->productId);
         $product = $this->products->findById($productId);
 
-        if($product === null) {
+        if ($product === null) {
             throw new \DomainException('Product not found.');
         }
 
         $filename = $product->getFilename()->getValue();
 
-        if($command->file !== null){
+        if ($command->file !== null) {
             $filename = $command->file->getClientFilename();
         }
 
@@ -63,7 +63,7 @@ class Handler
 
         $this->flusher->flush();
 
-        if($command->file !== null) {
+        if ($command->file !== null) {
             $this->fileRemover->remove($oldRelativeFilePath);
         }
     }

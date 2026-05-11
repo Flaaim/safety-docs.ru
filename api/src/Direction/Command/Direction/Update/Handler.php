@@ -12,7 +12,7 @@ class Handler
     public function __construct(
         private readonly DirectionRepository $directions,
         private readonly Flusher $flusher
-    ){
+    ) {
     }
     public function handle(Command $command): void
     {
@@ -20,13 +20,13 @@ class Handler
         $directionId = new DirectionId($command->directionId);
         $direction = $this->directions->findById($directionId);
 
-        if(null === $direction) {
+        if (null === $direction) {
             throw new \DomainException('Direction not found.');
         }
 
         $existingDirection = $this->directions->findBySlug($slug);
 
-        if($existingDirection && !$existingDirection->getId()->equals($directionId)) {
+        if ($existingDirection && !$existingDirection->getId()->equals($directionId)) {
             throw new \DomainException('Direction with this slug already exists.');
         }
 

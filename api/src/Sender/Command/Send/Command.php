@@ -8,6 +8,6 @@ class Command
 {
     public function __construct(
         public Recipient $recipient,
-    ){
+    ) {
     }
 }

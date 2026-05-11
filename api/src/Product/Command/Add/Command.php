@@ -45,5 +45,6 @@ class Command
         )]
         /** @var string[] */
         public array $formatDocuments
-    ){}
+    ) {
+    }
 }

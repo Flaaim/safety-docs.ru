@@ -10,6 +10,6 @@ class Command
         #[Assert\NotBlank]
         #[Assert\Uuid(message: 'Token is not correct.')]
         public string $returnToken
-    )
-    {}
+    ) {
+    }
 }

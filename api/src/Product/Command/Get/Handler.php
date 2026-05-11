@@ -8,10 +8,9 @@ use App\Product\Entity\ProductRepository;
 
 class Handler
 {
-
     public function __construct(
         private ProductRepository $products
-    ){
+    ) {
     }
 
     public function handle(Command $command): ProductDTO

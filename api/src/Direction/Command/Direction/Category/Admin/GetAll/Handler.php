@@ -9,10 +9,10 @@ use App\Direction\Entity\Category\DTO\CategoryDTOMapper;
 class Handler
 {
     public function __construct(
-        private readonly CategoryRepository         $categories,
+        private readonly CategoryRepository $categories,
         private readonly CategoryPaginatedDTOMapper $paginatedDTOMapper,
-        private readonly CategoryDTOMapper          $categoryDTOMapper
-    ){
+        private readonly CategoryDTOMapper $categoryDTOMapper
+    ) {
     }
 
     public function handle(Command $command): Response

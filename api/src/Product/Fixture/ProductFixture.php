@@ -14,7 +14,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class ProductFixture extends AbstractFixture
 {
-
     public function load(ObjectManager $manager): void
     {
         $product = new Product(

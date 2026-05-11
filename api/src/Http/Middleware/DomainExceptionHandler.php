@@ -12,7 +12,8 @@ use Psr\Log\LoggerInterface;
 class DomainExceptionHandler implements MiddlewareInterface
 {
     public function __construct(private readonly LoggerInterface $logger)
-    {}
+    {
+    }
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
@@ -22,7 +23,7 @@ class DomainExceptionHandler implements MiddlewareInterface
                 'message' => $e->getMessage(),
                 'uri' => $request->getUri()->__toString(),
             ]);
-            return new JsonResponse(['message' => $e->getMessage()] , 400);
+            return new JsonResponse(['message' => $e->getMessage()], 400);
         }
     }
 }

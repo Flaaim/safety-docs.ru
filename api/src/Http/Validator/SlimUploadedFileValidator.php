@@ -11,7 +11,7 @@ class SlimUploadedFileValidator extends ConstraintValidator
 {
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if(!$constraint instanceof SlimUploadedFile){
+        if (!$constraint instanceof SlimUploadedFile) {
             throw new UnexpectedTypeException($constraint, SlimUploadedFile::class);
         }
 
@@ -19,13 +19,13 @@ class SlimUploadedFileValidator extends ConstraintValidator
             return;
         }
 
-        if(!$value instanceof UploadedFileInterface){
+        if (!$value instanceof UploadedFileInterface) {
             $this->context->buildViolation('Uploaded file should be an instance of UploadedFileInterface')
                 ->addViolation();
             return;
         }
 
-        if($value->getError() !== UPLOAD_ERR_OK){
+        if ($value->getError() !== UPLOAD_ERR_OK) {
             $this->context->buildViolation($this->getUploadErrorMessage($value->getError()))
                 ->addViolation();
             return;
@@ -41,27 +41,24 @@ class SlimUploadedFileValidator extends ConstraintValidator
             }
         }
 
-        if($constraint->mimeTypes){
+        if ($constraint->mimeTypes) {
             $mimeType = $value->getClientMediaType();
-            if(!in_array($mimeType, $constraint->mimeTypes, true)){
+            if (!in_array($mimeType, $constraint->mimeTypes, true)) {
                 $this->context->buildViolation($constraint->mimeTypesMessage)
                     ->setParameter('{{ type }}', $mimeType)
                     ->setParameter('{{ types }}', implode(', ', $constraint->mimeTypes))
                     ->addViolation();
             }
         }
-        if($constraint->extensions){
+        if ($constraint->extensions) {
             $extension = pathinfo($value->getClientFilename(), PATHINFO_EXTENSION);
-            if(!in_array($extension, $constraint->extensions, true)){
+            if (!in_array($extension, $constraint->extensions, true)) {
                 $this->context->buildViolation($constraint->extensionsMessage)
                     ->setParameter('{{ extension }}', $extension)
                     ->setParameter('{{ extensions }}', implode(', ', $constraint->extensions))
                     ->addViolation();
             }
-    }
-
-
-
+        }
     }
 
     private function parseSize(int|string $size): int

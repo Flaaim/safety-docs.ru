@@ -7,7 +7,7 @@ class CategoriesCollection implements \JsonSerializable
     public function __construct(
         public readonly array $categories,
         public readonly int $total,
-    ){
+    ) {
     }
 
     public function jsonSerialize(): array
@@ -21,7 +21,8 @@ class CategoriesCollection implements \JsonSerializable
                     'text' => $category->text,
                     'slug' => $category->slug,
                     'direction_id' => $category->directionId,
-                ], $this->categories
+                ],
+                $this->categories
             ),
             'total' => $this->total
         ];

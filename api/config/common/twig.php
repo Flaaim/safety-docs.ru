@@ -13,7 +13,7 @@ return [
     $config = $container->get('config')['twig'];
 
     $loader = new FilesystemLoader();
-    foreach($config['template_dirs'] as $alias => $dir) {
+    foreach ($config['template_dirs'] as $alias => $dir) {
         $loader->addPath($dir, $alias);
     }
 
@@ -24,11 +24,11 @@ return [
         'auto_reload' => $config['debug'],
     ]);
 
-    if($config['debug']) {
+    if ($config['debug']) {
         $environment->addExtension(new DebugExtension());
     }
 
-    foreach($config['globals'] as $name => $value) {
+    foreach ($config['globals'] as $name => $value) {
         $environment->addGlobal($name, $value);
     }
 

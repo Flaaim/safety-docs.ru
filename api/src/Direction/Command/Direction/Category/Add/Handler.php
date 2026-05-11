@@ -16,17 +16,17 @@ class Handler
         private readonly DirectionRepository $directions,
         private readonly CategoryRepository $categories,
         private readonly Flusher $flusher
-    ){
+    ) {
     }
     public function handle(Command $command): void
     {
         $direction = $this->directions->findById(new DirectionId($command->directionId));
-        if(null === $direction){
+        if (null === $direction) {
             throw new \DomainException('Direction not found.');
         }
         $parentCategory = null;
 
-        if($command->parentId !== null){
+        if ($command->parentId !== null) {
             $parentCategory = $this->categories->findById(new CategoryId($command->parentId));
 
             if (null === $parentCategory) {

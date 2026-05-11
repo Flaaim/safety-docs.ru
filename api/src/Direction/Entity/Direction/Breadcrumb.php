@@ -3,6 +3,7 @@
 namespace App\Direction\Entity\Direction;
 
 use Doctrine\ORM\Mapping as ORM;
+
 #[ORM\Embeddable]
 class Breadcrumb
 {
@@ -11,7 +12,7 @@ class Breadcrumb
         private string $slug,
         #[ORM\Column(type:'string', length: 150, nullable: true)]
         private string $title,
-    ){
+    ) {
     }
     public function getSlug(): string
     {

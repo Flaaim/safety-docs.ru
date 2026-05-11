@@ -15,7 +15,7 @@ class Response implements \JsonSerializable
         private readonly int $currentPage,
         private readonly int $perPage,
         private readonly int $totalPages,
-    ){
+    ) {
     }
 
     public static function fromResult(CategoryPaginatedDTO $paginatedDTO): self

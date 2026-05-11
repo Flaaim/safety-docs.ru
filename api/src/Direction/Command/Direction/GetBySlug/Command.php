@@ -10,6 +10,6 @@ class Command
         #[Assert\NotBlank]
         #[Assert\Length(min: 1, max: 35)]
         public string $slug,
-    ){
+    ) {
     }
 }

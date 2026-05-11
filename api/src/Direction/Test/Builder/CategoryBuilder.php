@@ -80,11 +80,11 @@ class CategoryBuilder
             $this->parent
         );
 
-        if($this->product !== null) {
+        if ($this->product !== null) {
             $category->assignProduct($this->product);
         }
-        if(!empty($this->children)) {
-            foreach($this->children as $child){
+        if (!empty($this->children)) {
+            foreach ($this->children as $child) {
                 $category->addChild($child);
             }
         }
