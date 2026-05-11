@@ -10,7 +10,7 @@ class Filename
     public function __construct(string $value)
     {
         $value = mb_strtolower($value);
-        Assert::regex($value, '/^[a-z0-9-]+$/i');
+        Assert::regex($value, '/^[a-z0-9]+\.[a-z0-9]+$/i');
         $this->value = $value;
     }
 
