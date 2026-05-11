@@ -46,7 +46,7 @@ class FilenameTest extends TestCase
     public static function valuesProvider(): array
     {
         return [
-            ['template100.1.1.rar'],
+            ['template100!.@1.1.rar'],
             ['template100rar'],
         ];
     }
