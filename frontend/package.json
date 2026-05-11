@@ -9,7 +9,8 @@
     "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "eslint-fix": "eslint . --fix",
     "stylelint": "stylelint \"src/**/*.css\"",
-    "stylelint-fix": "stylelint \"src/**/*.css\" --fix"
+    "stylelint-fix": "stylelint \"src/**/*.css\" --fix",
+    "test": "jest"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",
