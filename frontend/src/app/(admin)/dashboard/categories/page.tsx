@@ -24,7 +24,6 @@ export default async function CategoriesPage() {
           <TableHeader>
             <TableRow>
               <TableHead>Название</TableHead>
-              <TableHead>Описание</TableHead>
               <TableHead>Направление</TableHead>
               <TableHead>Продукт</TableHead>
               <TableHead>slug</TableHead>
@@ -37,11 +36,6 @@ export default async function CategoriesPage() {
                 {/* === РОДИТЕЛЬСКАЯ КАТЕГОРИЯ === */}
                 <TableRow className="bg-muted/20"> {/* Легкий фон для выделения корня */}
                   <TableCell className="font-semibold">{cat.title}</TableCell>
-                  <TableCell className="max-w-[400px]">
-                    <div className="whitespace-normal break-words text-sm text-muted-foreground">
-                      {cat.description}
-                    </div>
-                  </TableCell>
                   <TableCell className="whitespace-normal break-words font-medium">{cat.directionTitle}</TableCell>
                   <TableCell className="whitespace-normal break-words font-medium"></TableCell>
                   <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
@@ -58,11 +52,6 @@ export default async function CategoriesPage() {
                         ↳
                       </span>
                       {child.title}
-                    </TableCell>
-                    <TableCell className="max-w-[400px]">
-                      <div className="whitespace-normal break-words text-sm text-muted-foreground">
-                        {child.description}
-                      </div>
                     </TableCell>
                     <TableCell className="whitespace-normal break-words text-muted-foreground">
                       {child.directionTitle}
