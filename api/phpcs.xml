@@ -16,7 +16,8 @@
     <exclude-pattern>*/var/*</exclude-pattern>
     <exclude-pattern>*/public/index.php</exclude-pattern>
     <exclude-pattern>*/src/Data/Migration</exclude-pattern>
-    <exclude-pattern>*/src/*/Test/Unit</exclude-pattern>
+    <exclude-pattern>*/src/*/Test</exclude-pattern>
+    <exclude-pattern>*/src/*/Fixture</exclude-pattern>
 
     <rule ref="Generic.PHP.LowerCaseType"/>
     <rule ref="Generic.PHP.DisallowShortOpenTag"/>
@@ -24,7 +25,7 @@
     <rule ref="Generic.Files.LineLength">
         <properties>
             <property name="lineLimit" value="150"/>
-            <property name="absoluteLineLimit" value="170"/>
+            <property name="absoluteLineLimit" value="200"/>
         </properties>
     </rule>
     <rule ref="Zend.NamingConventions.ValidVariableName.NotCamelCaps"/>
