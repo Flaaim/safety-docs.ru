@@ -6,10 +6,12 @@ use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use App\Product\Command\Images\GetAll\Command;
 use App\Product\Command\Images\GetAll\Handler;
+use http\Exception\RuntimeException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Routing\RouteContext;
+use function DI\string;
 
 class RequestAction implements RequestHandlerInterface
 {
@@ -23,7 +25,10 @@ class RequestAction implements RequestHandlerInterface
         $routeContext = RouteContext::fromRequest($request);
 
         $route = $routeContext->getRoute();
-        $productId = $route->getArgument('productId');
+        if($route === null) {
+            throw new \RuntimeException('Route not found in request context.');
+        }
+        $productId = (string)$route->getArgument('productId', '');
 
         $command = new Command($productId);
 

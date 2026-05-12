@@ -22,11 +22,14 @@ class RequestAction implements RequestHandlerInterface
     {
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-        $productId = $route->getArgument('productId', '');
+        if ($route === null) {
+            throw new \RuntimeException('Route not found in request context.');
+        }
+        $productId = (string)$route->getArgument('productId', '');
 
         $data = $request->getParsedBody() ?? [];
 
-        $file = $request->getAttribute('target_file', null);
+        $file = $request->getAttribute('target_file');
 
         $command = new Command(
             $productId,

@@ -22,8 +22,10 @@ class RequestAction implements RequestHandlerInterface
     {
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-
-        $productId = $route->getArgument('productId');
+        if($route === null) {
+            throw new \RuntimeException('Route not found in request context.');
+        }
+        $productId = (string)$route->getArgument('productId', '');
         $uploadedImages = $request->getUploadedFiles()['images'] ?? [];
 
         $command = new Command(

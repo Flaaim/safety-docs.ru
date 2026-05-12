@@ -6,6 +6,7 @@ use App\Http\EmptyResponse;
 use App\Http\Validator\Validator;
 use App\Product\Command\Images\Clear\Command;
 use App\Product\Command\Images\Clear\Handler;
+use PHPUnit\Event\RuntimeException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -22,8 +23,10 @@ class RequestAction implements RequestHandlerInterface
     {
         $routeContext = RouteContext::fromRequest($request);
         $route = $routeContext->getRoute();
-
-        $productId = $route->getArgument('productId', '');
+        if($route === null) {
+            throw new \RuntimeException('Route not found in request context.');
+        }
+        $productId = (string)$route->getArgument('productId', '');
 
         $command = new Command($productId);
 
