@@ -11,7 +11,6 @@ class Command
 {
     public function __construct(
         #[Assert\Uuid]
-        #[Assert\NotBlank]
         public string $productId,
         #[Assert\Length(min: 5, max: 255)]
         public string $name,

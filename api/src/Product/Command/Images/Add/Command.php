@@ -9,7 +9,6 @@ use App\Http\Validator\SlimUploadedFile as SlimUploadedFileAssert;
 class Command
 {
     public function __construct(
-        #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $productId,
         #[Assert\NotBlank]

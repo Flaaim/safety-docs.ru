@@ -16,7 +16,7 @@ class RequestActionTest extends WebTestCase
     }
     public function testSuccessSame(): void
     {
-        $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('service')));
+        $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData()));
 
         self::assertEquals(204, $response->getStatusCode());
 
@@ -25,7 +25,7 @@ class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData('fire')));
+        $response = $this->app()->handle(self::formData('POST', '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8801f', $this->getProductData()));
 
         self::assertEquals(204, $response->getStatusCode());
 
@@ -36,7 +36,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::formData('POST',
             '/v1/products/b38e76c0-ac23-4c48-85fd-975f32c8802f',
-            $this->getProductData('service'))
+            $this->getProductData())
         );
 
         self::assertEquals(400, $response->getStatusCode());
@@ -54,7 +54,7 @@ class RequestActionTest extends WebTestCase
         $response = $this->app()->handle(self::formData(
             'POST',
             '/v1/products/invalid123',
-            $this->getProductData('service')
+            $this->getProductData()
         ));
 
         self::assertEquals(404, $response->getStatusCode());
