@@ -15,7 +15,7 @@ class UnassignedProductsFetcher
     }
 
     /**
-     * @return array<int, array{id:string, name:string}>
+     * @return list<array<string, mixed>>
      */
     public function fetchAllFree(): array
     {
