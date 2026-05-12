@@ -312,8 +312,22 @@ class CategoryTest extends TestCase
         $parentCategory->removeChild($childCategory);
         self::assertNull($childCategory->getParent());
     }
+    public function testRelease(): void
+    {
+        $direction = $this->getDirection();
+        $parentCategory = $this->getCategory($direction, 'parent');
+        $childCategory = (new CategoryBuilder())
+            ->withParent($parentCategory)
+            ->withProduct((new ProductBuilder())->build())
+            ->build($direction);
 
 
+        $childCategory->release();
+
+        self::assertNull($childCategory->getProduct());
+        self::assertNull($childCategory->getParent());
+
+    }
     private function getCategory(Direction $direction, string $slug = 'service', ?Category $parent = null): Category
     {
         return new Category(
