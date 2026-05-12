@@ -22,8 +22,10 @@ class RequestAction implements RequestHandlerInterface
     {
             $routeContext = RouteContext::fromRequest($request);
             $route = $routeContext->getRoute();
-
-            $token = $route->getArgument("token") ?? '';
+            if($route === null) {
+                throw new \RuntimeException('Route not found in request context.');
+            }
+            $token = (string)$route->getArgument("token", '');
 
             $command = new Command($token);
 

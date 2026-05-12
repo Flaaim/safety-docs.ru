@@ -20,13 +20,11 @@ class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $routeContext = RouteContext::fromRequest($request);
-        $route = $routeContext->getRoute();
-
+        $route = $request->getAttribute('active_route');
         $data = (array)$request->getParsedBody();
 
         $command = new Command(
-            $route->getArgument('categoryId', ''),
+            (string)$route->getArgument('categoryId', ''),
             $data['title'] ?? '',
             $data['description'] ?? '',
             $data['text'] ?? '',

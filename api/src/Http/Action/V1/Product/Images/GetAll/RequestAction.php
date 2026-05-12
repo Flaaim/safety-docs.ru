@@ -22,12 +22,8 @@ class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $routeContext = RouteContext::fromRequest($request);
+        $route = $request->getAttribute('active_route');
 
-        $route = $routeContext->getRoute();
-        if($route === null) {
-            throw new \RuntimeException('Route not found in request context.');
-        }
         $productId = (string)$route->getArgument('productId', '');
 
         $command = new Command($productId);

@@ -20,8 +20,7 @@ class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $routeContext = RouteContext::fromRequest($request);
-        $route = $routeContext->getRoute();
+        $route = $request->getAttribute('active_route');
 
         $categoryId = $route->getArgument('categoryId', '');
 

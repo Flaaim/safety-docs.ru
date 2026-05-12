@@ -21,11 +21,8 @@ class RequestAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $routeContext = RouteContext::fromRequest($request);
-
-        $route = $routeContext->getRoute();
-
-        $directionId = $route->getArgument('directionId', '');
+        $route = $request->getAttribute('active_route');
+        $directionId = (string)$route->getArgument('directionId', '');
 
         $command = new Command($directionId);
 
