@@ -90,9 +90,10 @@ class SlimUploadedFileValidatorTest extends ConstraintValidatorTestCase
             $allowedMimeTypes,
             []
         ));
-
+        $clientMediaType = $uploadedFile->getClientMediaType();
+        self::assertNotNull($clientMediaType);
         $this->buildViolation('The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.')
-            ->setParameter('{{ type }}', $uploadedFile->getClientMediaType())
+            ->setParameter('{{ type }}', $clientMediaType)
             ->setParameter('{{ types }}', implode(', ', $allowedMimeTypes))
             ->assertRaised();
 
@@ -130,6 +131,8 @@ class SlimUploadedFileValidatorTest extends ConstraintValidatorTestCase
 
 
         $uploadedFile = $this->buildUploadedFile('test.pdf', 'pdf', 20, UPLOAD_ERR_OK);
+        $clientMediaType = $uploadedFile->getClientMediaType();
+        self::assertNotNull($clientMediaType);
         $this->validator->validate($uploadedFile, new SlimUploadedFile(
             null,
             null,
@@ -142,7 +145,7 @@ class SlimUploadedFileValidatorTest extends ConstraintValidatorTestCase
         $this->buildViolation('The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.') ->setParameter('{{ limit }}', $maxFileSize)->setParameter('{{ size }}', $uploadedFileSize);
 
         $this->buildViolation('The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.')
-            ->setParameter('{{ type }}', $uploadedFile->getClientMediaType())
+            ->setParameter('{{ type }}', $clientMediaType)
             ->setParameter('{{ types }}', implode(', ', $allowedMimeTypes));
 
         $this->buildViolation('The extension of the file is invalid ({{ extension }}). Allowed extensions are {{ extensions }}.')
@@ -156,6 +159,9 @@ class SlimUploadedFileValidatorTest extends ConstraintValidatorTestCase
     private function buildUploadedFile(string $name, string $type, int $size, int $error): UploadedFileInterface
     {
         $tempFile = tempnam(sys_get_temp_dir(), $name);
+        if($tempFile === false){
+            throw new \RuntimeException('Unable to create temporary file.');
+        }
         file_put_contents($tempFile, 'data');
 
         $this->files[] = $tempFile;
