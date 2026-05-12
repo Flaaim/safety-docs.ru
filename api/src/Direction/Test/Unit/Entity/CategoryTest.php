@@ -303,6 +303,15 @@ class CategoryTest extends TestCase
 
         self::assertFalse($category->canBeDeleted());
     }
+    public function testRemoveChild(): void
+    {
+        $direction = $this->getDirection();
+        $parentCategory = $this->getCategory($direction, 'parent');
+        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
+
+        $parentCategory->removeChild($childCategory);
+        self::assertNull($childCategory->getParent());
+    }
 
 
     private function getCategory(Direction $direction, string $slug = 'service', ?Category $parent = null): Category

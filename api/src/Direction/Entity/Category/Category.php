@@ -173,8 +173,11 @@ class Category
     }
     public function removeChild(Category $child): void
     {
-        if ($this->children->contains($child)) {
+        if ($this->children->exists(function (int $key, Category $existingChild) use ($child) {
+            return $existingChild->getId()->getValue() === $child->getId()->getValue();
+        })) {
             $this->children->removeElement($child);
+            $child->parent = null;
         }
     }
     /**
@@ -188,7 +191,12 @@ class Category
     {
         return $this->parent !== null;
     }
-
+    public function release(): void
+    {
+        $this->direction->removeCategory($this);
+        $this->parent?->removeChild($this);
+        $this->product = null;
+    }
     public function canBeDeleted(): bool
     {
         if($this->children->count() > 0){
