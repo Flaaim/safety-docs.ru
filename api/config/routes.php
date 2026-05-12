@@ -68,7 +68,7 @@ return static function (App $app): void {
 
                 $group->get('', Direction\Category\GetAll\RequestAction::class);
                 $group->get('/s/{slug:[a-z0-9-]+}', Direction\Category\GetBySlug\RequestAction::class);
-
+                $group->delete('/{categoryId:' . $uuidPattern . '}', Direction\Category\Delete\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('', Direction\Category\Add\RequestAction::class)->add(AuthMiddleware::class);
                 $group->put('/{categoryId:' . $uuidPattern . '}', Direction\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
             });

@@ -24,8 +24,10 @@ class Handler
         if(!$category->canBeDeleted()) {
             throw new \DomainException('Category cannot be deleted. It has children.');
         }
+        $category->release();
 
         $this->categories->remove($category);
+
         $this->flusher->flush();
     }
 }
