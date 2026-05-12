@@ -7,7 +7,7 @@ class PaymentInfoDTO
     public function __construct(
         public string $paymentId,
         public string $status,
-        public ?string $redirectUrl = null,
+        public string $redirectUrl,
         public ?array $paymentData = null,
     ) {
     }
