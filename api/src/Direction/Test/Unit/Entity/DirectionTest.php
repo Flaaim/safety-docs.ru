@@ -80,27 +80,17 @@ class DirectionTest extends TestCase
     public function testRemoveCategory(): void
     {
         $direction = (new DirectionBuilder())->build();
-        new Category(
+        $category = new Category(
             CategoryId::generate(),
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            $slug = Slug::generate($title),
+            Slug::generate($title),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
-        $direction->removeCategory($slug);
+        $direction->removeCategory($category);
         self::assertCount(0, $direction->getCategories());
-    }
-
-    public function testRemoveEmptyCategory(): void
-    {
-        $direction = (new DirectionBuilder())->build();
-
-        self::expectException(\DomainException::class);
-        $this->expectExceptionMessage('Category not found in this direction.');
-
-        $direction->removeCategory(Slug::generate('cat-slug'));
     }
 
     public function testCanBeDeleted(): void

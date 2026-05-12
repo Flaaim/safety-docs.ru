@@ -83,15 +83,11 @@ class Direction
         }
         return false;
     }
-    public function removeCategory(Slug $slug): void
+    public function removeCategory(Category $category): void
     {
-        foreach ($this->categories as $category) {
-            if ($category->getSlug()->equals($slug)) {
-                $this->categories->removeElement($category);
-                return;
-            }
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
-        throw new \DomainException('Category not found in this direction.');
     }
 
     public function canBeDeleted(): bool
