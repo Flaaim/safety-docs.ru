@@ -32,8 +32,9 @@ class CategoryDTO
             $productTitle = $product->getName();
         }
         $parentId = null;
-        if ($category->getParent() !== null) {
-            $parentId = $category->getParent()->getId()->getValue();
+        $parent = $category->getParent();
+        if ($parent !== null) {
+            $parentId = $parent->getId()->getValue();
         }
 
         $childrenDTOs = array_map(
