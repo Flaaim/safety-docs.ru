@@ -33,16 +33,25 @@ class SlimUploadedFileValidator extends ConstraintValidator
 
         if ($constraint->maxSize) {
             $limit = $this->parseSize($constraint->maxSize);
-            if ($value->getSize() > $limit) {
+            $size = $value->getSize();
+
+            if ($size === null || $size > $limit) {
                 $this->context->buildViolation($constraint->maxSizeMessage)
-                    ->setParameter('{{ limit }}', $constraint->maxSize)
-                    ->setParameter('{{ size }}', $value->getSize())
+                    ->setParameter('{{ limit }}', (string)$constraint->maxSize)
+                    ->setParameter('{{ size }}', (string)($size ?? 'unknown'))
                     ->addViolation();
             }
         }
 
         if ($constraint->mimeTypes) {
             $mimeType = $value->getClientMediaType();
+            if($mimeType === null){
+                $this->context->buildViolation($constraint->mimeTypesMessage)
+                    ->setParameter('{{ type }}', 'unknown')
+                    ->setParameter('{{ types }}', implode(', ', $constraint->mimeTypes))
+                    ->addViolation();
+                return;
+            }
             if (!in_array($mimeType, $constraint->mimeTypes, true)) {
                 $this->context->buildViolation($constraint->mimeTypesMessage)
                     ->setParameter('{{ type }}', $mimeType)
@@ -51,7 +60,15 @@ class SlimUploadedFileValidator extends ConstraintValidator
             }
         }
         if ($constraint->extensions) {
-            $extension = pathinfo($value->getClientFilename(), PATHINFO_EXTENSION);
+            $filename = $value->getClientFilename();
+            if($filename === null){
+                $this->context->buildViolation($constraint->extensionsMessage)
+                    ->setParameter('{{ extension }}', 'unknown')
+                    ->setParameter('{{ extensions }}', implode(', ', $constraint->extensions))
+                    ->addViolation();
+                return;
+            }
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
             if (!in_array($extension, $constraint->extensions, true)) {
                 $this->context->buildViolation($constraint->extensionsMessage)
                     ->setParameter('{{ extension }}', $extension)
