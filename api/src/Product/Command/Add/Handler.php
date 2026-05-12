@@ -24,7 +24,10 @@ class Handler
     public function handle(Command $command): void
     {
         $productId = ProductId::generate();
-
+        $filename = $command->file->getClientFilename();
+        if($filename === null) {
+            throw new \DomainException('File name cannot be null.');
+        }
         $this->uploader->upload($productId->getValue(), $command->file);
 
         $formatEnums = array_map(
@@ -36,7 +39,7 @@ class Handler
             $productId,
             $command->name,
             new Amount($command->amount, new Currency('RUB')),
-            new Filename($command->file->getClientFilename()),
+            new Filename($filename),
             $command->cipher,
             new \DateTimeImmutable($command->updatedAt),
             $command->totalDocuments,

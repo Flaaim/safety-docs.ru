@@ -8,7 +8,6 @@ use App\Product\Entity\Filename;
 use App\Product\Entity\FormatDocument;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
-use App\Product\Entity\Slug;
 use App\Product\Service\File\FileRemoverInterface;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Shared\Domain\ValueObject\Currency;
@@ -36,6 +35,9 @@ class Handler
 
         if ($command->file !== null) {
             $filename = $command->file->getClientFilename();
+            if($filename === null) {
+                throw new \DomainException('File name cannot be null.');
+            }
         }
 
         $oldRelativeFilePath = $productId->getValue() . DIRECTORY_SEPARATOR . $product->getFilename()->getValue();
