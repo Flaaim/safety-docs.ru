@@ -182,15 +182,20 @@ class CategoryTest extends TestCase
     public function testAddChild(): void
     {
         $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
-        $parentCategory1 = (new CategoryBuilder())->build($safetyDirection);
+        $parent = (new CategoryBuilder())->build($safetyDirection);
 
         $child1 = $this->getCategory($safetyDirection, 'parentCategory2');
         $child2 = $this->getCategory($safetyDirection, 'parentCategory3');
 
-        $parentCategory1->addChild($child1);
-        $parentCategory1->addChild($child2);
+        $parent->addChild($child1);
+        $parent->addChild($child2);
 
-        self::assertCount(2, $parentCategory1->getChildren());
+        self::assertCount(2, $parent->getChildren());
+        self::assertSame($parent, $child1->getParent());
+        self::assertSame($parent, $child2->getParent());
+
+        self::assertTrue($child1->isChild());
+        self::assertTrue($child2->isChild());
     }
     public function testAssignChildrenAlready(): void
     {

@@ -170,6 +170,7 @@ class Category
             throw new \DomainException('A category child already assigned.');
         }
         $this->children->add($child);
+        $child->parent = $this;
     }
     public function removeChild(Category $child): void
     {
