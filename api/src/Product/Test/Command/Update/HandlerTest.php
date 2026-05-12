@@ -39,12 +39,15 @@ class HandlerTest extends TestCase
 
     public function testSuccess(): void
     {
+        /** @var UploadedFileInterface&MockObject $uploadedFile */
         $uploadedFile = $this->createMock(UploadedFileInterface::class);
         $uploadedFile->expects($this->once())->method('getClientFilename')->willReturn('new01.1.rar');
 
         $oldUploadedFile = $this->createMock(UploadedFileInterface::class);
         $oldUploadedFile->expects($this->once())->method('getClientFilename')->willReturn('old01.1.rar');
-        $oldFilename = new Filename($oldUploadedFile->getClientFilename());
+        $clientFileName = $oldUploadedFile->getClientFilename();
+        self::assertNotNull($clientFileName);
+        $oldFilename = new Filename($clientFileName);
 
         $command = $this->createCommand($uploadedFile);
 
