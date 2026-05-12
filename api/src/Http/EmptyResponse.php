@@ -7,12 +7,15 @@ use Slim\Psr7\Response;
 
 class EmptyResponse extends Response
 {
+    /**
+     *@psalm-suppress PossiblyFalseArgument
+     */
     public function __construct($status = 204)
     {
         parent::__construct(
             $status,
             null,
-            (new StreamFactory())->createStreamFromResource(fopen('php://temp', 'rb'))
+            (new StreamFactory())->createStream('')
         );
     }
 }
