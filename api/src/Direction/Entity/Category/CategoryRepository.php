@@ -45,4 +45,8 @@ class CategoryRepository
             ->getQuery()
             ->getResult();
     }
+    public function remove(Category $category): void
+    {
+        $this->em->remove($category);
+    }
 }
