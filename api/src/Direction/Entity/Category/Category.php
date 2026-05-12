@@ -188,4 +188,12 @@ class Category
     {
         return $this->parent !== null;
     }
+
+    public function canBeDeleted(): bool
+    {
+        if($this->children->count() > 0){
+            return false;
+        }
+        return true;
+    }
 }

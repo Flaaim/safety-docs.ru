@@ -286,6 +286,25 @@ class CategoryTest extends TestCase
 
         self::assertNull($childCategory->getProduct());
     }
+
+    public function testCanBeDeleted(): void
+    {
+        $direction = $this->getDirection();
+        $category = $this->getCategory($direction);
+
+        self::assertTrue($category->canBeDeleted());
+    }
+
+    public function testCanNotBeDeleted(): void
+    {
+        $direction = $this->getDirection();
+        $category = (new CategoryBuilder())
+            ->withChildren([$this->createMock(Category::class)])->build($direction);
+
+        self::assertFalse($category->canBeDeleted());
+    }
+
+
     private function getCategory(Direction $direction, string $slug = 'service', ?Category $parent = null): Category
     {
         return new Category(
