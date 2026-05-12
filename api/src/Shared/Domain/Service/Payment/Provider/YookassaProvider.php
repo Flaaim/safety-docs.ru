@@ -43,10 +43,23 @@ class YookassaProvider implements PaymentProviderInterface
                 ]
             ], $idempotenceKey);
 
+            if($response === null){
+                throw new PaymentException('YooKassa response is null');
+            }
+            $paymentId = $response->getId();
+            $status = $response->getStatus();
+            $confirmation = $response->getConfirmation();
+            if($paymentId === null || $status === null || $confirmation === null){
+                throw new PaymentException('Invalid response from YooKassa: missing required fields');
+            }
+            $confirmationUrl = $confirmation->getConfirmationUrl();
+            if($confirmationUrl === null){
+                throw new PaymentException('Missing confirmation URL in YooKassa response');
+            }
             return new PaymentInfoDTO(
-                $response->getId(),
-                $response->getStatus(),
-                $response->getConfirmation()->getConfirmationUrl()
+                $paymentId,
+                $status,
+                $confirmationUrl
             );
         } catch (\Exception $e) {
             throw new PaymentException($e->getMessage());
@@ -60,7 +73,9 @@ class YookassaProvider implements PaymentProviderInterface
         $responseObject = $notificationObject->getObject();
         /** @var PaymentResponse $responseObject */
         $paymentId = $responseObject->getId();
-
+        if($paymentId === null) {
+            return null;
+        }
         return $this->verifyPaymentStatus($paymentId);
     }
 
@@ -82,8 +97,14 @@ class YookassaProvider implements PaymentProviderInterface
     {
         try {
             $payment = $this->client->getPaymentInfo($paymentId);
-
-            return match ($payment->getStatus()) {
+            if($payment === null) {
+                throw new PaymentException('Payment not found');
+            }
+            $status = $payment->getStatus();
+            if($status === null) {
+                throw new PaymentException('Payment status not found');
+            }
+            return match ($status) {
                 'succeeded', 'waiting_for_capture' => $paymentId,
                 'pending', 'canceled' => null,
                 default => throw new PaymentException("Unknown payment status: " . $payment->getStatus()),
