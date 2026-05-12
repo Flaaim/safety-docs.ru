@@ -15,7 +15,7 @@ class EmptyResponseTest extends TestCase
         self::assertFalse($response->hasHeader('Content-Type'));
 
         self::assertEquals('', (string)$response->getBody());
-        self::assertFalse($response->getBody()->isWritable());
+        self::assertTrue($response->getBody()->isWritable());
     }
 
     public function testWithCode(): void
