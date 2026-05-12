@@ -3,11 +3,13 @@
 namespace App\Product\Test\Service;
 
 use App\Product\Service\File\RandomFileNameGenerator;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 
 class RandomFileNameGeneratorTest extends TestCase
 {
+    /** @psalm-var  UploadedFileInterface&MockObject  */
     private UploadedFileInterface $uploadedFile;
     public function setUp(): void
     {
