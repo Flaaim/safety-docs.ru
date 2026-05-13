@@ -10,11 +10,11 @@ use Slim\Routing\RouteContext;
 
 class RouteMiddleware implements MiddlewareInterface
 {
-
+    /** @psalm-suppress PossiblyUnusedReturnValue */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $route = $request->getAttribute(RouteContext::ROUTE);
-        if($route === null) {
+        if ($route === null) {
             throw new \RuntimeException('Route not found in request context.');
         }
         return $handler->handle($request->withAttribute('active_route', $route));
