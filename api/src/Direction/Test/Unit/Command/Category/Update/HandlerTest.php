@@ -313,11 +313,14 @@ class HandlerTest extends TestCase
 
         $this->handler->handle($command);
 
+
         self::assertEquals($command->title, $childCategory->getTitle());
         self::assertEquals($command->description, $childCategory->getDescription());
         self::assertEquals($slug->getValue(), $childCategory->getSlug()->getValue());
         self::assertEquals($command->text, $childCategory->getText());
-        self::assertEquals($parentCategoryId, $childCategory->getParent()->getId());
+
+        self::assertNotNull($parent = $childCategory->getParent());
+        self::assertEquals($parentCategoryId, $parent->getId());
     }
 
     public function testSuccessWithSameSlug(): void
