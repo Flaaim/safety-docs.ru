@@ -35,7 +35,7 @@ class Handler
 
         if ($command->file !== null) {
             $filename = $command->file->getClientFilename();
-            if($filename === null) {
+            if ($filename === null) {
                 throw new \DomainException('File name cannot be null.');
             }
         }

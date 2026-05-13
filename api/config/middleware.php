@@ -16,5 +16,4 @@ return static function (App $app): void {
     $app->add(Middleware\ValidationExceptionHandler::class);
     $app->add(Middleware\DomainExceptionHandler::class);
     $app->add(ErrorMiddleware::class);
-
 };

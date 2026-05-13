@@ -18,7 +18,7 @@ class RequestAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $data = $request->getParsedBody() ?? [];
+            $data = (array)$request->getParsedBody();
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 return new JsonResponse(['message' => json_last_error_msg()], 400);

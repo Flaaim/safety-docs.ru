@@ -43,17 +43,17 @@ class YookassaProvider implements PaymentProviderInterface
                 ]
             ], $idempotenceKey);
 
-            if($response === null){
+            if ($response === null) {
                 throw new PaymentException('YooKassa response is null');
             }
             $paymentId = $response->getId();
             $status = $response->getStatus();
             $confirmation = $response->getConfirmation();
-            if($paymentId === null || $status === null || $confirmation === null){
+            if ($paymentId === null || $status === null || $confirmation === null) {
                 throw new PaymentException('Invalid response from YooKassa: missing required fields');
             }
             $confirmationUrl = $confirmation->getConfirmationUrl();
-            if($confirmationUrl === null){
+            if ($confirmationUrl === null) {
                 throw new PaymentException('Missing confirmation URL in YooKassa response');
             }
             return new PaymentInfoDTO(
@@ -73,7 +73,7 @@ class YookassaProvider implements PaymentProviderInterface
         $responseObject = $notificationObject->getObject();
         /** @var PaymentResponse $responseObject */
         $paymentId = $responseObject->getId();
-        if($paymentId === null) {
+        if ($paymentId === null) {
             return null;
         }
         return $this->verifyPaymentStatus($paymentId);
@@ -97,11 +97,11 @@ class YookassaProvider implements PaymentProviderInterface
     {
         try {
             $payment = $this->client->getPaymentInfo($paymentId);
-            if($payment === null) {
+            if ($payment === null) {
                 throw new PaymentException('Payment not found');
             }
             $status = $payment->getStatus();
-            if($status === null) {
+            if ($status === null) {
                 throw new PaymentException('Payment status not found');
             }
             return match ($status) {

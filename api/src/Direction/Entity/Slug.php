@@ -33,7 +33,7 @@ class Slug
         }
         $value = mb_strtolower($transliterated);
         $value = preg_replace('/[^a-zA-Z0-9]+/', '-', $value);
-        if($value === null){
+        if ($value === null) {
             throw new \RuntimeException('Transliteration value is null.');
         }
         $value = trim($value, '-');

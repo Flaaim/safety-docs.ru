@@ -174,9 +174,11 @@ class Category
     }
     public function removeChild(Category $child): void
     {
-        if ($this->children->exists(function (int $key, Category $existingChild) use ($child) {
-            return $existingChild->getId()->getValue() === $child->getId()->getValue();
-        })) {
+        if (
+            $this->children->exists(function (int $key, Category $existingChild) use ($child) {
+                return $existingChild->getId()->getValue() === $child->getId()->getValue();
+            })
+        ) {
             $this->children->removeElement($child);
             $child->parent = null;
         }
@@ -200,7 +202,7 @@ class Category
     }
     public function canBeDeleted(): bool
     {
-        if($this->children->count() > 0){
+        if ($this->children->count() > 0) {
             return false;
         }
         return true;

@@ -45,7 +45,7 @@ class SlimUploadedFileValidator extends ConstraintValidator
 
         if ($constraint->mimeTypes) {
             $mimeType = $value->getClientMediaType();
-            if($mimeType === null){
+            if ($mimeType === null) {
                 $this->context->buildViolation($constraint->mimeTypesMessage)
                     ->setParameter('{{ type }}', 'unknown')
                     ->setParameter('{{ types }}', implode(', ', $constraint->mimeTypes))
@@ -61,7 +61,7 @@ class SlimUploadedFileValidator extends ConstraintValidator
         }
         if ($constraint->extensions) {
             $filename = $value->getClientFilename();
-            if($filename === null){
+            if ($filename === null) {
                 $this->context->buildViolation($constraint->extensionsMessage)
                     ->setParameter('{{ extension }}', 'unknown')
                     ->setParameter('{{ extensions }}', implode(', ', $constraint->extensions))

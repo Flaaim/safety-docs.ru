@@ -12,7 +12,7 @@ class RandomFileNameGenerator implements FileNameGeneratorInterface
     public function generate(UploadedFileInterface $file): string
     {
         $clientFilename = $file->getClientFilename();
-        if($clientFilename === null) {
+        if ($clientFilename === null) {
             throw new \DomainException('Client file name cannot be null.');
         }
         $extension = pathinfo($clientFilename, PATHINFO_EXTENSION);
