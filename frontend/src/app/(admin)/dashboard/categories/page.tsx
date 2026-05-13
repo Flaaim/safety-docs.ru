@@ -7,6 +7,7 @@ import AddCategoryDialog from "@/components/Admin/Dashboard/Categories/add-categ
 import EditCategoryDialog from "@/components/Admin/Dashboard/Categories/edit-category-dialog";
 import AssignProductDialog from "@/components/Admin/Dashboard/Categories/assign-product-dialog";
 import RefuseProductDialog from "@/components/Admin/Dashboard/Categories/refuse-product-dialog";
+import DeleteCategoryDialog from "@/components/Admin/Dashboard/Categories/delete-category-dialog";
 
 export default async function CategoriesPage() {
   const cookieStore = await cookies();
@@ -41,6 +42,7 @@ export default async function CategoriesPage() {
                   <TableCell className="text-muted-foreground">{cat.slug}</TableCell>
                   <TableCell className="text-right">
                     <EditCategoryDialog slug={cat.slug} id={cat.id} directionId={cat.directionId}/>
+                    <DeleteCategoryDialog categoryId={cat.id} directionId={cat.directionId}></DeleteCategoryDialog>
                   </TableCell>
                 </TableRow>
                 {/* === ДОЧЕРНИЕ КАТЕГОРИИ === */}
@@ -69,6 +71,7 @@ export default async function CategoriesPage() {
                     <TableCell className="text-muted-foreground">{child.slug}</TableCell>
                     <TableCell className="text-right">
                       <EditCategoryDialog slug={child.slug} id={child.id} directionId={child.directionId}/>
+                      <DeleteCategoryDialog categoryId={child.id} directionId={child.directionId}></DeleteCategoryDialog>
                     </TableCell>
                   </TableRow>
                 ))}

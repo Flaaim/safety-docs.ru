@@ -67,3 +67,10 @@ export async function refuseProduct(token: string | undefined, categoryId: strin
     token
   });
 }
+
+export async function deleteCategory(token: string | undefined, categoryId: string, directionId: string): Promise<void> {
+  return await apiFetch<void>(API.category.delete(categoryId, directionId), {
+    method: "DELETE",
+    token
+  })
+}

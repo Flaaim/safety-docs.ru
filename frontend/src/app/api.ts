@@ -27,7 +27,8 @@ export const API = {
     getAll: () => BASE_URL + `/v1/categories`,
     add: (directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories`,
     getBySlug: (slug: string, directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/s/${slug}`,
-    update: (id: string , directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
+    update: (id: string, directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
+    delete: (id: string,  directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
     assignProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
     refuseProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`
   },
