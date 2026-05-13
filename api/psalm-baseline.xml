@@ -188,10 +188,6 @@
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Http/Validator/SlimUploadedFileValidator.php">
-    <InvalidScalarArgument>
-      <code><![CDATA[$constraint->maxSize]]></code>
-      <code><![CDATA[$value->getSize()]]></code>
-    </InvalidScalarArgument>
     <TypeDoesNotContainType>
       <code><![CDATA[is_string($size)]]></code>
     </TypeDoesNotContainType>
@@ -360,11 +356,6 @@
     <PossiblyUnusedReturnValue>
       <code><![CDATA[string]]></code>
     </PossiblyUnusedReturnValue>
-  </file>
-  <file src="src/Product/Service/File/RandomFileNameGenerator.php">
-    <UnusedClass>
-      <code><![CDATA[RandomFileNameGenerator]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Product/Test/Command/Add/HandlerTest.php">
     <UndefinedThisPropertyAssignment>
