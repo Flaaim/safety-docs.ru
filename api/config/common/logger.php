@@ -18,7 +18,7 @@ return [
 
         $log = new Logger('safety-docs');
 
-        if($telegramConfig['token'] && $telegramConfig['chatId']) {
+        if ($telegramConfig['token'] && $telegramConfig['chatId']) {
             $log->pushHandler(new TelegramBotHandler(
                 $telegramConfig['token'],
                 $telegramConfig['chatId'],
