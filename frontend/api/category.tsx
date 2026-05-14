@@ -72,5 +72,5 @@ export async function deleteCategory(token: string | undefined, categoryId: stri
   return await apiFetch<void>(API.category.delete(categoryId, directionId), {
     method: "DELETE",
     token
-  })
+  });
 }

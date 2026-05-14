@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
@@ -30,7 +30,7 @@ export default function DeleteCategoryDialog({categoryId, directionId}: DeleteCa
     e.preventDefault();
     try {
       setLoading(true);
-      await deleteCategory(token, categoryId, directionId)
+      await deleteCategory(token, categoryId, directionId);
 
       toast.success('Категория успешно удалена');
       setOpen(false);
