@@ -23,13 +23,15 @@ class HandlerTest extends TestCase
         );
         $handler = new Handler(
             $products = $this->createMock(ProductRepository::class),
-            new ProductPaginatedDTOMapping(),
             new ProductDTOMapper()
         );
 
-        $products->expects($this->once())->method('findAllPaginated')->willReturn([
-            (new ProductBuilder())->withId(new ProductId('1c3202b2-c443-4afa-b47a-53927cf795c5'))->build(),
-            (new ProductBuilder())->withId(new ProductId('7f9f8b03-4e77-46e1-a447-d4b3c1e46f59'))->build(),
+        $products->expects($this->once())->method('findPaginated')->willReturn([
+            'items' => [
+                (new ProductBuilder())->withId(new ProductId('1c3202b2-c443-4afa-b47a-53927cf795c5'))->build(),
+                (new ProductBuilder())->withId(new ProductId('7f9f8b03-4e77-46e1-a447-d4b3c1e46f59'))->build(),
+            ],
+            'total' => 2
         ]);
 
         $response = $handler->handle($command);

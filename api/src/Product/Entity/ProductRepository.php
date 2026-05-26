@@ -5,6 +5,7 @@ namespace App\Product\Entity;
 use App\Shared\Domain\ValueObject\Id;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ProductRepository
 {
@@ -29,10 +30,19 @@ class ProductRepository
     {
         $this->em->persist($product);
     }
-    /** @return array<Product> */
-    public function findAllPaginated(): array
+    /** @return array{items: Product[], total: int} */
+    public function findPaginated(int $page, int $perPage): array
     {
-        return $this->repo->findAll();
+        $qb = $this->repo->createQueryBuilder('p')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage);
+
+        $paginator = new Paginator($qb);
+
+        return [
+            'items' => iterator_to_array($paginator),
+            'total' => $paginator->count(),
+        ];
     }
 
     public function findById(ProductId $id): ?Product
