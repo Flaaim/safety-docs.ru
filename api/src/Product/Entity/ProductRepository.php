@@ -31,9 +31,12 @@ class ProductRepository
         $this->em->persist($product);
     }
     /** @return array{items: Product[], total: int} */
-    public function findPaginated(int $page, int $perPage): array
+    public function findPaginated(int $page, int $perPage, string $sortBy = 'updatedAt', string $sortDir = 'DESC'): array
     {
+        $sortDir = strtoupper($sortDir) === 'ASC' ? 'ASC' : 'DESC';
+
         $qb = $this->repo->createQueryBuilder('p')
+            ->orderBy('p.'.$sortBy, $sortDir)
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage);
 
@@ -41,7 +44,7 @@ class ProductRepository
 
         return [
             'items' => iterator_to_array($paginator),
-            'total' => $paginator->count(),
+            'total' => count($paginator),
         ];
     }
 
