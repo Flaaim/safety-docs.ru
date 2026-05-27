@@ -46,7 +46,7 @@ const CategoryView = ({
           </Link>
         ) : (
           <>
-            <Link href={`/docs/${dirSlug}`} className="hover:text-primary transition-colors">Направление</Link>
+            <Link href={`/docs/${dirSlug}`} className="hover:text-primary transition-colors">{category.directionTitle}</Link>
             <ChevronRight size={14} />
             {/* Ищем название родителя для красивой ссылки назад */}
             {allCategories.find(c => c.id === category.parentId) && (
