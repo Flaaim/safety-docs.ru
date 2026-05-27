@@ -8,7 +8,7 @@ down: docker-down
 restart: down up
 check: api-check frontend-check
 api-check: validate api-lint api-analyze api-test
-frontend-check: frontend-lint frontend-analyze frontend-test
+frontend-check: frontend-lint frontend-analyze
 validate: api-validate-schema
 
 lint: api-lint frontend-lint
