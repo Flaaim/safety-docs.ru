@@ -17,8 +17,8 @@ class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $page = $request->getQueryParams()['page'] ?? 1;
-        $perPage = $request->getQueryParams()['perPage'] ?? 20;
+        $page = (int)($request->getQueryParams()['page'] ?? 1);
+        $perPage = (int)($request->getQueryParams()['perPage'] ?? 1);
 
         $command = new Command($page, $perPage);
 
