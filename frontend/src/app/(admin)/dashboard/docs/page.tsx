@@ -10,11 +10,17 @@ import Image from 'next/image';
 import PaginationControls from "@/components/PaginationControls/PaginationControls";
 
 
-export default async function ProductPage() {
+interface ProductPageProps {
+  searchParams: Promise<{ page?: string, perPage?: string }>
+}
+export default async function ProductPage({searchParams}: ProductPageProps) {
+  const currentPage = Number((await searchParams).page) || 1;
+  const perPage = Number((await (searchParams)).perPage) || 1;
+
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
-  const data = await getAllProducts(token);
+  const data = await getAllProducts(token, currentPage, perPage);
 
   return (
     <div className="space-y-6">

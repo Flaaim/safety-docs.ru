@@ -14,9 +14,9 @@ export async function getProductById(id: string): Promise<ProductDTO> {
     method: "GET"
   });
 }
-export async function getAllProducts(token: string | undefined): Promise<ProductCollection>{
+export async function getAllProducts(token: string | undefined, currentPage: number, perPage: number): Promise<ProductCollection>{
 
-  return await apiFetch<ProductCollection>(API.product.getAll(), {
+  return await apiFetch<ProductCollection>(API.product.getAll(currentPage, perPage), {
     method: "GET",
     token,
     cache: token ? 'no-store' : 'force-cache'
