@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,7 @@ export default function PaginationControls({currentPage, totalPages}: Pagination
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  if(totalPages <= 1) return null
+  if(totalPages <= 1) return null;
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -22,7 +22,7 @@ export default function PaginationControls({currentPage, totalPages}: Pagination
     params.set("page", page.toString());
 
     router.push(`${pathname}?${params.toString()}`);
-  }
+  };
 
   return (
     <div className="flex items-center justify-between px-2 py-4">
