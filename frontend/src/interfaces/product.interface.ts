@@ -5,49 +5,44 @@ export interface Product {
   formatDocuments: string[];
 }
 
-export interface CreateProductDTO extends Product{
-  amount: string,
-  updatedAt: string
-  file: File | null,
+export interface CreateProductDTO extends Product {
+  amount: string;
+  updatedAt: string;
+  file: File | null;
 }
 
 export interface UpdateProductDTO extends Product {
-  id: string,
-  amount: string,
-  updatedAt: string
-  file: File | null
+  id: string;
+  amount: string;
+  updatedAt: string;
+  file: File | null;
 }
 
 export interface ProductDTO extends Product {
-  id: string,
-  formattedPrice: string,
-  updatedAt: string
-  filename: string,
-  images: string[]
+  id: string;
+  formattedPrice: string;
+  updatedAt: string;
+  filename: string;
+  images: string[];
 }
 export interface ProductCollection {
-  products: ProductDTO[]
-  total: number
-  currentPage: number,
-  totalPages: number,
-  perPage: number
+  products: ProductDTO[];
+  total: number;
+  currentPage: number;
+  totalPages: number;
+  perPage: number;
 }
 
 export type ProductFreeCollection = ProductFree[];
 
 export interface ProductFree {
-  id: string,
-  name: string
+  id: string;
+  name: string;
 }
 
-export const formatsProduct = [
-  "pdf",
-  'docx',
-  'doc',
-  'excel'
-] as const;
+export const formatsProduct = ["pdf", "docx", "doc", "excel"] as const;
 
 export interface ProductImages {
-  productId: string,
-  images: File[]
+  productId: string;
+  images: File[];
 }

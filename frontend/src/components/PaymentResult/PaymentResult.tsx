@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import {z} from 'zod';
-import {JSX, useEffect, useState} from "react";
-import {Status} from "@/components/Status/Status";
-import {PaymentResultDTO} from "@/interfaces/payment.interface";
+import { z } from "zod";
+import { JSX, useEffect, useState } from "react";
+import { Status } from "@/components/Status/Status";
+import { PaymentResultDTO } from "@/interfaces/payment.interface";
 import { Suspense } from "react";
-import {useSearchParams} from "next/navigation";
-import {getPaymentByToken} from "@api/payment";
+import { useSearchParams } from "next/navigation";
+import { getPaymentByToken } from "@api/payment";
 
-const tokenSchema = z.string().uuid('Неверный формат токена');
+const tokenSchema = z.string().uuid("Неверный формат токена");
 
 const PaymentResultContent = (): JSX.Element => {
   const searchParams = useSearchParams();
@@ -17,7 +17,7 @@ const PaymentResultContent = (): JSX.Element => {
   const [paymentResult, setPaymentData] = useState<PaymentResultDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const token = searchParams.get('token');
+  const token = searchParams.get("token");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -30,24 +30,24 @@ const PaymentResultContent = (): JSX.Element => {
       const parsed = tokenSchema.safeParse(token);
 
       if (!token || !parsed.success) {
-        setError(parsed.success ? 'Токен отсутствует' : parsed.error.issues[0].message);
+        setError(parsed.success ? "Токен отсутствует" : parsed.error.issues[0].message);
         setLoading(false);
         return;
       }
 
-      try{
+      try {
         const paymentResult = await getPaymentByToken(token, controller.signal);
-        if(!controller.signal.aborted){
+        if (!controller.signal.aborted) {
           setPaymentData(paymentResult);
         }
-      }catch (err: unknown){
-        if (err instanceof Error && err.name === 'AbortError') return;
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === "AbortError") return;
 
-        if(!controller.signal.aborted){
-          const errorMessage = err instanceof Error ? err.message : 'Неизвестная ошибка';
+        if (!controller.signal.aborted) {
+          const errorMessage = err instanceof Error ? err.message : "Неизвестная ошибка";
           setError(errorMessage);
         }
-      }finally {
+      } finally {
         if (!controller.signal.aborted) {
           setLoading(false);
         }
@@ -57,30 +57,29 @@ const PaymentResultContent = (): JSX.Element => {
     return () => controller.abort();
   }, [token]);
 
-
-
-
-  if(loading){
-    return <Status appearance='loading'>Загрузка...</Status>;
+  if (loading) {
+    return <Status appearance="loading">Загрузка...</Status>;
   }
-  if(error || paymentResult === null){
-    return <Status appearance='error'>{error}</Status>;
+  if (error || paymentResult === null) {
+    return <Status appearance="error">{error}</Status>;
   }
 
   switch (paymentResult.status) {
-    case 'failed' :
-      return <Status appearance='failed'> Не удалось получить информацию о платеже</Status>;
-    case 'pending':
-      return <Status appearance='pending'>Платеж обрабатывается</Status>;
-    case 'succeeded':
-      return <Status appearance='success'>✅ Оплата прошла успешно!</Status>;
+    case "failed":
+      return <Status appearance="failed"> Не удалось получить информацию о платеже</Status>;
+    case "pending":
+      return <Status appearance="pending">Платеж обрабатывается</Status>;
+    case "succeeded":
+      return <Status appearance="success">✅ Оплата прошла успешно!</Status>;
     default:
-      return <Status appearance='error'>Неизвестный статус платежа</Status>;
+      return <Status appearance="error">Неизвестный статус платежа</Status>;
   }
 };
 
 export default function PaymentResultPage() {
-  return <Suspense fallback={<Status appearance='loading'>Загрузка...</Status>}>
-    <PaymentResultContent />
-  </Suspense>;
+  return (
+    <Suspense fallback={<Status appearance="loading">Загрузка...</Status>}>
+      <PaymentResultContent />
+    </Suspense>
+  );
 }

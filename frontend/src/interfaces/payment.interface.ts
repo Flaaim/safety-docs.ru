@@ -1,15 +1,15 @@
 export interface PaymentResultDTO {
-  status: 'succeeded' | 'pending' | 'failed'
-  email: string
-  returnToken: string
-  message?: string
+  status: "succeeded" | "pending" | "failed";
+  email: string;
+  returnToken: string;
+  message?: string;
 }
 
 export interface PaymentInitResponse {
-  returnUrl: string
+  returnUrl: string;
 }
 
 export interface CreatePaymentDTO {
-  email: string,
-  productId: string
+  email: string;
+  productId: string;
 }

@@ -1,4 +1,4 @@
-import {JSX} from "react";
+import { JSX } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,21 +13,21 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import styles from './DownloadButton.module.css';
+import styles from "./DownloadButton.module.css";
 
 export function SimpleDialog(): JSX.Element {
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button className={styles.tag} variant="outline">Получить файлы</Button>
+          <Button className={styles.tag} variant="outline">
+            Получить файлы
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>
-              Введите ваш адрес электронной почты:
-            </DialogDescription>
+            <DialogDescription>Введите ваш адрес электронной почты:</DialogDescription>
           </DialogHeader>
           <FieldGroup>
             <Field>
@@ -39,13 +39,10 @@ export function SimpleDialog(): JSX.Element {
             <DialogClose asChild>
               <Button variant="outline">Отменить</Button>
             </DialogClose>
-            <Button  type="submit">Получить</Button>
+            <Button type="submit">Получить</Button>
           </DialogFooter>
         </DialogContent>
       </form>
     </Dialog>
   );
 }
-
-
-

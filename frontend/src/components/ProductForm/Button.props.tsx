@@ -1,8 +1,10 @@
-import {DetailedHTMLProps, HTMLAttributes, ReactNode} from "react";
+import { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
 
-
-export interface ButtonProps extends DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-  children: ReactNode,
-  type: 'submit',
-  disabled: boolean
+export interface ButtonProps extends DetailedHTMLProps<
+  HTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> {
+  children: ReactNode;
+  type: "submit";
+  disabled: boolean;
 }

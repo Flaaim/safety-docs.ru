@@ -1,21 +1,27 @@
-import {cookies} from "next/headers";
-import {getAllProducts} from "@api/product";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {ProductDTO} from "@/interfaces/product.interface";
+import { cookies } from "next/headers";
+import { getAllProducts } from "@api/product";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ProductDTO } from "@/interfaces/product.interface";
 import AddProductDialog from "@/components/Admin/Dashboard/Docs/add-product-dialog";
 import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-dialog";
 import AddImagesDialog from "@/components/Admin/Dashboard/Docs/Images/add-images-dialog";
 import ClearImagesDialog from "@/components/Admin/Dashboard/Docs/Images/clear-images-dialog";
-import Image from 'next/image';
+import Image from "next/image";
 import PaginationControls from "@/components/PaginationControls/PaginationControls";
 
-
 interface ProductPageProps {
-  searchParams: Promise<{ page?: string, perPage?: string }>
+  searchParams: Promise<{ page?: string; perPage?: string }>;
 }
-export default async function ProductPage({searchParams}: ProductPageProps) {
+export default async function ProductPage({ searchParams }: ProductPageProps) {
   const currentPage = Number((await searchParams).page) || 1;
-  const perPage = Number((await (searchParams)).perPage) || 20;
+  const perPage = Number((await searchParams).perPage) || 20;
 
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
@@ -53,26 +59,29 @@ export default async function ProductPage({searchParams}: ProductPageProps) {
                   <div className="flex items-center gap-2">
                     {prod.images.length > 0 ? (
                       <>
-                      <div className="flex -space-x-2">
-                        {prod.images.slice(0, 3).map((image, idx) => (
-                          <Image
-                            key={idx}
-                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${prod.id}/${image}`}
-                            alt=""
-                            width='10'
-                            height='10'
-                            className="w-8 h-8 rounded border-2 border-white object-cover"
-                          />
-                        ))}
-                      </div>
-                      {prod.images.length > 3 && (
-                        <span className="text-xs text-gray-500">
-                        +{prod.images.length - 3}
-                      </span>)}
-                      {<ClearImagesDialog  productId={prod.id}/>}
-
+                        <div className="flex -space-x-2">
+                          {prod.images.slice(0, 3).map((image, idx) => (
+                            <Image
+                              key={idx}
+                              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${prod.id}/${image}`}
+                              alt=""
+                              width="10"
+                              height="10"
+                              className="w-8 h-8 rounded border-2 border-white object-cover"
+                            />
+                          ))}
+                        </div>
+                        {prod.images.length > 3 && (
+                          <span className="text-xs text-gray-500">+{prod.images.length - 3}</span>
+                        )}
+                        {<ClearImagesDialog productId={prod.id} />}
                       </>
-                      ) : (<><span className="text-gray-400 text-sm">Нет фото</span>{<AddImagesDialog productId={prod.id} />}</>)}
+                    ) : (
+                      <>
+                        <span className="text-gray-400 text-sm">Нет фото</span>
+                        {<AddImagesDialog productId={prod.id} />}
+                      </>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="font-medium">{prod.updatedAt}</TableCell>
@@ -84,10 +93,7 @@ export default async function ProductPage({searchParams}: ProductPageProps) {
             ))}
           </TableBody>
         </Table>
-        <PaginationControls
-          currentPage={data.currentPage}
-          totalPages={data.totalPages}
-        />
+        <PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} />
       </div>
     </div>
   );

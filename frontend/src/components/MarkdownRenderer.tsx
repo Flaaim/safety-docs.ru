@@ -3,18 +3,17 @@ import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolink from "rehype-autolink-headings";
 
-import {Ptag, Htag, Listtag} from "@/components";
+import { Ptag, Htag, Listtag } from "@/components";
 
 type Props = {
   content: string;
 };
 
 export default function MarkdownRenderer({ content }: Props) {
-
   const formattedContent = (() => {
     // Проверяем, есть ли экранированные символы
-    if (content.includes('\\n')) {
-      return content.replace(/\\n/g, '\n');
+    if (content.includes("\\n")) {
+      return content.replace(/\\n/g, "\n");
     }
     return content;
   })();
@@ -31,8 +30,16 @@ export default function MarkdownRenderer({ content }: Props) {
         h4: ({ children }) => <Htag tag="h4">{children}</Htag>,
         h5: ({ children }) => <Htag tag="h5">{children}</Htag>,
 
-        ul: ({ children }) => <Listtag appearance="ul" className="doc-list">{children}</Listtag>,
-        ol: ({ children }) => <Listtag appearance="ol" className="doc-list">{children}</Listtag>,
+        ul: ({ children }) => (
+          <Listtag appearance="ul" className="doc-list">
+            {children}
+          </Listtag>
+        ),
+        ol: ({ children }) => (
+          <Listtag appearance="ol" className="doc-list">
+            {children}
+          </Listtag>
+        ),
       }}
     >
       {formattedContent}

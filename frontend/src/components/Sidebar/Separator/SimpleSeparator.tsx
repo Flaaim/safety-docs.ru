@@ -7,13 +7,11 @@ export function SimpleSeparator() {
       <div className="flex flex-col gap-1.5">
         <div className="leading-none font-medium">Блог охраны труда</div>
         <div className="text-muted-foreground">
-          <Link href='https://t.me/help_ot_news'>https://t.me/help_ot_news</Link>
+          <Link href="https://t.me/help_ot_news">https://t.me/help_ot_news</Link>
         </div>
       </div>
       <Separator />
-      <div>
-        Информационная поддержка проекта Блог охраны труда.
-      </div>
+      <div>Информационная поддержка проекта Блог охраны труда.</div>
     </div>
   );
 }

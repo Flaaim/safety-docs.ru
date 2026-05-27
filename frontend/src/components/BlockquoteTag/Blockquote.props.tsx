@@ -1,5 +1,8 @@
-import {DetailedHTMLProps, HTMLAttributes, ReactNode} from "react";
+import { DetailedHTMLProps, HTMLAttributes, ReactNode } from "react";
 
-export interface BlockquoteProps extends DetailedHTMLProps<HTMLAttributes<HTMLQuoteElement>, HTMLQuoteElement> {
-  children: ReactNode
+export interface BlockquoteProps extends DetailedHTMLProps<
+  HTMLAttributes<HTMLQuoteElement>,
+  HTMLQuoteElement
+> {
+  children: ReactNode;
 }

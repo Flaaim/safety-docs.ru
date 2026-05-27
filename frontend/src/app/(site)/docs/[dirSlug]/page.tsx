@@ -5,14 +5,12 @@ import normalizeMarkdown from "@/utils/normalizeMarkdown";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getAllDirections, getDirectionBySlug } from "@api/direction";
-import { cache } from 'react';
-import {Metadata} from "next";
+import { cache } from "react";
+import { Metadata } from "next";
 
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });
-
-
 
 export const dynamicParams = true;
 
@@ -20,19 +18,23 @@ export async function generateStaticParams() {
   try {
     const data = await getAllDirections();
     return data.directions.map((dir) => ({ dirSlug: dir.slug }));
-  } catch(error) {
+  } catch (error) {
     console.error("ОШИБКА ПРИ ПОЛУЧЕНИИ СТАТИЧЕСКИХ ПУТЕЙ:", error);
     return [];
   }
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ dirSlug: string }>}): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ dirSlug: string }>;
+}): Promise<Metadata> {
   const { dirSlug } = await params;
 
-  try{
+  try {
     const direction = await getCachedDirection(dirSlug);
 
-    if(!direction){
+    if (!direction) {
       return {
         title: "Направление не найдено",
         description: "Запрашиваемое направление не существует.",
@@ -41,9 +43,9 @@ export async function generateMetadata({ params }: { params: Promise<{ dirSlug: 
 
     return {
       title: direction.title,
-      description: direction.description
+      description: direction.description,
     };
-  }catch (error){
+  } catch (error) {
     console.error(`Ошибка загрузки метаданных направлении ${dirSlug}:`, error);
     return {
       title: "Ошибка загрузки",
@@ -58,23 +60,23 @@ export default async function DirectionPage({ params }: { params: Promise<{ dirS
   let direction;
   try {
     direction = await getCachedDirection(dirSlug);
-  } catch(error) {
+  } catch (error) {
     console.error(`ОШИБКА API ДЛЯ НАПРАВЛЕНИЯ ${dirSlug}:`, error);
     notFound();
   }
 
   if (!direction) notFound();
 
-  const rootCategories = direction.categories.filter(c => c.parentId === null);
+  const rootCategories = direction.categories.filter((c) => c.parentId === null);
 
   return (
     <>
       <Link href={`/`} className="text-sm text-muted-foreground hover:underline mb-4 block">
         ← Назад
       </Link>
-      <Htag tag='h1'>{direction.title}</Htag>
+      <Htag tag="h1">{direction.title}</Htag>
       <MarkdownRenderer content={normalizeMarkdown(direction.text)} />
-      <Htag tag='h2'>Разделы:</Htag>
+      <Htag tag="h2">Разделы:</Htag>
       <div className="grid gap-3 sm:grid-cols-2 mt-6">
         {rootCategories.map((category) => {
           return (

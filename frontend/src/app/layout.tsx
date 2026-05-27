@@ -8,8 +8,6 @@ const notoSans = Noto_Sans({
   subsets: ["cyrillic"],
 });
 
-
-
 export default function RootLayout({
   children,
 }: Readonly<{

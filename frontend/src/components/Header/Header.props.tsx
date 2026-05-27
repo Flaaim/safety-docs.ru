@@ -1,4 +1,3 @@
-import {DetailedHTMLProps, HTMLAttributes} from "react";
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-
-export type HeaderProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+export type HeaderProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;

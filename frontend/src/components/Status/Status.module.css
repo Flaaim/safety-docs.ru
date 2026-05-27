@@ -18,7 +18,8 @@
   background-color: var(--status-background-success);
 }
 
-.failed, .error {
+.failed,
+.error {
   color: var(--status-color-failed);
   border: 1px solid var(--status-border-color-failed);
   background-color: var(--status-background-failed);
@@ -30,7 +31,7 @@
   background-color: var(--status-background-pending);
 }
 
-.loading{
+.loading {
   color: var(--status-color-loading);
   border: 1px solid var(--status-border-color-loading);
   background-color: var(--status-background-loading);
@@ -41,13 +42,18 @@
 
   margin-right: 8px;
 
-  content: '⟳';
+  content: "⟳";
   animation: spin 1.5s linear infinite;
 
   font-weight: bold;
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

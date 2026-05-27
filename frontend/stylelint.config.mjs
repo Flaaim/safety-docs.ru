@@ -6,18 +6,11 @@ const config = {
     "at-rule-no-unknown": [
       true,
       {
-        "ignoreAtRules": [
-          "theme",
-          "custom-variant",
-          "utility",
-          "plugin",
-          "apply",
-          "variant"
-        ]
-      }
+        ignoreAtRules: ["theme", "custom-variant", "utility", "plugin", "apply", "variant"],
+      },
     ],
-    "import-notation": "string"
-  }
+    "import-notation": "string",
+  },
 };
 
 export default config;

@@ -1,7 +1,6 @@
 .wrapper {
   display: grid;
-  grid-template:
-    ". header header ." auto ". sidebar body ." 1fr ". footer . ." auto / auto 270px 700px auto;
+  grid-template: ". header header ." auto ". sidebar body ." 1fr ". footer . ." auto / auto 270px 700px auto;
 
   min-height: 100vh;
   gap: 50px 40px;
@@ -23,13 +22,13 @@
   grid-area: footer;
 }
 
-@media(width <= 765px){
-  .wrapper{
+@media (width <= 765px) {
+  .wrapper {
     grid-template-columns: minmax(320px, 1fr);
     grid-template-areas:
-    "sidebar"
-    "body"
-    "footer";
+      "sidebar"
+      "body"
+      "footer";
 
     padding: 10px;
   }

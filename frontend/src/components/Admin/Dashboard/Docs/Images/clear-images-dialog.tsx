@@ -1,26 +1,29 @@
 "use client";
 
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel,
-  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {Button} from "@/components/ui/button";
-import {X} from "lucide-react";
-import {toast} from "sonner";
-import {clearImages} from "@api/product";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { toast } from "sonner";
+import { clearImages } from "@api/product";
 
 export interface ClearImagesDialogProps {
-  productId: string
+  productId: string;
 }
 
-
-export default function ClearImagesDialog({productId}:ClearImagesDialogProps) {
+export default function ClearImagesDialog({ productId }: ClearImagesDialogProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -34,12 +37,12 @@ export default function ClearImagesDialog({productId}:ClearImagesDialogProps) {
       setLoading(true);
       await clearImages(token, productId);
 
-      toast.success('Изображения успешно удалены.');
+      toast.success("Изображения успешно удалены.");
       setLoading(false);
       router.refresh();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Ошибка. Изображения не удалены.");
-    }finally {
+    } finally {
       setLoading(false);
     }
   }
@@ -48,7 +51,7 @@ export default function ClearImagesDialog({productId}:ClearImagesDialogProps) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button>
-          <X className="h-4 w-4"/>
+          <X className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -58,10 +61,14 @@ export default function ClearImagesDialog({productId}:ClearImagesDialogProps) {
             Данное действие полностью очистит галерею.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {loading ? <div>Загрузка...</div> : (<AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
-        </AlertDialogFooter>)}
+        {loading ? (
+          <div>Загрузка...</div>
+        ) : (
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        )}
       </AlertDialogContent>
     </AlertDialog>
   );

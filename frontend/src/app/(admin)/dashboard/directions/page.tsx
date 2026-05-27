@@ -6,17 +6,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {getAllDirections} from "@api/direction";
+import { getAllDirections } from "@api/direction";
 import AddDirectionDialog from "@/components/Admin/Dashboard/Directions/add-direction-dialog";
 import EditDirectionDialog from "@/components/Admin/Dashboard/Directions/edit-direction-dialog";
-import {cookies} from "next/headers";
-import {DirectionDTO} from "@/interfaces/direction.interface";
+import { cookies } from "next/headers";
+import { DirectionDTO } from "@/interfaces/direction.interface";
 
 export default async function DirectionsPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
-  const data  = await getAllDirections(token);
+  const data = await getAllDirections(token);
 
   return (
     <div className="space-y-6">
@@ -42,19 +42,18 @@ export default async function DirectionsPage() {
                 <TableCell className="max-w-[400px] font-medium">
                   <div className="line-clamp-2 text-sm text-muted-foreground">
                     {dir.description}
-                </div>
+                  </div>
                 </TableCell>
                 <TableCell className="text-muted-foreground">{dir.categories.length}</TableCell>
                 <TableCell className="text-muted-foreground">{dir.slug}</TableCell>
                 <TableCell className="text-right">
-                  <EditDirectionDialog slug={dir.slug} id={dir.id}/>
+                  <EditDirectionDialog slug={dir.slug} id={dir.id} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
-
     </div>
   );
 }

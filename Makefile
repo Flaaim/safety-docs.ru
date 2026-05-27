@@ -7,15 +7,19 @@ up: docker-up
 down: docker-down
 restart: down up
 check: api-check frontend-check
-api-check: validate api-analyze api-lint api-test
-frontend-check: frontend-lint
+api-check: validate api-lint api-analyze api-test
+frontend-check: frontend-lint frontend-analyze frontend-test
 validate: api-validate-schema
-analyze: api-analyze
+
 lint: api-lint frontend-lint
-lint-fix: frontend-lint-fix
+analyze: api-analyze frontend-analyze
+
+test: api-test frontend-test
 api-test: unit-test functional-test api-fixtures
 test-unit: unit-test
 test-functional: functional-test api-fixtures
+
+lint-fix: api-lint-fix frontend-lint-fix
 
 docker-up:
 	docker compose up -d
@@ -41,12 +45,16 @@ frontend-yarn-install:
 	docker compose run --rm frontend-node-cli yarn install
 
 frontend-lint:
-	docker compose run --rm frontend-node-cli yarn eslint
 	docker compose run --rm frontend-node-cli yarn stylelint
+	docker compose run --rm frontend-node-cli yarn prettier-check
 
 frontend-lint-fix:
 	docker compose run --rm frontend-node-cli yarn eslint-fix
 	docker compose run --rm frontend-node-cli yarn stylelint-fix
+	docker compose run --rm frontend-node-cli yarn prettier-fix
+
+frontend-analyze:
+	docker compose run --rm frontend-node-cli yarn eslint
 
 frontend-test:
 	docker compose run --rm frontend-node-cli yarn test
@@ -59,6 +67,9 @@ api-analyze:
 api-lint:
 	docker compose run --rm api-php-cli composer lint
 	docker compose run --rm api-php-cli composer phpcs
+
+api-lint-fix:
+	docker compose run --rm api-php-cli composer phpcbf
 
 api-validate-schema:
 	docker compose run --rm api-php-cli composer app orm:validate-schema

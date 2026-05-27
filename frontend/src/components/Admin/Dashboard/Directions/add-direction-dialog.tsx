@@ -1,10 +1,10 @@
 "use client";
 
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import {addDirection} from "@api/direction";
-import {toast} from "sonner";
+import { addDirection } from "@api/direction";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -12,45 +12,45 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import {Plus} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {DirectionDTO} from "@/interfaces/direction.interface";
-import MDEditor from '@uiw/react-md-editor';
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DirectionDTO } from "@/interfaces/direction.interface";
+import MDEditor from "@uiw/react-md-editor";
 
-export default function AddDirectionDialog(){
+export default function AddDirectionDialog() {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [textValue, setTextValue] = useState<string>('');
+  const [textValue, setTextValue] = useState<string>("");
 
   const router = useRouter();
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>){
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
-    const direction:Partial<DirectionDTO> = {
-      title: formData.get('title') as string,
-      description: formData.get('description') as string,
-      text: textValue
+    const direction: Partial<DirectionDTO> = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      text: textValue,
     };
 
     const token = Cookies.get("admin_token");
-    try{
+    try {
       await addDirection(token, direction);
 
       toast.success("Направление добавлено");
       setOpen(false);
       router.refresh();
-    }catch (error){
+    } catch (error) {
       toast.error(error instanceof Error ? error.message : "Не удалось добавить направление");
-    }finally {
+    } finally {
       setLoading(false);
     }
   }
@@ -65,9 +65,7 @@ export default function AddDirectionDialog(){
       <DialogContent className="sm:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Новое направление</DialogTitle>
-          <DialogDescription>
-            Добавление нового направления на сайт.
-          </DialogDescription>
+          <DialogDescription>Добавление нового направления на сайт.</DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="grid gap-4 py-4">
           <div className="grid gap-2">
@@ -81,10 +79,10 @@ export default function AddDirectionDialog(){
           <div className="grid gap-2" data-color-mode="light">
             <MDEditor
               value={textValue}
-              onChange={(val) => setTextValue(val || '')}
+              onChange={(val) => setTextValue(val || "")}
               height={300}
               textareaProps={{
-                placeholder: 'Введите текст в формате Markdown...'
+                placeholder: "Введите текст в формате Markdown...",
               }}
             />
           </div>

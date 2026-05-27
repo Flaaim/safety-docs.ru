@@ -1,7 +1,6 @@
-import {ReactNode} from "react";
-
+import { ReactNode } from "react";
 
 export interface DefItemProps {
-  term: ReactNode,
-  definition: ReactNode
+  term: ReactNode;
+  definition: ReactNode;
 }

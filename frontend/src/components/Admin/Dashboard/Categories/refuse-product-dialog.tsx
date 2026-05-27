@@ -1,9 +1,9 @@
 "use client";
 
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import {X} from "lucide-react";
+import { X } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,18 +13,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {Button} from "@/components/ui/button";
-import {refuseProduct} from "@api/category";
-import {toast} from "sonner";
+import { Button } from "@/components/ui/button";
+import { refuseProduct } from "@api/category";
+import { toast } from "sonner";
 export interface RefuseProductDialogProps {
-  categoryId: string
+  categoryId: string;
 }
-export default function RefuseProductDialog({categoryId}:RefuseProductDialogProps) {
+export default function RefuseProductDialog({ categoryId }: RefuseProductDialogProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-
 
   const router = useRouter();
 
@@ -35,12 +34,12 @@ export default function RefuseProductDialog({categoryId}:RefuseProductDialogProp
       setLoading(true);
       await refuseProduct(token, categoryId);
 
-      toast.success('Продукт успешно отвязан');
+      toast.success("Продукт успешно отвязан");
       setLoading(false);
       router.refresh();
     } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Ошибка. Продукт не отвязан.");
-    }finally {
+      toast.error(error instanceof Error ? error.message : "Ошибка. Продукт не отвязан.");
+    } finally {
       setLoading(false);
     }
   }
@@ -49,7 +48,7 @@ export default function RefuseProductDialog({categoryId}:RefuseProductDialogProp
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button>
-          <X className="h-4 w-4"/>
+          <X className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -59,10 +58,14 @@ export default function RefuseProductDialog({categoryId}:RefuseProductDialogProp
             Данное действие отвяжет продукт от категории.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {loading ? <div>Загрузка...</div> : (<AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
-        </AlertDialogFooter>)}
+        {loading ? (
+          <div>Загрузка...</div>
+        ) : (
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onSubmit}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        )}
       </AlertDialogContent>
     </AlertDialog>
   );

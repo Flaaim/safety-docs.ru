@@ -1,23 +1,23 @@
 export interface CategoryCollection {
-  categories: CategoryDTO[]
-  total: number
+  categories: CategoryDTO[];
+  total: number;
 }
 
 export interface CategoryDTO {
-  id: string,
-  title: string,
-  description: string,
-  text: string
-  slug: string
-  directionTitle: string,
-  directionId: string,
-  productTitle: string | null
-  productId: string | null
-  parentId: string | null
+  id: string;
+  title: string;
+  description: string;
+  text: string;
+  slug: string;
+  directionTitle: string;
+  directionId: string;
+  productTitle: string | null;
+  productId: string | null;
+  parentId: string | null;
   children?: CategoryDTO[];
 }
 
 export interface AssignCategory {
-  productId: string,
-  categoryId: string
+  productId: string;
+  categoryId: string;
 }

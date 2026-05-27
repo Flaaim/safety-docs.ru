@@ -1,3 +1,3 @@
-import {DetailedHTMLProps, HTMLAttributes} from "react";
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-export type FooterProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+export type FooterProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;

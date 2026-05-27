@@ -3,45 +3,47 @@
 import { useState } from "react";
 import Image from "next/image";
 
-
 interface GalleryProps {
-  productId: string,
+  productId: string;
   images?: string[];
 }
 
 export const Gallery = ({ images, productId }: GalleryProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  if(!images || images.length === 0){
+  if (!images || images.length === 0) {
     return null;
   }
   const getImgSrc = (fileName: string) => {
-    if (fileName.startsWith('/') || fileName.startsWith('http')) return fileName;
-    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${productId}/${fileName}`.replace(/(?<!:)\/\/+/g, '/');
+    if (fileName.startsWith("/") || fileName.startsWith("http")) return fileName;
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${productId}/${fileName}`.replace(
+      /(?<!:)\/\/+/g,
+      "/"
+    );
   };
 
   return (
     <div className="mt-8">
       <h3 className="text-xl font-bold mb-4">Образцы документов</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {images.map((fileName, index) => {
-            const src = getImgSrc(fileName);
-            return (
-              <div
-                key={index}
-                className="relative aspect-[3/4] cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-gray-50 shadow-sm transition-all hover:opacity-80 hover:shadow-md"
-                onClick={() => setSelectedImage(src)}
-              >
-                <Image
-                  src={src}
-                  alt={`Образец ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                />
-              </div>
-            );
-          })}
+        {images.map((fileName, index) => {
+          const src = getImgSrc(fileName);
+          return (
+            <div
+              key={index}
+              className="relative aspect-[3/4] cursor-pointer overflow-hidden rounded-lg border border-gray-200 bg-gray-50 shadow-sm transition-all hover:opacity-80 hover:shadow-md"
+              onClick={() => setSelectedImage(src)}
+            >
+              <Image
+                src={src}
+                alt={`Образец ${index + 1}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              />
+            </div>
+          );
+        })}
       </div>
       {selectedImage && (
         <div

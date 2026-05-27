@@ -1,4 +1,5 @@
-.ul, .ol {
+.ul,
+.ol {
   display: block;
   margin-block: 1em;
   padding-inline-start: 40px;
@@ -9,7 +10,8 @@
   line-height: 1.5;
 }
 
-.ul li, .ol li {
+.ul li,
+.ol li {
   font-size: 16px;
 }
 
@@ -20,5 +22,3 @@
 .ol {
   list-style-type: decimal;
 }
-
-

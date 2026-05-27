@@ -1,15 +1,15 @@
-import type { MetadataRoute } from 'next';
-import {getAllDirections} from "@api/direction";
+import type { MetadataRoute } from "next";
+import { getAllDirections } from "@api/direction";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://safety-docs.ru';
+  const baseUrl = "https://safety-docs.ru";
 
   const staticPages: MetadataRoute.Sitemap = [
-    {url: `${baseUrl}/`, lastModified: new Date()},
-    {url: `${baseUrl}/success`, lastModified: new Date()},
-    {url: `${baseUrl}/terms`, lastModified: new Date()},
+    { url: `${baseUrl}/`, lastModified: new Date() },
+    { url: `${baseUrl}/success`, lastModified: new Date() },
+    { url: `${baseUrl}/terms`, lastModified: new Date() },
   ];
 
   try {
@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const directionUrls: MetadataRoute.Sitemap = data.directions.map((dir) => ({
       url: `${baseUrl}/docs/${dir.slug}`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.8,
     }));
 
@@ -25,13 +25,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       dir.categories.map((cat) => ({
         url: `${baseUrl}/docs/${dir.slug}/${cat.slug}`,
         lastModified: new Date(),
-        changeFrequency: 'monthly',
+        changeFrequency: "monthly",
         priority: 0.6,
       }))
     );
     return [...staticPages, ...directionUrls, ...categoryUrls];
   } catch (error) {
-    console.error('Ошибка при генерации sitemap:', error);
+    console.error("Ошибка при генерации sitemap:", error);
     return staticPages;
   }
 }

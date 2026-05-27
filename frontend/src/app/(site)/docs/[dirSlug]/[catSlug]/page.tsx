@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getAllDirections, getDirectionBySlug } from "@api/direction";
 import { getProductById } from "@api/product";
-import { cache } from 'react';
+import { cache } from "react";
 import Link from "next/link";
 import { Htag } from "@/components";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
@@ -9,29 +9,26 @@ import normalizeMarkdown from "@/utils/normalizeMarkdown";
 import { ProductInfo } from "@/components/ProductInfo/ProductInfo";
 import { CategoryDTO } from "@/interfaces/category.interface";
 import { ProductDTO } from "@/interfaces/product.interface";
-import {Metadata} from "next";
-import {ArrowLeft, ChevronRight, FileText, SquareArrowOutUpRight} from "lucide-react";
-
+import { Metadata } from "next";
+import { ArrowLeft, ChevronRight, FileText, SquareArrowOutUpRight } from "lucide-react";
 
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });
 
-
 const CategoryView = ({
-                        category,
-                        dirSlug,
-                        product,
-                        allCategories
-                      }: {
+  category,
+  dirSlug,
+  product,
+  allCategories,
+}: {
   category: CategoryDTO;
   dirSlug: string;
   product: ProductDTO | null;
   allCategories: CategoryDTO[];
 }) => {
-
   // Ищем дочерние категории для текущей
-  const children = allCategories.filter(c => c.parentId === category.id);
+  const children = allCategories.filter((c) => c.parentId === category.id);
 
   // Проверяем, является ли категория родительской (нет родителя)
   const isParent = category.parentId === null;
@@ -41,27 +38,34 @@ const CategoryView = ({
       {/* Хлебные крошки / Назад */}
       <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
         {isParent ? (
-          <Link href={`/docs/${dirSlug}`} className="flex items-center gap-1 hover:text-primary transition-colors">
+          <Link
+            href={`/docs/${dirSlug}`}
+            className="flex items-center gap-1 hover:text-primary transition-colors"
+          >
             <ArrowLeft size={14} /> Назад к разделу
           </Link>
         ) : (
           <>
-            <Link href={`/docs/${dirSlug}`} className="hover:text-primary transition-colors">{category.directionTitle}</Link>
+            <Link href={`/docs/${dirSlug}`} className="hover:text-primary transition-colors">
+              {category.directionTitle}
+            </Link>
             <ChevronRight size={14} />
             {/* Ищем название родителя для красивой ссылки назад */}
-            {allCategories.find(c => c.id === category.parentId) && (
+            {allCategories.find((c) => c.id === category.parentId) && (
               <Link
-                href={`/docs/${dirSlug}/${allCategories.find(c => c.id === category.parentId)?.slug}`}
+                href={`/docs/${dirSlug}/${allCategories.find((c) => c.id === category.parentId)?.slug}`}
                 className="hover:text-primary transition-colors"
               >
-                {allCategories.find(c => c.id === category.parentId)?.title}
+                {allCategories.find((c) => c.id === category.parentId)?.title}
               </Link>
             )}
           </>
         )}
       </nav>
 
-      <Htag tag="h1" className="mb-6">{category.title}</Htag>
+      <Htag tag="h1" className="mb-6">
+        {category.title}
+      </Htag>
 
       {/* --- КЕЙС 1: ЭТО РОДИТЕЛЬ (Показываем вложенность) --- */}
       {isParent && children.length > 0 ? (
@@ -75,10 +79,14 @@ const CategoryView = ({
               <Link
                 key={child.id}
                 href={`/docs/${dirSlug}/${child.slug}`}
-                className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm">
-                  <FileText className="text-primary/70 group-hover:text-primary" size={32} />
-                  <span className="font-medium px-3">{child.title}</span>
-                  <SquareArrowOutUpRight className="text-primary/70 group-hover:text-primary" size={32} />
+                className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
+              >
+                <FileText className="text-primary/70 group-hover:text-primary" size={32} />
+                <span className="font-medium px-3">{child.title}</span>
+                <SquareArrowOutUpRight
+                  className="text-primary/70 group-hover:text-primary"
+                  size={32}
+                />
               </Link>
             ))}
           </div>
@@ -127,14 +135,18 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ dirSlug: string; catSlug: string }>}): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ dirSlug: string; catSlug: string }>;
+}): Promise<Metadata> {
   const { dirSlug, catSlug } = await params;
 
-  try{
+  try {
     const direction = await getCachedDirection(dirSlug);
-    const category = direction.categories.find(c => c.slug === catSlug);
+    const category = direction.categories.find((c) => c.slug === catSlug);
 
-    if(!category){
+    if (!category) {
       return {
         title: "Категория не найдена",
         description: "Запрашиваемая категория не существует.",
@@ -143,9 +155,9 @@ export async function generateMetadata({ params }: { params: Promise<{ dirSlug: 
 
     return {
       title: category.title,
-      description: category.description
+      description: category.description,
     };
-  }catch (error){
+  } catch (error) {
     console.error(`Ошибка загрузки метаданных категории ${catSlug}:`, error);
     return {
       title: "Ошибка загрузки",
@@ -154,8 +166,11 @@ export async function generateMetadata({ params }: { params: Promise<{ dirSlug: 
   }
 }
 
-
-export default async function CategoryPage({ params }: { params: Promise<{ dirSlug: string; catSlug: string }> }) {
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ dirSlug: string; catSlug: string }>;
+}) {
   const { dirSlug, catSlug } = await params;
 
   let direction;
@@ -167,7 +182,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ dirSl
 
   if (!direction) notFound();
 
-  const category = direction.categories.find(c => c.slug === catSlug);
+  const category = direction.categories.find((c) => c.slug === catSlug);
   if (!category) notFound();
 
   let product = null;
@@ -175,10 +190,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ dirSl
     product = await getProductById(category.productId);
   }
 
-  return <CategoryView
-    category={category}
-    dirSlug={dirSlug}
-    product={product}
-    allCategories={direction.categories}
-  />;
+  return (
+    <CategoryView
+      category={category}
+      dirSlug={dirSlug}
+      product={product}
+      allCategories={direction.categories}
+    />
+  );
 }

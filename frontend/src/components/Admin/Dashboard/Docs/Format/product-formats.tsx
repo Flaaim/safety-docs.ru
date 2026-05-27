@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,8 +8,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {ChevronDown} from "lucide-react";
-import {formatsProduct} from "@/interfaces/product.interface";
+import { ChevronDown } from "lucide-react";
+import { formatsProduct } from "@/interfaces/product.interface";
 
 export interface ProductMultipleFormatsProps {
   formats: string[];
@@ -23,10 +23,9 @@ export function ProductMultipleFormats({ formats = [], onChange }: ProductMultip
     setSelectedValues(formats);
   }, [formats]);
 
-
   const handleSelect = (value: string) => {
     const newValues = selectedValues.includes(value)
-      ? selectedValues.filter(v => v !== value)
+      ? selectedValues.filter((v) => v !== value)
       : [...selectedValues, value];
 
     setSelectedValues(newValues);
@@ -40,17 +39,11 @@ export function ProductMultipleFormats({ formats = [], onChange }: ProductMultip
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="w-full justify-between">
-            {selectedValues.length > 0
-              ? `Выбрано: ${selectedValues.length}`
-              : "Выберите формат"}
+            {selectedValues.length > 0 ? `Выбрано: ${selectedValues.length}` : "Выберите формат"}
             <ChevronDown className="h-4 w-4 ml-2" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="w-56"
-          sideOffset={5}
-          align="start"
-        >
+        <DropdownMenuContent className="w-56" sideOffset={5} align="start">
           {formatsProduct.map((format) => (
             <DropdownMenuCheckboxItem
               key={format}
@@ -65,5 +58,3 @@ export function ProductMultipleFormats({ formats = [], onChange }: ProductMultip
     </div>
   );
 }
-
-
