@@ -7,6 +7,8 @@ import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-di
 import AddImagesDialog from "@/components/Admin/Dashboard/Docs/Images/add-images-dialog";
 import ClearImagesDialog from "@/components/Admin/Dashboard/Docs/Images/clear-images-dialog";
 import Image from 'next/image';
+import PaginationControls from "@/components/PaginationControls/PaginationControls";
+
 
 export default async function ProductPage() {
   const cookieStore = await cookies();
@@ -24,6 +26,7 @@ export default async function ProductPage() {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>№</TableHead>
               <TableHead>Название</TableHead>
               <TableHead>Шифр</TableHead>
               <TableHead>Цена</TableHead>
@@ -34,8 +37,9 @@ export default async function ProductPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.products.map((prod: ProductDTO) => (
+            {data.products.map((prod: ProductDTO, idx) => (
               <TableRow key={prod.id}>
+                <TableCell>{idx + 1}</TableCell>
                 <TableCell className="font-medium">{prod.name}</TableCell>
                 <TableCell className="font-medium">{prod.cipher}</TableCell>
                 <TableCell className="font-medium">{prod.formattedPrice}</TableCell>
@@ -74,6 +78,10 @@ export default async function ProductPage() {
             ))}
           </TableBody>
         </Table>
+        <PaginationControls
+          currentPage={data.currentPage}
+          totalPages={data.totalPages}
+        />
       </div>
     </div>
   );
