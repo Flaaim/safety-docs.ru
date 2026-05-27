@@ -2,7 +2,6 @@
 
 namespace App\Product\Entity;
 
-use App\Shared\Domain\ValueObject\Id;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -36,7 +35,7 @@ class ProductRepository
         $sortDir = strtoupper($sortDir) === 'ASC' ? 'ASC' : 'DESC';
 
         $qb = $this->repo->createQueryBuilder('p')
-            ->orderBy('p.'.$sortBy, $sortDir)
+            ->orderBy('p.' . $sortBy, $sortDir)
             ->setFirstResult(($page - 1) * $perPage)
             ->setMaxResults($perPage);
 
