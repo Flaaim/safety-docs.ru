@@ -28,6 +28,9 @@ export interface ProductDTO extends Product {
 export interface ProductCollection {
   products: ProductDTO[]
   total: number
+  currentPage: number,
+  totalPages: number,
+  perPage: number
 }
 
 export type ProductFreeCollection = ProductFree[];
