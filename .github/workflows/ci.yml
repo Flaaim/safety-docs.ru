@@ -47,7 +47,9 @@ jobs:
         run: make api-lint
 
       - name: Frontend lint
-        run: make frontend-lint
+        run: |
+          make frontend-lint-fix
+          make frontend-lint
 
       - name: API tests
         id: api-test
