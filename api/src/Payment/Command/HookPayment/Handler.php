@@ -6,11 +6,11 @@ use App\Flusher;
 use App\Payment\Entity\DTO\PaymentCallbackDTO;
 use App\Payment\Entity\PaymentRepository;
 use App\Payment\Entity\PaymentStatus;
-use App\Shared\Domain\Event\Payment\SuccessfulPaymentEvent;
+use App\Payment\Event\PaymentProcessed;
 use App\Shared\Domain\Service\Payment\PaymentProviderInterface;
 use App\Shared\Domain\Service\Payment\PaymentWebhookParserInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class Handler
 {
@@ -19,7 +19,7 @@ class Handler
         private readonly PaymentProviderInterface $provider,
         private readonly PaymentRepository $payments,
         private readonly Flusher $flusher,
-        private readonly EventDispatcherInterface $dispatcher,
+        private readonly MessageBusInterface $messageBus,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -55,8 +55,10 @@ class Handler
 
             $this->flusher->flush();
 
-            $event = new SuccessfulPaymentEvent($payment);
-            $this->dispatcher->dispatch($event);
+            $this->messageBus->dispatch(new PaymentProcessed(
+                $payment->getProductId(),
+                $payment->getEmail()->getValue()
+            ));
         } catch (\Exception $e) {
             $this->logger->error('Failed to handle webhook', [
                 'error' => $e->getMessage(),
