@@ -22,7 +22,9 @@
     "carbonphp/carbon-doctrine-types": "^2.1",
     "doctrine/doctrine-migrations-bundle": "^3.4.2",
     "nesbot/carbon": "^3.11",
-    "ext-intl": "*"
+    "ext-intl": "*",
+    "ext-redis": "*",
+    "symfony/messenger": "^6.4"
   },
   "autoload": {
     "psr-4": {
