@@ -505,37 +505,10 @@
       <code><![CDATA[withStatus]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Sender/Test/Unit/Command/Send/HandlerTest.php">
-    <UndefinedInterfaceMethod>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-    </UndefinedInterfaceMethod>
-    <UndefinedMethod>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-      <code><![CDATA[expects]]></code>
-    </UndefinedMethod>
-  </file>
-  <file src="src/Shared/Domain/Event/Payment/PaymentSubscriber.php">
+  <file src="src/Shared/Domain/Service/Notification/MessageHandler/SendTelegramHandler.php">
     <UnusedClass>
-      <code><![CDATA[PaymentSubscriber]]></code>
+      <code><![CDATA[SendTelegramHandler]]></code>
     </UnusedClass>
-  </file>
-  <file src="src/Shared/Domain/Service/Notification/NotificationInterface.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[notify]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Shared/Domain/Service/Notification/TelegramNotifier.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Shared/Domain/Service/Payment/PaymentProviderInterface.php">
     <PossiblyUnusedMethod>
