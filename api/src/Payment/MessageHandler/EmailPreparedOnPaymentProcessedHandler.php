@@ -8,6 +8,7 @@ use App\Payment\Event\PaymentProcessed;
 use App\Product\Entity\ProductId;
 use App\Product\Entity\ProductRepository;
 use App\Sender\Event\SendDocumentEmailCommand;
+use App\Shared\Domain\Service\Notification\Event\SendTelegramCommand;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -31,8 +32,10 @@ final class EmailPreparedOnPaymentProcessedHandler
         $pathToFile = $this->fileSystemPath->getValue() . DIRECTORY_SEPARATOR . $product->getId()->getValue() .
             DIRECTORY_SEPARATOR . $product->getFilename()->getValue();
 
-        $event = new SendDocumentEmailCommand($email, $product->getName(), $pathToFile);
+        $sendDocument = new SendDocumentEmailCommand($email, $product->getName(), $pathToFile);
+        $sendTelegram = new SendTelegramCommand($email, $product->getAmount()->formatted(), $product->getName());
 
-        $this->messageBus->dispatch($event);
+        $this->messageBus->dispatch($sendDocument);
+        $this->messageBus->dispatch($sendTelegram);
     }
 }

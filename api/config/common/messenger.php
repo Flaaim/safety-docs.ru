@@ -6,6 +6,8 @@ use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
 use App\Sender\Event\SendDocumentEmailCommand;
 use App\Sender\MessageHandler\SendDocumentOnEmailPreparedHandler;
+use App\Shared\Domain\Service\Notification\Event\SendTelegramCommand;
+use App\Shared\Domain\Service\Notification\MessageHandler\SendTelegramHandler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
 use Symfony\Component\Messenger\Handler\HandlerDescriptor;
@@ -30,6 +32,12 @@ return [
             SendDocumentEmailCommand::class => [
                 new HandlerDescriptor(function (SendDocumentEmailCommand $event) use ($container) {
                     $handler = $container->get(SendDocumentOnEmailPreparedHandler::class);
+                    return $handler($event);
+                })
+            ],
+            SendTelegramCommand::class => [
+                new HandlerDescriptor(function (SendTelegramCommand $event) use ($container) {
+                    $handler = $container->get(SendTelegramHandler::class);
                     return $handler($event);
                 })
             ]
