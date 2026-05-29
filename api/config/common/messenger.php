@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Sender\Event\SendDocumentEmailCommand;
+use App\Sender\MessageHandler\SendDocumentOnEmailPreparedHandler;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Messenger\Bridge\Redis\Transport\Connection;
-use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransport;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
 use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
@@ -23,12 +22,23 @@ return [
     MessageBusInterface::class => function(ContainerInterface $container): MessageBus {
         $handlers = [
             PaymentProcessed::class => [
-                new HandlerDescriptor($container->get(EmailPreparedOnPaymentProcessedHandler::class))
+                new HandlerDescriptor(function(PaymentProcessed $event) use ($container) {
+                    $handler = $container->get(EmailPreparedOnPaymentProcessedHandler::class);
+                    return $handler($event);
+                })
+            ],
+            SendDocumentEmailCommand::class => [
+                new HandlerDescriptor(function(SendDocumentEmailCommand $event) use ($container) {
+                    $handler = $container->get(SendDocumentOnEmailPreparedHandler::class);
+                    return $handler($event);
+                })
             ]
         ];
+        $isTestEnv = getenv('APP_ENV') === 'test';
+        $useAsync = !$isTestEnv && !empty(getenv('MESSENGER_TRANSPORT_DSN'));
 
         $sendersLocator = new SendersLocator([
-            '*' => getenv('MESSENGER_TRANSPORT_DSN') ? [TransportInterface::class] : [],
+            '*' => $useAsync ? [TransportInterface::class] : [],
         ], $container);
 
         return new MessageBus([
