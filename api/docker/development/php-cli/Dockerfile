@@ -1,7 +1,10 @@
 FROM php:8.1-cli-alpine
 
-RUN apk add --no-cache mysql-dev bash coreutils \
-    && docker-php-ext-install pdo_mysql mysqli
+RUN apk add --no-cache mysql-dev bash coreutils autoconf g++ make \
+    && docker-php-ext-install pdo_mysql mysqli \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del autoconf g++ make
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 

@@ -80,6 +80,8 @@ services:
       TELEGRAM_CHAT_ID: 1954013093
       AUTH_LOGIN: app
       AUTH_PASSWORD: secret
+      REDIS_HOST: redis
+      MESSENGER_TRANSPORT_DSN: redis://localhost:6379/messages
 
 
   api-php-cli:
@@ -111,7 +113,17 @@ services:
       TELEGRAM_CHAT_ID: 1954013093
       AUTH_LOGIN: app
       AUTH_PASSWORD: secret
+      REDIS_HOST: redis
+      MESSENGER_TRANSPORT_DSN: redis://localhost:6379/messages
 
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "63791:6379"
+    volumes:
+      - redis_data:/data
 
   mysql:
     image: mysql:8.0
@@ -132,6 +144,7 @@ services:
 
 volumes:
   mysql:
+  redis_data:
 
 
 
