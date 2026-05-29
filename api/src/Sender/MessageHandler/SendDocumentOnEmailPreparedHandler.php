@@ -53,6 +53,7 @@ final class SendDocumentOnEmailPreparedHandler
             $this->mailer->send($mimeMessage);
 
             $message->updateStatus(MessageStatus::received());
+            $this->flusher->flush();
         } catch (\Throwable $e) {
             $this->logger->error('Failed to send message', [
                 'message_id' => $message->getId()->getValue(),

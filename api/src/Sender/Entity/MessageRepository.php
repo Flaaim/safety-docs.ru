@@ -20,8 +20,4 @@ class MessageRepository
     {
         $this->em->persist($message);
     }
-    public function update(Message $message): void
-    {
-        $this->em->persist($message);
-    }
 }
