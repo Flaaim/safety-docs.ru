@@ -19,16 +19,16 @@ use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 return [
-    MessageBusInterface::class => function(ContainerInterface $container): MessageBus {
+    MessageBusInterface::class => function (ContainerInterface $container): MessageBus {
         $handlers = [
             PaymentProcessed::class => [
-                new HandlerDescriptor(function(PaymentProcessed $event) use ($container) {
+                new HandlerDescriptor(function (PaymentProcessed $event) use ($container) {
                     $handler = $container->get(EmailPreparedOnPaymentProcessedHandler::class);
                     return $handler($event);
                 })
             ],
             SendDocumentEmailCommand::class => [
-                new HandlerDescriptor(function(SendDocumentEmailCommand $event) use ($container) {
+                new HandlerDescriptor(function (SendDocumentEmailCommand $event) use ($container) {
                     $handler = $container->get(SendDocumentOnEmailPreparedHandler::class);
                     return $handler($event);
                 })
@@ -46,7 +46,7 @@ return [
             new HandleMessageMiddleware(new HandlersLocator($handlers)),
         ]);
     },
-    TransportInterface::class => function(ContainerInterface $container): TransportInterface {
+    TransportInterface::class => function (ContainerInterface $container): TransportInterface {
         $dsn = $container->get('config')['messenger']['async'];
 
         $factory = new RedisTransportFactory();

@@ -9,7 +9,6 @@ use App\Shared\Domain\Service\Payment\WebhookParser\YookassaWebhookParser;
 use Psr\Container\ContainerInterface;
 use Test\Functional\Payment\TestPaymentProvider;
 
-
 return [
     PaymentProviderInterface::class => function (ContainerInterface $container): TestPaymentProvider {
         return $container->get(TestPaymentProvider::class);

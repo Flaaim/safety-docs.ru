@@ -10,5 +10,6 @@ final class SendDocumentEmailCommand
         public string $email,
         public string $subject,
         public string $pathToFile,
-    ) {}
+    ) {
+    }
 }

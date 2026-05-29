@@ -19,7 +19,8 @@ final class EmailPreparedOnPaymentProcessedHandler
         private readonly MessageBusInterface $messageBus,
         private readonly ProductRepository $products,
         private readonly FileSystemPathInterface $fileSystemPath,
-    ) {}
+    ) {
+    }
 
     public function __invoke(PaymentProcessed $event): void
     {

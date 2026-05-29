@@ -9,5 +9,6 @@ final class PaymentProcessed
     public function __construct(
         public string $productId,
         public string $email,
-    ) {}
+    ) {
+    }
 }

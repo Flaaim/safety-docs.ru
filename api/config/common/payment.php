@@ -8,7 +8,6 @@ use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
 use App\Shared\Domain\Service\Payment\WebhookParser\YookassaWebhookParser;
 use Psr\Container\ContainerInterface;
 
-
 return [
     PaymentProviderInterface::class => function (ContainerInterface $container): YookassaProvider {
         return $container->get(YookassaProvider::class);
