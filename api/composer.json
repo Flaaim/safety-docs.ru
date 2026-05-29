@@ -24,7 +24,8 @@
     "nesbot/carbon": "^3.11",
     "ext-intl": "*",
     "ext-redis": "*",
-    "symfony/messenger": "^6.4"
+    "symfony/messenger": "^6.4",
+    "symfony/redis-messenger": "^6.4"
   },
   "autoload": {
     "psr-4": {
