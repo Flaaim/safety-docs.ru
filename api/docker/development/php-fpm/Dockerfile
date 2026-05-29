@@ -4,7 +4,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 
 RUN install-php-extensions intl
 
-RUN apk add --no-cache mysql-dev bash coreutils autoconf g++ make \
+RUN apk add --no-cache mysql-dev autoconf g++ make \
     && docker-php-ext-install pdo_mysql mysqli \
     && pecl install redis \
     && docker-php-ext-enable redis \

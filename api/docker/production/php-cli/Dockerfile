@@ -10,15 +10,17 @@ WORKDIR /app
 
 COPY ./composer.json ./composer.lock ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --ignore-platform-req=ext-intl \
-     && rm -rf /root/.composer/cache
+RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --ignore-platform-req=ext-intl --ignore-platform-req=ext-redis && rm -rf /root/.composer/cache
 
 ### CLI ###
 
 FROM php:8.1-cli-alpine
 
-RUN apk add --no-cache mysql-dev bash coreutils \
-    && docker-php-ext-install pdo_mysql mysqli
+RUN apk add --no-cache mysql-dev bash coreutils autoconf g++ make \
+    && docker-php-ext-install pdo_mysql mysqli \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && apk del autoconf g++ make
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions intl
