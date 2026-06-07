@@ -10,6 +10,7 @@ use Slim\Interfaces\ErrorHandlerInterface;
 use Throwable;
 
 use function Sentry\captureException;
+
 /** @psalm-suppress UnusedClass */
 final class SentryDecorator implements ErrorHandlerInterface
 {
