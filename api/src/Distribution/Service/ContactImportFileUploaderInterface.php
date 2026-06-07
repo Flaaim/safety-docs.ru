@@ -4,7 +4,7 @@ namespace App\Distribution\Service;
 
 use Psr\Http\Message\UploadedFileInterface;
 
-interface FileUploaderInterface
+interface ContactImportFileUploaderInterface
 {
     public function upload(
         string $relativePathDir,

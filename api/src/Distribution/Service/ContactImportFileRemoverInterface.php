@@ -2,7 +2,7 @@
 
 namespace App\Distribution\Service;
 
-interface FileRemoverInterface
+interface ContactImportFileRemoverInterface
 {
     public function remove(string $filePath): void;
 }

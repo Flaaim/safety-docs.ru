@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Distribution\Service;
 
+use App\Shared\Domain\Service\File\DirectoryCreatorInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use Psr\Http\Message\UploadedFileInterface;
 
-final class FileUploader implements FileUploaderInterface
+final class ContactImportFileUploader implements ContactImportFileUploaderInterface
 {
     public function __construct(
         private readonly FileSystemPathInterface $fileSystemPath,

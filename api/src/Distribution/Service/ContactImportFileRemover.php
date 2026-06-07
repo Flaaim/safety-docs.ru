@@ -4,7 +4,7 @@ namespace App\Distribution\Service;
 
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 
-class FileRemover implements FileRemoverInterface
+final class ContactImportFileRemover implements ContactImportFileRemoverInterface
 {
     public function __construct(
         private readonly FileSystemPathInterface $fileSystemPath
