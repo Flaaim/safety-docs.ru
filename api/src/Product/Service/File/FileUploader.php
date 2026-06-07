@@ -2,6 +2,7 @@
 
 namespace App\Product\Service\File;
 
+use App\Shared\Domain\Service\File\DirectoryCreatorInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use Psr\Http\Message\UploadedFileInterface;
 

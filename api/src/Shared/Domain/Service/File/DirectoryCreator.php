@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Product\Service\File;
+namespace App\Shared\Domain\Service\File;
 
 class DirectoryCreator implements DirectoryCreatorInterface
 {

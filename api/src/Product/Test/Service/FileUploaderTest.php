@@ -2,8 +2,8 @@
 
 namespace App\Product\Test\Service;
 
-use App\Product\Service\File\DirectoryCreatorInterface;
 use App\Product\Service\File\FileUploader;
+use App\Shared\Domain\Service\File\DirectoryCreatorInterface;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
