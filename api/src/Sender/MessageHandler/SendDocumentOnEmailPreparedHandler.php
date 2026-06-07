@@ -58,6 +58,7 @@ final class SendDocumentOnEmailPreparedHandler
             $this->logger->error('Failed to send message', [
                 'message_id' => $message->getId()->getValue(),
                 'recipient' => $message->getRecipient()->getEmail()->getValue(),
+                'error' => $e->getMessage(),
             ]);
             $message->updateStatus(MessageStatus::failed());
             $this->flusher->flush();
