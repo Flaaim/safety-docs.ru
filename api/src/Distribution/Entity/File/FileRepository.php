@@ -12,8 +12,7 @@ final class FileRepository
     private EntityRepository $repo;
     public function __construct(
         private readonly EntityManagerInterface $em
-    )
-    {
+    ) {
         $repo = $em->getRepository(File::class);
         $this->repo = $repo;
     }
