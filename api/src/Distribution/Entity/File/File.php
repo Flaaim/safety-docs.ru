@@ -7,13 +7,14 @@ namespace App\Distribution\Entity\File;
 final class File
 {
     public function __construct(
-        private string $id,
+        private FileId $id,
         private string $name,
         private \DateTimeImmutable $date,
         private bool $complete = false
-    ) {}
+    ) {
+    }
 
-    public function getId(): string
+    public function getId(): FileId
     {
         return $this->id;
     }
