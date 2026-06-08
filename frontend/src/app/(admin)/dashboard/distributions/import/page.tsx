@@ -1,10 +1,6 @@
-import {cookies} from "next/headers";
 import AddUploadContactsDialog from "@/components/Admin/Dashboard/Distributions/Import/add-upload-contacts-dialog";
 
-export default async function ImportPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("admin_token")?.value;
-
+export default function ImportPage() {
 
   return (
     <div className="space-y-6">
