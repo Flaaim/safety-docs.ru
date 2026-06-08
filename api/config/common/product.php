@@ -3,13 +3,11 @@
 declare(strict_types=1);
 
 use App\Flusher;
-use App\Product\Command\Images\GetAll\Handler as GetAllImagesHandler;
 use App\Product\Command\Images\Add\Handler as AddImagesHandler;
 use App\Product\Command\Images\Clear\Handler as ClearImagesHandler;
+use App\Product\Command\Images\GetAll\Handler as GetAllImagesHandler;
 use App\Product\Entity\ProductRepository;
 use App\Product\Query\ProductQuery;
-use App\Product\Service\File\DirectoryCreator;
-use App\Product\Service\File\DirectoryCreatorInterface;
 use App\Product\Service\File\FileNameGeneratorInterface;
 use App\Product\Service\File\FileRemover;
 use App\Product\Service\File\FileRemoverInterface;
@@ -17,6 +15,8 @@ use App\Product\Service\File\FileUploader;
 use App\Product\Service\File\FileUploaderInterface;
 use App\Product\Service\File\RandomFileNameGenerator;
 use App\Shared\Domain\Query\ProductQueryInterface;
+use App\Shared\Domain\Service\File\DirectoryCreator;
+use App\Shared\Domain\Service\File\DirectoryCreatorInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use App\Shared\Domain\ValueObject\FileSystem\ImageSystemPath;
@@ -27,11 +27,19 @@ return [
     ProductQueryInterface::class => function (ContainerInterface $container) {
         $em = $container->get(EntityManagerInterface::class);
         $productRepository = new ProductRepository($em);
-
         return new ProductQuery($productRepository);
     },
-    FileRemoverInterface::class => DI\get(FileRemover::class),
-    FileUploaderInterface::class => DI\get(FileUploader::class),
+    FileRemoverInterface::class => function (ContainerInterface $container) {
+        return new FileRemover(
+            $container->get(FileSystemPathInterface::class)
+        );
+    },
+    FileUploaderInterface::class => function (ContainerInterface $container) {
+        return new FileUploader(
+            $container->get(FileSystemPathInterface::class),
+            $container->get(DirectoryCreatorInterface::class),
+        );
+    },
     FileSystemPathInterface::class => DI\get(FileSystemPath::class),
     DirectoryCreatorInterface::class => DI\get(DirectoryCreator::class),
     FileNameGeneratorInterface::class => DI\get(RandomFileNameGenerator::class),
