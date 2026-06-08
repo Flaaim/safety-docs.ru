@@ -20,4 +20,9 @@ final class FileRepository
     {
         $this->em->persist($file);
     }
+
+    public function findByName(string $name): ?File
+    {
+        return $this->repo->findOneBy(['name' => $name]);
+    }
 }
