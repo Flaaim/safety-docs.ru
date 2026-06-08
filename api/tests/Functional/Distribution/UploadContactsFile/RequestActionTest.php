@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Distribution\UploadContactsFile;
+namespace Test\Functional\Distribution\UploadContactsFile;
 
 use App\Distribution\Entity\File\FileRepository;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
@@ -29,7 +29,7 @@ final class RequestActionTest extends WebTestCase
     {
         $file = $this->createUploadFile('contacts.csv', 'content', 'text/csv', UPLOAD_ERR_NO_FILE);
 
-        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/upload-contacts-file', [],
+        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/contact-files', [],
             ['file' => $file]
         ));
 
@@ -45,7 +45,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/upload-contacts-file'));
+        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/contact-files'));
 
         $this->assertEquals(400, $response->getStatusCode());
 
@@ -60,7 +60,7 @@ final class RequestActionTest extends WebTestCase
     {
         $file = $this->createUploadFile('contacts.csv', 'content', 'text/html', UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/upload-contacts-file', [], ['file' => $file]));
+        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/contact-files', [], ['file' => $file]));
         $this->assertEquals(422, $response->getStatusCode());
 
         self::assertJson($body = (string) $response->getBody());
@@ -74,7 +74,7 @@ final class RequestActionTest extends WebTestCase
     {
         $file = $this->createUploadFile('contacts.txt', 'content', 'text/csv', UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/upload-contacts-file', [], ['file' => $file]));
+        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/contact-files', [], ['file' => $file]));
         $this->assertEquals(422, $response->getStatusCode());
 
         self::assertJson($body = (string) $response->getBody());
@@ -89,7 +89,7 @@ final class RequestActionTest extends WebTestCase
     {
         $file = $this->createUploadFile('contacts.csv', 'content', 'text/csv', UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/upload-contacts-file', [], ['file' => $file]));
+        $response = $this->app()->handle(self::formData('POST', '/v1/distributions/contact-files', [], ['file' => $file]));
 
         $this->assertEquals(204, $response->getStatusCode());
 

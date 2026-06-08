@@ -87,7 +87,9 @@ return static function (App $app): void {
         });
 
         $group->group('/distributions', function (RouteCollectorProxy $group): void {
-            $group->post('/upload-contacts-file',
+            $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+
+            $group->post('/contact-files',
                 Distribution\UploadContactsFile\RequestAction::class)
                 ->add(UploadFileHandler::class)
                 ->add(AuthMiddleware::class);
