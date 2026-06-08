@@ -37,6 +37,7 @@ export const API = {
     refuseProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
   },
   distribution: {
+    getContactFiles: (currentPage: number, perPage: number) => BASE_URL + `/v1/distributions/contact-files?page=${currentPage}&perPage${perPage}`,
     uploadContacts: () => BASE_URL + `/v1/distributions/contact-files`
   },
   token: {
