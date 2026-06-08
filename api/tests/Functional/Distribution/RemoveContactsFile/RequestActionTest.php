@@ -26,7 +26,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $response = $this->app()->handle(self::json('DELETE', '/v1/distributions/contacts-file/2037b554-6c53-4e2a-aed1-919b9fe48cef'));
+        $response = $this->app()->handle(self::json('DELETE', '/v1/distributions/contact-files/2037b554-6c53-4e2a-aed1-919b9fe48cef'));
 
         self::assertEquals(400, $response->getStatusCode());
 
@@ -36,13 +36,9 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'File is not found.'], $data);
     }
-    public function testFileNotExists(): void
-    {
-
-    }
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('DELETE', '/v1/distributions/contacts-file/'. RequestFixture::FILE_ID));
+        $response = $this->app()->handle(self::json('DELETE', '/v1/distributions/contact-files/'. RequestFixture::FILE_ID));
 
         self::assertEquals(204, $response->getStatusCode());
 
