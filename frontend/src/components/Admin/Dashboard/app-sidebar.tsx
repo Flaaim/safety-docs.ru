@@ -2,12 +2,11 @@
 
 import {
   LayoutDashboard,
-  Settings,
   FileText,
   User,
   LogOut,
   GamepadDirectional,
-  ChartColumnStacked,
+  ChartColumnStacked, Mails, Import, ChevronRight,
 } from "lucide-react";
 import {
   Sidebar,
@@ -19,7 +18,7 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -30,13 +29,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
 
 const items = [
   { title: "Панель", url: "/dashboard", icon: LayoutDashboard },
   { title: "Документы", url: "/dashboard/docs", icon: FileText },
   { title: "Категории", url: "/dashboard/categories", icon: ChartColumnStacked },
   { title: "Направления", url: "/dashboard/directions", icon: GamepadDirectional },
-  { title: "Настройки", url: "/dashboard/settings", icon: Settings },
+  {
+    title: "Рассылки",
+    url: "/dashboard/distributions",
+    icon: Mails,
+    isActive: true,
+    subItems: [
+      { title: "Импорт контактов", url: "/dashboard/distributions/import", icon: Import },
+    ]
+  },
 ];
 
 export function AppSidebar() {
@@ -58,14 +67,49 @@ export function AppSidebar() {
         <SidebarGroupContent>
           <SidebarMenu>
             {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              // Если есть вложенные пункты, рендерим Collapsible
+              item.subItems ? (
+                <Collapsible
+                  key={item.title}
+                  asChild
+                  defaultOpen={item.isActive}
+                  className="group/collapsible"
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton tooltip={item.title}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.subItems.map((subItem) => (
+                          <SidebarMenuSubItem key={subItem.title}>
+                            <SidebarMenuSubButton asChild>
+                              <a href={subItem.url}>
+                                {/* Можно добавить <subItem.icon className="mr-2 size-4" /> если нужны иконки и внутри */}
+                                <span>{subItem.title}</span>
+                              </a>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ) : (
+                // Стандартный рендер для обычных пунктов (без вложенности)
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )
             ))}
           </SidebarMenu>
         </SidebarGroupContent>
