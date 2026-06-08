@@ -63,6 +63,7 @@ return [
                 __DIR__ . '/../../src/Product/Entity',
                 __DIR__ . '/../../src/Sender/Entity',
                 __DIR__ . '/../../src/Direction/Entity',
+                __DIR__ . '/../../src/Distribution/Entity',
             ],
             'types' => [
                 App\Shared\Domain\ValueObject\IdType::NAME => App\Shared\Domain\ValueObject\IdType::class,
