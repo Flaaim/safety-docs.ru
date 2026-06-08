@@ -2,6 +2,7 @@
 
 namespace App\Shared\Domain\ValueObject\FileSystem;
 
+use FilesystemIterator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 
@@ -38,6 +39,21 @@ class InMemoryFileSystemPath implements FileSystemPathInterface
     }
     public function clear(): void
     {
-        vfsStream::setup('storage');
+        if($this->isVfs){
+            vfsStream::setup('storage');
+        }else{
+            if (is_dir($this->value)) {
+                $files = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($this->value, FilesystemIterator::SKIP_DOTS),
+                    \RecursiveIteratorIterator::CHILD_FIRST
+                );
+
+                foreach ($files as $fileinfo) {
+                    $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+                    $todo($fileinfo->getRealPath());
+                }
+            }
+        }
+
     }
 }
