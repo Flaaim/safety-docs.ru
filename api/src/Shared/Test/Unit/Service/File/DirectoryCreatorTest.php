@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Distribution\Test\Service;
+namespace App\Shared\Test\Unit\Service\File;
 
-use App\Product\Service\File\DirectoryCreator;
+use App\Shared\Domain\Service\File\DirectoryCreator;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 

@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace App\Distribution\Test\Service;
 
-use App\Distribution\Service\DirectoryCreatorInterface;
-use App\Distribution\Service\FileUploader;
+use App\Distribution\Service\ContactImportFileUploader;
+use App\Shared\Domain\Service\File\DirectoryCreatorInterface;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\UploadedFile;
 
-final class FileUploaderTest extends TestCase
+final class ContactImportFileUploaderTest extends TestCase
 {
     private InMemoryFileSystemPath $tempDir;
     private DirectoryCreatorInterface $dirCreator;
-    private FileUploader $handler;
+    private ContactImportFileUploader $handler;
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_
         $this->dirCreator = $this->createMock(DirectoryCreatorInterface::class);
-        $this->handler = new FileUploader($this->tempDir, $this->dirCreator);
+        $this->handler = new ContactImportFileUploader($this->tempDir, $this->dirCreator);
     }
     public function testUploadError(): void
     {
