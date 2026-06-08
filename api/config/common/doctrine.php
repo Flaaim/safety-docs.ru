@@ -87,6 +87,8 @@ return [
 
                 App\Direction\Entity\Category\CategoryIdType::NAME => App\Direction\Entity\Category\CategoryIdType::class,
                 App\Direction\Entity\Category\SlugType::NAME => App\Direction\Entity\Category\SlugType::class,
+
+                App\Distribution\Entity\File\FileIdType::NAME => App\Distribution\Entity\File\FileIdType::class,
             ]
         ]
     ],
