@@ -20,7 +20,14 @@ final class FileRepository
     {
         $this->em->persist($file);
     }
-
+    public function findById(FileId $id): ?File
+    {
+        return $this->repo->find($id);
+    }
+    public function remove(File $file): void
+    {
+        $this->em->remove($file);
+    }
     public function findByName(string $name): ?File
     {
         return $this->repo->findOneBy(['name' => $name]);
