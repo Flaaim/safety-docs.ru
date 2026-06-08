@@ -36,6 +36,9 @@ export const API = {
     assignProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
     refuseProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
   },
+  distribution: {
+    uploadContacts: () => BASE_URL + `/v1/distributions/upload-contacts-file`
+  },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
   },
