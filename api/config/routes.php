@@ -93,6 +93,8 @@ return static function (App $app): void {
                 Distribution\UploadContactsFile\RequestAction::class)
                 ->add(UploadFileHandler::class)
                 ->add(AuthMiddleware::class);
+
+            $group->delete('/contact-files/{fileId:' .$uuidPattern .'}' , Distribution\RemoveContactsFile\RequestAction::class)->add(AuthMiddleware::class);
         });
     });
 };

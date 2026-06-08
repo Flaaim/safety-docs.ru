@@ -8,7 +8,7 @@ use App\Distribution\Entity\File\FileId;
 use App\Distribution\Entity\File\FileRepository;
 use App\Distribution\Service\ContactImportFileRemoverInterface;
 use App\Flusher;
-use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class Handler
 {
@@ -16,7 +16,7 @@ final class Handler
         private readonly FileRepository $files,
         private readonly ContactImportFileRemoverInterface $remover,
         private readonly Flusher $flusher,
-        private readonly Connection $connection
+        private readonly EntityManagerInterface $em
     ) {}
 
     public function handle(Command $command): void
@@ -27,8 +27,8 @@ final class Handler
         }
 
         $path = $contactsFile->getId()->getValue() . DIRECTORY_SEPARATOR . $contactsFile->getName();
-        $this->connection->beginTransaction();
-        try {
+
+        $this->em->wrapInTransaction(function () use ($path, $contactsFile) {
             if (file_exists($path)) {
                 $this->remover->remove($path);
             }
@@ -36,10 +36,9 @@ final class Handler
             $this->files->remove($contactsFile);
 
             $this->flusher->flush();
+        });
 
-        } catch (\Throwable $e) {
-            $this->connection->rollBack();
-            throw new \RuntimeException('Failed to remove file and database record: ' . $e->getMessage(), 0, $e);
-        }
+
+
     }
 }
