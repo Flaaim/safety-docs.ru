@@ -6,6 +6,7 @@ use App\Http\Action\V1\Auth\GetToken\RequestAction;
 use App\Http\Action\V1\Direction;
 use App\Http\Action\V1\Payment;
 use App\Http\Action\V1\Product;
+use App\Http\Action\V1\Distribution;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\UploadFileHandler;
 use Slim\App;
@@ -83,6 +84,13 @@ return static function (App $app): void {
                 $group->put('/product', Direction\Category\AssignProduct\RequestAction::class)->add(AuthMiddleware::class);
                 $group->delete('/product', Direction\Category\RefuseProduct\RequestAction::class)->add(AuthMiddleware::class);
             });
+        });
+
+        $group->group('/distributions', function (RouteCollectorProxy $group): void {
+            $group->post('/upload-contacts-file',
+                Distribution\UploadContactsFile\RequestAction::class)
+                ->add(UploadFileHandler::class)
+                ->add(AuthMiddleware::class);
         });
     });
 };
