@@ -14,7 +14,7 @@ class RequestActionTest extends WebTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->fileSystem = InMemoryFileSystemPath::create();
+        $this->fileSystem = InMemoryFileSystemPath::createReal();
     }
     public function testSuccess(): void
     {
