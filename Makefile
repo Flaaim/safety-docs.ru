@@ -75,7 +75,7 @@ api-validate-schema:
 	docker compose run --rm api-php-cli composer app orm:validate-schema
 
 api-clear:
-	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
+	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/* public/templates/* public/images/* public/distributions/import/*'
 
 api-permission:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod -R 777 bin var/cache var/log var/test public/templates public/images
