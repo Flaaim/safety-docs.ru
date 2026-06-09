@@ -20,7 +20,6 @@ final class RequestActionTest extends WebTestCase
         $this->fileSystem = InMemoryFileSystemPath::createReal();
         $container = $this->app()->getContainer();
         $this->files = $container->get(FileRepository::class);
-        $this->createUploadFile();
         $this->loadFixtures([RequestFixture::class]);
     }
 
@@ -38,6 +37,9 @@ final class RequestActionTest extends WebTestCase
     }
     public function testSuccess(): void
     {
+        $path = RequestFixture::FILE_ID . DIRECTORY_SEPARATOR . RequestFixture::FILENAME;
+        $this->createFile($path);
+        self::assertFileExists($this->fileSystem->getValue(). DIRECTORY_SEPARATOR . $path);
         $response = $this->app()->handle(self::json('DELETE', '/v1/distributions/contact-files/'. RequestFixture::FILE_ID));
 
         self::assertEquals(204, $response->getStatusCode());
@@ -47,12 +49,16 @@ final class RequestActionTest extends WebTestCase
         self::assertNull($file);
         self::assertFileDoesNotExist(
             $this->fileSystem->getValue(). DIRECTORY_SEPARATOR. RequestFixture::FILE_ID .
-            DIRECTORY_SEPARATOR . RequestFixture::FILENAME,
+            DIRECTORY_SEPARATOR . RequestFixture::FILENAME
         );
     }
-    private function createUploadFile(): void
+    private function createFile(string $path): void
     {
-        $file = $this->fileSystem->getValue() . DIRECTORY_SEPARATOR . RequestFixture::FILENAME;
+        $file = $this->fileSystem->getValue() . DIRECTORY_SEPARATOR . $path;
+        $dir = mkdir(dirname($file), 0777, true);
+        if($dir === false) {
+            throw new \RuntimeException('Unable to create directory');
+        }
         $result = file_put_contents($file, 'some_content');
         if(!$result){
             throw new \RuntimeException('Unable to write file');

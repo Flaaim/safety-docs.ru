@@ -18,7 +18,7 @@ class RequestActionTest extends WebTestCase
     {
         parent::setUp();
         $this->loadFixtures([RequestFixture::class]);
-        $this->fileSystem = InMemoryFileSystemPath::create();
+        $this->fileSystem = InMemoryFileSystemPath::createReal();
         $this->products = $this->container->get(ProductRepository::class);
     }
     public function testSuccess(): void

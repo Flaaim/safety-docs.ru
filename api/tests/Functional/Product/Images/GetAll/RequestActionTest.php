@@ -13,7 +13,7 @@ class RequestActionTest extends WebTestCase
     {
         parent::setUp();
         $this->loadFixtures([RequestFixture::class]);
-        $this->fileSystem = InMemoryFileSystemPath::create();
+        $this->fileSystem = InMemoryFileSystemPath::createReal();
     }
     public function testSuccess(): void
     {
@@ -26,9 +26,9 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals($data, [
-            'vfs://storage/b38e76c0-ac23-4c48-85fd-975f32c8801f/image1.jpg',
-            'vfs://storage/b38e76c0-ac23-4c48-85fd-975f32c8801f/image2.jpg',
-            'vfs://storage/b38e76c0-ac23-4c48-85fd-975f32c8801f/image3.jpg'
+            '/tmp/phpunit_real_storage/b38e76c0-ac23-4c48-85fd-975f32c8801f/image1.jpg',
+            '/tmp/phpunit_real_storage/b38e76c0-ac23-4c48-85fd-975f32c8801f/image2.jpg',
+            '/tmp/phpunit_real_storage/b38e76c0-ac23-4c48-85fd-975f32c8801f/image3.jpg'
         ]);
     }
     public function tearDown(): void
