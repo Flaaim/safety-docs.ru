@@ -26,7 +26,8 @@
     "ext-redis": "*",
     "symfony/messenger": "^6.4",
     "symfony/redis-messenger": "^6.4",
-    "sentry/sentry": "^4.27"
+    "sentry/sentry": "^4.27",
+    "league/csv": "^9.0"
   },
   "autoload": {
     "psr-4": {
