@@ -38,7 +38,8 @@ export const API = {
   },
   distribution: {
     getContactFiles: (currentPage: number, perPage: number) => BASE_URL + `/v1/distributions/contact-files?page=${currentPage}&perPage${perPage}`,
-    uploadContacts: () => BASE_URL + `/v1/distributions/contact-files`
+    uploadContacts: () => BASE_URL + `/v1/distributions/contact-files`,
+    removeContactsFile: (fileId: string) => BASE_URL + `/v1/distributions/contact-files/${fileId}`
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
