@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Entity\Distribution;
+namespace App\Distribution\Entity\Project;
 
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
-final class DistributionId
+final class ProjectId
 {
     public function __construct(
         private string $value,

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Entity\Distribution;
+namespace App\Distribution\Entity\Project;
 
 use Doctrine\Common\Collections\Collection;
 
-final class Distribution
+final class Project
 {
     public function __construct(
-        private DistributionId $id,
-        private string $name,
+        private ProjectId  $id,
+        private string     $name,
         private Collection $contacts,
     )
     {}
 
-    public function getId(): DistributionId
+    public function getId(): ProjectId
     {
         return $this->id;
     }
@@ -46,5 +46,16 @@ final class Distribution
             }
         }
         return false;
+    }
+
+    public function unsubscribeContact(Contact $contact): void
+    {
+        foreach ($this->contacts as $existingContact) {
+            if($existingContact->isEquals($contact)) {
+                $existingContact->unsubscribe();
+                return;
+            }
+        }
+        throw new \DomainException('Contact not found in this distribution.');
     }
 }

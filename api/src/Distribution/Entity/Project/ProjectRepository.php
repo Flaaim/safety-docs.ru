@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Entity\Distribution;
+namespace App\Distribution\Entity\Project;
 
-use App\Distribution\Entity\Distrubution;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-final class DistributionRepository
+final class ProjectRepository
 {
     private EntityRepository $repo;
     public function __construct(
         private readonly EntityManagerInterface $em
     ) {
-        $repo = $em->getRepository(Distrubution::class);
+        $repo = $em->getRepository(Project::class);
         $this->repo = $repo;
     }
 
-    public function findById(DistributionId $id): ?Distrubution
+    public function findById(ProjectId $id): ?Project
     {
         return $this->repo->find($id);
     }
