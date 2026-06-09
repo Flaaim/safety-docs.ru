@@ -20,5 +20,9 @@ class FileRemover implements FileRemoverInterface
         if (!$result) {
             throw new \DomainException('Error deleting file ' . $fullPath);
         }
+        $result = rmdir(dirname($fullPath));
+        if (!$result) {
+            throw new \DomainException('Error deleting dir ' . dirname($fullPath));
+        }
     }
 }
