@@ -18,3 +18,10 @@ export async function getContactFiles(token: string | undefined, currentPage: nu
     cache: token ? "no-store" : "force-cache",
   })
 }
+export async function removeContactsFile(token: string | undefined, fileId: string): Promise<void> {
+  return await apiFetch<void>(API.distribution.removeContactsFile(fileId), {
+    method: "DELETE",
+    token,
+    cache: token ? "no-store" : "force-cache",
+  });
+}
