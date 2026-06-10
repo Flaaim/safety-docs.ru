@@ -47,18 +47,18 @@ final class Project
             if(!$newContact instanceof ContactDTO) {
                 throw new \DomainException('Importing contacts must be an instance of ContactDTO');
             }
-            if($this->hasContact($newContact->email)) {
+            if($this->hasContact($newContact->email, $this->getId())) {
                 continue;
             }
             $contact = new Contact(Uuid::uuid4()->toString(), $newContact->email, $this);
             $this->contacts->add($contact);
         }
     }
-    public function hasContact(string $email): bool
+    public function hasContact(string $email, ProjectId $projectId): bool
     {
         foreach ($this->contacts as $existingContact) {
             /** @var Contact $existingContact */
-            if($existingContact->isEquals($email)) {
+            if($existingContact->isEquals($email) && $existingContact->getProject()->getId()->equals($projectId)) {
                 return true;
             }
         }

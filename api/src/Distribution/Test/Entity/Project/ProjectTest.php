@@ -27,12 +27,12 @@ final class ProjectTest extends TestCase
 
     public function testHasContact(): void
     {
-        $project = new Project(
-            ProjectId::generate(),
-            'one'
-        );
-        $project->import([new ContactDTO('one@email.ru')]);
-        self::assertFalse($project->hasContact('new@email.ru'));
+        $project1 = new Project(ProjectId::generate(), 'one');
+        $project2 = new Project(ProjectId::generate(), 'two');
+
+        $project1->import([new ContactDTO('one@email.ru')]);
+        self::assertFalse($project1->hasContact('new@email.ru', $project1->getId()));
+        self::assertFalse($project2->hasContact('one@email.ru', $project2->getId()));
     }
 
     public function testImport(): void
