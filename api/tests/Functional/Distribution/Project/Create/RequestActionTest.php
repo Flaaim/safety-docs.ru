@@ -31,11 +31,11 @@ final class RequestActionTest extends WebTestCase
     public function testExists(): void
     {
         $response = $this->app()->handle(self::json('POST', '/v1/distributions/projects', [
-            'name' => 'Блог охраны труда'
+            'name' => 'Блог охраны'
         ]));
 
         $response = $this->app()->handle(self::json('POST', '/v1/distributions/projects', [
-            'name' => 'Блог охраны труда'
+            'name' => 'Блог охраны'
         ]));
 
         self::assertEquals(400, $response->getStatusCode());

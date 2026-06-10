@@ -12,8 +12,8 @@ use App\Flusher;
 final class Handler
 {
     public function __construct(
-        private ProjectRepository $projects,
-        private Flusher $flusher
+        private readonly ProjectRepository $projects,
+        private readonly Flusher $flusher
     ) {}
     public function handle(Command $command): void
     {
