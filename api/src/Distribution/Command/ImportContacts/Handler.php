@@ -36,6 +36,7 @@ final class Handler
         $path = $file->getId()->getValue() . DIRECTORY_SEPARATOR . $file->getName();
 
         $contacts = $this->importer->import($path);
+
         $project->import($contacts);
 
         $this->flusher->flush();

@@ -7,6 +7,7 @@ namespace App\Distribution\Service;
 use App\Distribution\Entity\Project\DTO\ContactDTO;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use League\Csv\Reader;
+use function Deployer\error;
 
 
 final class ContactFileImporter implements ContactFileImporterInterface
@@ -23,12 +24,13 @@ final class ContactFileImporter implements ContactFileImporterInterface
                 throw new \DomainException('File not found in filesystem.');
             }
             $reader = Reader::from($fullPath);
+            $reader->setDelimiter(';');
             $reader->setHeaderOffset(0);
             $records = $reader->getRecords();
             $result = [];
             foreach ($records as $record) {
-                if(isset($record['email'])){
-                    $result[] = new ContactDTO($record['email']);
+                if(isset($record['Email'])){
+                    $result[] = new ContactDTO($record['Email']);
                 }
             }
             return $result;
