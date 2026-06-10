@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Distribution\Service;
 
-use App\Distribution\Entity\Distribution\Contact;
+use App\Distribution\Entity\Project\DTO\ContactDTO;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use League\Csv\Reader;
 
@@ -23,7 +23,7 @@ final class ContactFileImporter implements ContactFileImporterInterface
         $result = [];
         foreach ($records as $record) {
             if(isset($record['email'])){
-                $result[] = new Contact($record['email']);
+                $result[] = new ContactDTO($record['email']);
             }
         }
         return $result;
