@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Distribution\Command\GetAllProjects;
 
+use App\Distribution\Entity\File\DTO\FileDTO;
+use App\Distribution\Entity\Project\DTO\ProjectDTO;
+
 final class Response implements \JsonSerializable
 {
     private function __construct(
@@ -19,7 +22,10 @@ final class Response implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'projects' => $this->projects,
+            'projects' => array_map(fn(ProjectDTO $file) => [
+                'id' => $file->id,
+                'name' => $file->name,
+            ], $this->projects),
         ];
     }
 }
