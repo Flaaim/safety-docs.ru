@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Distribution\Service\ContactFileImporter;
+use App\Distribution\Service\ContactFileImporterInterface;
 use App\Distribution\Service\ContactImportFileRemover;
 use App\Distribution\Service\ContactImportFileRemoverInterface;
 use App\Distribution\Service\ContactImportFileUploader;
@@ -20,6 +22,11 @@ return [
     ContactImportFileRemoverInterface::class => function (ContainerInterface $container) {
         return new ContactImportFileRemover(
             $container->get(DistributionSystemPath::class)
+        );
+    },
+    ContactFileImporterInterface::class => function (ContainerInterface $container) {
+        return new ContactFileImporter(
+            $container->get(DistributionSystemPath::class),
         );
     }
 ];
