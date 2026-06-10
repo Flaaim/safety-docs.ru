@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Distribution\Test\Entity\Project;
 
 use App\Distribution\Entity\Project\Contact;
+use App\Distribution\Entity\Project\DTO\ContactDTO;
 use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 final class ProjectTest extends TestCase
 {
@@ -16,70 +17,74 @@ final class ProjectTest extends TestCase
     {
         $project = new Project(
             $id = ProjectId::generate(),
-            $name = 'one',
-            $contacts = new ArrayCollection([new Contact('test@email.ru')])
+            $name = 'one'
         );
 
         self::assertEquals($id, $project->getId()->getValue());
         self::assertEquals($name , $project->getName());
-        self::assertEquals($contacts->toArray() , $project->getContacts());
+        self::assertEmpty($project->getContacts());
     }
 
     public function testHasContact(): void
     {
         $project = new Project(
             ProjectId::generate(),
-            'one',
-            new ArrayCollection([$existing = new Contact('existing@email.ru')])
+            'one'
         );
-
-        self::assertTrue($project->hasContact($existing));
-        self::assertFalse($project->hasContact(new Contact('new@email.ru')));
+        $project->import([new ContactDTO('one@email.ru')]);
+        self::assertFalse($project->hasContact('new@email.ru'));
     }
 
     public function testImport(): void
     {
         $existingContacts = [
-            new Contact('one@mail.ru'),
-            new Contact('two@mail.ru'),
+            new ContactDTO('one@mail.ru'),
+            new ContactDTO( 'two@mail.ru'),
         ];
 
         $newContacts = [
-            new Contact('one@mail.ru'),
-            new Contact('three@mail.ru'),
-            new Contact('four@mail.ru'),
+            new ContactDTO('one@mail.ru'),
+            new ContactDTO( 'three@mail.ru'),
+            new ContactDTO( 'four@mail.ru'),
         ];
-        $distribution = new Project(
+        $project = new Project(
             ProjectId::generate(),
             'one',
-            new ArrayCollection($existingContacts)
+        );
+        $project->import($existingContacts);
+        $project->import($newContacts);
+
+        self::assertCount(4, $project->getContacts());
+    }
+    public function testImportNotContactDTO(): void
+    {
+        $newContacts = [
+            new \stdClass(),
+        ];
+        $project = new Project(
+            ProjectId::generate(),
+            'one',
         );
 
-        $distribution->import($newContacts);
-
-        self::assertEquals([
-            new Contact('one@mail.ru'),
-            new Contact('two@mail.ru'),
-            new Contact('three@mail.ru'),
-            new Contact('four@mail.ru'),
-        ], $distribution->getContacts());
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Importing contacts must be an instance of ContactDTO');
+        $project->import($newContacts);
     }
-
     public function testUnsubscribeContact(): void
     {
-        $existingContacts = [
-            new Contact('one@mail.ru'),
-            new Contact('two@mail.ru'),
+        $contacts = [
+            new ContactDTO('one@mail.ru'),
+            new ContactDTO('two@mail.ru'),
         ];
 
-        $distribution = new Project(
+        $project = new Project(
             ProjectId::generate(),
-            'one',
-            new ArrayCollection($existingContacts)
+            'one'
         );
+        $project->import($contacts);
 
-        $distribution->unsubscribeContact(new Contact('one@mail.ru'));
-        $contact = $distribution->getContacts()[0];
+        $project->unsubscribeContact(new Contact(Uuid::uuid4()->toString(), 'one@mail.ru', $project));
+        $contact = $project->getContacts()[0];
 
         /** @var Contact $contact */
         self::assertTrue($contact->isUnsubscribed());
