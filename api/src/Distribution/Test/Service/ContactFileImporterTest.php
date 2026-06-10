@@ -7,7 +7,6 @@ namespace App\Distribution\Test\Service;
 use App\Distribution\Service\ContactFileImporter;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
-use League\Csv\Writer;
 use PHPUnit\Framework\TestCase;
 
 
@@ -28,7 +27,7 @@ final class ContactFileImporterTest extends TestCase
         $result = $importer->import($file);
 
         self::assertCount(1, $result);
-        self::assertEquals('test@email.ru', $result[0]->getEmail());
+        self::assertEquals('test@email.ru', $result[0]->email);
     }
     private function createCsvFile(string $path): void
     {
