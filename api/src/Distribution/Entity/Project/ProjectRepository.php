@@ -24,6 +24,14 @@ final class ProjectRepository
         }
         return true;
     }
+    public function hasById(ProjectId $id): bool
+    {
+        $project = $this->repo->findOneBy(['id' => $id]);
+        if (null === $project) {
+            return false;
+        }
+        return true;
+    }
     public function findById(ProjectId $id): ?Project
     {
         return $this->repo->find($id);
