@@ -29,16 +29,13 @@ final class Handler
         $path = $contactsFile->getId()->getValue() . DIRECTORY_SEPARATOR . $contactsFile->getName();
 
         $this->em->wrapInTransaction(function () use ($path, $contactsFile) {
-            if (file_exists($path)) {
-                $this->remover->remove($path);
-            }
+
+            $this->remover->remove($path);
 
             $this->files->remove($contactsFile);
 
             $this->flusher->flush();
         });
-
-
 
     }
 }
