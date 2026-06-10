@@ -16,3 +16,11 @@ export interface FileDTO {
   date: string,
   complete: boolean
 }
+export type ProjectsCollection = {
+  projects: ProjectsDTO[]
+}
+export interface ProjectsDTO {
+  id: string,
+  name: string,
+  contacts: []
+}
