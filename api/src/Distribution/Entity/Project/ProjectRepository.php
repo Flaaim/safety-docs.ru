@@ -32,4 +32,9 @@ final class ProjectRepository
     {
         $this->em->persist($project);
     }
+    /** @return array<Project> */
+    public function findAll(): array
+    {
+        return $this->repo->findAll();
+    }
 }
