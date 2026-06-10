@@ -10,7 +10,7 @@ final class FileDTOMapper
 {
     public function map(?File $file): ?FileDTO
     {
-        if($file === null) {
+        if ($file === null) {
             return null;
         }
         return FileDTO::fromFile($file);

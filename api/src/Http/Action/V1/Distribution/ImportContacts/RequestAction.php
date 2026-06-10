@@ -14,21 +14,18 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class RequestAction implements RequestHandlerInterface
 {
-
     public function __construct(
         private readonly Handler $handler,
         private readonly Validator $validator
-    )
-    {
-
+    ) {
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $data = $request->getParsedBody() ?? [];
 
         $command = new Command(
-          $data['fileId'] ?? '',
-          $data['projectId'] ?? '',
+            $data['fileId'] ?? '',
+            $data['projectId'] ?? '',
         );
 
         $this->validator->validate($command);

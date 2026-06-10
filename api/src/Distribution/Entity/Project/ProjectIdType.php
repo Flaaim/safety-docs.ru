@@ -6,6 +6,7 @@ namespace App\Distribution\Entity\Project;
 
 use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 final class ProjectIdType extends StringType
 {
     public const  NAME = 'project_id';

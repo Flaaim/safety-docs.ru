@@ -17,7 +17,8 @@ final class Handler
         private readonly ContactImportFileRemoverInterface $remover,
         private readonly Flusher $flusher,
         private readonly EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function handle(Command $command): void
     {
@@ -36,6 +37,5 @@ final class Handler
 
             $this->flusher->flush();
         });
-
     }
 }

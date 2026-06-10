@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Distribution\Entity\File;
 
 use Doctrine\ORM\Mapping as ORM;
+
 #[ORM\Entity]
 #[ORM\Table('distribution_contacts_files')]
 final class File
@@ -19,7 +20,8 @@ final class File
         private \DateTimeImmutable $date,
         #[ORM\Column(type: 'boolean', options: ['default' => false])]
         private bool $complete = false
-    ) {}
+    ) {
+    }
 
     public function getId(): FileId
     {

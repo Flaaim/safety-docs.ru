@@ -8,5 +8,6 @@ final class Command
 {
     public function __construct(
         public string $id
-    ) {}
+    ) {
+    }
 }

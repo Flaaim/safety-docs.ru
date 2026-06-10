@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-
 #[ORM\Entity]
 #[ORM\Table(name: 'distribution_projects')]
 final class Project
@@ -20,11 +19,10 @@ final class Project
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'project_id')]
-        private ProjectId  $id,
+        private ProjectId $id,
         #[ORM\Column(type: 'string', length: 255)]
-        private string     $name,
-    )
-    {
+        private string $name,
+    ) {
         $this->contacts = new ArrayCollection();
     }
 
@@ -44,10 +42,10 @@ final class Project
     public function import(array $contacts): void
     {
         foreach ($contacts as $newContact) {
-            if(!$newContact instanceof ContactDTO) {
+            if (!$newContact instanceof ContactDTO) {
                 throw new \DomainException('Importing contacts must be an instance of ContactDTO');
             }
-            if($this->hasContact($newContact->email, $this->getId())) {
+            if ($this->hasContact($newContact->email, $this->getId())) {
                 continue;
             }
             $contact = new Contact(Uuid::uuid4()->toString(), $newContact->email, $this);
@@ -58,7 +56,7 @@ final class Project
     {
         foreach ($this->contacts as $existingContact) {
             /** @var Contact $existingContact */
-            if($existingContact->isEquals($email) && $existingContact->getProject()->getId()->equals($projectId)) {
+            if ($existingContact->isEquals($email) && $existingContact->getProject()->getId()->equals($projectId)) {
                 return true;
             }
         }
@@ -68,7 +66,7 @@ final class Project
     public function unsubscribeContact(Contact $contact): void
     {
         foreach ($this->contacts as $existingContact) {
-            if($this->hasContact($contact->getEmail())) {
+            if ($this->hasContact($contact->getEmail())) {
                 $existingContact->unsubscribe();
                 return;
             }

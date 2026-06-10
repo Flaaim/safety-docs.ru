@@ -14,10 +14,11 @@ final class Handler
     public function __construct(
         private readonly ProjectRepository $projects,
         private readonly Flusher $flusher
-    ) {}
+    ) {
+    }
     public function handle(Command $command): void
     {
-        if($this->projects->hasByName($command->name)){
+        if ($this->projects->hasByName($command->name)) {
             throw new \DomainException('Project with this name already exists.');
         }
 

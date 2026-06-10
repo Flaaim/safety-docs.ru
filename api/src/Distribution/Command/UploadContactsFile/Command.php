@@ -7,6 +7,7 @@ namespace App\Distribution\Command\UploadContactsFile;
 use App\Http\Validator\SlimUploadedFile as SlimUploadedFileAssert;
 use Psr\Http\Message\UploadedFileInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 final class Command
 {
     public function __construct(

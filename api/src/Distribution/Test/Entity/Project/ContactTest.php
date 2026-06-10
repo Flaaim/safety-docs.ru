@@ -10,15 +10,14 @@ use App\Distribution\Entity\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-
 final class ContactTest extends TestCase
 {
     private Project $project;
     public function setUp(): void
     {
         $this->project = new Project(
-          ProjectId::generate(),
-          'one',
+            ProjectId::generate(),
+            'one',
         );
     }
     public function testCreate(): void

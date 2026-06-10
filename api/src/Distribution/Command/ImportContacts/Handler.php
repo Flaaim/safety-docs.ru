@@ -16,20 +16,21 @@ final class Handler
 {
     public function __construct(
         private readonly ContactFileImporterInterface $importer,
-        private readonly FileRepository               $files,
-        private readonly ProjectRepository            $distributions,
-        private readonly Flusher                      $flusher,
-    ) {}
+        private readonly FileRepository $files,
+        private readonly ProjectRepository $distributions,
+        private readonly Flusher $flusher,
+    ) {
+    }
     public function handle(Command $command): void
     {
         $file = $this->files->findById(new FileId($command->fileId));
-        if($file === null) {
+        if ($file === null) {
             throw new \DomainException('File not found.');
         }
 
         $project = $this->distributions->findById(new ProjectId($command->projectId));
 
-        if($project === null) {
+        if ($project === null) {
             throw new \DomainException('Distribution not found.');
         }
 

@@ -12,13 +12,14 @@ final class Handler
     public function __construct(
         private readonly ProjectRepository $projects,
         private readonly ProjectDTOMapper $projectDTOMapper,
-    ) {}
+    ) {
+    }
     public function handle(): Response
     {
-       $projects = $this->projects->findAll();
+        $projects = $this->projects->findAll();
 
-       $result = $this->projectDTOMapper->mapCollection($projects);
+        $result = $this->projectDTOMapper->mapCollection($projects);
 
-       return Response::fromResult($result);
+        return Response::fromResult($result);
     }
 }

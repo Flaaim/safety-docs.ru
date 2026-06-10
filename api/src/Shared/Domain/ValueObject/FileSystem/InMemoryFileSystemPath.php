@@ -39,9 +39,9 @@ class InMemoryFileSystemPath implements FileSystemPathInterface
     }
     public function clear(): void
     {
-        if($this->isVfs){
+        if ($this->isVfs) {
             vfsStream::setup('storage');
-        }else{
+        } else {
             if (is_dir($this->value)) {
                 $files = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($this->value, FilesystemIterator::SKIP_DOTS),
@@ -54,6 +54,5 @@ class InMemoryFileSystemPath implements FileSystemPathInterface
                 }
             }
         }
-
     }
 }

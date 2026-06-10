@@ -9,11 +9,12 @@ use App\Distribution\Entity\File\File;
 final class FileDTO
 {
     public function __construct(
-       public string $id,
-       public string $name,
-       public string $date,
-       public bool $complete,
-    ) {}
+        public string $id,
+        public string $name,
+        public string $date,
+        public bool $complete,
+    ) {
+    }
 
     public static function fromFile(File $file): self
     {

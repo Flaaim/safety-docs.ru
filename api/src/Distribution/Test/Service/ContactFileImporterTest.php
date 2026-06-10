@@ -9,7 +9,6 @@ use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 
-
 final class ContactFileImporterTest extends TestCase
 {
     private readonly FileSystemPathInterface $fileSystemPath;

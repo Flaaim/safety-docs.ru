@@ -40,7 +40,7 @@ final class Handler
 
             $this->flusher->flush();
         } catch (\Exception $e) {
-            $this->fileRemover->remove($id->getValue() .DIRECTORY_SEPARATOR. $filename);
+            $this->fileRemover->remove($id->getValue() . DIRECTORY_SEPARATOR . $filename);
             throw new \DomainException('File upload failed.' . $e->getMessage());
         }
     }

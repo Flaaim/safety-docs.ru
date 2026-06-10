@@ -42,5 +42,4 @@ final class ProjectIdTest extends TestCase
         self::assertFalse($id1->equals($id2));
         self::assertTrue($id1->equals($id1));
     }
-
 }

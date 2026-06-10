@@ -13,7 +13,8 @@ final class Handler
     public function __construct(
         private readonly FileRepository $files,
         private readonly FileDTOMapper $fileDTOMapper,
-    ) {}
+    ) {
+    }
     public function handle(Command $command): Response
     {
         $page = $command->page;

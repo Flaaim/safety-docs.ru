@@ -21,7 +21,7 @@ final class ProjectTest extends TestCase
         );
 
         self::assertEquals($id, $project->getId()->getValue());
-        self::assertEquals($name , $project->getName());
+        self::assertEquals($name, $project->getName());
         self::assertEmpty($project->getContacts());
     }
 
@@ -39,13 +39,13 @@ final class ProjectTest extends TestCase
     {
         $existingContacts = [
             new ContactDTO('one@mail.ru'),
-            new ContactDTO( 'two@mail.ru'),
+            new ContactDTO('two@mail.ru'),
         ];
 
         $newContacts = [
             new ContactDTO('one@mail.ru'),
-            new ContactDTO( 'three@mail.ru'),
-            new ContactDTO( 'four@mail.ru'),
+            new ContactDTO('three@mail.ru'),
+            new ContactDTO('four@mail.ru'),
         ];
         $project = new Project(
             ProjectId::generate(),

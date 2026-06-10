@@ -9,6 +9,6 @@ final class ContactDTO
     public function __construct(
         public string $email,
         public bool $isUnsubscribed = false,
-    ) {}
-
+    ) {
+    }
 }
