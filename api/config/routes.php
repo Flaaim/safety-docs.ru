@@ -90,13 +90,18 @@ return static function (App $app): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
             $group->get('/contact-files', Distribution\GetContactFiles\RequestAction::class)->add(AuthMiddleware::class);
-
             $group->post('/contact-files',
                 Distribution\UploadContactsFile\RequestAction::class)
                 ->add(UploadFileHandler::class)
                 ->add(AuthMiddleware::class);
 
             $group->delete('/contact-files/{fileId:' .$uuidPattern .'}' , Distribution\RemoveContactsFile\RequestAction::class)->add(AuthMiddleware::class);
+
+
+
+            $group->group('/projects', function (RouteCollectorProxy $group): void {
+                $group->post('', Distribution\Project\Create\RequestAction::class)->add(AuthMiddleware::class);
+            });
         });
     });
 };

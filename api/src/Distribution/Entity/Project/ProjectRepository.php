@@ -16,9 +16,20 @@ final class ProjectRepository
         $repo = $em->getRepository(Project::class);
         $this->repo = $repo;
     }
-
+    public function hasByName(string $name): bool
+    {
+        $project = $this->repo->findOneBy(['name' => $name]);
+        if (null === $project) {
+            return false;
+        }
+        return true;
+    }
     public function findById(ProjectId $id): ?Project
     {
         return $this->repo->find($id);
+    }
+    public function add(Project $project): void
+    {
+        $this->em->persist($project);
     }
 }
