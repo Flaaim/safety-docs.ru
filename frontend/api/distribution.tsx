@@ -25,3 +25,11 @@ export async function removeContactsFile(token: string | undefined, fileId: stri
     cache: token ? "no-store" : "force-cache",
   });
 }
+
+export async function addNewProject(token: string | undefined, formData: FormData): Promise<void> {
+  return await apiFetch<void>(API.distribution.addNewProject(), {
+    method: "POST",
+    token: token,
+    body: formData,
+  });
+}
