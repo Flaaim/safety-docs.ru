@@ -25,12 +25,14 @@ final class ContactFileImporterTest extends TestCase
 
         $result = $importer->import($file);
 
-        self::assertCount(1, $result);
+        self::assertCount(2, $result);
         self::assertEquals('test@email.ru', $result[0]->email);
     }
     private function createCsvFile(string $path): void
     {
-        $csvContent = "email\ntest@email.ru";
+        $csvContent = "Email;Name\n" .
+            "test@email.ru;John Doe\n" .
+            "second@email.ru;Jane Doe";
         file_put_contents($path, $csvContent);
     }
 

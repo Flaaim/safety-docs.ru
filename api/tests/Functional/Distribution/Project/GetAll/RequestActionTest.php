@@ -29,7 +29,8 @@ final class RequestActionTest extends WebTestCase
             'projects' => [
                 [
                     'id' => RequestFixture::PROJECT_ID,
-                    'name' => RequestFixture::PROJECT_NAME
+                    'name' => RequestFixture::PROJECT_NAME,
+                    'contacts' => []
                 ]
             ]
         ], $data);

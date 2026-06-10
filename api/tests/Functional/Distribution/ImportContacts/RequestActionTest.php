@@ -41,7 +41,7 @@ final class RequestActionTest extends WebTestCase
         /** @var Project $project */
         $project = $this->projects->findById(new ProjectId(RequestFixture::PROJECT_ID));
 
-        self::assertCount(1, $project->getContacts());
+        self::assertCount(2, $project->getContacts());
     }
 
     public function testEmpty(): void
@@ -95,10 +95,15 @@ final class RequestActionTest extends WebTestCase
     }
     private function createCsvFile(string $path): void
     {
-        $csvContent = "email\ntest@email.ru";
-        $dir = mkdir(dirname($path), 0777, true);
-        if($dir === false) {
-            throw new \RuntimeException('Unable to create directory ' . $path);
+        $csvContent = "Email;Name\n" .
+            "test@email.ru;John Doe\n" .
+            "second@email.ru;Jane Doe";
+        $dirPath = dirname($path);
+        if (!is_dir($dirPath)) {
+            $dir = mkdir($dirPath, 0777, true);
+            if ($dir === false) {
+                throw new \RuntimeException('Unable to create directory ' . $dirPath);
+            }
         }
         $result = file_put_contents($path, $csvContent);
         if (!$result) {
