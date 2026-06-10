@@ -6,7 +6,7 @@ import {
   User,
   LogOut,
   GamepadDirectional,
-  ChartColumnStacked, Mails, Import, ChevronRight,
+  ChartColumnStacked, Mails, Import, ChevronRight, FolderOpenDot,
 } from "lucide-react";
 import {
   Sidebar,
@@ -44,6 +44,7 @@ const items = [
     isActive: true,
     subItems: [
       { title: "Импорт контактов", url: "/dashboard/distributions/import", icon: Import },
+      { title: "Проекты", url: "/dashboard/distributions/projects", icon: FolderOpenDot  },
     ]
   },
 ];
@@ -89,7 +90,7 @@ export function AppSidebar() {
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
                               <a href={subItem.url}>
-                                {/* Можно добавить <subItem.icon className="mr-2 size-4" /> если нужны иконки и внутри */}
+                                <subItem.icon className="mr-2 size-4" />
                                 <span>{subItem.title}</span>
                               </a>
                             </SidebarMenuSubButton>
