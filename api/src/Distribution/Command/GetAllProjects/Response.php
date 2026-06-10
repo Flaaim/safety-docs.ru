@@ -22,9 +22,10 @@ final class Response implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'projects' => array_map(fn(ProjectDTO $file) => [
-                'id' => $file->id,
-                'name' => $file->name,
+            'projects' => array_map(fn(ProjectDTO $project) => [
+                'id' => $project->id,
+                'name' => $project->name,
+                'contacts' => $project->contacts,
             ], $this->projects),
         ];
     }

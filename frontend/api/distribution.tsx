@@ -1,6 +1,6 @@
 import {apiFetch} from "@api/apiClient";
 import {API} from "@/app/api";
-import {FilesCollection} from "@/interfaces/distribution.interface";
+import {FilesCollection, ProjectsCollection} from "@/interfaces/distribution.interface";
 
 export async function uploadContacts(token: string | undefined, formData: FormData): Promise<void>{
 
@@ -32,4 +32,20 @@ export async function addNewProject(token: string | undefined, formData: FormDat
     token: token,
     body: formData,
   });
+}
+export async function getAllProjects(token: string | undefined): Promise<ProjectsCollection> {
+  return await apiFetch<ProjectsCollection>(API.distribution.getAllProjects(), {
+    method: "GET",
+    token: token,
+  })
+}
+
+export async function importContacts(token: string | undefined, projectId: string, fileId: string): Promise<void> {
+
+  return await apiFetch<void>(API.distribution.importContacts(), {
+    method: "POST",
+    token: token,
+    body: JSON.stringify({projectId: projectId, fileId: fileId})
+  })
+
 }

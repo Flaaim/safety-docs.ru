@@ -44,7 +44,7 @@ export default async function ImportPage({ searchParams }: FileImportPageProps) 
                 <TableCell>{idx + 1}</TableCell>
                 <TableCell>{file.name}</TableCell>
                 <TableCell>{file.date}</TableCell>
-                <TableCell>{file.complete ? (<div>Обработан</div>) : (<AddImportContactsDialog />)}</TableCell>
+                <TableCell>{file.complete ? (<div>Обработан</div>) : (<AddImportContactsDialog fileId={file.id} />)}</TableCell>
                 <TableCell><DeleteContactsFileDialog fileId={file.id}/></TableCell>
               </TableRow>
             ))}
