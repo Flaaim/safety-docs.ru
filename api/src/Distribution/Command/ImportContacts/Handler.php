@@ -27,17 +27,16 @@ final class Handler
             throw new \DomainException('File not found.');
         }
 
-        $distribution = $this->distributions->findById(new ProjectId($command->distributionId));
+        $project = $this->distributions->findById(new ProjectId($command->projectId));
 
-        if($distribution === null) {
+        if($project === null) {
             throw new \DomainException('Distribution not found.');
         }
 
         $path = $file->getId()->getValue() . DIRECTORY_SEPARATOR . $file->getName();
 
         $contacts = $this->importer->import($path);
-        /** @var Project $distribution */
-        $distribution->import($contacts);
+        $project->import($contacts);
 
         $this->flusher->flush();
     }

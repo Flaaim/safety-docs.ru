@@ -17,15 +17,24 @@ final class ContactFileImporter implements ContactFileImporterInterface
 
     public function import(string $path): array
     {
-        $reader = Reader::from($this->fileSystemPath->getValue(). DIRECTORY_SEPARATOR . $path);
-        $reader->setHeaderOffset(0);
-        $records = $reader->getRecords();
-        $result = [];
-        foreach ($records as $record) {
-            if(isset($record['email'])){
-                $result[] = new ContactDTO($record['email']);
+        $fullPath = $this->fileSystemPath->getValue(). DIRECTORY_SEPARATOR . $path;
+        try{
+            if(!file_exists($fullPath)) {
+                throw new \DomainException('File not found in filesystem.');
             }
+            $reader = Reader::from($fullPath);
+            $reader->setHeaderOffset(0);
+            $records = $reader->getRecords();
+            $result = [];
+            foreach ($records as $record) {
+                if(isset($record['email'])){
+                    $result[] = new ContactDTO($record['email']);
+                }
+            }
+            return $result;
+        }catch (\Exception $exception){
+            throw new \DomainException($exception->getMessage());
         }
-        return $result;
+
     }
 }

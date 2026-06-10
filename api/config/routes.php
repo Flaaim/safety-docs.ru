@@ -97,7 +97,7 @@ return static function (App $app): void {
 
             $group->delete('/contact-files/{fileId:' .$uuidPattern .'}' , Distribution\RemoveContactsFile\RequestAction::class)->add(AuthMiddleware::class);
 
-
+            $group->post('/import-contacts', Distribution\ImportContacts\RequestAction::class)->add(AuthMiddleware::class);
 
             $group->group('/projects', function (RouteCollectorProxy $group): void {
                 $group->post('', Distribution\Project\Create\RequestAction::class)->add(AuthMiddleware::class);
