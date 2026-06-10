@@ -5,6 +5,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {FileDTO} from "@/interfaces/distribution.interface";
 import {Button} from "@/components/ui/button";
 import {Import} from "lucide-react";
+import DeleteContactsFileDialog from "@/components/Admin/Dashboard/Distributions/Import/delete-contacts-file-dialog";
 
 interface FileImportPageProps {
   searchParams: Promise<{ page?: string; perPage?: string }>;
@@ -33,7 +34,7 @@ export default async function ImportPage({ searchParams }: FileImportPageProps) 
               <TableHead>Имя файла</TableHead>
               <TableHead>Загружен</TableHead>
               <TableHead>Импорт</TableHead>
-              <TableHead className="text-right">Удалить</TableHead>
+              <TableHead >Удалить</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -43,6 +44,7 @@ export default async function ImportPage({ searchParams }: FileImportPageProps) 
                 <TableCell>{file.name}</TableCell>
                 <TableCell>{file.date}</TableCell>
                 <TableCell>{file.complete ? (<div>Обработан</div>) : (<Button><Import /></Button>)}</TableCell>
+                <TableCell><DeleteContactsFileDialog fileId={file.id}/></TableCell>
               </TableRow>
             ))}
           </TableBody>
