@@ -20,7 +20,7 @@ final class Status
         Assert::oneOf($status, self::STATUSES);
         $this->status = $status;
     }
-    public function getStatus(): string
+    public function getValue(): string
     {
         return $this->status;
     }

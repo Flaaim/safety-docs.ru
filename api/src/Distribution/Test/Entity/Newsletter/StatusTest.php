@@ -13,7 +13,7 @@ final class StatusTest extends TestCase
     {
         $status = Status::created();
 
-        self::assertEquals('created', $status->getStatus());
+        self::assertEquals('created', $status->getValue());
     }
 
     public function testInvalid(): void
