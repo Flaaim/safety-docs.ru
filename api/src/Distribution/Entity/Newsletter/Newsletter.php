@@ -5,14 +5,22 @@ declare(strict_types=1);
 namespace App\Distribution\Entity\Newsletter;
 
 use App\Distribution\Entity\Project\ProjectId;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'newsletters')]
 final class Newsletter
 {
     public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: 'newsletter_id')]
         private NewsletterId $newsletterId,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $subject,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $templateId,
         private Status $status,
+        #[ORM\Column(type: 'project_id')]
         private ProjectId $projectId
     ) {
     }
@@ -38,5 +46,9 @@ final class Newsletter
     public function completed(): void
     {
         $this->status = Status::completed();
+    }
+    public function getProjectId(): ProjectId
+    {
+        return $this->projectId;
     }
 }

@@ -91,6 +91,8 @@ return [
 
                 App\Distribution\Entity\File\FileIdType::NAME => App\Distribution\Entity\File\FileIdType::class,
                 App\Distribution\Entity\Project\ProjectIdType::NAME => App\Distribution\Entity\Project\ProjectIdType::class,
+
+                App\Distribution\Entity\Newsletter\NewsletterIdType::NAME => App\Distribution\Entity\Newsletter\NewsletterIdType::class,
             ]
         ]
     ],
