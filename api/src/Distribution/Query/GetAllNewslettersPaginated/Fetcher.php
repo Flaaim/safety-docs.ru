@@ -19,7 +19,7 @@ final class Fetcher
         $qb = $this->connection->createQueryBuilder()
             ->select('n.*')
             ->from('newsletters', 'n')
-            ->leftJoin('dp', 'distribution_projects', 'dp', 'n.project_id = dp.id')
+            ->leftJoin('n', 'distribution_projects', 'dp', 'n.project_id = dp.id')
             ->orderBy('n.' . $query->sortBy, $sortDir)
             ->setFirstResult(($query->page - 1) * $query->perPage)
             ->setMaxResults($query->perPage);
@@ -28,7 +28,7 @@ final class Fetcher
 
         $countQb = $this->connection->createQueryBuilder()
             ->select('COUNT(*)')
-            ->from('newsletters', 'p');
+            ->from('newsletters', 'n');
 
         $total = (int) $countQb->fetchOne();
         $totalPages = (int) ceil($total / $query->perPage);

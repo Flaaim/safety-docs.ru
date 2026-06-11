@@ -12,7 +12,7 @@ final class Query
         public int $page,
         #[Assert\GreaterThan(0)]
         public int $perPage,
-        public string $sortBy = 'date',
+        public string $sortBy = 'created_at',
         public string $sortDir = 'DESC',
     ) {
     }
