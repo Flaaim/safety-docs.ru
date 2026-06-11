@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Distribution\Newsletter\Draft;
+namespace Test\Functional\Distribution\Newsletter\Draft;
 
 use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;

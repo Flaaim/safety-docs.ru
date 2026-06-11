@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Distribution\Newsletter\Draft;
+namespace Test\Functional\Distribution\Newsletter\Draft;
 
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use Test\Functional\Json;
