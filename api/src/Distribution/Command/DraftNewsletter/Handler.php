@@ -31,6 +31,7 @@ final class Handler
             $command->templateId,
             Status::created(),
             new ProjectId($command->projectId),
+            new \DateTimeImmutable(),
         );
 
         $this->newsletters->add($newsletter);

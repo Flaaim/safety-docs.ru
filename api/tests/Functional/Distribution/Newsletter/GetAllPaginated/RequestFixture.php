@@ -26,7 +26,8 @@ final class RequestFixture extends AbstractFixture
             'Обновления сайта',
             'd4d10922-471d-482a-873e-86f0d9d3d144',
             Status::created(),
-            $project->getId()
+            $project->getId(),
+            new \DateTimeImmutable(),
         );
         $manager->persist($project);
 

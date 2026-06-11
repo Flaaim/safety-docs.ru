@@ -24,7 +24,8 @@ final class NewsletterTest extends TestCase
             $subject = 'Обновления на сайте',
             $templateId = 'd255c7a2-64e7-4cb0-b419-69a2340e61b5',
             $status = Status::created(),
-            $project->getId()
+            $project->getId(),
+            new \DateTimeImmutable(),
         );
 
         self::assertEquals($id, $newsletter->getId());

@@ -21,7 +21,9 @@ final class Newsletter
         private string $templateId,
         private Status $status,
         #[ORM\Column(type: 'project_id')]
-        private ProjectId $projectId
+        private ProjectId $projectId,
+        #[ORM\Column(type: 'datetime_immutable')]
+        private \DateTimeImmutable $createdAt
     ) {
     }
 
@@ -42,7 +44,10 @@ final class Newsletter
     {
         return $this->status;
     }
-
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
     public function completed(): void
     {
         $this->status = Status::completed();
