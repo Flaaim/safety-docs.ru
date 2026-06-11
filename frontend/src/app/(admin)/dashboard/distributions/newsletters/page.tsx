@@ -3,6 +3,7 @@ import {getAllNewslettersPaginated} from "@api/distribution";
 import AddNewProjectDialog from "@/components/Admin/Dashboard/Distributions/Projects/add-new-project-dialog";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Newsletter} from "@/interfaces/distribution.interface";
+import DraftNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/draft-newsletter-dialog";
 
 
 export default async function NewslettersPage() {
@@ -18,7 +19,7 @@ export default async function NewslettersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Рассылки</h1>
-
+        <DraftNewsletterDialog />
       </div>
       <div className="rounded-md border bg-white">
         <Table>

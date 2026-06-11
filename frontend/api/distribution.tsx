@@ -55,3 +55,11 @@ export async function getAllNewslettersPaginated(token: string | undefined): Pro
     token: token
   })
 }
+
+export async function draftNewsletter(token: string | undefined, formData: FormData): Promise<void> {
+  return await apiFetch<void>(API.distribution.draftNewsletter(), {
+    method: "POST",
+    token: token,
+    body: formData
+  })
+}
