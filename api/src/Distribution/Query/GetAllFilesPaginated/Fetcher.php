@@ -12,7 +12,7 @@ final class Fetcher
         private readonly Connection $connection,
     ) {}
 
-    public function fetch(Query $query): FilePaginated
+    public function fetch(Query $query): FilePaginatedCollection
     {
         $sortDir = strtoupper($query->sortDir) === 'ASC' ? 'ASC' : 'DESC';
 
@@ -33,7 +33,7 @@ final class Fetcher
         $totalPages = (int) ceil($total / $query->perPage);
         $totalPages = $totalPages === 0 ? 1 : $totalPages;
 
-        return new FilePaginated(
+        return new FilePaginatedCollection(
             files: $data,
             total: $total,
             currentPage: $query->page,

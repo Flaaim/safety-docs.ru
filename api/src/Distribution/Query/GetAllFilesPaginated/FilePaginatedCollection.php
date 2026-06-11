@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Distribution\Query\GetAllFilesPaginated;
 
-final class FilePaginated implements \JsonSerializable
+final class FilePaginatedCollection implements \JsonSerializable
 {
     public function __construct(
         public readonly array $files,
