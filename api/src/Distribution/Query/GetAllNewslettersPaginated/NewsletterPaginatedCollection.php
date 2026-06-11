@@ -18,8 +18,11 @@ final class NewsletterPaginatedCollection implements \JsonSerializable
     {
         return [
             'newsletters' => array_map(fn($newsletter) => [
-                'subject' => $newsletter['id'],
+                'id' => $newsletter['newsletter_id'],
+                'subject' => $newsletter['subject'],
                 'templateId' => $newsletter['template_id'],
+                'createdAt' => (new \DateTimeImmutable($newsletter['created_at']))->format('Y-m-d'),
+                'status' => $newsletter['status'],
             ], $this->newsletters),
             'total' => $this->total,
             'currentPage' => $this->currentPage,
