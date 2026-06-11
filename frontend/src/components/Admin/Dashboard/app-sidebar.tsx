@@ -6,7 +6,7 @@ import {
   User,
   LogOut,
   GamepadDirectional,
-  ChartColumnStacked, Mails, Import, ChevronRight, FolderOpenDot,
+  ChartColumnStacked, Mails, Import, ChevronRight, FolderOpenDot, Mailbox,
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,13 +38,14 @@ const items = [
   { title: "Категории", url: "/dashboard/categories", icon: ChartColumnStacked },
   { title: "Направления", url: "/dashboard/directions", icon: GamepadDirectional },
   {
-    title: "Рассылки",
+    title: "Рассылка",
     url: "/dashboard/distributions",
-    icon: Mails,
+    icon: Mailbox,
     isActive: true,
     subItems: [
       { title: "Импорт контактов", url: "/dashboard/distributions/import", icon: Import },
       { title: "Проекты", url: "/dashboard/distributions/projects", icon: FolderOpenDot  },
+      { title: "Рассылки", url: "/dashboard/distributions/newsletters", icon: Mails   },
     ]
   },
 ];
