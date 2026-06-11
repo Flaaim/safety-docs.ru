@@ -24,3 +24,17 @@ export interface ProjectsDTO {
   name: string,
   contact_count: number
 }
+
+export interface NewslettersCollection  {
+  newsletters: Newsletter[];
+  total: number;
+  currentPage: number;
+  totalPages: number;
+  perPage: number;
+}
+
+export interface Newsletter {
+  subject: string,
+  templateId: string,
+  projectName: string
+}

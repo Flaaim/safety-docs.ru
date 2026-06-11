@@ -1,6 +1,6 @@
 import {apiFetch} from "@api/apiClient";
 import {API} from "@/app/api";
-import {FilesCollection, ProjectsCollection} from "@/interfaces/distribution.interface";
+import {FilesCollection, NewslettersCollection, ProjectsCollection} from "@/interfaces/distribution.interface";
 
 export async function uploadContacts(token: string | undefined, formData: FormData): Promise<void>{
 
@@ -48,4 +48,10 @@ export async function importContacts(token: string | undefined, projectId: strin
     body: JSON.stringify({projectId: projectId, fileId: fileId})
   })
 
+}
+export async function getAllNewslettersPaginated(token: string | undefined): Promise<NewslettersCollection> {
+  return await apiFetch<NewslettersCollection>(API.distribution.getAllNewsLettersPaginated(), {
+    method: "GET",
+    token: token
+  })
 }

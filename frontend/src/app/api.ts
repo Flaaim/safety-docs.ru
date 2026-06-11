@@ -43,7 +43,7 @@ export const API = {
     importContacts: () => BASE_URL + `/v1/distributions/import-contacts`,
     addNewProject: () => BASE_URL + `/v1/distributions/projects`,
     getAllProjects: () => BASE_URL + `/v1/distributions/projects`,
-
+    getAllNewsLettersPaginated: () => BASE_URL + `/v1/distributions/newsletters`
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
