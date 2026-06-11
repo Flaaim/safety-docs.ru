@@ -106,6 +106,10 @@ return static function (App $app): void {
 
                 $group->get('', Distribution\Project\GetAll\RequestAction::class)->add(AuthMiddleware::class);
             });
+
+            $group->group('/newsletters', function (RouteCollectorProxy $group): void {
+               $group->post('', Distribution\Newsletter\Draft\RequestAction::class)->add(AuthMiddleware::class);
+            });
         });
     });
 };

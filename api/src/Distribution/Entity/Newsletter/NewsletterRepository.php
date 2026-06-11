@@ -21,5 +21,9 @@ final class NewsletterRepository
     {
         $this->em->persist($newsletter);
     }
-
+    /** @return array<Newsletter> */
+    public function findAll(): array
+    {
+        return $this->repo->findAll();
+    }
 }
