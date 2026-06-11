@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
@@ -41,6 +42,10 @@ return [
         );
 
         return new EntityManager($connection, $config);
+    },
+    Connection::class => function (ContainerInterface $container): Connection {
+        $em = $container->get(EntityManagerInterface::class);
+        return $em->getConnection();
     },
     'config' => [
         'doctrine' => [
