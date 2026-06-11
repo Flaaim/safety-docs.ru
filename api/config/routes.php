@@ -103,12 +103,12 @@ return static function (App $app): void {
 
             $group->group('/projects', function (RouteCollectorProxy $group): void {
                 $group->post('', Distribution\Project\Create\RequestAction::class)->add(AuthMiddleware::class);
-
                 $group->get('', Distribution\Project\GetAll\RequestAction::class)->add(AuthMiddleware::class);
             });
 
             $group->group('/newsletters', function (RouteCollectorProxy $group): void {
                $group->post('', Distribution\Newsletter\Draft\RequestAction::class)->add(AuthMiddleware::class);
+               $group->get('', Distribution\Newsletter\GetAllPaginated\RequestAction::class)->add(AuthMiddleware::class);
             });
         });
     });

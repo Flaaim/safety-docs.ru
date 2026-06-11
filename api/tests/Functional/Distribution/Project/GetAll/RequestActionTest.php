@@ -30,7 +30,7 @@ final class RequestActionTest extends WebTestCase
                 [
                     'id' => RequestFixture::PROJECT_ID,
                     'name' => RequestFixture::PROJECT_NAME,
-                    'contacts' => []
+                    'contact_count' => 0
                 ]
             ]
         ], $data);
