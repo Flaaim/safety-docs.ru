@@ -19,6 +19,7 @@ final class Newsletter
         private string $subject,
         #[ORM\Column(type: 'string', length: 255)]
         private string $templateId,
+        #[ORM\Column(type: 'status')]
         private Status $status,
         #[ORM\Column(type: 'project_id')]
         private ProjectId $projectId,

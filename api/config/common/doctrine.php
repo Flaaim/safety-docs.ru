@@ -98,6 +98,7 @@ return [
                 App\Distribution\Entity\Project\ProjectIdType::NAME => App\Distribution\Entity\Project\ProjectIdType::class,
 
                 App\Distribution\Entity\Newsletter\NewsletterIdType::NAME => App\Distribution\Entity\Newsletter\NewsletterIdType::class,
+                App\Distribution\Entity\Newsletter\StatusType::NAME => App\Distribution\Entity\Newsletter\StatusType::class,
             ]
         ]
     ],
