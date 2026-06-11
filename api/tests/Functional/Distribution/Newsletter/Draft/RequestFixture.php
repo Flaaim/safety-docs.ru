@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Distribution\Newsletter;
+namespace Distribution\Newsletter\Draft;
 
-use App\Distribution\Entity\Newsletter\Newsletter;
-use App\Distribution\Entity\Newsletter\NewsletterId;
-use App\Distribution\Entity\Newsletter\Status;
 use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;
 use Doctrine\Common\DataFixtures\AbstractFixture;

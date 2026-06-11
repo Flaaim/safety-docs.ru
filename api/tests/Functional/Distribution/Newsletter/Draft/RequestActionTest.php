@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Distribution\Newsletter;
+namespace Distribution\Newsletter\Draft;
 
-use App\Distribution\Entity\Newsletter\NewsletterId;
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
