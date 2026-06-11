@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Distribution\GetContactFiles;
 
-use App\Distribution\Query\GetContactFiles\Command;
-use App\Distribution\Query\GetContactFiles\Handler;
+use App\Distribution\Query\GetAllFilesPaginated\Fetcher;
+use App\Distribution\Query\GetAllFilesPaginated\Query;
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;
@@ -15,7 +15,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly Handler $handler,
+        private readonly Fetcher   $fetcher,
         private readonly Validator $validator,
     ) {
     }
@@ -24,11 +24,11 @@ final class RequestAction implements RequestHandlerInterface
         $page = (int)($request->getQueryParams()['page'] ?? 1);
         $perPage = (int)($request->getQueryParams()['perPage'] ?? 20);
 
-        $command = new Command($page, $perPage);
+        $query = new Query($page, $perPage);
 
-        $this->validator->validate($command);
+        $this->validator->validate($query);
 
-        $result = $this->handler->handle($command);
+        $result = $this->fetcher->fetch($query);
 
         return new JsonResponse($result);
     }
