@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Distribution\GetContactFiles;
 
-use App\Distribution\Command\GetContactFiles\Command;
-use App\Distribution\Command\GetContactFiles\Handler;
+use App\Distribution\Query\GetContactFiles\Command;
+use App\Distribution\Query\GetContactFiles\Handler;
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
 use Psr\Http\Message\ResponseInterface;

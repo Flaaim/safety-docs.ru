@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Distribution\Project\GetAll;
 
-use App\Distribution\Command\GetAllProjects\Handler;
+use App\Distribution\Query\GetAllProjects\Handler;
 use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

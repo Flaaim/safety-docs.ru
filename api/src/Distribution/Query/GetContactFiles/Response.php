@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Command\GetContactFiles;
+namespace App\Distribution\Query\GetContactFiles;
 
 use App\Distribution\Entity\File\DTO\FileDTO;
 use App\Distribution\Entity\File\DTO\FilePaginatedDTO;

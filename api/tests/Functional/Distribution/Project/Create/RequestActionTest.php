@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Functional\Distribution\Project\Create;
 
 use App\Distribution\Entity\Project\ProjectRepository;
+use Ramsey\Uuid\Uuid;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 use function PHPUnit\Framework\assertEquals;
@@ -20,13 +21,14 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        $name = Uuid::uuid4()->toString();
         $response = $this->app()->handle(self::json('POST', '/v1/distributions/projects', [
-            'name' => 'Блог охраны труда'
+            'name' => $name
         ]));
 
         assertEquals(201, $response->getStatusCode());
 
-        self::assertTrue($this->projects->hasByName('Блог охраны труда'));
+        self::assertTrue($this->projects->hasByName($name));
     }
     public function testExists(): void
     {

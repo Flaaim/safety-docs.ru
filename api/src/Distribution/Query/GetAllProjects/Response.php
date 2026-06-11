@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Command\GetAllProjects;
+namespace App\Distribution\Query\GetAllProjects;
 
-use App\Distribution\Entity\File\DTO\FileDTO;
 use App\Distribution\Entity\Project\DTO\ProjectDTO;
 
 final class Response implements \JsonSerializable
