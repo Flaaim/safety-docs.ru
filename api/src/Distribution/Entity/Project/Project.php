@@ -66,7 +66,7 @@ final class Project
     public function unsubscribeContact(Contact $contact): void
     {
         foreach ($this->contacts as $existingContact) {
-            if ($this->hasContact($contact->getEmail())) {
+            if ($this->hasContact($contact->getEmail(), $contact->getProject()->getId())) {
                 $existingContact->unsubscribe();
                 return;
             }

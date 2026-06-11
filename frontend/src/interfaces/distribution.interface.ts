@@ -22,5 +22,5 @@ export type ProjectsCollection = {
 export interface ProjectsDTO {
   id: string,
   name: string,
-  contacts: []
+  contact_count: number
 }

@@ -2,8 +2,7 @@ import AddNewProjectDialog from "@/components/Admin/Dashboard/Distributions/Proj
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {cookies} from "next/headers";
 import {getAllProjects} from "@api/distribution";
-import {FileDTO, ProjectsDTO} from "@/interfaces/distribution.interface";
-import AddImportContactsDialog from "@/components/Admin/Dashboard/Distributions/Import/add-import-contacts-dialog";
+import {ProjectsDTO} from "@/interfaces/distribution.interface";
 import DeleteContactsFileDialog from "@/components/Admin/Dashboard/Distributions/Import/delete-contacts-file-dialog";
 
 export default async function ProjectPage() {
@@ -12,6 +11,8 @@ export default async function ProjectPage() {
   const token = cookieStore.get("admin_token")?.value;
 
   const data = await getAllProjects(token);
+
+  const hasProjects = data && data.projects && data.projects.length > 0;
 
   return (
     <div className="space-y-6">
@@ -29,16 +30,18 @@ export default async function ProjectPage() {
               <TableHead>Удалить</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {data.projects.map((project: ProjectsDTO, idx) => (
-              <TableRow key={project.id}>
-                <TableCell>{idx + 1}</TableCell>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>{project.contacts.length}</TableCell>
-                <TableCell><DeleteContactsFileDialog fileId={project.id}/></TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          {hasProjects ? (
+            <TableBody>
+              {data.projects.map((project: ProjectsDTO, idx) => (
+                <TableRow key={project.id}>
+                  <TableCell>{idx + 1}</TableCell>
+                  <TableCell>{project.name}</TableCell>
+                  <TableCell>{project.contact_count}</TableCell>
+                  <TableCell><DeleteContactsFileDialog fileId={project.id}/></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          ) : ('')}
         </Table>
       </div>
     </div>
