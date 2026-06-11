@@ -33,20 +33,4 @@ final class FileRepository
     {
         return $this->repo->findOneBy(['name' => $name]);
     }
-    public function findPaginated(int $page, int $perPage, string $sortBy = 'date', string $sortDir = 'DESC'): array
-    {
-        $sortDir = strtoupper($sortDir) === 'ASC' ? 'ASC' : 'DESC';
-
-        $qb = $this->repo->createQueryBuilder('p')
-            ->orderBy('p.' . $sortBy, $sortDir)
-            ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage);
-
-        $paginator = new Paginator($qb);
-
-        return [
-            'items' => iterator_to_array($paginator),
-            'total' => count($paginator),
-        ];
-    }
 }
