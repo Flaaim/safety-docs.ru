@@ -40,12 +40,12 @@ export async function getAllProjects(token: string | undefined): Promise<Project
   })
 }
 
-export async function importContacts(token: string | undefined, projectId: string, fileId: string): Promise<void> {
+export async function importContacts(token: string | undefined, formData: FormData): Promise<void> {
 
   return await apiFetch<void>(API.distribution.importContacts(), {
     method: "POST",
     token: token,
-    body: JSON.stringify({projectId: projectId, fileId: fileId})
+    body: formData
   })
 
 }
