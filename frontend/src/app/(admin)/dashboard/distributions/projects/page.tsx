@@ -3,7 +3,7 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/c
 import {cookies} from "next/headers";
 import {getAllProjects} from "@api/distribution";
 import {ProjectsDTO} from "@/interfaces/distribution.interface";
-import DeleteContactsFileDialog from "@/components/Admin/Dashboard/Distributions/Import/delete-contacts-file-dialog";
+import DeleteProjectDialog from "@/components/Admin/Dashboard/Distributions/Projects/delete-project-dialog";
 
 export default async function ProjectPage() {
 
@@ -37,7 +37,7 @@ export default async function ProjectPage() {
                   <TableCell>{idx + 1}</TableCell>
                   <TableCell>{project.name}</TableCell>
                   <TableCell>{project.contact_count}</TableCell>
-                  <TableCell><DeleteContactsFileDialog fileId={project.id}/></TableCell>
+                  <TableCell><DeleteProjectDialog projectId={project.id}/></TableCell>
                 </TableRow>
               ))}
             </TableBody>
