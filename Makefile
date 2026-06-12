@@ -78,7 +78,7 @@ api-clear:
 	docker run --rm -v ${PWD}/api:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/* public/templates/* public/images/* public/distributions/import/*'
 
 api-permission:
-	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod -R 777 bin var/cache var/log var/test public/templates public/images
+	docker run --rm -v ${PWD}/api:/app -w /app alpine chmod -R 777 bin var/cache var/log var/test public/templates public/images public/distributions
 
 composer-install:
 	docker compose run --rm -u $$(id -u):$$(id -g) api-php-cli composer install
