@@ -1,19 +1,28 @@
 "use client";
 
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog";
-import {Button} from "@/components/ui/button";
-import {Loader2, Trash} from "lucide-react";
-import {deleteProject, removeContactsFile} from "@api/distribution";
-import {toast} from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Loader2, Trash } from "lucide-react";
+import { deleteProject } from "@api/distribution";
+import { toast } from "sonner";
 
 interface DeleteProjectDialogProps {
-  projectId: string
+  projectId: string;
 }
-export default function DeleteProjectDialog({projectId}: DeleteProjectDialogProps) {
+export default function DeleteProjectDialog({ projectId }: DeleteProjectDialogProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -25,7 +34,7 @@ export default function DeleteProjectDialog({projectId}: DeleteProjectDialogProp
     e.preventDefault();
     try {
       setLoading(true);
-      await deleteProject(token, projectId)
+      await deleteProject(token, projectId);
 
       toast.success("Проект успешно удален");
       setOpen(false);

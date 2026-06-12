@@ -1,8 +1,15 @@
 import AddUploadContactsDialog from "@/components/Admin/Dashboard/Distributions/Import/add-upload-contacts-dialog";
-import {cookies} from "next/headers";
-import {getContactFiles} from "@api/distribution";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {FileDTO} from "@/interfaces/distribution.interface";
+import { cookies } from "next/headers";
+import { getContactFiles } from "@api/distribution";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { FileDTO } from "@/interfaces/distribution.interface";
 import DeleteContactsFileDialog from "@/components/Admin/Dashboard/Distributions/Import/delete-contacts-file-dialog";
 import AddImportContactsDialog from "@/components/Admin/Dashboard/Distributions/Import/add-import-contacts-dialog";
 
@@ -25,7 +32,7 @@ export default async function ImportPage({ searchParams }: FileImportPageProps) 
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Импорт контактов</h1>
-        <AddUploadContactsDialog/>
+        <AddUploadContactsDialog />
       </div>
       <div className="rounded-md border bg-white">
         <Table>
@@ -35,7 +42,7 @@ export default async function ImportPage({ searchParams }: FileImportPageProps) 
               <TableHead>Имя файла</TableHead>
               <TableHead>Загружен</TableHead>
               <TableHead>Импорт</TableHead>
-              <TableHead >Удалить</TableHead>
+              <TableHead>Удалить</TableHead>
             </TableRow>
           </TableHeader>
           {hasFiles ? (
@@ -45,13 +52,22 @@ export default async function ImportPage({ searchParams }: FileImportPageProps) 
                   <TableCell>{idx + 1}</TableCell>
                   <TableCell>{file.name}</TableCell>
                   <TableCell>{file.date}</TableCell>
-                  <TableCell>{file.complete ? (<div>Обработан</div>) : (<AddImportContactsDialog fileId={file.id} />)}</TableCell>
-                  <TableCell><DeleteContactsFileDialog fileId={file.id}/></TableCell>
+                  <TableCell>
+                    {file.complete ? (
+                      <div>Обработан</div>
+                    ) : (
+                      <AddImportContactsDialog fileId={file.id} />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <DeleteContactsFileDialog fileId={file.id} />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-          ) : ('')}
-
+          ) : (
+            ""
+          )}
         </Table>
       </div>
     </div>

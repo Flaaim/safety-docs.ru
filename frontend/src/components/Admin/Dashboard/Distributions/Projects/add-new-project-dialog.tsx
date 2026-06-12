@@ -1,15 +1,23 @@
-"use client"
+"use client";
 
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
-import {Plus} from "lucide-react";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {addNewProject, uploadContacts} from "@api/distribution";
-import {toast} from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { addNewProject } from "@api/distribution";
+import { toast } from "sonner";
 
 export default function AddNewProjectDialog() {
   const [open, setOpen] = useState<boolean>(false);
@@ -33,13 +41,12 @@ export default function AddNewProjectDialog() {
     } finally {
       setLoading(false);
     }
-
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <Plus className="mr-2 h-4 w-4"/> Новый проект
+          <Plus className="mr-2 h-4 w-4" /> Новый проект
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -50,7 +57,7 @@ export default function AddNewProjectDialog() {
         <form onSubmit={onSubmit} className="grid gap-4 py-4">
           <div className="grid gap-2">
             <Label htmlFor="name">Название</Label>
-            <Input id="name" type="text" name="name" required/>
+            <Input id="name" type="text" name="name" required />
           </div>
           <DialogFooter>
             <Button type="submit" disabled={loading}>

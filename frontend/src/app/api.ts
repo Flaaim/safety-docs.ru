@@ -37,14 +37,16 @@ export const API = {
     refuseProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
   },
   distribution: {
-    getContactFiles: (currentPage: number, perPage: number) => BASE_URL + `/v1/distributions/contact-files?page=${currentPage}&perPage${perPage}`,
+    getContactFiles: (currentPage: number, perPage: number) =>
+      BASE_URL + `/v1/distributions/contact-files?page=${currentPage}&perPage${perPage}`,
     uploadContacts: () => BASE_URL + `/v1/distributions/contact-files`,
     removeContactsFile: (fileId: string) => BASE_URL + `/v1/distributions/contact-files/${fileId}`,
     importContacts: () => BASE_URL + `/v1/distributions/import-contacts`,
     addNewProject: () => BASE_URL + `/v1/distributions/projects`,
     getAllProjects: () => BASE_URL + `/v1/distributions/projects`,
     deleteProject: (projectId: string) => BASE_URL + `/v1/distributions/projects/${projectId}`,
-    getAllNewsLettersPaginated: (currentPage: number, perPage: number) => BASE_URL + `/v1/distributions/newsletters?page=${currentPage}&perPage${perPage}`,
+    getAllNewsLettersPaginated: (currentPage: number, perPage: number) =>
+      BASE_URL + `/v1/distributions/newsletters?page=${currentPage}&perPage${perPage}`,
     draftNewsletter: () => BASE_URL + `/v1/distributions/newsletters`,
   },
   token: {

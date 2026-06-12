@@ -3,7 +3,7 @@ export interface UploadContactsDTO {
 }
 
 export interface FilesCollection {
-  files: FileDTO[],
+  files: FileDTO[];
   total: number;
   currentPage: number;
   totalPages: number;
@@ -11,21 +11,21 @@ export interface FilesCollection {
 }
 
 export interface FileDTO {
-  id: string,
-  name: string,
-  date: string,
-  complete: boolean
+  id: string;
+  name: string;
+  date: string;
+  complete: boolean;
 }
 export type ProjectsCollection = {
-  projects: ProjectsDTO[]
-}
+  projects: ProjectsDTO[];
+};
 export interface ProjectsDTO {
-  id: string,
-  name: string,
-  contact_count: number
+  id: string;
+  name: string;
+  contact_count: number;
 }
 
-export interface NewslettersCollection  {
+export interface NewslettersCollection {
   newsletters: Newsletter[];
   total: number;
   currentPage: number;
@@ -34,9 +34,9 @@ export interface NewslettersCollection  {
 }
 
 export interface Newsletter {
-  subject: string,
-  templateId: string,
-  projectName: string,
-  createdAt: string,
-  status: string
+  subject: string;
+  templateId: string;
+  projectName: string;
+  createdAt: string;
+  status: string;
 }

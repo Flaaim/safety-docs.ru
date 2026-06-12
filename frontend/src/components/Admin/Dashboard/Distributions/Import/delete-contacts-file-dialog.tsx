@@ -1,20 +1,29 @@
-"use client"
+"use client";
 
-import React, {useState} from "react";
-import {useRouter} from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
-  AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog";
-import {Button} from "@/components/ui/button";
-import {Loader2, Trash} from "lucide-react";
-import {toast} from "sonner";
-import {removeContactsFile} from "@api/distribution";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Loader2, Trash } from "lucide-react";
+import { toast } from "sonner";
+import { removeContactsFile } from "@api/distribution";
 
 export interface DeleteContactsFileDialogProps {
-  fileId: string
+  fileId: string;
 }
 
-export default function DeleteContactsFileDialog({fileId}: DeleteContactsFileDialogProps){
+export default function DeleteContactsFileDialog({ fileId }: DeleteContactsFileDialogProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 

@@ -1,9 +1,12 @@
-import {apiFetch} from "@api/apiClient";
-import {API} from "@/app/api";
-import {FilesCollection, NewslettersCollection, ProjectsCollection} from "@/interfaces/distribution.interface";
+import { apiFetch } from "@api/apiClient";
+import { API } from "@/app/api";
+import {
+  FilesCollection,
+  NewslettersCollection,
+  ProjectsCollection,
+} from "@/interfaces/distribution.interface";
 
-export async function uploadContacts(token: string | undefined, formData: FormData): Promise<void>{
-
+export async function uploadContacts(token: string | undefined, formData: FormData): Promise<void> {
   return await apiFetch<void>(API.distribution.uploadContacts(), {
     method: "POST",
     token: token,
@@ -11,12 +14,16 @@ export async function uploadContacts(token: string | undefined, formData: FormDa
   });
 }
 
-export async function getContactFiles(token: string | undefined, currentPage: number, perPage: number): Promise<FilesCollection> {
+export async function getContactFiles(
+  token: string | undefined,
+  currentPage: number,
+  perPage: number
+): Promise<FilesCollection> {
   return await apiFetch<FilesCollection>(API.distribution.getContactFiles(currentPage, perPage), {
     method: "GET",
     token,
     cache: token ? "no-store" : "force-cache",
-  })
+  });
 }
 export async function removeContactsFile(token: string | undefined, fileId: string): Promise<void> {
   return await apiFetch<void>(API.distribution.removeContactsFile(fileId), {
@@ -38,36 +45,44 @@ export async function getAllProjects(token: string | undefined): Promise<Project
     method: "GET",
     token: token,
     cache: token ? "no-store" : "force-cache",
-  })
+  });
 }
 
 export async function importContacts(token: string | undefined, formData: FormData): Promise<void> {
-
   return await apiFetch<void>(API.distribution.importContacts(), {
     method: "POST",
     token: token,
-    body: formData
-  })
-
+    body: formData,
+  });
 }
-export async function getAllNewslettersPaginated(token: string | undefined, currentPage: number, perPage: number): Promise<NewslettersCollection> {
-  return await apiFetch<NewslettersCollection>(API.distribution.getAllNewsLettersPaginated(currentPage, perPage), {
-    method: "GET",
-    token: token,
-    cache: token ? "no-store" : "force-cache",
-  })
+export async function getAllNewslettersPaginated(
+  token: string | undefined,
+  currentPage: number,
+  perPage: number
+): Promise<NewslettersCollection> {
+  return await apiFetch<NewslettersCollection>(
+    API.distribution.getAllNewsLettersPaginated(currentPage, perPage),
+    {
+      method: "GET",
+      token: token,
+      cache: token ? "no-store" : "force-cache",
+    }
+  );
 }
 
-export async function draftNewsletter(token: string | undefined, formData: FormData): Promise<void> {
+export async function draftNewsletter(
+  token: string | undefined,
+  formData: FormData
+): Promise<void> {
   return await apiFetch<void>(API.distribution.draftNewsletter(), {
     method: "POST",
     token: token,
-    body: formData
-  })
+    body: formData,
+  });
 }
 export async function deleteProject(token: string | undefined, projectId: string): Promise<void> {
   return await apiFetch<void>(API.distribution.deleteProject(projectId), {
     method: "DELETE",
-    token: token
-  })
+    token: token,
+  });
 }

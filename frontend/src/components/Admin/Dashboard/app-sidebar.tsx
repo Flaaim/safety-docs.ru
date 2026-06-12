@@ -6,7 +6,12 @@ import {
   User,
   LogOut,
   GamepadDirectional,
-  ChartColumnStacked, Mails, Import, ChevronRight, FolderOpenDot, Mailbox,
+  ChartColumnStacked,
+  Mails,
+  Import,
+  ChevronRight,
+  FolderOpenDot,
+  Mailbox,
 } from "lucide-react";
 import {
   Sidebar,
@@ -18,7 +23,10 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -29,8 +37,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const items = [
   { title: "Панель", url: "/dashboard", icon: LayoutDashboard },
@@ -44,9 +51,9 @@ const items = [
     isActive: true,
     subItems: [
       { title: "Импорт контактов", url: "/dashboard/distributions/import", icon: Import },
-      { title: "Проекты", url: "/dashboard/distributions/projects", icon: FolderOpenDot  },
-      { title: "Рассылки", url: "/dashboard/distributions/newsletters", icon: Mails   },
-    ]
+      { title: "Проекты", url: "/dashboard/distributions/projects", icon: FolderOpenDot },
+      { title: "Рассылки", url: "/dashboard/distributions/newsletters", icon: Mails },
+    ],
   },
 ];
 
@@ -68,7 +75,7 @@ export function AppSidebar() {
         <SidebarGroupLabel>Администрирование</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {items.map((item) => (
+            {items.map((item) =>
               // Если есть вложенные пункты, рендерим Collapsible
               item.subItems ? (
                 <Collapsible
@@ -112,7 +119,7 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               )
-            ))}
+            )}
           </SidebarMenu>
         </SidebarGroupContent>
         <SidebarGroup />
