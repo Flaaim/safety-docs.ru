@@ -48,6 +48,7 @@ export const API = {
     getAllNewsLettersPaginated: (currentPage: number, perPage: number) =>
       BASE_URL + `/v1/distributions/newsletters?page=${currentPage}&perPage${perPage}`,
     draftNewsletter: () => BASE_URL + `/v1/distributions/newsletters`,
+    launchNewsletter: () => BASE_URL + `/v1/distributions/newsletters/launch`
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
