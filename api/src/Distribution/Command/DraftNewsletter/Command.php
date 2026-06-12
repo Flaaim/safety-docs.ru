@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Distribution\Command\DraftNewsletter;
 
 use Symfony\Component\Validator\Constraints as Assert;
+
 final class Command
 {
     public function __construct(
@@ -16,5 +17,6 @@ final class Command
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $projectId
-    ) {}
+    ) {
+    }
 }

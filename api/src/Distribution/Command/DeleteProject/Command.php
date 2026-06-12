@@ -11,6 +11,7 @@ final class Command
     public function __construct(
         #[Assert\Uuid]
         #[Assert\NotBlank]
-       public string $projectId,
-    ) {}
+        public string $projectId,
+    ) {
+    }
 }

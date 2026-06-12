@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 final class Newsletter implements AggregateRoot
 {
     use EventTrait;
+
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'newsletter_id')]
@@ -58,7 +59,7 @@ final class Newsletter implements AggregateRoot
     }
     public function launch(): void
     {
-        if($this->status->getValue() === NewsletterStatus::Processed->value) {
+        if ($this->status->getValue() === NewsletterStatus::Processed->value) {
             throw new \DomainException('Newsletter is already processed.');
         }
         $this->status = Status::processed();

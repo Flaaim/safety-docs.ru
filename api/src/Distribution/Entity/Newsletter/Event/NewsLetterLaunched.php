@@ -8,5 +8,6 @@ final class NewsLetterLaunched
 {
     public function __construct(
         public string $newsletterId,
-    ) {}
+    ) {
+    }
 }

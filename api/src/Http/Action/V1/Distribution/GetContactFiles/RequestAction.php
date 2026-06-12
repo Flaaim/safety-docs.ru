@@ -15,7 +15,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
-        private readonly Fetcher   $fetcher,
+        private readonly Fetcher $fetcher,
         private readonly Validator $validator,
     ) {
     }

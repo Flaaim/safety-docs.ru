@@ -16,7 +16,8 @@ final class NewLetterLauncher implements NewsletterLauncherInterface
         private readonly Client $client,
         private readonly LoggerInterface $logger,
         private readonly string $apiKey
-    ) {}
+    ) {
+    }
     public function launch(array $contacts, string $templateId, string $subject): void
     {
         $requestBody = [
@@ -39,7 +40,5 @@ final class NewLetterLauncher implements NewsletterLauncherInterface
             $this->logger->error('Error sending distribution' . $e->getMessage());
             throw $e;
         }
-
     }
-
 }

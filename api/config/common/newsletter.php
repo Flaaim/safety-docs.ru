@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use App\Distribution\Service\NewLetterLauncher;
 use App\Distribution\Service\NewsletterLauncherInterface;
 use GuzzleHttp\Client;

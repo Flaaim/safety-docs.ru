@@ -18,7 +18,8 @@ final class NewsletterBuilder
     private ProjectId $projectId;
     private \DateTimeImmutable $createdAt;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->newsletterId = NewsletterId::generate();
         $this->subject = 'Обновления на сайте';
         $this->templateId = 'd255c7a2-64e7-4cb0-b419-69a2340e61b5';

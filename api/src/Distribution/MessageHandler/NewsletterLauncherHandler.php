@@ -24,31 +24,32 @@ final class NewsletterLauncherHandler
         private readonly ProjectRepository $projects,
         private readonly NewsletterLauncherInterface $launcher,
         private readonly Flusher $flusher,
-    ) {}
+    ) {
+    }
 
     public function __invoke(NewsLetterLaunched $event): void
     {
         $newsletter = $this->newsletters->findById(new NewsletterId($event->newsletterId));
-        if($newsletter === null) {
+        if ($newsletter === null) {
             throw new \DomainException('Newsletter not found.');
         }
         $project = $this->projects->findById($newsletter->getProjectId());
-        if($project === null) {
+        if ($project === null) {
             throw new \DomainException('Project not found.');
         }
         $subscribers = $project->getSubscribedContacts();
 
         $batch = [];
-        foreach($subscribers as $subscriber) {
+        foreach ($subscribers as $subscriber) {
             $batch[] = ['email' => $subscriber->getEmail()];
 
-            if(count($batch) >= self::BATCH_SIZE) {
+            if (count($batch) >= self::BATCH_SIZE) {
                 $this->launcher->launch($batch, $newsletter->getTemplateId(), $newsletter->getSubject());
                 $batch = [];
             }
         }
 
-        if(count($batch) > 0) {
+        if (count($batch) > 0) {
             $this->launcher->launch($batch, $newsletter->getTemplateId(), $newsletter->getSubject());
         }
 

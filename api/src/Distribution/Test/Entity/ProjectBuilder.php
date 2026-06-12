@@ -45,11 +45,11 @@ final class ProjectBuilder
     public function build(): Project
     {
         $project =  new Project(
-          $this->projectId,
-          $this->name,
+            $this->projectId,
+            $this->name,
         );
 
-        if(!empty($this->contacts)) {
+        if (!empty($this->contacts)) {
             $project->import($this->contacts);
         }
 

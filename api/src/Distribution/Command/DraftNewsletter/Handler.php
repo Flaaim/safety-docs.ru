@@ -18,11 +18,12 @@ final class Handler
         private readonly NewsletterRepository $newsletters,
         private readonly ProjectRepository $projects,
         private readonly Flusher $flusher
-    ) {}
+    ) {
+    }
 
     public function handle(Command $command): void
     {
-        if(!$this->projects->hasById(new ProjectId($command->projectId))){
+        if (!$this->projects->hasById(new ProjectId($command->projectId))) {
             throw new \DomainException('Project not found.');
         }
         $newsletter = new Newsletter(

@@ -25,6 +25,4 @@ final class NewsletterIdType extends StringType
     {
         return self::NAME;
     }
-
-
 }

@@ -27,5 +27,4 @@ final class StatusTest extends TestCase
         self::expectException(\InvalidArgumentException::class);
         new Status('');
     }
-
 }

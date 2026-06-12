@@ -10,7 +10,8 @@ final class Fetcher
 {
     public function __construct(
         private readonly Connection $connection,
-    ) {}
+    ) {
+    }
 
     public function fetch(Query $query): Project
     {
@@ -27,7 +28,5 @@ final class Fetcher
             $data['name'],
             $data['contacts'],
         );
-
-
     }
 }

@@ -10,7 +10,8 @@ final class Fetcher
 {
     public function __construct(
         private Connection $connection
-    ) {}
+    ) {
+    }
 
     public function fetch(): ProjectCollections
     {

@@ -12,7 +12,8 @@ final class NewsletterPaginatedCollection implements \JsonSerializable
         public readonly int $currentPage,
         public readonly int $perPage,
         public readonly int $totalPages
-    ) {}
+    ) {
+    }
 
     public function jsonSerialize(): array
     {

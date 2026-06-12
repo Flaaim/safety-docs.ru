@@ -10,6 +10,7 @@ use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
+
 use function DI\value;
 
 final class ProjectTest extends TestCase
@@ -108,6 +109,5 @@ final class ProjectTest extends TestCase
         $contact = $project->getSubscribedContacts();
 
         self::assertCount(0, $contact);
-
     }
 }

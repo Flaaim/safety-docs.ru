@@ -13,5 +13,6 @@ final class Newsletter
         public string $status,
         public string $projectId,
         public string $createdAt,
-    ) {}
+    ) {
+    }
 }

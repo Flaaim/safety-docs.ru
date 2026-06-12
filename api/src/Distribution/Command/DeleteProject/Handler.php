@@ -13,13 +13,13 @@ final class Handler
     public function __construct(
         private readonly ProjectRepository $projects,
         private readonly Flusher $flusher
-    )
-    {}
+    ) {
+    }
     public function handle(Command $command): void
     {
         $project = $this->projects->findById(new ProjectId($command->projectId));
 
-        if($project === null) {
+        if ($project === null) {
             throw new \DomainException('Project not found.');
         }
 

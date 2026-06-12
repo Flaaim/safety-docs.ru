@@ -7,6 +7,7 @@ namespace App\Distribution\Query\GetNewsletter;
 final class Query
 {
     public function __construct(
-       public string $newsletterId,
-    ) {}
+        public string $newsletterId,
+    ) {
+    }
 }

@@ -17,5 +17,4 @@ trait EventTrait
         $this->events = [];
         return $events;
     }
-
 }

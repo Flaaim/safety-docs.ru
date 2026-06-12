@@ -7,8 +7,9 @@ namespace App\Distribution\Query\GetProject;
 final class Project
 {
     public function __construct(
-       public string $projectId,
-       public string $name,
-       public array $contacts
-    ) {}
+        public string $projectId,
+        public string $name,
+        public array $contacts
+    ) {
+    }
 }
