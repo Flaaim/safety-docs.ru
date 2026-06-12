@@ -11,6 +11,8 @@ import {
 import { Newsletter } from "@/interfaces/distribution.interface";
 import DraftNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/draft-newsletter-dialog";
 import { SendHorizontal } from "lucide-react";
+import {Button} from "@/components/ui/button";
+import LaunchNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/launch-newsletter-dialog";
 
 interface NewsletterPageProps {
   searchParams: Promise<{ page?: string; perPage?: string }>;
@@ -54,7 +56,7 @@ export default async function NewslettersPage({ searchParams }: NewsletterPagePr
                   <TableCell>{newsletter.createdAt}</TableCell>
                   <TableCell>{newsletter.status}</TableCell>
                   <TableCell>
-                    <SendHorizontal />
+                    <LaunchNewsletterDialog newsletterId={newsletter.newsletterId} />
                   </TableCell>
                 </TableRow>
               ))}
