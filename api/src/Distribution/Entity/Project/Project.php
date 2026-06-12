@@ -38,7 +38,15 @@ final class Project
     {
         return $this->contacts->toArray();
     }
-
+    public function getSubscribedContacts(): array
+    {
+        $valid = $this->contacts->filter(
+            function (Contact $contact) {
+                return $contact->isUnsubscribed() === false;
+            }
+        );
+        return $valid->toArray();
+    }
     public function import(array $contacts): void
     {
         foreach ($contacts as $newContact) {
@@ -63,10 +71,10 @@ final class Project
         return false;
     }
 
-    public function unsubscribeContact(Contact $contact): void
+    public function unsubscribeContact(string $email, ProjectId $projectId): void
     {
         foreach ($this->contacts as $existingContact) {
-            if ($this->hasContact($contact->getEmail(), $contact->getProject()->getId())) {
+            if ($existingContact->isEquals($email) && $existingContact->getProject()->getId()->equals($projectId)) {
                 $existingContact->unsubscribe();
                 return;
             }
