@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace App\Distribution\Command\LaunchNewsletter;
 
-use App\Distribution\Entity\Newsletter\Event\NewsLetterLaunched;
 use App\Distribution\Entity\Newsletter\NewsletterId;
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
-use App\Distribution\Entity\Project\Contact;
 use App\Distribution\Entity\Project\ProjectRepository;
-use App\Distribution\Service\NewLetterLauncher;
-use App\Distribution\Service\NewsletterLauncherInterface;
 use App\Flusher;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly NewsletterRepository $newsletters,
         private readonly ProjectRepository $projects,
