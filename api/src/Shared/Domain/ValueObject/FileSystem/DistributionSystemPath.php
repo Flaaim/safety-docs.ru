@@ -6,6 +6,7 @@ namespace App\Shared\Domain\ValueObject\FileSystem;
 
 use Webmozart\Assert\Assert;
 
+/** @psalm-suppress UnusedClass */
 final class DistributionSystemPath implements FileSystemPathInterface
 {
     private readonly string $path;
