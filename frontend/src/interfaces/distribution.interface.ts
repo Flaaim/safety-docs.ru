@@ -36,5 +36,7 @@ export interface NewslettersCollection  {
 export interface Newsletter {
   subject: string,
   templateId: string,
-  projectName: string
+  projectName: string,
+  createdAt: string,
+  status: string
 }
