@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Distribution\Entity\Newsletter;
 
 use App\Distribution\Entity\Project\ProjectId;
+use App\Shared\AggregateRoot;
+use App\Shared\EventTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'newsletters')]
-final class Newsletter
+final class Newsletter implements AggregateRoot
 {
+    use EventTrait;
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'newsletter_id')]
@@ -53,9 +56,14 @@ final class Newsletter
     {
         $this->status = Status::completed();
     }
-    public function launched(): void
+    public function launch(): void
     {
-        $this->status = Status::process();
+        if($this->status->getValue() === NewsletterStatus::Processed->value) {
+            throw new \DomainException('Newsletter is already processed.');
+        }
+        $this->status = Status::processed();
+
+        $this->recordEvent(new Event\NewsLetterLaunched($this->getId()->getValue()));
     }
     public function getProjectId(): ProjectId
     {
