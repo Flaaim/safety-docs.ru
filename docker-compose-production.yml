@@ -65,7 +65,8 @@ services:
       AUTH_LOGIN: ${AUTH_LOGIN}
       AUTH_PASSWORD: ${AUTH_PASSWORD}
       REDIS_HOST: redis
-      MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
+      MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
+      UNI_SENDER_API: ${UNI_SENDER_API}
 
   api-php-cli:
     image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
@@ -94,6 +95,7 @@ services:
       AUTH_PASSWORD: ${AUTH_PASSWORD}
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
+      UNI_SENDER_API: ${UNI_SENDER_API}
 
   api-worker:
     image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
