@@ -37,6 +37,7 @@ export async function getAllProjects(token: string | undefined): Promise<Project
   return await apiFetch<ProjectsCollection>(API.distribution.getAllProjects(), {
     method: "GET",
     token: token,
+    cache: token ? "no-store" : "force-cache",
   })
 }
 
@@ -49,10 +50,11 @@ export async function importContacts(token: string | undefined, formData: FormDa
   })
 
 }
-export async function getAllNewslettersPaginated(token: string | undefined): Promise<NewslettersCollection> {
-  return await apiFetch<NewslettersCollection>(API.distribution.getAllNewsLettersPaginated(), {
+export async function getAllNewslettersPaginated(token: string | undefined, currentPage: number, perPage: number): Promise<NewslettersCollection> {
+  return await apiFetch<NewslettersCollection>(API.distribution.getAllNewsLettersPaginated(currentPage, perPage), {
     method: "GET",
-    token: token
+    token: token,
+    cache: token ? "no-store" : "force-cache",
   })
 }
 
@@ -61,5 +63,11 @@ export async function draftNewsletter(token: string | undefined, formData: FormD
     method: "POST",
     token: token,
     body: formData
+  })
+}
+export async function deleteProject(token: string | undefined, projectId: string): Promise<void> {
+  return await apiFetch<void>(API.distribution.deleteProject(projectId), {
+    method: "DELETE",
+    token: token
   })
 }

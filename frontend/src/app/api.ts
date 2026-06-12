@@ -43,8 +43,7 @@ export const API = {
     importContacts: () => BASE_URL + `/v1/distributions/import-contacts`,
     addNewProject: () => BASE_URL + `/v1/distributions/projects`,
     getAllProjects: () => BASE_URL + `/v1/distributions/projects`,
-    getAllNewsLettersPaginated: () => BASE_URL + `/v1/distributions/newsletters`,
-    draftNewsletter: () => BASE_URL + `/v1/distributions/newsletters`
+    deleteProject: (projectId: string) => BASE_URL + `/v1/distributions/projects/${projectId}`,
     getAllNewsLettersPaginated: (currentPage: number, perPage: number) => BASE_URL + `/v1/distributions/newsletters?page=${currentPage}&perPage${perPage}`,
     draftNewsletter: () => BASE_URL + `/v1/distributions/newsletters`,
   },

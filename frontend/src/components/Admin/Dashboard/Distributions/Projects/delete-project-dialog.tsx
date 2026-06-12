@@ -7,7 +7,7 @@ import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, A
   AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog";
 import {Button} from "@/components/ui/button";
 import {Loader2, Trash} from "lucide-react";
-import {removeContactsFile} from "@api/distribution";
+import {deleteProject, removeContactsFile} from "@api/distribution";
 import {toast} from "sonner";
 
 interface DeleteProjectDialogProps {
@@ -25,7 +25,7 @@ export default function DeleteProjectDialog({projectId}: DeleteProjectDialogProp
     e.preventDefault();
     try {
       setLoading(true);
-
+      await deleteProject(token, projectId)
 
       toast.success("Проект успешно удален");
       setOpen(false);
