@@ -38,6 +38,7 @@ final class Project
     {
         return $this->contacts->toArray();
     }
+    /** @return array<Contact> */
     public function getSubscribedContacts(): array
     {
         $valid = $this->contacts->filter(
