@@ -53,6 +53,10 @@ final class Newsletter
     {
         $this->status = Status::completed();
     }
+    public function launched(): void
+    {
+        $this->status = Status::process();
+    }
     public function getProjectId(): ProjectId
     {
         return $this->projectId;

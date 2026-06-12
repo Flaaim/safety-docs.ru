@@ -21,9 +21,9 @@ final class NewsletterRepository
     {
         $this->em->persist($newsletter);
     }
-    /** @return array<Newsletter> */
-    public function findAll(): array
+
+    function findById(NewsletterId $newsletterId): ?Newsletter
     {
-        return $this->repo->findAll();
+        return $this->repo->find($newsletterId);
     }
 }
