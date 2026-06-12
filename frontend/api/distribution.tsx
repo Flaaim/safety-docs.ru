@@ -87,11 +87,13 @@ export async function deleteProject(token: string | undefined, projectId: string
   });
 }
 
-export async function launchNewsletter(token: string | undefined, newsletterId: string): Promise<void> {
-
+export async function launchNewsletter(
+  token: string | undefined,
+  newsletterId: string
+): Promise<void> {
   return await apiFetch<void>(API.distribution.launchNewsletter(), {
     method: "POST",
     token: token,
-    body: JSON.stringify({newsletterId: newsletterId})
-  })
+    body: JSON.stringify({ newsletterId: newsletterId }),
+  });
 }

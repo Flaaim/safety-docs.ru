@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/table";
 import { Newsletter } from "@/interfaces/distribution.interface";
 import DraftNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/draft-newsletter-dialog";
-import { SendHorizontal } from "lucide-react";
-import {Button} from "@/components/ui/button";
 import LaunchNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/launch-newsletter-dialog";
 
 interface NewsletterPageProps {
