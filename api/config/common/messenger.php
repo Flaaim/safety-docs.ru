@@ -35,12 +35,6 @@ return [
                     return $handler($event);
                 })
             ],
-            SendTelegramCommand::class => [
-                new HandlerDescriptor(function (SendTelegramCommand $event) use ($container) {
-                    $handler = $container->get(SendTelegramHandler::class);
-                    return $handler($event);
-                })
-            ]
         ];
         $isTestEnv = getenv('APP_ENV') === 'test';
         $useAsync = !$isTestEnv && !empty(getenv('MESSENGER_TRANSPORT_DSN'));
