@@ -141,6 +141,245 @@
       <code><![CDATA[expects]]></code>
     </UndefinedMethod>
   </file>
+  <file src="src/Distribution/Command/CreateProject/Handler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Command/DeleteProject/Handler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Command/DraftNewsletter/Handler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Command/ImportContacts/Handler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Command/LaunchNewsletter/Command.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Command/LaunchNewsletter/Handler.php">
+    <UnusedClass>
+      <code><![CDATA[Handler]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Command/RemoveContactsFile/Handler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Command/UploadContactsFile/Handler.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/File/File.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[complete]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/File/FileIdType.php">
+    <UnusedClass>
+      <code><![CDATA[FileIdType]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Entity/File/FileRepository.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[findByName]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/Newsletter/Newsletter.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getCreatedAt]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/Newsletter/NewsletterIdType.php">
+    <UnusedClass>
+      <code><![CDATA[NewsletterIdType]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Entity/Newsletter/NewsletterRepository.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/Newsletter/Status.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[failed]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/Newsletter/StatusType.php">
+    <UnusedClass>
+      <code><![CDATA[StatusType]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Entity/Project/Contact.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getId]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Entity/Project/DTO/ContactDTO.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$isUnsubscribed]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Distribution/Entity/Project/ProjectIdType.php">
+    <UnusedClass>
+      <code><![CDATA[ProjectIdType]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Entity/Project/ProjectRepository.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/MessageHandler/NewsletterLauncherHandler.php">
+    <UnusedClass>
+      <code><![CDATA[NewsletterLauncherHandler]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Query/GetAllFilesPaginated/Fetcher.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Query/GetAllNewslettersPaginated/Fetcher.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Query/GetAllProjects/Fetcher.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Query/GetNewsletter/Fetcher.php">
+    <PossiblyInvalidArrayAccess>
+      <code><![CDATA[$data['created_at']]]></code>
+      <code><![CDATA[$data['newsletter_id']]]></code>
+      <code><![CDATA[$data['project_id']]]></code>
+      <code><![CDATA[$data['status']]]></code>
+      <code><![CDATA[$data['subject']]]></code>
+      <code><![CDATA[$data['templateId']]]></code>
+    </PossiblyInvalidArrayAccess>
+    <UnusedClass>
+      <code><![CDATA[Fetcher]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Query/GetNewsletter/Newsletter.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$createdAt]]></code>
+      <code><![CDATA[$newsletterId]]></code>
+      <code><![CDATA[$projectId]]></code>
+      <code><![CDATA[$status]]></code>
+      <code><![CDATA[$subject]]></code>
+      <code><![CDATA[$templateId]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Distribution/Query/GetNewsletter/Query.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Query/GetProject/Fetcher.php">
+    <InvalidReturnType>
+      <code><![CDATA[Project]]></code>
+    </InvalidReturnType>
+    <PossiblyInvalidArrayAccess>
+      <code><![CDATA[$data['contacts']]]></code>
+      <code><![CDATA[$data['id']]]></code>
+      <code><![CDATA[$data['name']]]></code>
+    </PossiblyInvalidArrayAccess>
+    <UnusedClass>
+      <code><![CDATA[Fetcher]]></code>
+    </UnusedClass>
+    <UnusedVariable>
+      <code><![CDATA[$project]]></code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Distribution/Query/GetProject/Project.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$contacts]]></code>
+      <code><![CDATA[$name]]></code>
+      <code><![CDATA[$projectId]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Distribution/Query/GetProject/Query.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Service/ContactImportFileRemover.php">
+    <UnusedClass>
+      <code><![CDATA[ContactImportFileRemover]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Service/NewLetterLauncher.php">
+    <UnusedClass>
+      <code><![CDATA[NewLetterLauncher]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Distribution/Service/NewsletterLauncherInterface.php">
+    <PossiblyInvalidDocblockTag>
+      <code><![CDATA[@var array<ContactDTO> $contacts]]></code>
+    </PossiblyInvalidDocblockTag>
+  </file>
+  <file src="src/Distribution/Test/Entity/NewsletterBuilder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[withCreatedAt]]></code>
+      <code><![CDATA[withId]]></code>
+      <code><![CDATA[withStatus]]></code>
+      <code><![CDATA[withSubject]]></code>
+      <code><![CDATA[withTemplateId]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Test/Entity/Project/ContactTest.php">
+    <UnusedVariable>
+      <code><![CDATA[$contact2]]></code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Distribution/Test/Entity/ProjectBuilder.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+      <code><![CDATA[build]]></code>
+      <code><![CDATA[withContacts]]></code>
+      <code><![CDATA[withId]]></code>
+      <code><![CDATA[withName]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Distribution/Test/Service/ContactFileImporterTest.php">
+    <InaccessibleProperty>
+      <code><![CDATA[$this->fileSystemPath]]></code>
+    </InaccessibleProperty>
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[clear]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Distribution/Test/Service/ContactImportFileRemoverTest.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[tempnam($this->tempDir->getValue(), 'test')]]></code>
+    </FalsableReturnStatement>
+    <UndefinedThisPropertyAssignment>
+      <code><![CDATA[$this->fileRemover]]></code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch>
+      <code><![CDATA[$this->fileRemover]]></code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="src/Distribution/Test/Service/ContactImportFileUploaderTest.php">
+    <UndefinedInterfaceMethod>
+      <code><![CDATA[expects]]></code>
+    </UndefinedInterfaceMethod>
+  </file>
   <file src="src/ErrorHandler/LogErrorHandler.php">
     <UnusedClass>
       <code><![CDATA[LogErrorHandler]]></code>
@@ -150,6 +389,14 @@
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Http/Action/V1/Distribution/Newsletter/Draft/RequestAction.php">
+    <RedundantCondition>
+      <code><![CDATA[(array)$request->getParsedBody()]]></code>
+    </RedundantCondition>
+    <TypeDoesNotContainNull>
+      <code><![CDATA[[]]]></code>
+    </TypeDoesNotContainNull>
   </file>
   <file src="src/Http/Middleware/AuthMiddleware.php">
     <UnusedClass>
@@ -505,10 +752,10 @@
       <code><![CDATA[withStatus]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Shared/Domain/Service/Notification/MessageHandler/SendTelegramHandler.php">
-    <UnusedClass>
-      <code><![CDATA[SendTelegramHandler]]></code>
-    </UnusedClass>
+  <file src="src/Shared/AggregateRoot.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[releaseEvents]]></code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="src/Shared/Domain/Service/Payment/PaymentProviderInterface.php">
     <PossiblyUnusedMethod>
@@ -570,7 +817,6 @@
       <code><![CDATA[createReal]]></code>
     </PossiblyUnusedMethod>
     <UnusedProperty>
-      <code><![CDATA[$isVfs]]></code>
       <code><![CDATA[$root]]></code>
     </UnusedProperty>
   </file>
