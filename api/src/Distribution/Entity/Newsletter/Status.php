@@ -33,7 +33,7 @@ final class Status
     {
         return new self(NewsletterStatus::Completed->value);
     }
-    public static function process(): self
+    public static function processed(): self
     {
         return new self(NewsletterStatus::Processed->value);
     }
