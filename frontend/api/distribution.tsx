@@ -88,8 +88,10 @@ export async function deleteProject(token: string | undefined, projectId: string
 }
 
 export async function launchNewsletter(token: string | undefined, newsletterId: string): Promise<void> {
+
   return await apiFetch<void>(API.distribution.launchNewsletter(), {
     method: "POST",
-    token: token
+    token: token,
+    body: JSON.stringify({newsletterId: newsletterId})
   })
 }

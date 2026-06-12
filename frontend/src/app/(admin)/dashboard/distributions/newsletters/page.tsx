@@ -56,7 +56,7 @@ export default async function NewslettersPage({ searchParams }: NewsletterPagePr
                   <TableCell>{newsletter.createdAt}</TableCell>
                   <TableCell>{newsletter.status}</TableCell>
                   <TableCell>
-                    <LaunchNewsletterDialog newsletterId={newsletter.newsletterId} />
+                    <LaunchNewsletterDialog newsletterId={newsletter.id} />
                   </TableCell>
                 </TableRow>
               ))}

@@ -34,7 +34,7 @@ export interface NewslettersCollection {
 }
 
 export interface Newsletter {
-  newsletterId: string;
+  id: string;
   subject: string;
   templateId: string;
   projectName: string;
