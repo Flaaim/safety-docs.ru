@@ -29,6 +29,9 @@ final class NewsletterLauncherHandler
     public function __invoke(NewsLetterLaunched $event): void
     {
         $newsletter = $this->newsletters->findById(new NewsletterId($event->newsletterId));
+        if($newsletter === null) {
+            throw new \DomainException('Newsletter not found.');
+        }
         $project = $this->projects->findById($newsletter->getProjectId());
         if($project === null) {
             throw new \DomainException('Project not found.');
