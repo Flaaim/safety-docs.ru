@@ -40,9 +40,8 @@ final class ProjectRepository
     {
         $this->em->persist($project);
     }
-    /** @return array<Project> */
-    public function findAll(): array
+    public function remove(Project $project): void
     {
-        return $this->repo->findAll();
+        $this->em->remove($project);
     }
 }

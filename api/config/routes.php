@@ -102,8 +102,11 @@ return static function (App $app): void {
             $group->post('/import-contacts', Distribution\ImportContacts\RequestAction::class)->add(AuthMiddleware::class);
 
             $group->group('/projects', function (RouteCollectorProxy $group): void {
+                $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+
                 $group->post('', Distribution\Project\Create\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Project\GetAll\RequestAction::class)->add(AuthMiddleware::class);
+                $group->delete('/{projectId:' .$uuidPattern . '}',  Distribution\Project\Delete\RequestAction::class)->add(AuthMiddleware::class);
             });
 
             $group->group('/newsletters', function (RouteCollectorProxy $group): void {
