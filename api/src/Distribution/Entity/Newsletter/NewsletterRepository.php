@@ -22,7 +22,7 @@ final class NewsletterRepository
         $this->em->persist($newsletter);
     }
 
-    function findById(NewsletterId $newsletterId): ?Newsletter
+    public function findById(NewsletterId $newsletterId): ?Newsletter
     {
         return $this->repo->find($newsletterId);
     }
