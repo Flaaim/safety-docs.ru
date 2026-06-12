@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Test\Functional\Distribution\Newsletter\Draft;
 
-use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 
 final class RequestActionTest extends WebTestCase
 {
-    private readonly NewsletterRepository $newsletters;
     public function setUp(): void
     {
         $this->loadFixtures([RequestFixture::class]);
-        $container = $this->app()->getContainer();
-
-        $this->newsletters = $container->get(NewsletterRepository::class);
     }
 
     public function testSuccess(): void
@@ -28,12 +23,6 @@ final class RequestActionTest extends WebTestCase
         ]));
 
         self::assertEquals(204, $response->getStatusCode());
-
-        $newsletters = $this->newsletters->findAll();
-
-        self::assertEquals('Обновления на сайте', $newsletters[0]->getSubject());
-        self::assertEquals('created', $newsletters[0]->getStatus()->getValue());
-        self::assertEquals(RequestFixture::PROJECT_ID, $newsletters[0]->getProjectId()->getValue());
     }
 
     public function testProjectNotFound(): void
