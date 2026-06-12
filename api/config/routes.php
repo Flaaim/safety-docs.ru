@@ -112,6 +112,7 @@ return static function (App $app): void {
             $group->group('/newsletters', function (RouteCollectorProxy $group): void {
                 $group->post('', Distribution\Newsletter\Draft\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Newsletter\GetAllPaginated\RequestAction::class)->add(AuthMiddleware::class);
+                $group->post('/launch', Distribution\Newsletter\Launch\RequestAction::class)->add(AuthMiddleware::class);
             });
         });
     });
