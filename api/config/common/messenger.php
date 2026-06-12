@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Distribution\Entity\Newsletter\Event\NewsLetterLaunched;
+use App\Distribution\MessageHandler\NewsletterLauncherHandler;
 use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
 use App\Sender\Event\SendDocumentEmailCommand;
@@ -35,6 +37,12 @@ return [
                     return $handler($event);
                 })
             ],
+            NewsLetterLaunched::class => [
+                new HandlerDescriptor(function (NewsLetterLaunched $event) use ($container) {
+                    $handler = $container->get(NewsletterLauncherHandler::class);
+                    return $handler($event);
+                })
+            ]
         ];
         $isTestEnv = getenv('APP_ENV') === 'test';
         $useAsync = !$isTestEnv && !empty(getenv('MESSENGER_TRANSPORT_DSN'));
