@@ -8,11 +8,11 @@ use Webmozart\Assert\Assert;
 
 final class Status
 {
-    const STATUSES = [
+    public const STATUSES = [
         'created',
         'completed',
         'failed',
-        'process',
+        'processed',
     ];
     private string $status;
     public function __construct(string $status)
@@ -26,19 +26,19 @@ final class Status
     }
     public static function created(): self
     {
-        return new self('created');
+        return new self(NewsletterStatus::Created->value);
     }
 
     public static function completed(): self
     {
-        return new self('completed');
+        return new self(NewsletterStatus::Completed->value);
     }
     public static function process(): self
     {
-        return new self('process');
+        return new self(NewsletterStatus::Processed->value);
     }
     public static function failed(): self
     {
-        return new self('failed');
+        return new self(NewsletterStatus::Failed->value);
     }
 }
