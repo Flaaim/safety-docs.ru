@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\StringType;
 
 final class StatusType extends StringType
 {
-    const NAME = 'status';
+    public const NAME = 'status';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
