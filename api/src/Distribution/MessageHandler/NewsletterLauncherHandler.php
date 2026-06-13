@@ -10,6 +10,7 @@ use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use App\Distribution\Entity\Project\ProjectRepository;
 use App\Distribution\Service\NewsletterLauncherInterface;
 use App\Flusher;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -20,6 +21,7 @@ final class NewsletterLauncherHandler
         private readonly NewsletterRepository $newsletters,
         private readonly ProjectRepository $projects,
         private readonly NewsletterLauncherInterface $launcher,
+        private readonly LoggerInterface $logger,
         private readonly Flusher $flusher,
     ) {
     }
@@ -35,7 +37,7 @@ final class NewsletterLauncherHandler
             throw new \DomainException('Project not found.');
         }
         $subscribers = $project->getSubscribedContacts();
-        error_log('Количество адресов: ' . var_dump($subscribers));
+        $this->logger->warning('Подписчики' . var_dump($subscribers));
         $batch = [];
         foreach ($subscribers as $subscriber) {
             $batch[] = ['email' => $subscriber->getEmail()];
