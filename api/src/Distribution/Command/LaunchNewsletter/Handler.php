@@ -7,9 +7,8 @@ namespace App\Distribution\Command\LaunchNewsletter;
 use App\Distribution\Entity\Newsletter\NewsletterId;
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use App\Distribution\Entity\Project\ProjectRepository;
-use App\Distribution\Service\ContactFileImporter;
 use App\Flusher;
-use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class Handler
 {
@@ -18,7 +17,7 @@ final class Handler
         private readonly NewsletterRepository $newsletters,
         private readonly ProjectRepository $projects,
         private readonly Flusher $flusher,
-        private readonly MessageBus $messageBus,
+        private readonly MessageBusInterface $messageBus,
     ) {
     }
 
