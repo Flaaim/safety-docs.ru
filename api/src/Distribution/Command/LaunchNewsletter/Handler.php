@@ -38,7 +38,8 @@ final class Handler
 
         $this->flusher->flush();
 
-        foreach ($events as $event) {;
+        foreach ($events as $event) {
+            ;
             $this->messageBus->dispatch($event);
         }
     }
