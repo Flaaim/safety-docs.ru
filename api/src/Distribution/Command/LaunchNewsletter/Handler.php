@@ -39,6 +39,7 @@ final class Handler
         $this->flusher->flush();
 
         foreach ($events as $event) {
+            error_log('Отправляем событие в шину: ' . get_class($event));
             $this->messageBus->dispatch($event);
         }
     }
