@@ -113,6 +113,7 @@ return static function (App $app): void {
                 $group->post('', Distribution\Newsletter\Draft\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Newsletter\GetAllPaginated\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('/launch', Distribution\Newsletter\Launch\RequestAction::class)->add(AuthMiddleware::class);
+                $group->post('unsubscribe', Distribution\Newsletter\Unsubscribe\RequestAction::class);
             });
         });
     });

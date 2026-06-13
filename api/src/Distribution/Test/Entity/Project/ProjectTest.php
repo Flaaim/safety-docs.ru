@@ -9,7 +9,6 @@ use App\Distribution\Entity\Project\DTO\ContactDTO;
 use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 
 use function DI\value;
 
@@ -85,7 +84,7 @@ final class ProjectTest extends TestCase
         );
         $project->import($contacts);
 
-        $project->unsubscribeContact('one@mail.ru', $project->getId());
+        $project->unsubscribeContact('one@mail.ru');
         $contact = $project->getContacts()[0];
 
         /** @var Contact $contact */
@@ -103,11 +102,10 @@ final class ProjectTest extends TestCase
             'one'
         );
         $project->import($contacts);
-        $project->unsubscribeContact('two@mail.ru', $project->getId());
-        $project->unsubscribeContact('one@mail.ru', $project->getId());
+        $project->unsubscribeContact('two@mail.ru');
 
         $contact = $project->getSubscribedContacts();
 
-        self::assertCount(0, $contact);
+        self::assertCount(1, $contact);
     }
 }

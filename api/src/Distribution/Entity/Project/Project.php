@@ -72,14 +72,13 @@ final class Project
         return false;
     }
 
-    public function unsubscribeContact(string $email, ProjectId $projectId): void
+    public function unsubscribeContact(string $email): void
     {
         foreach ($this->contacts as $existingContact) {
-            if ($existingContact->isEquals($email) && $existingContact->getProject()->getId()->equals($projectId)) {
+            if ($existingContact->isEquals($email)) {
                 $existingContact->unsubscribe();
                 return;
             }
         }
-        throw new \DomainException('Contact not found in this distribution.');
     }
 }
