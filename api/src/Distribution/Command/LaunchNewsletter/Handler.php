@@ -7,7 +7,9 @@ namespace App\Distribution\Command\LaunchNewsletter;
 use App\Distribution\Entity\Newsletter\NewsletterId;
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use App\Distribution\Entity\Project\ProjectRepository;
+use App\Distribution\Service\ContactFileImporter;
 use App\Flusher;
+use Symfony\Component\Messenger\MessageBus;
 
 final class Handler
 {
@@ -15,7 +17,8 @@ final class Handler
     public function __construct(
         private readonly NewsletterRepository $newsletters,
         private readonly ProjectRepository $projects,
-        private readonly Flusher $flusher
+        private readonly Flusher $flusher,
+        private readonly MessageBus $messageBus,
     ) {
     }
 
@@ -33,5 +36,9 @@ final class Handler
         $newsletter->launch();
 
         $this->flusher->flush();
+
+        foreach ($newsletter->releaseEvents() as $event) {
+            $this->messageBus->dispatch($event);
+        }
     }
 }

@@ -8,8 +8,6 @@ use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
 use App\Sender\Event\SendDocumentEmailCommand;
 use App\Sender\MessageHandler\SendDocumentOnEmailPreparedHandler;
-use App\Shared\Domain\Service\Notification\Event\SendTelegramCommand;
-use App\Shared\Domain\Service\Notification\MessageHandler\SendTelegramHandler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
 use Symfony\Component\Messenger\Handler\HandlerDescriptor;
