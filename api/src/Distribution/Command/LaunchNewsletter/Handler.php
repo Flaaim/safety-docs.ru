@@ -34,9 +34,11 @@ final class Handler
 
         $newsletter->launch();
 
+        $events = $newsletter->releaseEvents();
+
         $this->flusher->flush();
 
-        foreach ($newsletter->releaseEvents() as $event) {
+        foreach ($events as $event) {
             $this->messageBus->dispatch($event);
         }
     }
