@@ -37,7 +37,7 @@ final class NewsletterLauncherHandler
             throw new \DomainException('Project not found.');
         }
         $subscribers = $project->getSubscribedContacts();
-        $this->logger->warning('Подписчики' . var_dump($subscribers));
+        $this->logger->warning('Подписчики' . count($subscribers));
         $batch = [];
         foreach ($subscribers as $subscriber) {
             $batch[] = ['email' => $subscriber->getEmail()];
