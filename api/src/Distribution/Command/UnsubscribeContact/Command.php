@@ -10,5 +10,6 @@ final class Command
     public function __construct(
         public array $emails,
         public string $projectId = self::PROJECT_ID
-    ) {}
+    ) {
+    }
 }
