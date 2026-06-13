@@ -127,6 +127,7 @@ services:
       AUTH_PASSWORD: ${AUTH_PASSWORD}
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
+      UNI_SENDER_API: ${UNI_SENDER_API}
     command: php bin/worker.php
     depends_on:
       - redis

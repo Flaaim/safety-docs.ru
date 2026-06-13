@@ -166,5 +166,6 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           MESSENGER_TRANSPORT_DSN: ${{ secrets.MESSENGER_TRANSPORT_DSN }}
+          UNI_SENDER_API: ${{ secrets.UNI_SENDER_API }}
 
 
