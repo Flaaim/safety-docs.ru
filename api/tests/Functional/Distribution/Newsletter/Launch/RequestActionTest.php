@@ -75,6 +75,6 @@ final class RequestActionTest extends WebTestCase
 
         $newsletter = $this->newsletters->findById(new NewsletterId(RequestFixture::NEWSLETTER_ID));
 
-        self::assertEquals('processed', $newsletter->getStatus()->getValue());
+        self::assertEquals('completed', $newsletter->getStatus()->getValue());
     }
 }

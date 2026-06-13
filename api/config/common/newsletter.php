@@ -17,7 +17,7 @@ return [
         $logger = $container->get(LoggerInterface::class);
         $apiKey = $container->get('config')['uniSender']['apiKey'];
 
-        return new NewLetterLauncher($client, $apiKey, $logger);
+        return new NewLetterLauncher($client, $logger, $apiKey);
     },
     'config' => [
         'uniSender' => [
