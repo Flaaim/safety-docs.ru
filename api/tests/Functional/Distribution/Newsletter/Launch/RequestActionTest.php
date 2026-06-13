@@ -6,17 +6,21 @@ namespace Test\Functional\Distribution\Newsletter\Launch;
 
 use App\Distribution\Entity\Newsletter\NewsletterId;
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
+use App\Distribution\Service\FakeNewsletterLauncher;
+use App\Distribution\Service\NewsletterLauncherInterface;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 
 final class RequestActionTest extends WebTestCase
 {
     private readonly NewsletterRepository $newsletters;
+    private readonly NewsletterLauncherInterface $launcher;
     public function setUp(): void
     {
         $this->loadFixtures([RequestFixture::class]);
         $container = $this->app()->getContainer();
         $this->newsletters = $container->get(NewsletterRepository::class);
+        $this->launcher = $container->get(NewsletterLauncherInterface::class);
     }
 
     public function testEmpty(): void
@@ -76,5 +80,7 @@ final class RequestActionTest extends WebTestCase
         $newsletter = $this->newsletters->findById(new NewsletterId(RequestFixture::NEWSLETTER_ID));
 
         self::assertEquals('completed', $newsletter->getStatus()->getValue());
+
+        self::assertCount(1, $this->launcher->sentBatches);
     }
 }

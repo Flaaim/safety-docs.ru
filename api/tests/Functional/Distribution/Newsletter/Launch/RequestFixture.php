@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Functional\Distribution\Newsletter\Launch;
 
 use App\Distribution\Entity\Newsletter\NewsletterId;
+use App\Distribution\Entity\Project\DTO\ContactDTO;
 use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;
 use App\Distribution\Test\Entity\NewsletterBuilder;
@@ -21,7 +22,7 @@ final class RequestFixture extends AbstractFixture
             ProjectId::generate(),
             'Блог охраны труда'
         );
-
+        $project->import([new ContactDTO('flaaim@list.ru')]);
         $manager->persist($project);
 
         $newsletter = (new NewsletterBuilder())
