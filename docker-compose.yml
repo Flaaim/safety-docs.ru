@@ -82,7 +82,7 @@ services:
       AUTH_PASSWORD: secret
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: redis://localhost:6379/messages
-      UNI_SENDER_API: ${UNI_SENDER_API}
+      UNI_SENDER_API: uni_sender_test
 
 
   api-php-cli:
@@ -116,7 +116,7 @@ services:
       AUTH_PASSWORD: secret
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
-      UNI_SENDER_API: ${UNI_SENDER_API}
+      UNI_SENDER_API: uni_sender_test
 
   api-worker:
     build:
@@ -150,7 +150,7 @@ services:
       AUTH_PASSWORD: secret
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
-      UNI_SENDER_API: ${UNI_SENDER_API}
+      UNI_SENDER_API: uni_sender_test
     command: php bin/worker.php
     depends_on:
       - redis
