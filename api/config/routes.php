@@ -109,6 +109,7 @@ return static function (App $app): void {
                 $group->get('', Distribution\Project\GetAll\RequestAction::class)->add(AuthMiddleware::class);
                 $group->delete('/{projectId:' . $uuidPattern . '}', Distribution\Project\Delete\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('/unsubscribe', Distribution\Project\UnsubscribeContact\RequestAction::class)->add(UnsubscribeMiddleware::class);
+                $group->map(['GET', 'POST'],'/unsubscribe', Distribution\Project\UnsubscribeContact\RequestAction::class)->add(UnsubscribeMiddleware::class);
             });
 
             $group->group('/newsletters', function (RouteCollectorProxy $group): void {
