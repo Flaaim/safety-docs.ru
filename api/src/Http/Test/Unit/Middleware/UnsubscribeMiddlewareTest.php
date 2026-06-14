@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Test\Unit\Middleware;
 
 use App\Http\Middleware\UnsubscribeMiddleware;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -17,8 +18,11 @@ use Test\Functional\Json;
 
 final class UnsubscribeMiddlewareTest extends TestCase
 {
+    /** @var LoggerInterface&MockObject  */
     private LoggerInterface $logger;
+    /** @var ContainerInterface&MockObject */
     private ContainerInterface $container;
+
     private UnsubscribeMiddleware $middleware;
     public function setUp(): void
     {
@@ -168,6 +172,9 @@ final class UnsubscribeMiddlewareTest extends TestCase
             'events_by_user' => $eventsByUser,
         ];
         $jsonStringWithKey = json_encode($initialData);
+        if(!$jsonStringWithKey) {
+            throw new \RuntimeException('Invalid JSON string');
+        }
         $validHash = md5($jsonStringWithKey);
         $finalRawBody = str_replace($apiKey, $validHash, $jsonStringWithKey);
         $finalParsedBody = json_decode($finalRawBody, true);

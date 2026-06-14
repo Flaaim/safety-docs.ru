@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Distribution\Service;
 
+/** @psalm-suppress UnusedClass */
 final class FakeNewsletterLauncher implements NewsletterLauncherInterface
 {
     public array $sentBatches = [];
