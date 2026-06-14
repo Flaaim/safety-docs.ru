@@ -10,6 +10,7 @@ use App\Flusher;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly ProjectRepository $projects,
         private readonly Flusher $flusher
