@@ -8,6 +8,7 @@ use App\Http\Action\V1\Payment;
 use App\Http\Action\V1\Product;
 use App\Http\Action\V1\Distribution;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\UnsubscribeMiddleware;
 use App\Http\Middleware\UploadFileHandler;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
@@ -107,13 +108,13 @@ return static function (App $app): void {
                 $group->post('', Distribution\Project\Create\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Project\GetAll\RequestAction::class)->add(AuthMiddleware::class);
                 $group->delete('/{projectId:' . $uuidPattern . '}', Distribution\Project\Delete\RequestAction::class)->add(AuthMiddleware::class);
+                $group->post('/unsubscribe', Distribution\Project\Unsubscribe\RequestAction::class)->add(UnsubscribeMiddleware::class);
             });
 
             $group->group('/newsletters', function (RouteCollectorProxy $group): void {
                 $group->post('', Distribution\Newsletter\Draft\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Newsletter\GetAllPaginated\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('/launch', Distribution\Newsletter\Launch\RequestAction::class)->add(AuthMiddleware::class);
-                $group->post('unsubscribe', Distribution\Newsletter\Unsubscribe\RequestAction::class);
             });
         });
     });
