@@ -7,6 +7,7 @@ use App\Http\Action\V1\Direction;
 use App\Http\Action\V1\Payment;
 use App\Http\Action\V1\Product;
 use App\Http\Action\V1\Distribution;
+use App\Http\EmptyResponse;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\UnsubscribeMiddleware;
 use App\Http\Middleware\UploadFileHandler;
@@ -108,7 +109,6 @@ return static function (App $app): void {
                 $group->post('', Distribution\Project\Create\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Project\GetAll\RequestAction::class)->add(AuthMiddleware::class);
                 $group->delete('/{projectId:' . $uuidPattern . '}', Distribution\Project\Delete\RequestAction::class)->add(AuthMiddleware::class);
-                $group->post('/unsubscribe', Distribution\Project\UnsubscribeContact\RequestAction::class)->add(UnsubscribeMiddleware::class);
                 $group->map(['GET', 'POST'], '/unsubscribe', Distribution\Project\UnsubscribeContact\RequestAction::class)->add(UnsubscribeMiddleware::class);
             });
 
