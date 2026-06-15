@@ -15,6 +15,7 @@ final class Query
         public int $perPage,
         public string $sortBy = 'created_at',
         public string $sortDir = 'DESC',
+        public bool $archived = false,
     ) {
     }
 }

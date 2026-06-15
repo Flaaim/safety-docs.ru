@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Distribution\Query\GetAllNewslettersPaginated;
 
+use App\Distribution\Entity\Newsletter\NewsletterStatus;
 use Doctrine\DBAL\Connection;
 
 final class Fetcher
 {
     public function __construct(
-        private Connection $connection
+        private readonly Connection $connection
     ) {
     }
 
@@ -17,13 +18,18 @@ final class Fetcher
     {
         $sortDir = strtoupper($query->sortDir) === 'ASC' ? 'ASC' : 'DESC';
 
-        $qb = $this->connection->createQueryBuilder()
-            ->select('n.*')
+        $qb = $this->connection->createQueryBuilder();
+        $qb->select('n.*')
             ->from('newsletters', 'n')
             ->leftJoin('n', 'distribution_projects', 'dp', 'n.project_id = dp.id')
             ->orderBy('n.' . $query->sortBy, $sortDir)
             ->setFirstResult(($query->page - 1) * $query->perPage)
             ->setMaxResults($query->perPage);
+
+        if ($query->archived !== true) {
+            $qb->Andwhere($qb->expr()->neq('n.status', ':status'))
+                ->setParameter('status', NewsletterStatus::Archived->value);
+        }
 
         $data = $qb->fetchAllAssociative();
 
