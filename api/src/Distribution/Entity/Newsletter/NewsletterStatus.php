@@ -8,4 +8,5 @@ enum NewsletterStatus: string
     case Processed = 'processed';
     case Completed = 'completed';
     case Failed = 'failed';
+    case Archived = 'archived';
 }

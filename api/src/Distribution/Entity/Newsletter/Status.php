@@ -13,6 +13,7 @@ final class Status
         'completed',
         'failed',
         'processed',
+        'archived',
     ];
     private string $status;
     public function __construct(string $status)
@@ -40,5 +41,9 @@ final class Status
     public static function failed(): self
     {
         return new self(NewsletterStatus::Failed->value);
+    }
+    public static function archived(): self
+    {
+        return new self(NewsletterStatus::Archived->value);
     }
 }

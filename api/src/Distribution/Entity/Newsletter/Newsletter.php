@@ -66,6 +66,14 @@ final class Newsletter implements AggregateRoot
 
         $this->recordEvent(new Event\NewsLetterLaunched($this->getId()->getValue()));
     }
+
+    public function archive(): void
+    {
+        if($this->status->getValue() === NewsletterStatus::Archived->value) {
+            throw new \DomainException('Newsletter is already archived.');
+        }
+        $this->status = Status::archived();
+    }
     public function getProjectId(): ProjectId
     {
         return $this->projectId;
