@@ -6,6 +6,7 @@ namespace App\Distribution\Test\Entity\Newsletter;
 
 use App\Distribution\Entity\Newsletter\Newsletter;
 use App\Distribution\Entity\Newsletter\NewsletterId;
+use App\Distribution\Entity\Newsletter\NewsletterStatus;
 use App\Distribution\Entity\Newsletter\Status;
 use App\Distribution\Entity\Project\Project;
 use App\Distribution\Entity\Project\ProjectId;
@@ -66,5 +67,22 @@ final class NewsletterTest extends TestCase
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Newsletter is already processed.');
         $newsletter->launch();
+    }
+
+    public function testArchive(): void
+    {
+        $newsletter = (new NewsletterBuilder())->withProjectId(ProjectId::generate())->build();
+
+        $newsletter->archive();
+        self::assertEquals(NewsletterStatus::Archived->value, $newsletter->getStatus()->getValue());
+    }
+
+    public function testArchiveAlready(): void
+    {
+        $newsletter = (new NewsletterBuilder())->withProjectId(ProjectId::generate())->build();
+        $newsletter->archive();
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Newsletter is already archived.');
+        $newsletter->archive();
     }
 }
