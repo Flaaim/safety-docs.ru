@@ -13,18 +13,18 @@ final class Handler
     public function __construct(
         private readonly NewsletterRepository $newsletters,
         private readonly Flusher $flusher
-    ) {}
+    ) {
+    }
 
     public function handle(Command $command): void
     {
         $newsletter = $this->newsletters->findById(new NewsletterId($command->newsletterId));
 
-        if($newsletter === null) {
+        if ($newsletter === null) {
             throw new \DomainException('Newsletter not found');
         }
         $newsletter->archive();
 
         $this->flusher->flush();
-
     }
 }
