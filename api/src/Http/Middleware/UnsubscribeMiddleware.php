@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Http\EmptyResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,6 +22,9 @@ final class UnsubscribeMiddleware implements MiddlewareInterface
     }
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        if ($request->getMethod() === 'GET') {
+            return new EmptyResponse(200);
+        }
         $rawBody = $request->getBody()->getContents();
         $data = $request->getParsedBody() ?? [];
         $apiKey = $this->container->get('config')['uniSender']['apiKey'];

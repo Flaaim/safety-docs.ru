@@ -24,6 +24,12 @@ final class RequestActionTest extends WebTestCase
         $this->apiKey = $container->get('config')['uniSender']['apiKey'];
     }
 
+    public function testSetWebHook(): void
+    {
+        $response = $this->app()->handle(self::json('GET', '/v1/distributions/projects/unsubscribe'));
+        self::assertEquals(200, $response->getStatusCode());
+    }
+
     public function testEmpty(): void
     {
         $response = $this->app()->handle(self::json('POST', '/v1/distributions/projects/unsubscribe'));
