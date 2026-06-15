@@ -11,6 +11,7 @@ import {
 import { Newsletter } from "@/interfaces/distribution.interface";
 import DraftNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/draft-newsletter-dialog";
 import LaunchNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/launch-newsletter-dialog";
+import ArchiveNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/archive-newsletter-dialog";
 
 interface NewsletterPageProps {
   searchParams: Promise<{ page?: string; perPage?: string }>;
@@ -53,8 +54,9 @@ export default async function NewslettersPage({ searchParams }: NewsletterPagePr
                   <TableCell>{newsletter.templateId}</TableCell>
                   <TableCell>{newsletter.createdAt}</TableCell>
                   <TableCell>{newsletter.status}</TableCell>
-                  <TableCell>
+                  <TableCell className="flex gap-1">
                     <LaunchNewsletterDialog newsletterId={newsletter.id} />
+                    <ArchiveNewsletterDialog newsletterId={newsletter.id} />
                   </TableCell>
                 </TableRow>
               ))}
