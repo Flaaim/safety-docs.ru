@@ -8,10 +8,12 @@ use App\Distribution\Entity\Newsletter\Event\NewsLetterLaunched;
 use App\Distribution\Entity\Newsletter\NewsletterId;
 use App\Distribution\Entity\Newsletter\NewsletterRepository;
 use App\Distribution\Entity\Project\ProjectRepository;
+use App\Distribution\Message\SendNewsletterBatch;
 use App\Distribution\Service\NewsletterLauncherInterface;
 use App\Flusher;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 final class NewsletterLauncherHandler
@@ -20,9 +22,8 @@ final class NewsletterLauncherHandler
     public function __construct(
         private readonly NewsletterRepository $newsletters,
         private readonly ProjectRepository $projects,
-        private readonly NewsletterLauncherInterface $launcher,
-        private readonly LoggerInterface $logger,
         private readonly Flusher $flusher,
+        private readonly MessageBusInterface $messageBus,
     ) {
     }
 
@@ -37,19 +38,20 @@ final class NewsletterLauncherHandler
             throw new \DomainException('Project not found.');
         }
         $subscribers = $project->getSubscribedContacts();
-        $this->logger->info('Template id: ' . $newsletter->getTemplateId());
-        $batch = [];
+        $emails = [];
         foreach ($subscribers as $subscriber) {
-            $batch[] = ['email' => $subscriber->getEmail()];
-
-            if (count($batch) >= self::BATCH_SIZE) {
-                $this->launcher->launch($batch, $newsletter->getTemplateId(), $newsletter->getSubject());
-                $batch = [];
-            }
+            $emails[] = $subscriber->getEmail();
         }
 
-        if (count($batch) > 0) {
-            $this->launcher->launch($batch, $newsletter->getTemplateId(), $newsletter->getSubject());
+        $batches = array_chunk($emails, self::BATCH_SIZE);
+
+        foreach ($batches as $batch) {
+            $this->messageBus->dispatch(new SendNewsletterBatch(
+                $newsletter->getId()->getValue(),
+                $batch,
+                $newsletter->getTemplateId(),
+                $newsletter->getSubject()
+            ));
         }
 
         $newsletter->completed();

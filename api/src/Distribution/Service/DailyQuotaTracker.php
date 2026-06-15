@@ -10,7 +10,8 @@ final class DailyQuotaTracker
 
     public function __construct(
         private readonly \Redis $redis
-    ){}
+    ) {
+    }
 
     public function reserve(int $batchSize): bool
     {
@@ -19,9 +20,9 @@ final class DailyQuotaTracker
 
         $key = 'unisender_quota_' . $now->format('Y-m-d');
 
-        $currentUsage = $this->redis->get($key);
+        $currentUsage = (int)$this->redis->get($key);
 
-        if(($currentUsage + $batchSize) > self::MAX_QUOTA){
+        if (($currentUsage + $batchSize) > self::MAX_QUOTA) {
             return false;
         }
 
