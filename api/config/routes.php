@@ -113,8 +113,11 @@ return static function (App $app): void {
             });
 
             $group->group('/newsletters', function (RouteCollectorProxy $group): void {
+                $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+
                 $group->post('', Distribution\Newsletter\Draft\RequestAction::class)->add(AuthMiddleware::class);
                 $group->get('', Distribution\Newsletter\GetAllPaginated\RequestAction::class)->add(AuthMiddleware::class);
+                $group->delete('/{newsletterId:' . $uuidPattern . '}', Distribution\Newsletter\Archive\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('/launch', Distribution\Newsletter\Launch\RequestAction::class)->add(AuthMiddleware::class);
             });
         });
