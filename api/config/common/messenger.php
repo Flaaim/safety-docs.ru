@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use App\Distribution\Entity\Newsletter\Event\NewsLetterLaunched;
+use App\Distribution\Entity\Newsletter\Event\SendNewsletterBatch;
 use App\Distribution\MessageHandler\NewsletterLauncherHandler;
+use App\Distribution\MessageHandler\SendNewsletterBatchHandler;
 use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
 use App\Sender\Event\SendDocumentEmailCommand;
@@ -38,6 +40,12 @@ return [
             NewsLetterLaunched::class => [
                 new HandlerDescriptor(function (NewsLetterLaunched $event) use ($container) {
                     $handler = $container->get(NewsletterLauncherHandler::class);
+                    return $handler($event);
+                })
+            ],
+            SendNewsletterBatch::class => [
+                new HandlerDescriptor(function (SendNewsletterBatch $event) use ($container) {
+                    $handler = $container->get(SendNewsletterBatchHandler::class);
                     return $handler($event);
                 })
             ]

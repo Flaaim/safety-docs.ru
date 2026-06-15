@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Distribution\Message;
+namespace App\Distribution\Entity\Newsletter\Event;
 
 final class SendNewsletterBatch
 {

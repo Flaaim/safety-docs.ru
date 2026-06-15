@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Distribution\MessageHandler;
 
-use App\Distribution\Message\SendNewsletterBatch;
+use App\Distribution\Entity\Newsletter\Event\SendNewsletterBatch;
 use App\Distribution\Service\DailyQuotaTracker;
 use App\Distribution\Service\NewsletterLauncherInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
