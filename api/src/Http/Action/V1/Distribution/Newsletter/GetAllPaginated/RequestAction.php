@@ -23,9 +23,14 @@ final class RequestAction implements RequestHandlerInterface
     {
         $page = (int)($request->getQueryParams()['page'] ?? 1);
         $perPage = (int)($request->getQueryParams()['perPage'] ?? 20);
+        $archived = (bool)($request->getQueryParams()['archive'] ?? false);
 
 
-        $query = new Query($page, $perPage);
+        $query = new Query(
+            page: $page,
+            perPage:$perPage,
+            archived:$archived
+        );
 
         $this->validator->validate($query);
 
