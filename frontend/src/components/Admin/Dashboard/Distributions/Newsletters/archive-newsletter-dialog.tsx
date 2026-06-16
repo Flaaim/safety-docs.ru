@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Archive, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { archiveNewsletter } from "@api/distribution";
 
 export interface ArchiveNewsletterDialogProps {
   newsletterId: string;

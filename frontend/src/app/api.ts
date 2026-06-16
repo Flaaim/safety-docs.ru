@@ -49,6 +49,8 @@ export const API = {
       BASE_URL + `/v1/distributions/newsletters?page=${currentPage}&perPage${perPage}`,
     draftNewsletter: () => BASE_URL + `/v1/distributions/newsletters`,
     launchNewsletter: () => BASE_URL + `/v1/distributions/newsletters/launch`,
+    archiveNewsletter: (newsletter: string) =>
+      BASE_URL + `/v1/distributions/newsletters/${newsletter}`,
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
