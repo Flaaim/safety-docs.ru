@@ -58,10 +58,11 @@ export async function importContacts(token: string | undefined, formData: FormDa
 export async function getAllNewslettersPaginated(
   token: string | undefined,
   currentPage: number,
-  perPage: number
+  perPage: number,
+  archive: boolean
 ): Promise<NewslettersCollection> {
   return await apiFetch<NewslettersCollection>(
-    API.distribution.getAllNewsLettersPaginated(currentPage, perPage),
+    API.distribution.getAllNewsLettersPaginated(currentPage, perPage, archive),
     {
       method: "GET",
       token: token,
@@ -95,5 +96,14 @@ export async function launchNewsletter(
     method: "POST",
     token: token,
     body: JSON.stringify({ newsletterId: newsletterId }),
+  });
+}
+export async function archiveNewsletter(
+  token: string | undefined,
+  newsletterId: string
+): Promise<void> {
+  return await apiFetch<void>(API.distribution.archiveNewsletter(newsletterId), {
+    method: "DELETE",
+    token: token,
   });
 }

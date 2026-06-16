@@ -45,8 +45,18 @@ export const API = {
     addNewProject: () => BASE_URL + `/v1/distributions/projects`,
     getAllProjects: () => BASE_URL + `/v1/distributions/projects`,
     deleteProject: (projectId: string) => BASE_URL + `/v1/distributions/projects/${projectId}`,
-    getAllNewsLettersPaginated: (currentPage: number, perPage: number) =>
-      BASE_URL + `/v1/distributions/newsletters?page=${currentPage}&perPage${perPage}`,
+    getAllNewsLettersPaginated: (currentPage: number, perPage: number, archive: boolean) => {
+      const params = new URLSearchParams({
+        page: String(currentPage),
+        perPage: String(perPage),
+      });
+
+      if (archive) {
+        params.append("archive", "true");
+      }
+
+      return BASE_URL + `/v1/distributions/newsletters?${params.toString()}`;
+    },
     draftNewsletter: () => BASE_URL + `/v1/distributions/newsletters`,
     launchNewsletter: () => BASE_URL + `/v1/distributions/newsletters/launch`,
     archiveNewsletter: (newsletter: string) =>

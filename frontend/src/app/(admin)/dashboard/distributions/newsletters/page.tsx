@@ -12,6 +12,7 @@ import { Newsletter } from "@/interfaces/distribution.interface";
 import DraftNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/draft-newsletter-dialog";
 import LaunchNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/launch-newsletter-dialog";
 import ArchiveNewsletterDialog from "@/components/Admin/Dashboard/Distributions/Newsletters/archive-newsletter-dialog";
+import { ArchiveCheckboxWrapper } from "@/components/Admin/Dashboard/Distributions/Newsletters/archive-checkbox-wrapper";
 
 interface NewsletterPageProps {
   searchParams: Promise<{ page?: string; perPage?: string }>;
@@ -19,11 +20,12 @@ interface NewsletterPageProps {
 export default async function NewslettersPage({ searchParams }: NewsletterPageProps) {
   const currentPage = Number((await searchParams).page) || 1;
   const perPage = Number((await searchParams).perPage) || 20;
+  const showArchive = Boolean((await searchParams)?.archive);
 
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
-  const data = await getAllNewslettersPaginated(token, currentPage, perPage);
+  const data = await getAllNewslettersPaginated(token, currentPage, perPage, showArchive);
 
   const hasNewsletters = data && data.newsletters && data.newsletters.length > 0;
 
@@ -31,7 +33,10 @@ export default async function NewslettersPage({ searchParams }: NewsletterPagePr
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Рассылки</h1>
-        <DraftNewsletterDialog />
+        <div className="flex gap-3">
+          <ArchiveCheckboxWrapper isChecked={showArchive} />
+          <DraftNewsletterDialog />
+        </div>
       </div>
       <div className="rounded-md border bg-white">
         <Table>
@@ -56,7 +61,7 @@ export default async function NewslettersPage({ searchParams }: NewsletterPagePr
                   <TableCell>{newsletter.status}</TableCell>
                   <TableCell className="flex gap-1">
                     <LaunchNewsletterDialog newsletterId={newsletter.id} />
-                    <ArchiveNewsletterDialog newsletterId={newsletter.id} />
+                    {newsletter.status !== 'archived' ? <ArchiveNewsletterDialog newsletterId={newsletter.id} /> : ''}
                   </TableCell>
                 </TableRow>
               ))}
