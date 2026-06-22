@@ -26,6 +26,7 @@ final class NewLetterLauncher implements NewsletterLauncherInterface
                 "template_id" => $templateId,
                 "skip_unsubscribe" => 0,
                 "subject" => $subject,
+                "custom_backend_id" => 32161,
             ],
         ];
         try {
@@ -37,7 +38,7 @@ final class NewLetterLauncher implements NewsletterLauncherInterface
                 'json' => $requestBody,
             ]);
         } catch (GuzzleException $e) {
-            $this->logger->error('Error sending distribution' . $e->getMessage());
+            $this->logger->error('Error sending distribution ' . $e->getMessage());
             throw $e;
         }
     }
