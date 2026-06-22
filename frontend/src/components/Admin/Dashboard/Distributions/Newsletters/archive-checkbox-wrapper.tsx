@@ -14,7 +14,7 @@ export function ArchiveCheckboxWrapper({ isChecked }: ArchiveCheckboxWrapperProp
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleChange = (checked) => {
+  const handleChange = (checked: boolean) => {
     const params = new URLSearchParams(searchParams);
     if (checked) {
       params.set("archive", "true");
