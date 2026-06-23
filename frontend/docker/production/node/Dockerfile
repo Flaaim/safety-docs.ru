@@ -3,7 +3,11 @@ WORKDIR /app
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN corepack enable
 COPY package.json yarn.lock .yarnrc.yml* ./
+
+COPY .yarn ./.yarn
+
 RUN yarn install --immutable
+
 COPY . .
 
 ARG NEXT_PUBLIC_BACKEND_URL
