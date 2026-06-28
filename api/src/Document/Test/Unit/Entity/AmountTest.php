@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Documents\Test\Unit\Entity;
+namespace App\Document\Test\Unit\Entity;
 
 use App\Product\Entity\Amount;
 use App\Shared\Domain\ValueObject\Currency;
