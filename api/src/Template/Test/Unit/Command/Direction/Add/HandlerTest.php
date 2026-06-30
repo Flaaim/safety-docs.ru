@@ -64,7 +64,7 @@ class HandlerTest extends TestCase
                 self::assertEquals($command->title, $direction->getTitle());
                 self::assertEquals($command->description, $direction->getDescription());
                 self::assertEquals($command->text, $direction->getText());
-                self::assertEquals($slug->getValue(), $direction->getSlug()->getValue());
+                self::assertEquals($slug->getValue(), $direction->getSlug());
                 return true;
             })
         );

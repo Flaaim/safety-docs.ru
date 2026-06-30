@@ -101,7 +101,7 @@ class HandlerTest extends TestCase
             $title,
             'Описание инструкции',
             'Some text',
-            $slug,
+            $slug->getValue(),
             $direction
         );
 
@@ -140,7 +140,7 @@ class HandlerTest extends TestCase
             $title,
             'Описание инструкции',
             'Some text',
-            $slug,
+            $slug->getValue(),
             $direction
         );
 
@@ -182,7 +182,7 @@ class HandlerTest extends TestCase
             $title,
             'Комплект документов',
             'Some text',
-            $parentSlug,
+            $parentSlug->getValue(),
             $anotherDirection
         );
 
@@ -192,7 +192,7 @@ class HandlerTest extends TestCase
             $title,
             'Описание инструкции',
             'Some text',
-            $childSlug,
+            $childSlug->getValue(),
             $direction
         );
         $this->directions->expects(self::once())
@@ -237,7 +237,7 @@ class HandlerTest extends TestCase
             $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -259,7 +259,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $parentCategory->getTitle());
         self::assertEquals($command->description, $parentCategory->getDescription());
-        self::assertEquals($slug->getValue(), $parentCategory->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $parentCategory->getSlug());
         self::assertEquals($command->text, $parentCategory->getText());
     }
 
@@ -282,7 +282,7 @@ class HandlerTest extends TestCase
             $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
         $childCategory =  new Category(
@@ -290,7 +290,7 @@ class HandlerTest extends TestCase
             $title = 'Инструкция о мерах пожбезопасности',
             'Описание инструкции',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -316,7 +316,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $childCategory->getTitle());
         self::assertEquals($command->description, $childCategory->getDescription());
-        self::assertEquals($slug->getValue(), $childCategory->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $childCategory->getSlug());
         self::assertEquals($command->text, $childCategory->getText());
 
         self::assertNotNull($parent = $childCategory->getParent());
@@ -337,7 +337,7 @@ class HandlerTest extends TestCase
             $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -359,7 +359,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $category->getTitle());
         self::assertEquals($command->description, $category->getDescription());
-        self::assertEquals($slug->getValue(), $category->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $category->getSlug());
         self::assertEquals($command->text, $category->getText());
     }
 
@@ -377,7 +377,7 @@ class HandlerTest extends TestCase
             $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -386,7 +386,7 @@ class HandlerTest extends TestCase
             $title = 'Another category title',
             'Another category description',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -429,7 +429,7 @@ class HandlerTest extends TestCase
             $title = 'Пожарная безопасность',
             'Комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 

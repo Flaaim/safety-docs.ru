@@ -23,7 +23,7 @@ class TemplateFixture extends AbstractFixture
             'Охрана труда',
             'Собраны комплекты образцов документов по основным направлениями работы по охране труда и техники безопасности.',
             $text,
-            Slug::generate('Охрана труда'),
+            Slug::generate('Охрана труда')->getValue(),
         );
 
         $fireDirection = new Direction(
@@ -39,7 +39,7 @@ class TemplateFixture extends AbstractFixture
             'Служба охраны труда',
             'Описание службы охраны труда',
             'Текст службы охраны труда',
-            Slug::generate('Служба охраны труда'),
+            Slug::generate('Служба охраны труда')->getValue(),
             $safetyDirection
         );
 

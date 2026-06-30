@@ -11,7 +11,7 @@ use App\Product\Entity\Product;
 class CategoryBuilder
 {
     public CategoryId $categoryId;
-    private Slug $slug;
+    private string $slug;
     private string $title;
     private string $description;
     private string $text;
@@ -23,7 +23,7 @@ class CategoryBuilder
     public function __construct()
     {
         $this->categoryId = new CategoryId('9582c2ff-e788-46f6-94f9-6b7d73b309bd');
-        $this->slug = Slug::generate('service');
+        $this->slug = Slug::generate('service')->getValue();
         $this->title = 'Служба охраны труда - образцы документов';
         $this->description = 'Служба охраны труда - образцы документов описание документов';
         $this->text = 'Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите должность';
@@ -37,7 +37,7 @@ class CategoryBuilder
     public function withSlug(Slug $slug): self
     {
         $clone = clone $this;
-        $clone->slug = $slug;
+        $clone->slug = $slug->getValue();
         return $clone;
     }
     public function withTitle(string $title): self

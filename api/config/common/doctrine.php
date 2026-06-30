@@ -89,10 +89,8 @@ return [
 
 
                 App\Template\Entity\Direction\DirectionIdType::NAME => App\Template\Entity\Direction\DirectionIdType::class,
-                App\Template\Entity\Direction\SlugType::NAME => App\Template\Entity\Direction\SlugType::class,
 
                 App\Template\Entity\Category\CategoryIdType::NAME => App\Template\Entity\Category\CategoryIdType::class,
-                App\Template\Entity\Category\SlugType::NAME => App\Template\Entity\Category\SlugType::class,
 
                 App\Distribution\Entity\File\FileIdType::NAME => App\Distribution\Entity\File\FileIdType::class,
                 App\Distribution\Entity\Project\ProjectIdType::NAME => App\Distribution\Entity\Project\ProjectIdType::class,

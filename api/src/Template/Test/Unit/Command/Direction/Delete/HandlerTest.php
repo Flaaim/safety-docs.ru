@@ -94,7 +94,7 @@ class HandlerTest extends TestCase
             $title = 'Служба охраны труда',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -103,7 +103,7 @@ class HandlerTest extends TestCase
             $title = 'Медосмотры',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 

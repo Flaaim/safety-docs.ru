@@ -22,7 +22,7 @@ class DirectionTest extends TestCase
 
         self::assertEquals('title', $direction->getTitle());
         self::assertEquals('description', $direction->getDescription());
-        self::assertEquals('title', $direction->getSlug()->getValue());
+        self::assertEquals('title', $direction->getSlug());
         self::assertEquals('text', $direction->getText());
         self::assertEquals('2a7a593a-ee23-4a73-bb07-b372438fb269', $direction->getId()->getValue());
     }
@@ -31,12 +31,12 @@ class DirectionTest extends TestCase
     {
 
         $direction = (new DirectionBuilder())->build();
-        $direction->update('title1', 'description1', 'text1', Slug::generate('slug'));
+        $direction->update('title1', 'description1', 'text1', Slug::generate('slug')->getValue());
 
         self::assertEquals('title1', $direction->getTitle());
         self::assertEquals('description1', $direction->getDescription());
         self::assertEquals('text1', $direction->getText());
-        self::assertEquals('slug', $direction->getSlug()->getValue());
+        self::assertEquals('slug', $direction->getSlug());
     }
 
     public function testAddCategory(): void
@@ -47,7 +47,7 @@ class DirectionTest extends TestCase
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
@@ -61,7 +61,7 @@ class DirectionTest extends TestCase
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
@@ -72,7 +72,7 @@ class DirectionTest extends TestCase
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -85,7 +85,7 @@ class DirectionTest extends TestCase
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
         self::assertCount(1, $direction->getCategories());
@@ -104,7 +104,7 @@ class DirectionTest extends TestCase
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            $slug = Slug::generate($title),
+            $slug = Slug::generate($title)->getValue(),
             $direction
         );
         self::assertFalse($direction->canBeDeleted());
@@ -118,7 +118,7 @@ class DirectionTest extends TestCase
             $title = 'Category Title',
             'Category Description',
             'Category Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 

@@ -71,7 +71,7 @@ class HandlerTest extends TestCase
             'Обучение охраны труда',
             'Обучение охраны труда - комплект документов',
             'Some text',
-            $slug,
+            $slug->getValue(),
             $direction
         );
 
@@ -112,7 +112,7 @@ class HandlerTest extends TestCase
 
         self::assertEquals($command->title, $direction->getCategories()[0]->getTitle());
         self::assertEquals($command->description, $direction->getCategories()[0]->getDescription());
-        self::assertEquals($slug->getValue(), $direction->getCategories()[0]->getSlug()->getValue());
+        self::assertEquals($slug->getValue(), $direction->getCategories()[0]->getSlug());
         self::assertEquals($command->text, $direction->getCategories()[0]->getText());
 
     }

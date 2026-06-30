@@ -25,10 +25,8 @@ class Direction
         private string $description,
         #[ORM\Column(type: 'text')]
         private string $text,
-        #[ORM\Column(type: 'direction_slug', length: 35)]
-        private Slug $slug,
-        #[ORM\Embedded(class: Breadcrumb::class)]
-        private ?Breadcrumb $breadcrumb = null,
+        #[ORM\Column(type: 'string', length: 50)]
+        private string $slug
     ) {
         $this->categories = new ArrayCollection();
     }
@@ -48,12 +46,12 @@ class Direction
     {
         return $this->text;
     }
-    public function getSlug(): Slug
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    public function update(string $title, string $description, string $text, Slug $slug): void
+    public function update(string $title, string $description, string $text, string $slug): void
     {
         $this->title = $title;
         $this->description = $description;
@@ -67,8 +65,8 @@ class Direction
     public function addCategory(Category $category): void
     {
         foreach ($this->categories as $existingCategory) {
-            if ($existingCategory->getSlug()->equals($category->getSlug())) {
-                throw new \DomainException("Category with slug " . $category->getSlug()->getValue() . " is exists.");
+            if ($existingCategory->getSlug() === $category->getSlug()) {
+                throw new \DomainException("Category with slug " . $category->getSlug() . " is exists.");
             }
         }
         $this->categories->add($category);
@@ -77,7 +75,7 @@ class Direction
     {
         foreach ($this->categories as $existingCategory) {
             /** @var Category $existingCategory */
-            if ($existingCategory->getSlug()->equals($categorySlug)) {
+            if ($existingCategory->getSlug() === $categorySlug->getValue()) {
                 return true;
             }
         }
@@ -96,9 +94,5 @@ class Direction
             return false;
         }
         return true;
-    }
-    public function getBreadcrumb(): ?Breadcrumb
-    {
-        return $this->breadcrumb;
     }
 }

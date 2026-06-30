@@ -32,8 +32,8 @@ class Category
         private string $description,
         #[ORM\Column(type: 'text')]
         private string $text,
-        #[ORM\Column(type: 'category_slug', length: 125)]
-        private Slug $slug,
+        #[ORM\Column(type: 'string', length: 125)]
+        private string $slug,
         #[ORM\ManyToOne(targetEntity: Direction::class, inversedBy: 'categories')]
         #[ORM\JoinColumn(name: 'direction_id', referencedColumnName: 'id', nullable: false, onDelete: "RESTRICT")]
         private Direction $direction,
@@ -74,7 +74,7 @@ class Category
     {
         return $this->text;
     }
-    public function getSlug(): Slug
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -87,7 +87,7 @@ class Category
         string $title,
         string $description,
         string $text,
-        Slug $slug,
+        string $slug,
         Direction $direction,
         ?Category $parent = null
     ): void {

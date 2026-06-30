@@ -42,8 +42,8 @@ class Slug
 
         return new self($value);
     }
-    public function equals(Slug $slug): bool
+    public function equals(string $slug): bool
     {
-        return $this->value === $slug->value;
+        return $this->value === $slug;
     }
 }

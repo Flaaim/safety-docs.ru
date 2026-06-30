@@ -55,7 +55,7 @@ class Handler
             $command->title,
             $command->description,
             $command->text,
-            $slug,
+            $slug->getValue(),
             $direction,
             $parentCategory
         );

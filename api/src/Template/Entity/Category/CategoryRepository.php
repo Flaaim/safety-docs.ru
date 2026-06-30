@@ -23,10 +23,6 @@ class CategoryRepository
         return $this->repo->find($id);
     }
     /** @return array<Category> */
-    public function findByDirectionId(DirectionId $directionId): array
-    {
-        return $this->repo->findBy(['direction' => $directionId]);
-    }
     public function findBySlug(Slug $slug, DirectionId $directionId): ?Category
     {
         return $this->repo->findOneBy([

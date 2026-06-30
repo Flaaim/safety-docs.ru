@@ -28,7 +28,7 @@ class Handler
             $command->title,
             $command->description,
             $command->text,
-            $slug
+            $slug->getValue()
         );
         $this->directions->add($direction);
 

@@ -34,7 +34,7 @@ class CategoryTest extends TestCase
             $title = 'Title',
             'Description',
             'Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction,
             $parent
         );
@@ -54,7 +54,7 @@ class CategoryTest extends TestCase
             $title = 'Title',
             'Description',
             'Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $safetyDirection,
             $parent
         );
@@ -70,7 +70,7 @@ class CategoryTest extends TestCase
             $title = 'Parent category',
             'Parent description category',
             'Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $safetyDirection,
         );
 
@@ -82,7 +82,7 @@ class CategoryTest extends TestCase
             $title = 'Child category',
             'Child description category',
             'Text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $fireDirection,
             $parentCategory
         );
@@ -99,14 +99,14 @@ class CategoryTest extends TestCase
             $title = 'Обучение по пожарной безопасности',
             'Обучение по пожарной безопасности, комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $fireDirection
         );
 
         self::assertEquals('Обучение по пожарной безопасности', $category->getTitle());
         self::assertEquals('Обучение по пожарной безопасности, комплект документов', $category->getDescription());
         self::assertEquals('Some text', $category->getText());
-        self::assertEquals('obucenie-po-pozarnoj-bezopasnosti', $category->getSlug()->getValue());
+        self::assertEquals('obucenie-po-pozarnoj-bezopasnosti', $category->getSlug());
         self::assertEquals('171af8ca-86f0-452f-b94b-5b62cc72998a', $category->getDirection()->getId()->getValue());
         self::assertEquals('Fire', $category->getDirection()->getTitle());
     }
@@ -123,7 +123,7 @@ class CategoryTest extends TestCase
             $title = 'New title',
             'New description',
             'New text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $fireDirection
         );
 
@@ -147,7 +147,7 @@ class CategoryTest extends TestCase
             $title = 'New title',
             'New description',
             'New text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $fireDirection,
             $category1
         );
@@ -174,7 +174,7 @@ class CategoryTest extends TestCase
             $title = 'New title',
             'New description',
             'New text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $safetyDirection,
             $parentCategory2
         );
@@ -224,7 +224,7 @@ class CategoryTest extends TestCase
             $title = 'New title',
             'New description',
             'New text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $fireDirection,
         );
 
@@ -340,7 +340,7 @@ class CategoryTest extends TestCase
             'Служба охраны труда',
             'Служба охраны труда, комплект документов',
             'some text',
-            Slug::generate($slug),
+            Slug::generate($slug)->getValue(),
             $direction,
             $parent
         );

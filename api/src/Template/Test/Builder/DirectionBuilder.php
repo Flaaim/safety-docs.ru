@@ -2,24 +2,21 @@
 
 namespace App\Template\Test\Builder;
 
-use App\Template\Entity\Category\Category;
 use App\Template\Entity\Direction\Direction;
 use App\Template\Entity\Direction\DirectionId;
 use App\Template\Entity\Slug;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 class DirectionBuilder
 {
     private DirectionId $id;
-    private Slug $slug;
+    private string $slug;
     private string $title;
     private string $description;
     private string $text;
     public function __construct()
     {
         $this->id = new DirectionId('2a7a593a-ee23-4a73-bb07-b372438fb269');
-        $this->slug = Slug::generate('Охрана труда');
+        $this->slug = Slug::generate('Охрана труда')->getValue();
         $this->title = 'Охрана труда';
         $this->description = 'Описание направления охрана труда';
         $this->text = 'Текст к направлению темы охрана труда';
@@ -35,7 +32,7 @@ class DirectionBuilder
     {
         $clone = clone $this;
         $clone->title = $title;
-        $clone->slug = Slug::generate($title);
+        $clone->slug = Slug::generate($title)->getValue();
         return $clone;
     }
     public function withDescription(string $description): self

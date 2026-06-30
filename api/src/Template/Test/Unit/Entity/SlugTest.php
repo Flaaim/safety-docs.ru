@@ -30,9 +30,9 @@ class SlugTest extends TestCase
     {
         $slug = Slug::generate('my-url');
 
-        $this->assertTrue($slug->equals(Slug::generate('my-url')));
-        $this->assertTrue($slug->equals(Slug::generate('My-url')));
-        $this->assertTrue($slug->equals($slug));
+        $this->assertTrue($slug->equals(Slug::generate('my-url')->getValue()));
+        $this->assertTrue($slug->equals(Slug::generate('My-url')->getValue()));
+        $this->assertTrue($slug->equals($slug->getValue()));
     }
 
     public function testTransliterate(): void
