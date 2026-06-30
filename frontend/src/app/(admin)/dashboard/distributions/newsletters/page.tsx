@@ -15,7 +15,7 @@ import ArchiveNewsletterDialog from "@/components/Admin/Dashboard/Distributions/
 import { ArchiveCheckboxWrapper } from "@/components/Admin/Dashboard/Distributions/Newsletters/archive-checkbox-wrapper";
 
 interface NewsletterPageProps {
-  searchParams: Promise<{ page?: string; perPage?: string, archive?: string }>;
+  searchParams: Promise<{ page?: string; perPage?: string; archive?: string }>;
 }
 export default async function NewslettersPage({ searchParams }: NewsletterPageProps) {
   const currentPage = Number((await searchParams).page) || 1;

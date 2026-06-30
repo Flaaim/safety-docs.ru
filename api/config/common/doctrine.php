@@ -67,7 +67,7 @@ return [
                 __DIR__ . '/../../src/Payment/Entity',
                 __DIR__ . '/../../src/Product/Entity',
                 __DIR__ . '/../../src/Sender/Entity',
-                __DIR__ . '/../../src/Direction/Entity',
+                __DIR__ . '/../../src/Template/Entity',
                 __DIR__ . '/../../src/Distribution/Entity',
             ],
             'types' => [
@@ -88,17 +88,21 @@ return [
                 App\Sender\Entity\EmailMessageType::NAME => App\Sender\Entity\EmailMessageType::class,
 
 
-                App\Direction\Entity\Direction\DirectionIdType::NAME => App\Direction\Entity\Direction\DirectionIdType::class,
-                App\Direction\Entity\Direction\SlugType::NAME => App\Direction\Entity\Direction\SlugType::class,
+                App\Template\Entity\Direction\DirectionIdType::NAME => App\Template\Entity\Direction\DirectionIdType::class,
+                App\Template\Entity\Direction\SlugType::NAME => App\Template\Entity\Direction\SlugType::class,
 
-                App\Direction\Entity\Category\CategoryIdType::NAME => App\Direction\Entity\Category\CategoryIdType::class,
-                App\Direction\Entity\Category\SlugType::NAME => App\Direction\Entity\Category\SlugType::class,
+                App\Template\Entity\Category\CategoryIdType::NAME => App\Template\Entity\Category\CategoryIdType::class,
+                App\Template\Entity\Category\SlugType::NAME => App\Template\Entity\Category\SlugType::class,
 
                 App\Distribution\Entity\File\FileIdType::NAME => App\Distribution\Entity\File\FileIdType::class,
                 App\Distribution\Entity\Project\ProjectIdType::NAME => App\Distribution\Entity\Project\ProjectIdType::class,
 
                 App\Distribution\Entity\Newsletter\NewsletterIdType::NAME => App\Distribution\Entity\Newsletter\NewsletterIdType::class,
                 App\Distribution\Entity\Newsletter\StatusType::NAME => App\Distribution\Entity\Newsletter\StatusType::class,
+
+                App\Template\Entity\Document\DocumentIdType::NAME => App\Template\Entity\Document\DocumentIdType::class,
+                App\Template\Entity\Document\AmountType::NAME => App\Template\Entity\Document\AmountType::class,
+                App\Template\Entity\Document\FilenameType::NAME => App\Template\Entity\Document\FilenameType::class,
             ]
         ]
     ],

@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Template\Entity\Category;
+
+use App\Template\Entity\Direction\DirectionId;
+use App\Template\Entity\Slug;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
+
+class CategoryRepository
+{
+    private EntityRepository $repo;
+    private EntityManagerInterface $em;
+    public function __construct(EntityManagerInterface $em)
+    {
+        $repo = $em->getRepository(Category::class);
+        $this->repo = $repo;
+        $this->em = $em;
+    }
+
+    public function findById(CategoryId $id): ?Category
+    {
+        return $this->repo->find($id);
+    }
+    /** @return array<Category> */
+    public function findByDirectionId(DirectionId $directionId): array
+    {
+        return $this->repo->findBy(['direction' => $directionId]);
+    }
+    public function findBySlug(Slug $slug, DirectionId $directionId): ?Category
+    {
+        return $this->repo->findOneBy([
+            'slug' => $slug->getValue(),
+            'direction' => $directionId->getValue()
+        ]);
+    }
+    public function findAllWithChildren(): array
+    {
+        return $this->em->createQueryBuilder()
+            ->select('c', 'children')
+            ->from(Category::class, 'c')
+            ->leftJoin('c.children', 'children')
+            ->where('c.parent IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
+    public function remove(Category $category): void
+    {
+        $this->em->remove($category);
+    }
+}

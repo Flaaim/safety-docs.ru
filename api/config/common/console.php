@@ -44,7 +44,7 @@ return [
             'fixture_paths' => [
                 __DIR__ . '/../../src/Product/Fixture',
                 __DIR__ . '/../../src/Payment/Fixture',
-                __DIR__ . '/../../src/Direction/Fixture',
+                __DIR__ . '/../../src/Template/Fixture',
             ]
         ],
     ]

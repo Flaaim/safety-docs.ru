@@ -20,7 +20,7 @@
         <UnusedClass>
             <errorLevel type="suppress">
                 <directory name="src/Data/Migration" />
-                <directory name="src/Direction/Fixture" />
+                <directory name="src/Template/Fixture" />
                 <directory name="src/Payment/Fixture" />
                 <directory name="src/Product/Fixture" />
                 <directory name="src/Http/Action" />

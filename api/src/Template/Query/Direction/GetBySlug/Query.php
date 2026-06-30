@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Template\Query\Direction\GetBySlug;
+
+final class Query
+{
+    public function __construct(
+        public string $slug,
+    ) {
+    }
+}
