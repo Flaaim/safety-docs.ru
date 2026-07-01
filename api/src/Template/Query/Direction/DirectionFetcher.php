@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Template\Query\Direction;
 
+use App\Template\ReadModel\DirectionFetcherInterface;
 use Doctrine\DBAL\Connection;
 
-final class DirectionFetcher
+final class DirectionFetcher implements DirectionFetcherInterface
 {
     public function __construct(
         private readonly Connection $connection
