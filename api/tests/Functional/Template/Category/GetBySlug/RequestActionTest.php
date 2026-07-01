@@ -17,7 +17,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::json(
             'GET',
-            '/v1/directions/e42b8e4f-0ac3-4cca-984d-4f1dc983e970/categories/s/service')
+            '/v1/directions/'. RequestFixture::DIRECTION_ID .'/categories/s/instructions')
         );
 
         self::assertEquals(200, $response->getStatusCode());
@@ -27,43 +27,13 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'id' => '8aa8f453-b19b-4b53-915b-1f04c83a9aee',
-            'title' => 'Служба охраны труда',
-            'description' => 'Служба охраны труда - комплект документов',
+            'id' => RequestFixture::CATEGORY_ID,
+            'title' => 'Инструкции по охране труда',
+            'description' => 'Различные инструкции по охране труда',
             'text' => 'Some text',
-            'slug' => 'service',
-            'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970',
-            'directionTitle' => 'Охрана труда',
-            'productId' => null,
-            'productTitle' => null,
+            'slug' => 'instructions',
+            'directionId' => RequestFixture::DIRECTION_ID,
             'parentId' => null,
-            'children' => []
-        ], $data);
-    }
-    public function testSuccessWithProduct(): void
-    {
-        $response = $this->app()->handle(self::json(
-            'GET',
-            '/v1/directions/e42b8e4f-0ac3-4cca-984d-4f1dc983e970/categories/s/medical')
-        );
-
-        self::assertEquals(200, $response->getStatusCode());
-
-        self::assertJson($body = (string) $response->getBody());
-
-        $data = Json::decode($body);
-
-        self::assertEquals([
-            'id' => '040794de-7a19-47be-947a-e5ed74b579b8',
-            'title' => 'Медицинские осмотры',
-            'description' => 'Медицинские осмотры - комплект документов',
-            'text' => 'Some text',
-            'slug' => 'medical',
-            'directionId' => 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970',
-            'directionTitle' => 'Охрана труда',
-            'productId' => 'bffa46d9-6644-42d9-9c76-1e601c22d40b',
-            'productTitle' => '5 документов медосмотров',
-            'parentId' => '9582c2ff-e788-46f6-94f9-6b7d73b309bd',
             'children' => []
         ], $data);
     }

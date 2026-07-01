@@ -2,10 +2,10 @@
 
 namespace App\Http\Action\V1\Template\GetBySlug;
 
-use App\Template\Command\Direction\GetBySlug\Command;
-use App\Template\Command\Direction\GetBySlug\Handler;
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
+use App\Template\Query\Direction\GetBySlug\Handler;
+use App\Template\Query\Direction\GetBySlug\Query;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -23,11 +23,11 @@ class RequestAction implements RequestHandlerInterface
         $route = $request->getAttribute('active_route');
         $slug = (string)$route->getArgument('slug');
 
-        $command = new Command($slug);
+        $query = new Query($slug);
 
-        $this->validator->validate($command);
+        $this->validator->validate($query);
 
-        $response = $this->handler->handle($command);
+        $response = $this->handler->handle($query);
 
         return new JsonResponse($response);
     }

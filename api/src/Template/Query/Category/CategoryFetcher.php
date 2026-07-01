@@ -29,6 +29,59 @@ final class CategoryFetcher implements CategoryFetcherInterface
         return $this->buildTree($result->fetchAllAssociative());
     }
 
+    public function getBySlugAndDirectionId(string $slug, string $directionId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('p.category_id, p.title, p.description, p.text, p.slug, p.parent_id, p.direction_id, 
+            c.category_id as child_id, 
+            c.title as child_title, 
+            c.description as child_description, 
+            c.text as child_text, 
+            c.slug as child_slug, 
+            c.parent_id as child_parent_id')
+            ->from('categories', 'p')
+            ->leftJoin('p', 'categories', 'c', 'c.parent_id = p.category_id')
+            ->where('p.slug = :slug')
+            ->andWhere('p.direction_id = :directionId')
+            ->setParameter('slug', $slug)
+            ->setParameter('directionId', $directionId);
+
+        $result = $qb->executeQuery();
+
+        $rows = $result->fetchAllAssociative();
+
+        $data = [];
+        foreach($rows as $row) {
+            if(empty($data)){
+                $data = [
+                    'category_id' => $row['category_id'],
+                    'title' => $row['title'],
+                    'description' => $row['description'],
+                    'text' => $row['text'],
+                    'slug' => $row['slug'],
+                    'parent_id' => $row['parent_id'],
+                    'direction_id' => $row['direction_id'],
+                    'children' => []
+                ];
+            }
+
+            if ($row['child_id'] !== null) {
+                $data['children'][] = [
+                    'category_id' => $row['child_id'],
+                    'title' => $row['child_title'],
+                    'description' => $row['child_description'],
+                    'text' => $row['child_text'],
+                    'slug' => $row['child_slug'],
+                    'parent_id' => $row['child_parent_id'],
+                    'direction_id' => $row['child_direction_id']
+                ];
+            }
+        }
+
+        return $data;
+    }
+
     private function buildTree(array $categories): array
     {
         $tree = [];

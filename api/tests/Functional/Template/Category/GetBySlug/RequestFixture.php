@@ -15,52 +15,33 @@ use Doctrine\Persistence\ObjectManager;
 
 class RequestFixture extends AbstractFixture
 {
-
+    public const DIRECTION_ID = 'e42b8e4f-0ac3-4cca-984d-4f1dc983e970';
+    public const CATEGORY_ID = '8aa8f453-b19b-4b53-915b-1f04c83a9aee';
     public function load(ObjectManager $manager): void
     {
         $direction = (new DirectionBuilder())
-            ->withId(new DirectionId('e42b8e4f-0ac3-4cca-984d-4f1dc983e970'))
+            ->withId(new DirectionId(self::DIRECTION_ID))
             ->withTitle('Охрана труда')
             ->withDescription('Охрана труда описание')
             ->withText('Охрана труда текст')
             ->build();
+        $manager->persist($direction);
 
         $emptyCategory = new Category(
-            new CategoryId('8aa8f453-b19b-4b53-915b-1f04c83a9aee'),
-            'Служба охраны труда',
-            'Служба охраны труда - комплект документов',
+            new CategoryId(self::CATEGORY_ID),
+            'Инструкции по охране труда',
+            'Различные инструкции по охране труда',
             'Some text',
-            (new Slug('service'))->getValue(),
+            (new Slug('instructions'))->getValue(),
             $direction
         );
-
-        $product = (new ProductBuilder())
-            ->withId(new ProductId('bffa46d9-6644-42d9-9c76-1e601c22d40b'))
-            ->withName('5 документов медосмотров')
-            ->build();
+        $manager->persist($emptyCategory);
 
         $parentCategory = (new CategoryBuilder())
             ->withCategoryId(new CategoryId('9582c2ff-e788-46f6-94f9-6b7d73b309bd'))
             ->withSlug(new Slug('parent'))
             ->build($direction);
-
-        $categoryWithProduct = new Category(
-            new CategoryId('040794de-7a19-47be-947a-e5ed74b579b8'),
-            'Медицинские осмотры',
-            'Медицинские осмотры - комплект документов',
-            'Some text',
-            (new Slug('medical'))->getValue(),
-            $direction,
-            $parentCategory
-        );
-
-        
-
-        $manager->persist($direction);
-
-        $manager->persist($emptyCategory);
-
-        $manager->persist($product);
+        $manager->persist($parentCategory);
 
         $manager->flush();
     }

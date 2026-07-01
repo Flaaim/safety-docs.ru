@@ -46,7 +46,7 @@ class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
-        self::assertEquals(['message' => 'Direction not found.'], $data);
+        self::assertEquals(['message' => 'Direction does not exist.'], $data);
     }
 
 }
