@@ -2,6 +2,7 @@
 
 namespace Test\Functional\Template\GetAll;
 
+use App\Template\Entity\Slug;
 use Test\Functional\Json;
 use Test\Functional\WebTestCase;
 
@@ -26,17 +27,13 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'directions' => [
-                [
-                    'id' => '37e9c865-8401-4339-bb23-73a25b85e7b3',
-                    'title' => 'Охрана труда',
-                    'description' => 'Собраны комплекты документов',
-                    'text' => 'some text',
-                    'slug' => 'ohrana-truda',
-                    'categories' => []
-                ]
-            ],
-            'total' => 1
+            [
+                'id' => RequestFixture::DIRECTION_ID,
+                'title' => RequestFixture::DIRECTION_TITLE,
+                'description' => RequestFixture::DIRECTION_DESCRIPTION,
+                'text' => RequestFixture::DIRECTION_TEXT,
+                'slug' => Slug::generate(RequestFixture::DIRECTION_TITLE)->getValue()
+            ]
         ], $data);
     }
 }

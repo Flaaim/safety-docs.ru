@@ -68,4 +68,16 @@ final class DirectionFetcher
 
         return array_values($data);
     }
+
+    public function getAll(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('d.id, d.title, d.description, d.text, d.slug')
+            ->from('directions', 'd');
+
+        $result = $qb->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
 }

@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Template\Entity\Direction\DTO;
+declare(strict_types=1);
 
-class DirectionDTO
+namespace App\Template\Query\Direction\GetAll;
+
+final class DirectionDTO
 {
     public function __construct(
         public string $id,
         public string $title,
         public string $description,
         public string $text,
-        public string $slug,
-        public array $categories,
+        public string $slug
     ) {
     }
 }
