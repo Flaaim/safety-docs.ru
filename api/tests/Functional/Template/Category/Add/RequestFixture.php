@@ -20,7 +20,7 @@ class RequestFixture extends AbstractFixture
             $title = 'Служба охраны труда',
             'Собраны комплекты образцов документов по организации на предприятии службы охраны труда',
             'Some simple text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction = (new DirectionBuilder())->withId(new DirectionId('37e9c865-8401-4339-bb23-73a25b85e7b3'))->build()
         );
 

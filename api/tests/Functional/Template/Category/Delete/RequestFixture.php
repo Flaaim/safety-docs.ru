@@ -27,7 +27,7 @@ class RequestFixture extends AbstractFixture
             $title = 'Комплекты документов',
             'Различные комплекты документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -36,7 +36,7 @@ class RequestFixture extends AbstractFixture
             $title = 'Комплекты документов по медосмотрам',
             'Различные комплекты документов по медосмотрам',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction,
         );
 

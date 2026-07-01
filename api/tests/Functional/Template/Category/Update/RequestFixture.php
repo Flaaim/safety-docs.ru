@@ -34,7 +34,7 @@ class RequestFixture extends AbstractFixture
             $title = 'Служба охраны труда',
             'Служба охраны труда - комплект документов',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 
@@ -43,7 +43,7 @@ class RequestFixture extends AbstractFixture
             $title = 'Обучение по охране труда',
             'Описание обучения по охране труда',
             'Some text',
-            Slug::generate($title),
+            Slug::generate($title)->getValue(),
             $direction
         );
 

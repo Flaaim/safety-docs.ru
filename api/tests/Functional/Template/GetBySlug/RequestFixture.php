@@ -21,7 +21,7 @@ class RequestFixture extends AbstractFixture
             $title = 'Охрана труда',
             'Собраны комплекты документов',
             'some text',
-            Slug::generate($title)
+            Slug::generate($title)->getValue()
         );
         $manager->persist($direction);
 

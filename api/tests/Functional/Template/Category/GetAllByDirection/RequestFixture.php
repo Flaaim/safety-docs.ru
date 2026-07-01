@@ -20,7 +20,7 @@ class RequestFixture extends AbstractFixture
             'Служба охраны труда',
             'Собраны комплекты образцов документов по организации на предприятии службы охраны труда',
             'Some simple text',
-            new Slug('service'),
+            (new Slug('service'))->getValue(),
             $direction = (new DirectionBuilder())->withId(new DirectionId('37e9c865-8401-4339-bb23-73a25b85e7b3'))->build()
         );
 

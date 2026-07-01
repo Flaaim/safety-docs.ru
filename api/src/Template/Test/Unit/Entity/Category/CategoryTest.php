@@ -231,66 +231,6 @@ class CategoryTest extends TestCase
         self::assertNull($child->getParent());
         self::assertEquals('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', $child->getDirection()->getId()->getValue());
     }
-    public function testAssign(): void
-    {
-        $direction = $this->getDirection();
-        $parentCategory = $this->getCategory($direction);
-        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
-        $product = (new ProductBuilder())->build();
-
-        self::assertNull($childCategory->getProduct());
-        $childCategory->assignProduct($product);
-
-        self::assertEquals($product, $childCategory->getProduct());
-    }
-    public function testAssignAlready(): void
-    {
-        $direction = $this->getDirection();
-        $parentCategory = $this->getCategory($direction);
-        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
-        $product = (new ProductBuilder())->build();
-
-        $childCategory->assignProduct($product);
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Product already assigned. You must delete it first.');
-
-        $childCategory->assignProduct($product);
-
-    }
-    public function testAssignParentCategory(): void
-    {
-        $direction = $this->getDirection();
-        $parentCategory = $this->getCategory($direction, 'parent');
-
-        $product = (new ProductBuilder())->build();
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Product can be assigned to only child category.');
-        $parentCategory->assignProduct($product);
-    }
-    public function testRefuseNotAssigned(): void
-    {
-        $direction = $this->getDirection();
-        $category = $this->getCategory($direction);
-
-        self::expectException(\DomainException::class);
-        $category->refuseProduct();
-    }
-    public function testRefuse(): void
-    {
-        $direction = $this->getDirection();
-        $parentCategory = $this->getCategory($direction);
-        $childCategory = $this->getCategory($direction, 'children', $parentCategory);
-
-        $product = (new ProductBuilder())->build();
-        $childCategory->assignProduct($product);
-        self::assertEquals($product, $childCategory->getProduct());
-
-        $childCategory->refuseProduct();
-
-        self::assertNull($childCategory->getProduct());
-    }
 
     public function testCanBeDeleted(): void
     {
@@ -329,7 +269,6 @@ class CategoryTest extends TestCase
 
         $childCategory->release();
 
-        self::assertNull($childCategory->getProduct());
         self::assertNull($childCategory->getParent());
 
     }

@@ -15,6 +15,15 @@ final class CategoryFetcher implements CategoryFetcherInterface
 
     public function getAllByDirection(string $directionId): array
     {
+        $qb = $this->connection->createQueryBuilder();
 
+        $qb->select('*')
+            ->from('category', 'c')
+            ->where('c.directionId = :directionId')
+            ->setParameter('directionId', $directionId);
+
+        $result = $qb->executeQuery();
+
+        return $result->fetchAllAssociative();
     }
 }

@@ -15,7 +15,6 @@ class CategoryBuilder
     private string $title;
     private string $description;
     private string $text;
-    private ?Product $product = null;
     private ?Category $parent = null;
     /** @var array<int, Category> $children */
     private array $children = [];
@@ -92,9 +91,6 @@ class CategoryBuilder
             $this->parent
         );
 
-        if ($this->product !== null) {
-            $category->assignProduct($this->product);
-        }
         if (!empty($this->children)) {
             foreach ($this->children as $child) {
                 $category->addChild($child);

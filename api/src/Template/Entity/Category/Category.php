@@ -13,9 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'categories')]
 class Category
 {
-    #[ORM\OneToOne(targetEntity: Product::class)]
-    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?Product $product = null;
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'category_id', nullable: true, onDelete: 'CASCADE')]
     private ?Category $parent = null;
@@ -110,8 +107,6 @@ class Category
 
         $oldParent = $this->parent;
 
-
-
         if ($oldParent !== null && $oldParent !== $parent) {
             $oldParent->removeChild($this);
         }
@@ -120,10 +115,6 @@ class Category
 
         if ($this->parent !== null && $oldParent !== $this->parent) {
             $this->parent->addChild($this);
-        }
-
-        if ($parent === null && $this->product !== null) {
-            $this->refuseProduct();
         }
     }
     public function updateDirection(Direction $direction): void
@@ -136,27 +127,7 @@ class Category
             }
         }
     }
-    public function assignProduct(Product $product): void
-    {
-        if ($this->product !== null) {
-            throw new \DomainException('Product already assigned. You must delete it first.');
-        }
-        if (!$this->isChild()) {
-            throw new \DomainException('Product can be assigned to only child category.');
-        }
-        $this->product = $product;
-    }
-    public function refuseProduct(): void
-    {
-        if ($this->product === null) {
-            throw new \DomainException('Product not assigned.');
-        }
-        $this->product = null;
-    }
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
+
     public function getParent(): ?Category
     {
         return $this->parent;
@@ -198,7 +169,6 @@ class Category
     {
         $this->direction->removeCategory($this);
         $this->parent?->removeChild($this);
-        $this->product = null;
     }
     public function canBeDeleted(): bool
     {

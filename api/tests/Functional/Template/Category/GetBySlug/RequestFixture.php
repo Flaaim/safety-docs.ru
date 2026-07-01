@@ -30,7 +30,7 @@ class RequestFixture extends AbstractFixture
             'Служба охраны труда',
             'Служба охраны труда - комплект документов',
             'Some text',
-            new Slug('service'),
+            (new Slug('service'))->getValue(),
             $direction
         );
 
@@ -49,14 +49,12 @@ class RequestFixture extends AbstractFixture
             'Медицинские осмотры',
             'Медицинские осмотры - комплект документов',
             'Some text',
-            new Slug('medical'),
+            (new Slug('medical'))->getValue(),
             $direction,
             $parentCategory
         );
 
-        $categoryWithProduct->assignProduct($product);
-
-        $manager->persist($categoryWithProduct);
+        
 
         $manager->persist($direction);
 
