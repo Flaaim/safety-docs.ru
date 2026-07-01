@@ -39,7 +39,7 @@ final class DirectionFetcher implements DirectionFetcherInterface
         $rows = $result->fetchAllAssociative();
 
         if (!$rows) {
-            throw new \DomainException('Direction does not exist.');
+            return [];
         }
 
         $data = [];
@@ -67,7 +67,7 @@ final class DirectionFetcher implements DirectionFetcherInterface
             }
         }
 
-        return array_values($data);
+        return reset($data) ?? throw new \DomainException('Direction does not exist.');
     }
 
     public function getAll(): array
