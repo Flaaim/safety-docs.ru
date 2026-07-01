@@ -34,24 +34,28 @@ class CategoryBuilder
         $clone->categoryId = $categoryId;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withSlug(Slug $slug): self
     {
         $clone = clone $this;
         $clone->slug = $slug->getValue();
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withTitle(string $title): self
     {
         $clone = clone $this;
         $clone->title = $title;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withDescription(string $description): self
     {
         $clone = clone $this;
         $clone->description = $description;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withText(string $text): self
     {
         $clone = clone $this;
