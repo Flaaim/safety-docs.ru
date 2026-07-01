@@ -16,7 +16,7 @@ class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/directions/37e9c865-8401-4339-bb23-73a25b85e7b3/categories'));
+        $response = $this->app()->handle(self::json('GET', '/v1/directions/'. RequestFixture::DIRECTION_ID .'/categories'));
 
         self::assertEquals(200, $response->getStatusCode());
 
@@ -25,33 +25,30 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'categories' => [
                 [
                     'id' => '15823c37-3358-44be-96dc-363d56bde91c',
                     'title' => 'Служба охраны труда',
                     'description' => 'Собраны комплекты образцов документов по организации на предприятии службы охраны труда',
                     'text' => 'Some simple text',
                     'slug' => 'service',
-                    'direction_id' => '37e9c865-8401-4339-bb23-73a25b85e7b3'
+                    'directionId' => RequestFixture::DIRECTION_ID,
+                    'parentId' => null,
+                    'children' => []
                 ]
-            ],
-            'total' => 1,
         ], $data);
     }
 
     public function testNotExist(): void
     {
-        $response = $this->app()->handle(self::json('GET', '/v1/directions/37e9c865-8401-4339-bb23-73a25b85e7b5/categories'));
+        $response = $this->app()->handle(self::json('GET', '/v1/directions/'. RequestFixture::DIRECTION_NOT_FOUND_ID .'/categories'));
 
-        self::assertEquals(400, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
 
         self::assertJson($body = (string) $response->getBody());
 
         $data = Json::decode($body);
 
-        self::assertEquals([
-            'message' => 'Categories not found.',
-        ], $data);
+        self::assertEquals([], $data);
     }
 
     public function testInvalid(): void

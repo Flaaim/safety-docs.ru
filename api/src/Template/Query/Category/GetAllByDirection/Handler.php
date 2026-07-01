@@ -15,5 +15,10 @@ final class Handler
     public function handle(Query $query): array
     {
         $rows = $this->fetcher->getAllByDirection($query->directionId);
+
+        return array_map(
+            static fn (array $row) => CategoryDTO::fromArray($row),
+            $rows
+        );
     }
 }

@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Action\V1\Template\Category\GetAll;
+namespace App\Http\Action\V1\Template\Category\GetAllByDirection;
 
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
+use App\Template\Query\Category\GetAllByDirection\Handler;
+use App\Template\Query\Category\GetAllByDirection\Query;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -21,7 +23,7 @@ class RequestAction implements RequestHandlerInterface
 
         $directionId = $route->getArgument('directionId');
 
-        $command = new Command($directionId);
+        $command = new Query($directionId);
 
         $this->validator->validate($command);
 

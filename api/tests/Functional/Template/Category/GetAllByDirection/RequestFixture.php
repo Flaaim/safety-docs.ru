@@ -12,7 +12,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class RequestFixture extends AbstractFixture
 {
-
+    public const DIRECTION_ID = '37e9c865-8401-4339-bb23-73a25b85e7b3';
+    public const DIRECTION_NOT_FOUND_ID = '1e31cf37-7f99-4698-bfea-ec0be8a0bf00';
     public function load(ObjectManager $manager): void
     {
         $category = new Category(
@@ -21,12 +22,10 @@ class RequestFixture extends AbstractFixture
             'Собраны комплекты образцов документов по организации на предприятии службы охраны труда',
             'Some simple text',
             (new Slug('service'))->getValue(),
-            $direction = (new DirectionBuilder())->withId(new DirectionId('37e9c865-8401-4339-bb23-73a25b85e7b3'))->build()
+            $direction = (new DirectionBuilder())->withId(new DirectionId(self::DIRECTION_ID))->build()
         );
-
-        $manager->persist($direction);
-
         $manager->persist($category);
+        $manager->persist($direction);
 
         $manager->flush();
     }

@@ -17,13 +17,38 @@ final class CategoryFetcher implements CategoryFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('*')
-            ->from('category', 'c')
-            ->where('c.directionId = :directionId')
-            ->setParameter('directionId', $directionId);
+        $qb->select('c.category_id, c.title, c.description, c.text, c.slug, c.parent_id, c.direction_id')
+            ->from('categories', 'c')
+            ->where('c.direction_id = :directionId')
+            ->setParameter('directionId', $directionId)
+            ->orderBy('c.parent_id', 'ASC')
+            ->addOrderBy('c.category_id', 'ASC');
 
         $result = $qb->executeQuery();
 
-        return $result->fetchAllAssociative();
+        return $this->buildTree($result->fetchAllAssociative());
+    }
+
+    private function buildTree(array $categories): array
+    {
+        $tree = [];
+        $references = [];
+
+        foreach ($categories as &$category) {
+            $category['children'] = [];
+            $references[$category['category_id']] = &$category;
+        }
+
+        foreach ($categories as &$category) {
+            if ($category['parent_id'] === null) {
+                $tree[] = &$category;
+            } else {
+                if (isset($references[$category['parent_id']])) {
+                    $references[$category['parent_id']]['children'][] = &$category;
+                }
+            }
+        }
+
+        return $tree;
     }
 }

@@ -63,7 +63,7 @@ return static function (App $app): void {
 
             $group->group('/{directionId:' . $uuidPattern . '}/categories', function (RouteCollectorProxy $group) use ($uuidPattern): void {
 
-                $group->get('', Template\Category\GetAll\RequestAction::class);
+                $group->get('', Template\Category\GetAllByDirection\RequestAction::class);
                 $group->get('/s/{slug:[a-z0-9-]+}', Template\Category\GetBySlug\RequestAction::class);
                 $group->delete('/{categoryId:' . $uuidPattern . '}', Template\Category\Delete\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('', Template\Category\Add\RequestAction::class)->add(AuthMiddleware::class);
