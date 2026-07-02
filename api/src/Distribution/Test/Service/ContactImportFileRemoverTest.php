@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Distribution\Test\Service;
 
-use App\Product\Service\File\FileRemover;
+use App\Distribution\Service\ContactImportFileRemover;
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 
@@ -14,7 +14,7 @@ final class ContactImportFileRemoverTest extends TestCase
     public function setUp(): void
     {
         $this->tempDir = InMemoryFileSystemPath::create(); // /tmp/phpunit_test_
-        $this->fileRemover = new FileRemover($this->tempDir);
+        $this->fileRemover = new ContactImportFileRemover($this->tempDir);
     }
     public function testFileRemove(): void
     {
