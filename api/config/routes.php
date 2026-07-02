@@ -47,6 +47,7 @@ return static function (App $app): void {
                 $group->put('/{categoryId:' . $uuidPattern . '}', Template\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
 
                 $group->group('/{categoryId:' . $uuidPattern . '}/documents', function (RouteCollectorProxy $group) use ($uuidPattern): void {
+                    $group->get('/{documentId:' . $uuidPattern, Template\Document\GetById\RequestAction::class);
                     $group->post('/bulk', Template\Document\MultipleUpload\RequestAction::class)->add(AuthMiddleware::class);
                 });
             });

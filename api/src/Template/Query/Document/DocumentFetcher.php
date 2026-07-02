@@ -25,7 +25,7 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
 
         $result = $qb->executeQuery();
 
-        $row = $qb->fetchAssociative();
+        $row = $result->fetchAssociative();
 
         if (!$row) {
             return [];
