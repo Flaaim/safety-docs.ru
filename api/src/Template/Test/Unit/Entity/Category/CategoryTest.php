@@ -9,7 +9,6 @@ use App\Template\Entity\Direction\DirectionId;
 use App\Template\Entity\Slug;
 use App\Template\Test\Builder\CategoryBuilder;
 use App\Template\Test\Builder\DirectionBuilder;
-use App\Product\Test\ProductBuilder;
 use PHPUnit\Framework\TestCase;
 
 class CategoryTest extends TestCase
@@ -263,7 +262,6 @@ class CategoryTest extends TestCase
         $parentCategory = $this->getCategory($direction, 'parent');
         $childCategory = (new CategoryBuilder())
             ->withParent($parentCategory)
-            ->withProduct((new ProductBuilder())->build())
             ->build($direction);
 
 
