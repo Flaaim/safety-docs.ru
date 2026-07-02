@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Functional\Document\MultipleUpload;
+namespace Test\Functional\Template\Document\MultipleUpload;
 
 use App\Shared\Domain\ValueObject\FileSystem\InMemoryFileSystemPath;
 use Psr\Http\Message\UploadedFileInterface;
@@ -19,17 +19,12 @@ final class RequestActionTest extends WebTestCase
         $this->loadFixtures([RequestFixture::class]);
     }
 
-    public function testUploadInvalidMimeFile(): void
-    {
-
-    }
     public function testParentCategoryNotAllowed(): void
     {
         $file = $this->createUploadFile('инструкция.docx', 'content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/v1/documents/bulk', [
+        $response = $this->app()->handle(self::formData('POST', '/v1/directions/' . RequestFixture::DIRECTION_ID . '/categories/'. RequestFixture::PARENT_CATEGORY_ID . '/documents/bulk', [
             'name' => 'Инструкция',
-            'categoryId' => RequestFixture::CHILD_CATEGORY_ID,
             'amount' => 150.00,
             'files' => [$file]
         ]));
@@ -41,7 +36,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'message' => 'Uploading to children category is prohibited.'
+            'message' => 'Uploading to parent category is prohibited.'
         ], $data);
     }
 
@@ -49,9 +44,8 @@ final class RequestActionTest extends WebTestCase
     {
         $file = $this->createUploadFile('инструкция.docx', 'content', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', UPLOAD_ERR_OK);
 
-        $response = $this->app()->handle(self::formData('POST', '/v1/documents/bulk', [
+        $response = $this->app()->handle(self::formData('POST', '/v1/directions/' . RequestFixture::DIRECTION_ID . '/categories/'. RequestFixture::CATEGORY_NOT_FOUND . '/documents/bulk', [
             'name' => 'Инструкция',
-            'categoryId' => 'a6d6e8ee-81c9-488b-b562-2eea9ec26c00',
             'amount' => 150.00,
             'files' => [$file]
         ]));
@@ -69,7 +63,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $response = $this->app()->handle(self::formData('POST', '/v1/documents/bulk'));
+        $response = $this->app()->handle(self::formData('POST', '/v1/directions/' . RequestFixture::DIRECTION_ID . '/categories/'. RequestFixture::CHILD_CATEGORY_ID . '/documents/bulk'));
         self::assertEquals(422, $response->getStatusCode());
 
         self::assertJson($body = $response->getBody()->getContents());
@@ -77,8 +71,6 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'name' => 'This value should not be blank.',
-            'categoryId' => 'This value should not be blank.',
             'amount' => 'This value should be greater than 0.',
             'files[0]' => 'This value should be of type Psr\Http\Message\UploadedFileInterface.',
         ]], $data);
@@ -86,9 +78,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $response = $this->app()->handle(self::formData('POST', '/v1/documents/bulk', [
-            'name' => 'something',
-            'categoryId' => 'something',
+        $response = $this->app()->handle(self::formData('POST', '/v1/directions/' . RequestFixture::DIRECTION_ID . '/categories/'. RequestFixture::CHILD_CATEGORY_ID . '/documents/bulk', [
             'amount' => -1,
             'files' => []
         ]));
@@ -100,7 +90,6 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'categoryId' => 'This is not a valid UUID.',
             'amount' => 'This value should be greater than 0.',
             'files' => 'This value should not be blank.'
         ]], $data);

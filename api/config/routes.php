@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Action\V1\Auth\GetToken\RequestAction;
 use App\Http\Action\V1\Template;
 use App\Http\Action\V1\Payment;
-use App\Http\Action\V1\Product;
 use App\Http\Action\V1\Distribution;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\UnsubscribeMiddleware;
@@ -23,28 +22,6 @@ return static function (App $app): void {
             $group->get('/get/{token}', Payment\GetPaymentResult\RequestAction::class);
         });
 
-        $group->group('/products', function (RouteCollectorProxy $group): void {
-            $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
-            $group->post('', Product\Add\RequestAction::class)
-                ->add(UploadFileHandler::class)
-                ->add(AuthMiddleware::class);
-            $group->get('', Product\GetAll\RequestAction::class)->add(AuthMiddleware::class);
-
-            $group->post('/{productId:' . $uuidPattern . '}', Product\Update\RequestAction::class)
-                ->add(UploadFileHandler::class)
-                ->add(AuthMiddleware::class);
-
-            $group->get('/{productId:' . $uuidPattern . '}', Product\Get\RequestAction::class);
-
-            $group->get('/free', Product\GetAllFree\RequestAction::class)->add(AuthMiddleware::class);
-
-            $group->group('/{productId:' . $uuidPattern . '}/images', function (RouteCollectorProxy $group): void {
-                $group->post('', Product\Images\Add\RequestAction::class);
-                $group->get('', Product\Images\GetAll\RequestAction::class);
-
-                $group->delete('', Product\Images\Clear\RequestAction::class);
-            })->add(AuthMiddleware::class);
-        });
 
         $group->group('/auth', function (RouteCollectorProxy $group): void {
             $group->post('/login', RequestAction::class);
@@ -68,6 +45,10 @@ return static function (App $app): void {
                 $group->delete('/{categoryId:' . $uuidPattern . '}', Template\Category\Delete\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('', Template\Category\Add\RequestAction::class)->add(AuthMiddleware::class);
                 $group->put('/{categoryId:' . $uuidPattern . '}', Template\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
+
+                $group->group('/{categoryId:' . $uuidPattern . '}/documents', function (RouteCollectorProxy $group) use ($uuidPattern): void {
+                    $group->post('/bulk', Template\Document\MultipleUpload\RequestAction::class)->add(AuthMiddleware::class);
+                });
             });
         });
 
@@ -104,12 +85,6 @@ return static function (App $app): void {
                 $group->delete('/{newsletterId:' . $uuidPattern . '}', Distribution\Newsletter\Archive\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('/launch', Distribution\Newsletter\Launch\RequestAction::class)->add(AuthMiddleware::class);
             });
-        });
-
-        $group->group('/documents', function (RouteCollectorProxy $group): void {
-            $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
-
-            $group->post('/bulk', Document\MultipleUpload\RequestAction::class)->add(AuthMiddleware::class);
         });
     });
 };

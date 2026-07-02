@@ -34,8 +34,8 @@ final class Handler
             throw new \DomainException('Category not found.');
         }
 
-        if ($category->getParent() !== null) {
-            throw new \DomainException('Uploading to children category is prohibited.');
+        if ($category->getParent() === null) {
+            throw new \DomainException('Uploading to parent category is prohibited.');
         }
 
         foreach ($command->files as $file) {
