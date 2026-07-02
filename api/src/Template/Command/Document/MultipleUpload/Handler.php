@@ -6,9 +6,12 @@ namespace App\Template\Command\Document\MultipleUpload;
 
 use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Category\CategoryRepository;
+use App\Template\Entity\Document\Amount;
 use App\Template\Entity\Document\Document;
 use App\Template\Entity\Document\DocumentId;
 use App\Template\Entity\Document\DocumentRepository;
+use App\Template\Entity\Document\Filename;
+use App\Template\Entity\Slug;
 use App\Template\Service\File\FileUploaderInterface;
 use App\Flusher;
 use App\Shared\Domain\ValueObject\Currency;
@@ -50,6 +53,7 @@ final class Handler
                 $name,
                 new Amount($command->amount, new Currency('RUB')),
                 new Filename($filename),
+                Slug::generate($name)->getValue(),
                 new \DateTimeImmutable(),
             );
 

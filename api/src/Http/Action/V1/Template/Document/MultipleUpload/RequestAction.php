@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Document\MultipleUpload;
+namespace App\Http\Action\V1\Template\Document\MultipleUpload;
 
-use App\Direction\Command\Document\MultipleUpload\Command;
-use App\Direction\Command\Document\MultipleUpload\Handler;
 use App\Http\EmptyResponse;
 use App\Http\Validator\Validator;
+use App\Template\Command\Document\MultipleUpload\Command;
+use App\Template\Command\Document\MultipleUpload\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -25,8 +25,11 @@ final class RequestAction implements RequestHandlerInterface
     {
         $data = (array)($request->getParsedBody() ?? []);
 
+        $route = $request->getAttribute('active_route');
+
+        $categoryId = $route->getArgument('categoryId', '');
         $command = new Command(
-            (string)($data["categoryId"] ?? ''),
+            $categoryId,
             (float)($data["amount"] ?? 0.00),
             (array)($data["files"] ?? ''),
         );

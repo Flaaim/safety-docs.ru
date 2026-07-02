@@ -20,6 +20,7 @@ final class Document
         private Amount $amount,
         #[ORM\Column(type: 'filename')]
         private Filename $filename,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $slug,
         #[ORM\Column(type: 'datetime_immutable')]
         private \DateTimeImmutable $createdAt
@@ -46,5 +47,10 @@ final class Document
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
     }
 }
