@@ -14,14 +14,13 @@
         <testsuite name="Unit">
             <directory>src/Payment/Test</directory>
             <directory>src/Shared/Test</directory>
-            <directory>src/Product/Test</directory>
             <directory>src/Sender/Test</directory>
             <directory>src/Template/Test</directory>
             <directory>src/Distribution/Test</directory>
             <directory>src/Http/Test</directory>
         </testsuite>
         <testsuite name="Functional">
-            <directory suffix="Test.php">tests/Functional/Template</directory>
+            <directory>tests/Functional</directory>
         </testsuite>
     </testsuites>
 
