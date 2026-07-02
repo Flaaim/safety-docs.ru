@@ -22,7 +22,6 @@
                 <directory name="src/Data/Migration" />
                 <directory name="src/Template/Fixture" />
                 <directory name="src/Payment/Fixture" />
-                <directory name="src/Product/Fixture" />
                 <directory name="src/Http/Action" />
                 <directory name="src/Sender/MessageHandler" />
                 <directory name="src/Payment/MessageHandler" />
