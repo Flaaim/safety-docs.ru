@@ -20,7 +20,7 @@ final class DocumentBuilder
     public Filename $filename;
     public string $slug;
     public \DateTimeImmutable $createdAt;
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct()
     {
         $this->id = new DocumentId('8c7d4de5-4c64-4cca-b627-f2f6a9d49fef');
@@ -30,32 +30,35 @@ final class DocumentBuilder
         $this->slug = Slug::generate($this->name)->getValue();
         $this->createdAt = new \DateTimeImmutable();
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withId(DocumentId $id): self
     {
         $clone = clone $this;
         $clone->id = $id;
         return $clone;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withName(string $name): self
     {
         $clone = clone $this;
         $clone->name = $name;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withAmount(Amount $amount): self
     {
         $clone = clone $this;
         $clone->amount = $amount;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withFilename(Filename $filename): self
     {
         $clone = clone $this;
         $clone->filename = $filename;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withSlug(string $slug): self
     {
         $clone = clone $this;
@@ -63,7 +66,7 @@ final class DocumentBuilder
         return $clone;
     }
 
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function build(): Document
     {
         return new Document(

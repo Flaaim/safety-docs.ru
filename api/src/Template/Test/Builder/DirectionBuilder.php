@@ -21,13 +21,14 @@ class DirectionBuilder
         $this->description = 'Описание направления охрана труда';
         $this->text = 'Текст к направлению темы охрана труда';
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withId(DirectionId $id): self
     {
         $clone = clone $this;
         $clone->id = $id;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withTitle(string $title): self
     {
         $clone = clone $this;
@@ -35,18 +36,21 @@ class DirectionBuilder
         $clone->slug = Slug::generate($title)->getValue();
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withDescription(string $description): self
     {
         $clone = clone $this;
         $clone->description = $description;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withText(string $text): self
     {
         $clone = clone $this;
         $clone->text = $text;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function build(): Direction
     {
         return new Direction(

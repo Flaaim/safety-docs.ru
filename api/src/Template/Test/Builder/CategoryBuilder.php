@@ -65,24 +65,28 @@ class CategoryBuilder
         $clone->text = $text;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withDocuments(array $documents): self
     {
         $clone = clone $this;
         $clone->documents = $documents;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withParent(Category $category): self
     {
         $clone = clone $this;
         $clone->parent = $category;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withChildren(array $children): self
     {
         $clone = clone $this;
         $clone->children = $children;
         return $clone;
     }
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function build(Direction $direction): Category
     {
         $category = new Category(
