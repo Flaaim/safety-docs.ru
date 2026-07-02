@@ -5,8 +5,9 @@ namespace App\Template\Test\Builder;
 use App\Template\Entity\Category\Category;
 use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Direction\Direction;
+use App\Template\Entity\Document\Document;
 use App\Template\Entity\Slug;
-use App\Product\Entity\Product;
+use PhpParser\Comment\Doc;
 
 class CategoryBuilder
 {
@@ -15,6 +16,8 @@ class CategoryBuilder
     private string $title;
     private string $description;
     private string $text;
+    /** @var Document[] $documents */
+    private array $documents;
     private ?Category $parent = null;
     /** @var array<int, Category> $children */
     private array $children = [];
@@ -26,6 +29,7 @@ class CategoryBuilder
         $this->title = 'Служба охраны труда - образцы документов';
         $this->description = 'Служба охраны труда - образцы документов описание документов';
         $this->text = 'Оцените численность штата. Если в организации более 50 человек — создайте службу охраны труда или введите должность';
+        $this->documents = [];
     }
     public function withCategoryId(CategoryId $categoryId): self
     {
@@ -61,10 +65,10 @@ class CategoryBuilder
         $clone->text = $text;
         return $clone;
     }
-    public function withProduct(Product $product): self
+    public function withDocuments(array $documents): self
     {
         $clone = clone $this;
-        $clone->product = $product;
+        $clone->documents = $documents;
         return $clone;
     }
     public function withParent(Category $category): self
@@ -90,6 +94,11 @@ class CategoryBuilder
             $direction,
             $this->parent
         );
+
+        if(empty($this->documents) && $this->parent !== null) {
+            // TODO добавить Документы
+        }
+
 
         if (!empty($this->children)) {
             foreach ($this->children as $child) {
