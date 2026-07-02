@@ -3,8 +3,7 @@
 namespace App\Template\Entity\Category;
 
 use App\Template\Entity\Direction\Direction;
-use App\Template\Entity\Slug;
-use App\Product\Entity\Product;
+use App\Template\Entity\Document\Document;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,6 +18,9 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     /** @var Collection<int, Category> $children */
     private Collection $children;
+    #[ORM\OneToMany(targetEntity: Document::class, mappedBy: 'category', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    /** @var Collection<int, Document> $documents */
+    private Collection $documents;
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'category_id', unique: true)]
@@ -37,6 +39,7 @@ class Category
         ?Category $parent = null
     ) {
         $this->children = new ArrayCollection();
+        $this->documents = new ArrayCollection();
 
         if ($parent !== null) {
             if ($parent->getDirection() !== $this->direction) {
@@ -52,7 +55,6 @@ class Category
         if ($this->parent !== null) {
             $this->parent->addChild($this);
         }
-
         $direction->addCategory($this);
     }
     public function getId(): CategoryId
@@ -79,7 +81,11 @@ class Category
     {
         return $this->direction;
     }
-
+    /** @return array<Document> */
+    public function getDocuments(): array
+    {
+        return $this->documents->toArray();
+    }
     public function update(
         string $title,
         string $description,
@@ -134,6 +140,9 @@ class Category
     }
     public function addChild(Category $child): void
     {
+        if($this->documents->count() > 0){
+            throw new \DomainException('Cannot add a child, because the current category contains documents.');
+        }
         $isAlreadyAssigned = $this->children->exists(function (int $key, Category $existingChild) use ($child) {
             return $existingChild->getId()->getValue() === $child->getId()->getValue();
         });
@@ -172,9 +181,22 @@ class Category
     }
     public function canBeDeleted(): bool
     {
-        if ($this->children->count() > 0) {
+        if ($this->children->count() > 0 || $this->documents->count() > 0) {
             return false;
         }
         return true;
+    }
+    public function addDocument(Document $document): void
+    {
+        if($this->children->count() > 0){
+            throw new \DomainException('Cannot add a document, because the current category contains subcategories.');
+        }
+        $isAlreadyAdded = $this->documents->exists(function (int $key, Document $existingDocument) use ($document) {
+            return $existingDocument->getId()->getValue() === $document->getId()->getValue();
+        });
+        if ($isAlreadyAdded) {
+            throw new \DomainException('A document already added in the current category.');
+        }
+        $this->documents->add($document);
     }
 }

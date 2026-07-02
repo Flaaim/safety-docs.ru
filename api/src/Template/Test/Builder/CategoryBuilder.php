@@ -7,7 +7,6 @@ use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Direction\Direction;
 use App\Template\Entity\Document\Document;
 use App\Template\Entity\Slug;
-use PhpParser\Comment\Doc;
 
 class CategoryBuilder
 {
@@ -99,12 +98,13 @@ class CategoryBuilder
             $this->parent
         );
 
-        if(empty($this->documents) && $this->parent !== null) {
-            // TODO добавить Документы
+        if(!empty($this->documents) && empty($this->children)) {
+            foreach ($this->documents as $document) {
+                $category->addDocument($document);
+            }
         }
 
-
-        if (!empty($this->children)) {
+        if (!empty($this->children) && empty($this->documents)) {
             foreach ($this->children as $child) {
                 $category->addChild($child);
             }

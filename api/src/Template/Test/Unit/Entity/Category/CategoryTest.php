@@ -2,48 +2,63 @@
 
 namespace App\Template\Test\Unit\Entity\Category;
 
+use App\Shared\Domain\ValueObject\Currency;
 use App\Template\Entity\Category\Category;
 use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Direction\Direction;
 use App\Template\Entity\Direction\DirectionId;
+use App\Template\Entity\Document\Amount;
+use App\Template\Entity\Document\Document;
+use App\Template\Entity\Document\DocumentId;
+use App\Template\Entity\Document\Filename;
 use App\Template\Entity\Slug;
 use App\Template\Test\Builder\CategoryBuilder;
 use App\Template\Test\Builder\DirectionBuilder;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 class CategoryTest extends TestCase
 {
-    public function testCategory(): void
+    public function testCreateCategory(): void
     {
-        $direction = $this->getDirection();
-        $serviceCategory = $this->getCategory($direction);
+        $direction = (new DirectionBuilder())->build();
+        $category = (new CategoryBuilder())
+            ->withTitle('Положения по охране труда')
+            ->withDescription('Положения по охране труда - описание документов')
+            ->build($direction);
 
-        self::assertEquals('Служба охраны труда', $serviceCategory->getTitle());
-        self::assertEquals('Служба охраны труда, комплект документов', $serviceCategory->getDescription());
+        self::assertEquals('Положения по охране труда', $category->getTitle());
+        self::assertEquals('Положения по охране труда - описание документов', $category->getDescription());
 
-        self::assertNull($serviceCategory->getParent());
+        self::assertNull($category->getParent());
+        self::assertEmpty($category->getChildren());
+        self::assertEmpty($category->getDocuments());
     }
-    public function testCategoryWithParent(): void
+    public function testCreateCategoryWithParent(): void
     {
-        $direction = $this->getDirection();
-        $parent = $this->getCategory($direction);
+        $direction = (new DirectionBuilder())->build();
+        $parentCategory = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->build($direction);
 
-        $serviceCategory = new Category(
+        $childCategory = new Category(
             CategoryId::generate(),
             $title = 'Title',
             'Description',
             'Text',
             Slug::generate($title)->getValue(),
             $direction,
-            $parent
+            $parentCategory
         );
 
-        self::assertTrue($serviceCategory->isChild());
+        self::assertTrue($childCategory->isChild());
     }
     public function testCategoryTheOwnParent(): void
     {
-        $safetyDirection = $this->getDirection();
-        $parent = $this->getCategory($safetyDirection);
+        $direction = (new DirectionBuilder())->build();
+        $parent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->build($direction);
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('A category cannot be its own parent.');
@@ -54,15 +69,21 @@ class CategoryTest extends TestCase
             'Description',
             'Text',
             Slug::generate($title)->getValue(),
-            $safetyDirection,
+            $direction,
             $parent
         );
-
     }
     public function testCategoryDifferentDirection(): void
     {
-        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
-        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
+        $safetyDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('9300fdba-c736-4060-9206-4422bc652c08'))
+            ->withTitle('Охрана труда')
+            ->build();
+
+        $fireDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9'))
+            ->withTitle('Пожарная безопасность')
+            ->build();
 
         $parentCategory = new Category(
             CategoryId::generate(),
@@ -89,10 +110,20 @@ class CategoryTest extends TestCase
     }
     public function testUpdateParent(): void
     {
-        $safetyDirection = $this->getDirection('4c075222-bef7-48d2-9cdf-efd7f58b226b', 'Safety');
-        $category = $this->getCategory($safetyDirection);
+        $safetyDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('4c075222-bef7-48d2-9cdf-efd7f58b226b'))
+            ->withTitle('Охрана труда')
+            ->build();
 
-        $fireDirection = $this->getDirection('171af8ca-86f0-452f-b94b-5b62cc72998a', 'Fire');
+        $category = (new CategoryBuilder())
+            ->withCategoryId(new CategoryId('171af8ca-86f0-452f-b94b-5b62cc72998a'))
+            ->withTitle('Инструкции по охране труда')
+            ->build($safetyDirection);
+
+        $fireDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('171af8ca-86f0-452f-b94b-5b62cc72998a'))
+            ->withTitle('Пожарная безопасность')
+            ->build();
 
         $category->update(
             $title = 'Обучение по пожарной безопасности',
@@ -107,16 +138,30 @@ class CategoryTest extends TestCase
         self::assertEquals('Some text', $category->getText());
         self::assertEquals('obucenie-po-pozarnoj-bezopasnosti', $category->getSlug());
         self::assertEquals('171af8ca-86f0-452f-b94b-5b62cc72998a', $category->getDirection()->getId()->getValue());
-        self::assertEquals('Fire', $category->getDirection()->getTitle());
+        self::assertEquals('Пожарная безопасность', $category->getDirection()->getTitle());
     }
 
     public function testUpdateChildren(): void
     {
-        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
-        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
+        $safetyDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('9300fdba-c736-4060-9206-4422bc652c08'))
+            ->withTitle('Охрана труда')
+            ->build();
 
-        $parentCategory = $this->getCategory($safetyDirection, 'parent');
-        $childCategory = $this->getCategory($safetyDirection, 'children', $parentCategory);
+        $fireDirection = (new DirectionBuilder())
+            ->withId(new DirectionId('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9'))
+            ->withTitle('Пожарная безопасность')
+            ->build();
+
+        $parentCategory = (new CategoryBuilder())
+            ->withSlug(new Slug('parent'))
+            ->build($safetyDirection);
+
+        $childCategory = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(new Slug('child'))
+            ->withParent($parentCategory)
+            ->build($safetyDirection);
 
         $childCategory->update(
             $title = 'New title',
@@ -130,7 +175,7 @@ class CategoryTest extends TestCase
         self::assertEquals('New description', $childCategory->getDescription());
         self::assertEquals('New text', $childCategory->getText());
     }
-    public function testUpdateUpdateChildrenWithDifferentDirection(): void
+    public function testUpdateChildrenWithDifferentDirection(): void
     {
         $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
         $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
@@ -291,8 +336,81 @@ class CategoryTest extends TestCase
             ->build();
     }
 
+    public function testAddDocumentSuccess(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $category = (new CategoryBuilder())
+            ->build($direction);
 
+        $document = new Document(
+            DocumentId::generate(),
+            'Инструкция по охране труда при работе на высоте',
+            new Amount(200.00, new Currency('RUB')),
+            new Filename(Uuid::uuid4()->toString(). '.docx'),
+            'instructions',
+            new \DateTimeImmutable(),
+            $category,
+        );
 
+        self::assertCount(1, $category->getDocuments());
+    }
 
+    public function testAddDocumentOnCategoryWithChild(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $parentCategory = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('parent'))
+            ->build($direction);
+
+        $childCategory = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('child'))
+            ->withParent($parentCategory)
+            ->build($direction);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Cannot add a document, because the current category contains subcategories.');
+        new Document(
+            DocumentId::generate(),
+            'Инструкция по охране труда при работе на высоте',
+            new Amount(200.00, new Currency('RUB')),
+            new Filename(Uuid::uuid4()->toString(). '.docx'),
+            'instructions',
+            new \DateTimeImmutable(),
+            $parentCategory,
+        );
+    }
+
+    public function testAddDocumentAlreadyAdded(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+
+        $category = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->build($direction);
+
+        new Document(
+            new DocumentId('60fb976a-a30b-4dcd-a2b8-98a39fe17ebc'),
+            'Инструкция по охране труда при работе на высоте',
+            new Amount(200.00, new Currency('RUB')),
+            new Filename(Uuid::uuid4()->toString(). '.docx'),
+            'instructions',
+            new \DateTimeImmutable(),
+            $category,
+        );
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A document already added in the current category.');
+        new Document(
+            new DocumentId('60fb976a-a30b-4dcd-a2b8-98a39fe17ebc'),
+            'Инструкция по охране труда при работе на высоте',
+            new Amount(200.00, new Currency('RUB')),
+            new Filename(Uuid::uuid4()->toString(). '.docx'),
+            'instructions',
+            new \DateTimeImmutable(),
+            $category,
+        );
+    }
 
 }
