@@ -15,11 +15,6 @@ return [
         'template_paths' => __DIR__ . '/../../public/templates',
         'distribution_import_files' => __DIR__ . '/../../public/distributions/import',
     ],
-    FileSystemPath::class => function (ContainerInterface $container) {
-        return new FileSystemPath(
-            $container->get('config')['template_paths'],
-        );
-    },
     DistributionSystemPath::class => function (ContainerInterface $container) {
         return new FileSystemPath(
             $container->get('config')['distribution_import_files'],
