@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Template\Query\Document\GetDocumentForPaymentCreate;
+namespace App\Shared\Domain\Query\GetDocumentForPaymentCreate;
 
 use App\Shared\Domain\Query\DocumentQueryInterface;
 

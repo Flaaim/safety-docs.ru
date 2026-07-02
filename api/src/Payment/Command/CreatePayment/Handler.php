@@ -10,7 +10,7 @@ use App\Payment\Entity\PaymentRepository;
 use App\Payment\Entity\PaymentStatus;
 use App\Payment\Entity\Price;
 use App\Payment\Entity\Token;
-use App\Shared\Domain\Query\DocumentQueryInterface;
+use App\Shared\Domain\Query\GetDocumentForPaymentCreate\Query;
 use App\Shared\Domain\Service\Payment\PaymentException;
 use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
 use App\Shared\Domain\ValueObject\Currency;
@@ -18,12 +18,13 @@ use App\Shared\Domain\ValueObject\Id;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use App\Shared\Domain\Query\GetDocumentForPaymentCreate\Handler as DocumentGetter;
 
 class Handler
 {
     public function __construct(
         private readonly Flusher                $flusher,
-        private readonly DocumentQueryInterface $documentQuery,
+        private readonly DocumentGetter         $documentGetter,
         private readonly YookassaProvider       $yookassaProvider,
         private readonly PaymentRepository      $payments,
         private readonly LoggerInterface        $logger
@@ -32,7 +33,7 @@ class Handler
     public function handle(Command $command): Response
     {
         $email = new Email($command->email);
-        $document = $this->documentQuery->getDocument($command->documentId);
+        $document = $this->documentGetter->handle(new Query($command->documentId));
         $returnToken = new Token(Id::generate(), new DateTimeImmutable('+ 1 hour'));
         $payment = new Payment(
             new Id(Uuid::uuid4()->toString()),

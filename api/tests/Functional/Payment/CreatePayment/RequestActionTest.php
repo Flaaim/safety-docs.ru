@@ -23,7 +23,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'test@app.ru',
-            'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8801f'
+            'documentId' => RequestFixture::DOCUMENT_ID,
         ]));
 
         $this->assertEquals(201, $response->getStatusCode());
@@ -31,7 +31,7 @@ class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
         self::assertArraySubset([
-            'amount' => 350,
+            'amount' => 200,
             'currency' => 'RUB',
         ],$data);
     }
@@ -47,7 +47,7 @@ class RequestActionTest extends WebTestCase
         self::assertEquals([
             'errors' => [
                 'email' => 'This value should not be blank.',
-                'productId' => 'This value should not be blank.',
+                'documentId' => 'This value should not be blank.',
             ]
         ], $data);
     }
@@ -55,7 +55,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'test@app.ru',
-            'productId' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+            'documentId' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
         ]));
 
         self::assertEquals(400, $response->getStatusCode());
@@ -64,7 +64,7 @@ class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertArraySubset([
-            'message' => 'Product not found.',
+            'message' => 'Document not found.',
         ], $data);
 
     }
@@ -73,7 +73,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'invalid',
-            'productId' => 'b38e76c0-ac23-4c48-85fd-975f32c8809f'
+            'documentId' => 'b38e76c0-ac23-4c48-85fd-975f32c8809f'
         ]));
 
         self::assertEquals(422, $response->getStatusCode());
@@ -93,7 +93,7 @@ class RequestActionTest extends WebTestCase
     {
         $response = $this->app()->handle(self::json('POST', '/v1/payments/process-payment', [
             'email' => 'test@user.ru',
-            'productId' => 'someInvalidProductId',
+            'documentId' => 'someInvalidProductId',
         ]));
 
         self::assertEquals(422, $response->getStatusCode());
@@ -104,7 +104,7 @@ class RequestActionTest extends WebTestCase
 
         self::assertEquals([
             'errors' => [
-                'productId' => 'This is not a valid UUID.',
+                'documentId' => 'This is not a valid UUID.',
             ]
         ], $data);
     }

@@ -34,7 +34,6 @@ class YookassaProvider implements PaymentProviderInterface
                     'return_url' => $returnUrl,
                 ],
                 'capture' => true,
-                'description' => $paymentData->description,
                 'metadata' => $paymentData->metadata,
                 'receipt' => [
                     'customer' => [

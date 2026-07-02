@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Template\Query\Document\GetDocumentForPaymentCreate;
+namespace App\Shared\Domain\Query\GetDocumentForPaymentCreate;
 
 class DocumentDTO
 {
