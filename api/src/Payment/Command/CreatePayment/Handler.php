@@ -22,11 +22,11 @@ use Ramsey\Uuid\Uuid;
 class Handler
 {
     public function __construct(
-        private readonly Flusher $flusher,
+        private readonly Flusher                $flusher,
         private readonly DocumentQueryInterface $documentQuery,
-        private readonly YookassaProvider $yookassaProvider,
-        private readonly PaymentRepository $payments,
-        private readonly LoggerInterface $logger
+        private readonly YookassaProvider       $yookassaProvider,
+        private readonly PaymentRepository      $payments,
+        private readonly LoggerInterface        $logger
     ) {
     }
     public function handle(Command $command): Response
