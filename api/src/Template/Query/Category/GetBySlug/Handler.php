@@ -9,14 +9,15 @@ use App\Template\ReadModel\CategoryFetcherInterface;
 final class Handler
 {
     public function __construct(
-       private readonly CategoryFetcherInterface $fetcher,
-    ) {}
+        private readonly CategoryFetcherInterface $fetcher,
+    ) {
+    }
 
     public function handle(Query $query): CategoryDTO
     {
         $row = $this->fetcher->getBySlugAndDirectionId($query->slug, $query->directionId);
 
-        if(empty($row)){
+        if (empty($row)) {
             throw new \DomainException('Category not found.');
         }
 

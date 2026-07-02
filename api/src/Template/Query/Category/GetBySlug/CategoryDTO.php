@@ -16,7 +16,8 @@ final class CategoryDTO
         public ?string $parentId,
         public string $directionId,
         public array $children
-    ) {}
+    ) {
+    }
 
     public static function fromArray(array $data): self
     {

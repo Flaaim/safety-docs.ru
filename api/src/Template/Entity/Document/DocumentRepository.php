@@ -29,7 +29,7 @@ final class DocumentRepository
     public function get(DocumentId $id): Document
     {
         $document = $this->repo->find($id);
-        if(!$document){
+        if (!$document) {
             throw new \RuntimeException('Document not found');
         }
         return $document;

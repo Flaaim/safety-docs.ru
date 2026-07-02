@@ -17,7 +17,7 @@ final class Handler
     {
         $row = $this->fetcher->getBySlug($query->slug);
 
-        if(empty($row)){
+        if (empty($row)) {
             throw new \DomainException('Direction does not exist.');
         }
 

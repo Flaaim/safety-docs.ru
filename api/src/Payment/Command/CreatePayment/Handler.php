@@ -23,11 +23,11 @@ use App\Shared\Domain\Query\GetDocumentForPaymentCreate\Handler as DocumentGette
 class Handler
 {
     public function __construct(
-        private readonly Flusher                $flusher,
-        private readonly DocumentGetter         $documentGetter,
-        private readonly YookassaProvider       $yookassaProvider,
-        private readonly PaymentRepository      $payments,
-        private readonly LoggerInterface        $logger
+        private readonly Flusher $flusher,
+        private readonly DocumentGetter $documentGetter,
+        private readonly YookassaProvider $yookassaProvider,
+        private readonly PaymentRepository $payments,
+        private readonly LoggerInterface $logger
     ) {
     }
     public function handle(Command $command): Response

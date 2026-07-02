@@ -9,8 +9,9 @@ use App\Template\Query\Category\CategoryFetcher;
 final class Handler
 {
     public function __construct(
-      private readonly CategoryFetcher $fetcher
-    ) {}
+        private readonly CategoryFetcher $fetcher
+    ) {
+    }
 
     public function handle(Query $query): array
     {

@@ -10,7 +10,7 @@ final class Handler
 {
     public function __construct(
         private readonly DirectionFetcherInterface $fetcher
-    ){
+    ) {
     }
     /** @return array<DirectionDTO> */
     public function handle(): array

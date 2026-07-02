@@ -13,7 +13,8 @@ final class DocumentDTO
         public readonly string $filename,
         public readonly string $slug,
         public readonly string $createdAt
-    ) {}
+    ) {
+    }
 
 
     public static function fromArray(array $data): self

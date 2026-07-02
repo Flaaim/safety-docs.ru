@@ -10,13 +10,14 @@ final class Handler
 {
     public function __construct(
         private readonly DocumentQueryInterface $fetcher,
-    ) {}
+    ) {
+    }
 
     public function handle(Query $query): DocumentDTO
     {
         $row = $this->fetcher->getDocumentForPaymentCreate($query->id);
 
-        if(empty($row)){
+        if (empty($row)) {
             throw new \DomainException('Document not found.');
         }
 

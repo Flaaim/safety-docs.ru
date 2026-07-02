@@ -11,8 +11,9 @@ use Doctrine\DBAL\Connection;
 final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryInterface
 {
     public function __construct(
-       private readonly Connection $connection,
-    ) {}
+        private readonly Connection $connection,
+    ) {
+    }
     public function getById(string $id): array
     {
         $qb = $this->connection->createQueryBuilder();
@@ -26,7 +27,7 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
 
         $row = $qb->fetchAssociative();
 
-        if(!$row) {
+        if (!$row) {
             return [];
         }
         return $row;
@@ -45,7 +46,7 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
 
         $row = $result->fetchAssociative();
 
-        if(!$row) {
+        if (!$row) {
             return [];
         }
         return $row;

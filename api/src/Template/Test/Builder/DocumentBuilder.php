@@ -21,11 +21,12 @@ final class DocumentBuilder
     public string $slug;
     public \DateTimeImmutable $createdAt;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->id = new DocumentId('8c7d4de5-4c64-4cca-b627-f2f6a9d49fef');
         $this->name = 'Инструкция по охране труда при работе на высоте';
         $this->amount = new Amount(200.00, new Currency('RUB'));
-        $this->filename = new Filename(Uuid::uuid4()->toString(). '.docx');
+        $this->filename = new Filename(Uuid::uuid4()->toString() . '.docx');
         $this->slug = Slug::generate($this->name)->getValue();
         $this->createdAt = new \DateTimeImmutable();
     }

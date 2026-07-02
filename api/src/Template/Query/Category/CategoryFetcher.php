@@ -10,8 +10,9 @@ use Doctrine\DBAL\Connection;
 final class CategoryFetcher implements CategoryFetcherInterface
 {
     public function __construct(
-       private readonly Connection $connection
-    ) {}
+        private readonly Connection $connection
+    ) {
+    }
 
     public function getAllByDirection(string $directionId): array
     {
@@ -52,8 +53,8 @@ final class CategoryFetcher implements CategoryFetcherInterface
         $rows = $result->fetchAllAssociative();
 
         $data = [];
-        foreach($rows as $row) {
-            if(empty($data)){
+        foreach ($rows as $row) {
+            if (empty($data)) {
                 $data = [
                     'category_id' => $row['category_id'],
                     'title' => $row['title'],

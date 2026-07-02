@@ -7,6 +7,7 @@ namespace App\Template\Query\Document\GetById;
 final class Query
 {
     public function __construct(
-       public readonly string $id,
-    ) {}
+        public readonly string $id,
+    ) {
+    }
 }
