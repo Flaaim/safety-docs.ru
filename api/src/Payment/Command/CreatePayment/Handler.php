@@ -10,7 +10,7 @@ use App\Payment\Entity\PaymentRepository;
 use App\Payment\Entity\PaymentStatus;
 use App\Payment\Entity\Price;
 use App\Payment\Entity\Token;
-use App\Shared\Domain\Query\ProductQueryInterface;
+use App\Shared\Domain\Query\DocumentQueryInterface;
 use App\Shared\Domain\Service\Payment\PaymentException;
 use App\Shared\Domain\Service\Payment\Provider\YookassaProvider;
 use App\Shared\Domain\ValueObject\Currency;
@@ -23,7 +23,7 @@ class Handler
 {
     public function __construct(
         private readonly Flusher $flusher,
-        private readonly ProductQueryInterface $productQuery,
+        private readonly DocumentQueryInterface $documentQuery,
         private readonly YookassaProvider $yookassaProvider,
         private readonly PaymentRepository $payments,
         private readonly LoggerInterface $logger
@@ -32,13 +32,13 @@ class Handler
     public function handle(Command $command): Response
     {
         $email = new Email($command->email);
-        $product = $this->productQuery->getProduct($command->productId);
+        $document = $this->documentQuery->getDocument($command->documentId);
         $returnToken = new Token(Id::generate(), new DateTimeImmutable('+ 1 hour'));
         $payment = new Payment(
             new Id(Uuid::uuid4()->toString()),
             $email,
-            $product->id,
-            new Price($product->amount, new Currency('RUB')),
+            $document->id,
+            new Price($document->amount, new Currency('RUB')),
             new DateTimeImmutable(),
             $returnToken
         );
@@ -47,9 +47,8 @@ class Handler
                 new MakePaymentDTO(
                     $payment->getPrice()->getValue(),
                     $payment->getPrice()->getCurrency()->getValue(),
-                    $product->cipher,
                     $payment->getReturnToken()->getValue(),
-                    ['email' => $email->getValue(), 'productId' => $product->id],
+                    ['email' => $email->getValue(), 'documentId' => $document->id],
                     $email->getValue(),
                 )
             );

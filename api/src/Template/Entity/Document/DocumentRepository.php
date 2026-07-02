@@ -25,4 +25,13 @@ final class DocumentRepository
     {
         $this->em->persist($document);
     }
+
+    public function get(DocumentId $id): Document
+    {
+        $document = $this->repo->find($id);
+        if(!$document){
+            throw new \RuntimeException('Document not found');
+        }
+        return $document;
+    }
 }

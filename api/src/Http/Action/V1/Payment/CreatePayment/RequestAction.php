@@ -21,11 +21,11 @@ class RequestAction implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
             $email = $request->getParsedBody()['email'] ?? '';
-            $productId = $request->getParsedBody()['productId'] ?? '';
+            $documentId = $request->getParsedBody()['documentId'] ?? '';
 
             $command = new Command(
                 $email,
-                $productId
+                $documentId
             );
 
             $this->validator->validate($command);

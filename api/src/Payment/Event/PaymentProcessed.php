@@ -7,7 +7,7 @@ namespace App\Payment\Event;
 final class PaymentProcessed
 {
     public function __construct(
-        public string $productId,
+        public string $documentId,
         public string $email,
     ) {
     }

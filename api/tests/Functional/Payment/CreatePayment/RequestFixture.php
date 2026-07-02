@@ -2,7 +2,7 @@
 
 namespace Test\Functional\Payment\CreatePayment;
 
-use App\Product\Test\ProductBuilder;
+use App\Template\Test\Builder\DocumentBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -11,9 +11,9 @@ class RequestFixture extends AbstractFixture
 
     public function load(ObjectManager $manager): void
     {
-        $product = (new ProductBuilder())->build();
+        $document = (new DocumentBuilder())->build();
 
-        $manager->persist($product);
+        $manager->persist($document);
 
         $manager->flush();
     }

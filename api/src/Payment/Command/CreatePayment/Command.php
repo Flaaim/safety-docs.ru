@@ -12,7 +12,7 @@ class Command
         public string $email,
         #[Assert\NotBlank]
         #[Assert\Uuid]
-        public string $productId,
+        public string $documentId,
     ) {
     }
 }
