@@ -42,7 +42,7 @@ class Category
         $this->documents = new ArrayCollection();
 
         if ($parent !== null) {
-            if ($parent->getDirection() !== $this->direction) {
+            if (!$parent->getDirection()->getId()->equals($this->direction->getId())) {
                 throw new \DomainException('Child category cannot be from different direction.');
             }
 
@@ -90,38 +90,12 @@ class Category
         string $title,
         string $description,
         string $text,
-        string $slug,
-        Direction $direction,
-        ?Category $parent = null
+        string $slug
     ): void {
-        if ($parent !== null) {
-            if ($this->categoryId->equals($parent->getId())) {
-                throw new \DomainException('A category cannot be its own parent.');
-            }
-            if (!$this->children->isEmpty()) {
-                throw new \DomainException('Cannot move a category with children under another parent. Delete or move its children first.');
-            }
-            if (!$parent->getDirection()->getId()->equals($direction->getId())) {
-                throw new \DomainException('Child category cannot be from different direction.');
-            }
-        }
         $this->title = $title;
         $this->description = $description;
         $this->text = $text;
         $this->slug = $slug;
-        $this->updateDirection($direction);
-
-        $oldParent = $this->parent;
-
-        if ($oldParent !== null && $oldParent !== $parent) {
-            $oldParent->removeChild($this);
-        }
-
-        $this->parent = $parent;
-
-        if ($this->parent !== null && $oldParent !== $this->parent) {
-            $this->parent->addChild($this);
-        }
     }
     public function makeRoot(): void
     {
@@ -130,14 +104,40 @@ class Category
         }
         $this->parent->removeChild($this);
     }
-    public function updateDirection(Direction $direction): void
+    public function changeParent(Category $parent): void
     {
-        if ($this->direction->getId()->getValue() !== $direction->getId()->getValue()) {
-            $this->direction = $direction;
+        if (!$parent->getDirection()->getId()->equals($this->direction->getId())) {
+            throw new \DomainException('Child category cannot be from different direction.');
+        }
+        if($parent->getParent() !== null){
+            throw new \DomainException('Cannot move a category to children category.');
+        }
+        if ($this->categoryId->equals($parent->getId())) {
+            throw new \DomainException('A category cannot be its own parent.');
+        }
+        if (!$this->children->isEmpty()) {
+            throw new \DomainException('Cannot move a category with children under another parent. Delete or move its children first.');
+        }
+        $oldParent = $this->parent;
 
-            foreach ($this->children as $child) {
-                $child->updateDirection($direction);
-            }
+        if ($oldParent !== null && $oldParent !== $parent) {
+            $oldParent->removeChild($this);
+        }
+
+        $this->parent = $parent;
+
+        if ($oldParent !== $this->parent) {
+            $this->parent->addChild($this);
+        }
+    }
+    public function updateDirection(Direction $newDirection): void
+    {
+        if($this->direction->getId()->equals($newDirection->getId())) {
+            throw new \DomainException('A cannot change the direction to itself.');
+        }
+        $this->direction = $newDirection;
+        foreach ($this->children as $child) {
+            $child->updateDirection($newDirection);
         }
     }
 
@@ -151,7 +151,7 @@ class Category
             throw new \DomainException('Cannot add a child, because the current category contains documents.');
         }
         $isAlreadyAssigned = $this->children->exists(function (int $key, Category $existingChild) use ($child) {
-            return $existingChild->getId()->getValue() === $child->getId()->getValue();
+            return $existingChild->getId()->equals($child->getId());
         });
         if ($isAlreadyAssigned) {
             throw new \DomainException('A category child already assigned.');
@@ -163,7 +163,7 @@ class Category
     {
         if (
             $this->children->exists(function (int $key, Category $existingChild) use ($child) {
-                return $existingChild->getId()->getValue() === $child->getId()->getValue();
+                return $existingChild->getId()->equals($child->getId());
             })
         ) {
             $this->children->removeElement($child);
@@ -199,7 +199,7 @@ class Category
             throw new \DomainException('Cannot add a document, because the current category contains subcategories.');
         }
         $isAlreadyAdded = $this->documents->exists(function (int $key, Document $existingDocument) use ($document) {
-            return $existingDocument->getId()->getValue() === $document->getId()->getValue();
+            return $existingDocument->getId()->equals($document->getId());
         });
         if ($isAlreadyAdded) {
             throw new \DomainException('A document already added in the current category.');

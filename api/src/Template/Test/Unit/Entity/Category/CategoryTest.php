@@ -108,40 +108,7 @@ class CategoryTest extends TestCase
         );
 
     }
-    public function testUpdateParent(): void
-    {
-        $safetyDirection = (new DirectionBuilder())
-            ->withId(new DirectionId('4c075222-bef7-48d2-9cdf-efd7f58b226b'))
-            ->withTitle('Охрана труда')
-            ->build();
-
-        $category = (new CategoryBuilder())
-            ->withCategoryId(new CategoryId('171af8ca-86f0-452f-b94b-5b62cc72998a'))
-            ->withTitle('Инструкции по охране труда')
-            ->build($safetyDirection);
-
-        $fireDirection = (new DirectionBuilder())
-            ->withId(new DirectionId('171af8ca-86f0-452f-b94b-5b62cc72998a'))
-            ->withTitle('Пожарная безопасность')
-            ->build();
-
-        $category->update(
-            $title = 'Обучение по пожарной безопасности',
-            'Обучение по пожарной безопасности, комплект документов',
-            'Some text',
-            Slug::generate($title)->getValue(),
-            $fireDirection
-        );
-
-        self::assertEquals('Обучение по пожарной безопасности', $category->getTitle());
-        self::assertEquals('Обучение по пожарной безопасности, комплект документов', $category->getDescription());
-        self::assertEquals('Some text', $category->getText());
-        self::assertEquals('obucenie-po-pozarnoj-bezopasnosti', $category->getSlug());
-        self::assertEquals('171af8ca-86f0-452f-b94b-5b62cc72998a', $category->getDirection()->getId()->getValue());
-        self::assertEquals('Пожарная безопасность', $category->getDirection()->getTitle());
-    }
-
-    public function testUpdateChildren(): void
+    public function testRecurseUpdateChildren(): void
     {
         $safetyDirection = (new DirectionBuilder())
             ->withId(new DirectionId('9300fdba-c736-4060-9206-4422bc652c08'))
@@ -163,65 +130,10 @@ class CategoryTest extends TestCase
             ->withParent($parentCategory)
             ->build($safetyDirection);
 
-        $childCategory->update(
-            $title = 'New title',
-            'New description',
-            'New text',
-            Slug::generate($title)->getValue(),
-            $fireDirection
-        );
+        $parentCategory->updateDirection($fireDirection);
 
-        self::assertEquals('New title', $childCategory->getTitle());
-        self::assertEquals('New description', $childCategory->getDescription());
-        self::assertEquals('New text', $childCategory->getText());
-    }
-    public function testUpdateChildrenWithDifferentDirection(): void
-    {
-        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
-        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
-
-        $category1 = $this->getCategory($safetyDirection, 'parent');
-
-        $category2 = $this->getCategory($safetyDirection, 'children');
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Child category cannot be from different direction.');
-
-        $category2->update(
-            $title = 'New title',
-            'New description',
-            'New text',
-            Slug::generate($title)->getValue(),
-            $fireDirection,
-            $category1
-        );
-    }
-    public function testCannotMoveCategoryWithChildren(): void
-    {
-        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
-        $categoryId1 = new CategoryId('727d77c0-fef1-443a-9487-60d5a61404f8');
-
-        $child1 = (new CategoryBuilder())
-            ->withSlug(Slug::generate('child'))
-            ->withCategoryId($categoryId1)
-            ->build($safetyDirection);
-
-        $parentCategory1 = (new CategoryBuilder())
-            ->withChildren([$child1])
-            ->build($safetyDirection);
-
-        $parentCategory2 = $this->getCategory($safetyDirection, 'parentCategory2');
-
-        self::expectException(\DomainException::class);
-        self::expectExceptionMessage('Cannot move a category with children under another parent. Delete or move its children first.');
-        $parentCategory1->update(
-            $title = 'New title',
-            'New description',
-            'New text',
-            Slug::generate($title)->getValue(),
-            $safetyDirection,
-            $parentCategory2
-        );
+        self::assertTrue($parentCategory->getDirection()->getId()->equals($fireDirection->getId()));
+        self::assertTrue($childCategory->getDirection()->getId()->equals($fireDirection->getId()));
     }
     public function testAddChild(): void
     {
@@ -256,26 +168,6 @@ class CategoryTest extends TestCase
         self::expectExceptionMessage('A category child already assigned.');
         $parentCategory1->addChild($child1);
     }
-    public function testUpdateRefuseParent(): void
-    {
-        $safetyDirection = $this->getDirection('9300fdba-c736-4060-9206-4422bc652c08', 'Safety');
-        $fireDirection = $this->getDirection('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', 'Fire');
-
-        $parentCategory = $this->getCategory($safetyDirection, 'parent');
-        $child = $this->getCategory($safetyDirection, 'children', $parentCategory);
-
-        $child->update(
-            $title = 'New title',
-            'New description',
-            'New text',
-            Slug::generate($title)->getValue(),
-            $fireDirection,
-        );
-
-        self::assertNull($child->getParent());
-        self::assertEquals('ab00c25c-5cf8-4ed0-b7eb-54f2cc8541a9', $child->getDirection()->getId()->getValue());
-    }
-
     public function testCanBeDeleted(): void
     {
         $direction = $this->getDirection();
@@ -348,7 +240,6 @@ class CategoryTest extends TestCase
             new Amount(200.00, new Currency('RUB')),
             new Filename(Uuid::uuid4()->toString(). '.docx'),
             'instructions',
-            new \DateTimeImmutable(),
             $category,
         );
 
@@ -377,7 +268,6 @@ class CategoryTest extends TestCase
             new Amount(200.00, new Currency('RUB')),
             new Filename(Uuid::uuid4()->toString(). '.docx'),
             'instructions',
-            new \DateTimeImmutable(),
             $parentCategory,
         );
     }
@@ -396,7 +286,6 @@ class CategoryTest extends TestCase
             new Amount(200.00, new Currency('RUB')),
             new Filename(Uuid::uuid4()->toString(). '.docx'),
             'instructions',
-            new \DateTimeImmutable(),
             $category,
         );
 
@@ -440,5 +329,142 @@ class CategoryTest extends TestCase
 
         self::assertNull($child->getParent());
         self::assertCount(0, $parent->getChildren());
+    }
+
+    public function testChangeParentSuccess(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $oldParent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('old-parent'))
+            ->build($direction);
+
+        $newParent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('new-parent'))
+            ->build($direction);
+
+        $child = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('child'))
+            ->withParent($oldParent)
+            ->build($direction);
+
+        $child->changeParent($newParent);
+
+        self::assertEquals($newParent, $child->getParent());
+        self::assertCount(0, $oldParent->getChildren());
+        self::assertCount(1, $newParent->getChildren());
+    }
+
+    public function testChangeParentOwnParent(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $parent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('parent'))
+            ->build($direction);
+
+        $child = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('child'))
+            ->withParent($parent)
+            ->build($direction);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A category cannot be its own parent.');
+        $parent->changeParent($parent);
+    }
+    public function testChangeParentDifferentDirection(): void
+    {
+        $safetyDirection = (new DirectionBuilder())
+            ->withTitle('Охрана труда')
+            ->withId(DirectionId::generate())->build();
+
+        $fireDirection = (new DirectionBuilder())
+            ->withTitle('Пожарная безопасность')
+            ->withId(DirectionId::generate())->build();
+
+        $parent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('parent'))
+            ->build($fireDirection);
+
+        $anotherParent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('another-parent'))
+            ->build($safetyDirection);
+
+        $child = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('child'))
+            ->withParent($parent)
+            ->build($fireDirection);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Child category cannot be from different direction.');
+        $child->changeParent($anotherParent);
+    }
+    public function testCannotMoveToSubcategory(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $parent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('parent'))
+            ->build($direction);
+
+        $child = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('child'))
+            ->withParent($parent)
+            ->build($direction);
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('Cannot move a category to children category.');
+
+        $parent->changeParent($child);
+    }
+
+    public function testUpdateDirectionDirectionSuccess(): void
+    {
+        $safetyDirection = (new DirectionBuilder())
+            ->withId(DirectionId::generate())
+            ->withTitle('Охрана труда')
+            ->build();
+
+        $fireDirection = (new DirectionBuilder())
+            ->withId(DirectionId::generate())
+            ->withTitle('Пожарная безопасность')
+            ->build();
+
+        $category = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('category'))
+            ->build($safetyDirection);
+
+        $category->updateDirection($fireDirection);
+
+        self::assertEquals($fireDirection, $category->getDirection());
+    }
+
+    public function testUpdateDirectionItSelf(): void
+    {
+        $safetyDirection = (new DirectionBuilder())
+            ->withId(DirectionId::generate())
+            ->withTitle('Охрана труда')
+            ->build();
+
+        $fireDirection = (new DirectionBuilder())
+            ->withId(DirectionId::generate())
+            ->withTitle('Пожарная безопасность')
+            ->build();
+
+        $category = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('category'))
+            ->build($safetyDirection);
+
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A cannot change the direction to itself');
+        $category->updateDirection($safetyDirection);
     }
 }
