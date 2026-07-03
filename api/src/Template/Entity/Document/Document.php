@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Template\Entity\Document;
 
+use App\Template\Entity\Category\Category;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'documents')]
-final class Document
+class Document
 {
+    #[ORM\Column(type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'document_id')]
@@ -22,10 +25,12 @@ final class Document
         private Filename $filename,
         #[ORM\Column(type: 'string', length: 255)]
         private string $slug,
-        #[ORM\Column(type: 'datetime_immutable')]
-        private \DateTimeImmutable $createdAt
+        #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'documents')]
+        #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category_id', nullable: false, onDelete: 'RESTRICT')]
+        private Category $category
     ) {
         $this->createdAt = new \DateTimeImmutable();
+        $category->addDocument($this);
     }
 
     public function getId(): DocumentId
@@ -48,9 +53,12 @@ final class Document
     {
         return $this->createdAt;
     }
-
     public function getSlug(): string
     {
         return $this->slug;
+    }
+    public function getCategory(): Category
+    {
+        return $this->category;
     }
 }

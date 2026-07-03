@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Template\Test\Builder;
 
 use App\Shared\Domain\ValueObject\Currency;
+use App\Template\Entity\Category\Category;
 use App\Template\Entity\Document\Amount;
 use App\Template\Entity\Document\Document;
 use App\Template\Entity\Document\DocumentId;
@@ -67,7 +68,7 @@ final class DocumentBuilder
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */
-    public function build(): Document
+    public function build(Category $category): Document
     {
         return new Document(
             $this->id,
@@ -75,7 +76,7 @@ final class DocumentBuilder
             $this->amount,
             $this->filename,
             $this->slug,
-            $this->createdAt
+            $category
         );
     }
 }

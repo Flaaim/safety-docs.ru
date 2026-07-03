@@ -54,7 +54,7 @@ final class Handler
                 new Amount($command->amount, new Currency('RUB')),
                 new Filename($filename),
                 Slug::generate($name)->getValue(),
-                new \DateTimeImmutable(),
+                $category
             );
 
             $this->documents->add($document);
