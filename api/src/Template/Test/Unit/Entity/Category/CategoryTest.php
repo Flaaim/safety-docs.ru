@@ -408,9 +408,37 @@ class CategoryTest extends TestCase
             new Amount(200.00, new Currency('RUB')),
             new Filename(Uuid::uuid4()->toString(). '.docx'),
             'instructions',
-            new \DateTimeImmutable(),
             $category,
         );
     }
+    public function testMakeRootAlready(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $category = (new CategoryBuilder())
+            ->build($direction);
 
+        self::expectException(\DomainException::class);
+        self::expectExceptionMessage('A category is already a root.');
+        $category->makeRoot();
+    }
+
+    public function testMakeRootSuccess(): void
+    {
+        $direction = (new DirectionBuilder())->withId(DirectionId::generate())->build();
+        $parent = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('parent'))
+            ->build($direction);
+
+        $child = (new CategoryBuilder())
+            ->withCategoryId(CategoryId::generate())
+            ->withSlug(Slug::generate('child'))
+            ->withParent($parent)
+            ->build($direction);
+
+        $child->makeRoot();
+
+        self::assertNull($child->getParent());
+        self::assertCount(0, $parent->getChildren());
+    }
 }

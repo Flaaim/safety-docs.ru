@@ -123,6 +123,13 @@ class Category
             $this->parent->addChild($this);
         }
     }
+    public function makeRoot(): void
+    {
+        if($this->parent === null) {
+            throw new \DomainException('A category is already a root.');
+        }
+        $this->parent->removeChild($this);
+    }
     public function updateDirection(Direction $direction): void
     {
         if ($this->direction->getId()->getValue() !== $direction->getId()->getValue()) {
