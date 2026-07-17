@@ -6,7 +6,6 @@ import {
   User,
   LogOut,
   GamepadDirectional,
-  ChartColumnStacked,
   Mails,
   Import,
   ChevronRight,
@@ -41,9 +40,16 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const items = [
   { title: "Панель", url: "/dashboard", icon: LayoutDashboard },
-  { title: "Документы", url: "/dashboard/docs", icon: FileText },
-  { title: "Категории", url: "/dashboard/categories", icon: ChartColumnStacked },
-  { title: "Направления", url: "/dashboard/directions", icon: GamepadDirectional },
+  {
+    title: "Каталог",
+    url: "/dashboard/directions",
+    icon: GamepadDirectional,
+    isActive: true,
+    subItems: [
+      { title: "Направления", url: "/dashboard/directions", icon: GamepadDirectional },
+      { title: "Все документы", url: "/dashboard/docs", icon: FileText },
+    ],
+  },
   {
     title: "Рассылка",
     url: "/dashboard/distributions",

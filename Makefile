@@ -6,20 +6,19 @@ api-init frontend-init
 up: docker-up
 down: docker-down
 restart: down up
-check: api-check frontend-check
-api-check: validate api-lint api-analyze api-test
-frontend-check: frontend-lint frontend-analyze
-validate: api-validate-schema
 
-lint: api-lint frontend-lint
+check: validate lint analyze test
+lint: api-lint frontend-lint-style
 analyze: api-analyze frontend-analyze
+
+validate: api-validate-schema
 
 test: api-test frontend-test
 api-test: unit-test functional-test api-fixtures
 test-unit: unit-test
 test-functional: functional-test api-fixtures
 
-lint-fix: api-lint-fix frontend-lint-fix
+format: api-lint-fix frontend-format
 
 docker-up:
 	docker compose up -d
@@ -44,16 +43,17 @@ frontend-ready:
 frontend-yarn-install:
 	docker compose run --rm frontend-node-cli yarn install
 
-frontend-lint:
+frontend-lint-style:
 	docker compose run --rm frontend-node-cli yarn stylelint
 	docker compose run --rm frontend-node-cli yarn prettier-check
 
-frontend-lint-fix:
+frontend-format:
 	docker compose run --rm frontend-node-cli yarn eslint-fix
 	docker compose run --rm frontend-node-cli yarn stylelint-fix
 	docker compose run --rm frontend-node-cli yarn prettier-fix
 
 frontend-analyze:
+	docker compose run --rm frontend-node-cli yarn type-check
 	docker compose run --rm frontend-node-cli yarn eslint
 
 frontend-test:

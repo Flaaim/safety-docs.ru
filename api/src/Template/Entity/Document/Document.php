@@ -30,7 +30,8 @@ class Document
             name: 'category_id',
             referencedColumnName: 'category_id',
             nullable: false,
-            onDelete: 'RESTRICT')
+            onDelete: 'RESTRICT'
+        )
         ]
         private Category $category
     ) {
@@ -65,5 +66,10 @@ class Document
     public function getCategory(): Category
     {
         return $this->category;
+    }
+
+    public function refreshUploadedAt(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
     }
 }

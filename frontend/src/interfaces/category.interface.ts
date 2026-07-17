@@ -1,1 +1,1 @@
-export type { Category, CategoryDTO, CategoryCollection, AssignCategory } from "@/types/category";
+export type { Category, CategoryDTO, CategoryCollection } from "@/types/category";

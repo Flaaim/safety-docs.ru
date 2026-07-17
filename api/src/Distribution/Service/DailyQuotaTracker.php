@@ -20,7 +20,9 @@ final class DailyQuotaTracker
 
         $key = 'unisender_quota_' . $now->format('Y-m-d');
 
-        $currentUsage = (int)$this->redis->get($key);
+        /** @var false|string $rawUsage */
+        $rawUsage = $this->redis->get($key);
+        $currentUsage = is_string($rawUsage) ? (int) $rawUsage : 0;
 
         if (($currentUsage + $batchSize) > self::MAX_QUOTA) {
             return false;

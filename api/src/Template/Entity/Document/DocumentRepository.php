@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Template\Entity\Document;
 
+use App\Template\Entity\Category\CategoryId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -33,5 +34,18 @@ final class DocumentRepository
             throw new \RuntimeException('Document not found');
         }
         return $document;
+    }
+
+    public function findByCategoryIdAndName(CategoryId $categoryId, string $name): ?Document
+    {
+        return $this->repo->createQueryBuilder('d')
+            ->join('d.category', 'c')
+            ->where('c.categoryId = :categoryId')
+            ->andWhere('d.name = :name')
+            ->setParameter('categoryId', $categoryId)
+            ->setParameter('name', $name)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

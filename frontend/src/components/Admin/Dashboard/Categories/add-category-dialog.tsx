@@ -16,7 +16,6 @@ import { Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { DirectionCollection, DirectionDTO } from "@/interfaces/direction.interface";
 import {
   Select,
   SelectContent,
@@ -25,27 +24,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getAllDirections } from "@api/direction";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
-import { CategoryDTO } from "@/interfaces/category.interface";
-import { addCategory, getAllCategories } from "@api/category";
+import { Category } from "@/interfaces/category.interface";
+import { addCategory, getCategoriesByDirection } from "@api/category";
 import MDEditor from "@uiw/react-md-editor";
 
-export default function AddCategoryDialog() {
+interface AddCategoryDialogProps {
+  directionId: string;
+  defaultParentId?: string;
+}
+
+export default function AddCategoryDialog({
+  directionId,
+  defaultParentId,
+}: AddCategoryDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
 
-  const [directionCollection, setDirectionCollection] = useState<DirectionCollection>({
-    directions: [],
-    total: 0,
-  });
-  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  // === КОНТРОЛИРУЕМЫЕ СТЕЙТЫ ДЛЯ СЕЛЕКТОВ ===
-  const [selectedDirectionId, setSelectedDirectionId] = useState<string>("");
-  const [selectedParentId, setSelectedParentId] = useState<string>("none"); // По умолчанию "none"
+  const [selectedParentId, setSelectedParentId] = useState<string>("none");
   const [textValue, setTextValue] = useState<string>("");
 
   const router = useRouter();
@@ -56,33 +55,48 @@ export default function AddCategoryDialog() {
       setLoading(true);
       const initData = async () => {
         try {
-          const [dirData, catData] = await Promise.all([
-            getAllDirections(token),
-            getAllCategories(token),
-          ]);
+          setSelectedParentId(defaultParentId || "none");
 
-          setDirectionCollection({
-            directions: dirData as DirectionDTO[],
-            total: dirData.length,
-          });
-          setCategories(catData.categories);
+          if (directionId) {
+            const cats = await getCategoriesByDirection(directionId, token);
+            setCategories(flattenCategories(cats));
+          }
         } catch (error) {
           const err = error instanceof Error ? error : new Error("Ошибка при получении данных");
           toast.error(err.message);
-          setError(err);
         } finally {
           setLoading(false);
         }
       };
       initData();
     } else {
-      setDirectionCollection({ directions: [], total: 0 });
       setCategories([]);
-      setSelectedDirectionId("");
-      setSelectedParentId("none"); // Обязательно сбрасываем при закрытии
+      setSelectedParentId("none");
       setTextValue("");
     }
-  }, [open, token]);
+  }, [open, token, directionId, defaultParentId]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (open) {
+      const loadParents = async () => {
+        try {
+          const cats = await getCategoriesByDirection(directionId, token);
+          if (!cancelled) {
+            setCategories(flattenCategories(cats));
+          }
+        } catch {
+          if (!cancelled) setCategories([]);
+        }
+      };
+      void loadParents();
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, directionId, token]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -91,11 +105,11 @@ export default function AddCategoryDialog() {
     const formData = new FormData(e.currentTarget);
 
     // Собираем данные: тексты берем из FormData, а ID берем из надежных React стейтов
-    const category: Partial<CategoryDTO> = {
+    const category: Partial<Category> = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       text: textValue,
-      directionId: selectedDirectionId, // Берем из стейта
+      directionId: directionId, // Берем из стейта
       parentId: selectedParentId === "none" ? undefined : selectedParentId, // Конвертируем "none" в undefined
     };
 
@@ -111,7 +125,7 @@ export default function AddCategoryDialog() {
     }
   }
 
-  const filteredParents = categories.filter((cat) => cat.directionId === selectedDirectionId);
+  const filteredParents = categories.filter((cat) => cat.directionId === directionId);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -146,58 +160,22 @@ export default function AddCategoryDialog() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="directionId">Направление</Label>
-              {error ? (
-                <div className="text-destructive text-sm">Ошибка загрузки</div>
-              ) : (
-                <Select
-                  name="directionId"
-                  value={selectedDirectionId} // Привязка стейта
-                  onValueChange={(val) => {
-                    setSelectedDirectionId(val);
-                    setSelectedParentId("none"); // СБРОС родителя при смене направления!
-                  }}
-                >
-                  <SelectTrigger
-                    className="w-full"
-                    disabled={loading || !directionCollection.directions.length}
-                  >
-                    <SelectValue placeholder={loading ? "Загрузка..." : "Выберите направление"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {directionCollection.directions.map((dir: DirectionDTO) => (
-                        <SelectItem key={dir.slug} value={dir.id}>
-                          {dir.title}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-
-            <div className="grid gap-2">
               <Label htmlFor="parentId">Родительская категория</Label>
               <Select
                 name="parentId"
-                value={selectedParentId} // Привязка стейта
-                onValueChange={setSelectedParentId} // Обновление стейта
-                disabled={!selectedDirectionId || loading}
+                value={selectedParentId}
+                onValueChange={setSelectedParentId}
+                disabled={loading || Boolean(defaultParentId)}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue
-                    placeholder={
-                      !selectedDirectionId ? "Сначала выберите направление" : "Без родителя"
-                    }
-                  />
+                  <SelectValue placeholder="" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="none" className="text-muted-foreground italic">
                       Без родителя (корневая)
                     </SelectItem>
-                    {filteredParents.map((cat: CategoryDTO) => (
+                    {filteredParents.map((cat: Category) => (
                       <SelectItem key={cat.id} value={cat.id}>
                         {cat.title}
                       </SelectItem>
@@ -209,7 +187,7 @@ export default function AddCategoryDialog() {
           </div>
 
           <DialogFooter>
-            <Button type="submit" disabled={loading || !selectedDirectionId}>
+            <Button type="submit" disabled={loading}>
               {loading ? "Сохранение..." : "Создать"}
             </Button>
           </DialogFooter>
@@ -217,4 +195,18 @@ export default function AddCategoryDialog() {
       </DialogContent>
     </Dialog>
   );
+}
+
+function flattenCategories(categories: Category[]): Category[] {
+  const result: Category[] = [];
+  const walk = (nodes: Category[]) => {
+    for (const node of nodes) {
+      result.push(node);
+      if (node.children?.length) {
+        walk(node.children);
+      }
+    }
+  };
+  walk(categories);
+  return result;
 }

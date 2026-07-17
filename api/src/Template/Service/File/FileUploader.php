@@ -37,4 +37,21 @@ class FileUploader implements FileUploaderInterface
 
         return $filename;
     }
+
+    public function replace(
+        string $relativePathDir,
+        string $filename,
+        UploadedFileInterface $uploadedFile,
+    ): void {
+        if ($uploadedFile->getError() !== UPLOAD_ERR_OK) {
+            throw new \DomainException('Error uploading file ' . $uploadedFile->getError());
+        }
+
+        $filePath = $this->fileSystemPath->getValue() . DIRECTORY_SEPARATOR . $relativePathDir
+            . DIRECTORY_SEPARATOR . $filename;
+
+        $this->directoryCreator->createDirectory(dirname($filePath));
+
+        $uploadedFile->moveTo($filePath);
+    }
 }

@@ -5,45 +5,10 @@
       <code><![CDATA[FixturesLoadCommand]]></code>
     </UnusedClass>
   </file>
-  <file src="src/Distribution/Command/CreateProject/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Command/DeleteProject/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Command/DraftNewsletter/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Command/ImportContacts/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Command/RemoveContactsFile/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Command/UploadContactsFile/Handler.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Distribution/Entity/File/File.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[complete]]></code>
     </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Entity/File/FileIdType.php">
-    <UnusedClass>
-      <code><![CDATA[FileIdType]]></code>
-    </UnusedClass>
   </file>
   <file src="src/Distribution/Entity/File/FileRepository.php">
     <PossiblyUnusedMethod>
@@ -56,11 +21,6 @@
       <code><![CDATA[getCreatedAt]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Distribution/Entity/Newsletter/NewsletterIdType.php">
-    <UnusedClass>
-      <code><![CDATA[NewsletterIdType]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Distribution/Entity/Newsletter/NewsletterRepository.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
@@ -71,47 +31,12 @@
       <code><![CDATA[failed]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Distribution/Entity/Newsletter/StatusType.php">
-    <UnusedClass>
-      <code><![CDATA[StatusType]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Distribution/Entity/Project/Contact.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[getId]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Distribution/Entity/Project/DTO/ContactDTO.php">
-    <PossiblyUnusedProperty>
-      <code><![CDATA[$isUnsubscribed]]></code>
-    </PossiblyUnusedProperty>
-  </file>
-  <file src="src/Distribution/Entity/Project/ProjectIdType.php">
-    <UnusedClass>
-      <code><![CDATA[ProjectIdType]]></code>
-    </UnusedClass>
-  </file>
   <file src="src/Distribution/Entity/Project/ProjectRepository.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/MessageHandler/NewsletterLauncherHandler.php">
-    <UnusedClass>
-      <code><![CDATA[NewsletterLauncherHandler]]></code>
-    </UnusedClass>
-  </file>
-  <file src="src/Distribution/Query/GetAllFilesPaginated/Fetcher.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Query/GetAllNewslettersPaginated/Fetcher.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Distribution/Query/GetAllProjects/Fetcher.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
@@ -139,11 +64,6 @@
       <code><![CDATA[$templateId]]></code>
     </PossiblyUnusedProperty>
   </file>
-  <file src="src/Distribution/Query/GetNewsletter/Query.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Distribution/Query/GetProject/Fetcher.php">
     <InvalidReturnType>
       <code><![CDATA[Project]]></code>
@@ -166,11 +86,6 @@
       <code><![CDATA[$name]]></code>
       <code><![CDATA[$projectId]]></code>
     </PossiblyUnusedProperty>
-  </file>
-  <file src="src/Distribution/Query/GetProject/Query.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Distribution/Service/NewLetterLauncher.php">
     <UnusedClass>

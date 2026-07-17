@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { getAllProducts } from "@api/product";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -8,89 +8,71 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ProductDTO } from "@/interfaces/product.interface";
-import AddProductDialog from "@/components/Admin/Dashboard/Docs/add-product-dialog";
-import EditProductDialog from "@/components/Admin/Dashboard/Docs/edit-product-dialog";
-import AddImagesDialog from "@/components/Admin/Dashboard/Docs/Images/add-images-dialog";
-import ClearImagesDialog from "@/components/Admin/Dashboard/Docs/Images/clear-images-dialog";
-import Image from "next/image";
 import PaginationControls from "@/components/PaginationControls/PaginationControls";
+import AdminBreadcrumbs from "@/components/Admin/Dashboard/AdminBreadcrumbs";
+import { getAdminTemplates } from "@api/document";
 
-interface ProductPageProps {
+interface DocsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string }>;
 }
-export default async function ProductPage({ searchParams }: ProductPageProps) {
+
+export default async function DocsPage({ searchParams }: DocsPageProps) {
   const currentPage = Number((await searchParams).page) || 1;
   const perPage = Number((await searchParams).perPage) || 20;
 
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
-  const data = await getAllProducts(token, currentPage, perPage);
+  const data = await getAdminTemplates(token, currentPage, perPage);
 
   return (
     <div className="space-y-6">
+      <AdminBreadcrumbs items={[{ title: "Документы" }]} />
+
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Подборки документов</h1>
-        <AddProductDialog></AddProductDialog>
+        <div>
+          <h1 className="text-3xl font-bold">Документы</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Сводный список шаблонов. Дерево каталога — в разделе{" "}
+            <Link href="/dashboard/directions" className="underline">
+              Направления
+            </Link>
+            .
+          </p>
+        </div>
       </div>
+
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>№</TableHead>
               <TableHead>Название</TableHead>
-              <TableHead>Шифр</TableHead>
-              <TableHead>Цена</TableHead>
-              <TableHead>Галерея</TableHead>
-              <TableHead>Обновлен</TableHead>
-              <TableHead>Имя файла</TableHead>
-              <TableHead className="text-right">Действия</TableHead>
+              <TableHead>Направление</TableHead>
+              <TableHead>Категория</TableHead>
+              <TableHead>Статус</TableHead>
+              <TableHead>Создан</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.products.map((prod: ProductDTO, idx) => (
-              <TableRow key={prod.id}>
-                <TableCell>{idx + 1}</TableCell>
-                <TableCell className="font-medium">{prod.name}</TableCell>
-                <TableCell className="font-medium">{prod.cipher}</TableCell>
-                <TableCell className="font-medium">{prod.formattedPrice}</TableCell>
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-2">
-                    {prod.images.length > 0 ? (
-                      <>
-                        <div className="flex -space-x-2">
-                          {prod.images.slice(0, 3).map((image, idx) => (
-                            <Image
-                              key={idx}
-                              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${prod.id}/${image}`}
-                              alt=""
-                              width="10"
-                              height="10"
-                              className="w-8 h-8 rounded border-2 border-white object-cover"
-                            />
-                          ))}
-                        </div>
-                        {prod.images.length > 3 && (
-                          <span className="text-xs text-gray-500">+{prod.images.length - 3}</span>
-                        )}
-                        {<ClearImagesDialog productId={prod.id} />}
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-gray-400 text-sm">Нет фото</span>
-                        {<AddImagesDialog productId={prod.id} />}
-                      </>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="font-medium">{prod.updatedAt}</TableCell>
-                <TableCell className="font-medium">{prod.filename}</TableCell>
-                <TableCell className="text-right">
-                  <EditProductDialog productId={prod.id}></EditProductDialog>
+            {data.templates.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-muted-foreground">
+                  Документов пока нет.
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              data.templates.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell className="font-medium">{row.name}</TableCell>
+                  <TableCell>{row.directionName}</TableCell>
+                  <TableCell>{row.categoryName}</TableCell>
+                  <TableCell className="text-muted-foreground">{row.status}</TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {new Date(row.createdAt).toLocaleDateString("ru-RU")}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
         <PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} />

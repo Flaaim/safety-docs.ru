@@ -56,9 +56,24 @@ class Handler
             $command->description,
             $command->text,
             $slug->getValue(),
-            $direction,
-            $parentCategory
         );
+
+        if (!$category->getDirection()->getId()->equals($directionId)) {
+            $category->updateDirection($direction);
+        }
+
+        $currentParent = $category->getParent();
+
+        if ($command->parentId === null) {
+            if ($currentParent !== null) {
+                $category->makeRoot();
+            }
+        } elseif (
+            $parentCategory !== null
+            && ($currentParent === null || !$currentParent->getId()->equals($parentCategory->getId()))
+        ) {
+            $category->changeParent($parentCategory);
+        }
 
         $this->flusher->flush();
     }

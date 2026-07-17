@@ -27,10 +27,14 @@ return static function (App $app): void {
             $group->post('/login', RequestAction::class);
         });
 
+        // Admin Template (Document) read models
+        $group->get('/templates', Template\Admin\GetTemplates\RequestAction::class)
+            ->add(AuthMiddleware::class);
 
         $group->group('/directions', function (RouteCollectorProxy $group): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
-            $slugPattern = '[a-z0-9]+(?:-[a-z0-9]+)*';
+            // Character classes inside {param:...} are fine; literal [...] outside is FastRoute "optional segment".
+            $slugPattern = '[a-z0-9-]+';
 
             $group->get('', Template\GetAll\RequestAction::class);
 
@@ -54,10 +58,9 @@ return static function (App $app): void {
             });
 
             $group->post('', Template\Add\RequestAction::class);
-            $group->delete('/{directionId:' . $uuidPattern . '}', Template\Delete\RequestAction::class);
             $group->put('/{directionId:' . $uuidPattern . '}', Template\Update\RequestAction::class);
 
-            // Admin / UUID-based category & document routes
+            // Admin / UUID-based category routes (CUD + legacy get-by-slug for edit dialog)
             $group->group('/{directionId:' . $uuidPattern . '}/categories', function (RouteCollectorProxy $group) use ($uuidPattern, $slugPattern): void {
                 $group->get('', Template\Category\GetAllByDirection\RequestAction::class);
                 $group->get('/s/{slug:' . $slugPattern . '}', Template\Category\GetBySlug\RequestAction::class);
@@ -66,9 +69,6 @@ return static function (App $app): void {
                 $group->put('/{categoryId:' . $uuidPattern . '}', Template\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
 
                 $group->group('/{categoryId:' . $uuidPattern . '}/documents', function (RouteCollectorProxy $group) use ($uuidPattern, $slugPattern): void {
-                    $group->get('', Template\Document\GetAllByCategory\RequestAction::class);
-                    $group->get('/s/{slug:' . $slugPattern . '}', Template\Document\GetBySlug\RequestAction::class);
-                    $group->get('/{documentId:' . $uuidPattern . '}', Template\Document\GetById\RequestAction::class);
                     $group->post('/bulk', Template\Document\MultipleUpload\RequestAction::class)->add(AuthMiddleware::class);
                 });
             });

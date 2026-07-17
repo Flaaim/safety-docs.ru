@@ -19,6 +19,11 @@ return [
         return new FileSystemPath(
             $container->get('config')['distribution_import_files'],
         );
-    }
+    },
+    FileSystemPath::class => function (ContainerInterface $container) {
+        return new FileSystemPath(
+            $container->get('config')['template_paths'],
+        );
+    },
 
 ];

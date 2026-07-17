@@ -1,16 +1,8 @@
-import { AssignCategory, Category, CategoryCollection } from "@/types/category";
+import { Category } from "@/types/category";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
 const publicCache: RequestCache = "no-store";
-
-export async function getAllCategories(token?: string): Promise<CategoryCollection> {
-  return await apiFetch<CategoryCollection>(API.category.getAll(), {
-    method: "GET",
-    token,
-    cache: token ? "no-store" : publicCache,
-  });
-}
 
 /** Preferred public API — mirrors /directions/[directionSlug] */
 export async function getCategoriesByDirectionSlug(
@@ -37,7 +29,7 @@ export async function getCategoryBySlugs(
   });
 }
 
-/** @deprecated Prefer getCategoriesByDirectionSlug for public pages */
+/** Admin: list by direction UUID (add/edit category dialogs) */
 export async function getCategoriesByDirection(
   directionId: string,
   token?: string
@@ -67,7 +59,7 @@ export async function addCategory(
   });
 }
 
-/** @deprecated Prefer getCategoryBySlugs for public pages */
+/** Admin: get by slug under direction UUID (edit-category dialog) */
 export async function getCategoryBySlug(
   slug: string,
   directionId: string,
@@ -97,24 +89,6 @@ export async function updateCategory(
       parentId: category.parentId !== undefined ? category.parentId : null,
       directionId: category.directionId,
     }),
-  });
-}
-
-export async function assignProduct(
-  token: string | undefined,
-  data: AssignCategory
-): Promise<void> {
-  return await apiFetch<void>(API.category.assignProduct(data.categoryId), {
-    method: "PUT",
-    token,
-    body: JSON.stringify({ productId: data.productId }),
-  });
-}
-
-export async function refuseProduct(token: string | undefined, categoryId: string): Promise<void> {
-  return await apiFetch<void>(API.category.refuseProduct(categoryId), {
-    method: "DELETE",
-    token,
   });
 }
 

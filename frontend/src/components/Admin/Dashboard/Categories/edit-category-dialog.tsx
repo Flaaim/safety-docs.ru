@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Edit } from "lucide-react";
-import { getAllCategories, getCategoryBySlug, updateCategory } from "@api/category";
+import { getCategoriesByDirection, getCategoryBySlug, updateCategory } from "@api/category";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -36,6 +36,20 @@ export interface EditCategoryDialogProps {
   slug: string;
   id: string;
   directionId: string;
+}
+
+function flattenCategories(categories: CategoryDTO[]): CategoryDTO[] {
+  const result: CategoryDTO[] = [];
+  const walk = (nodes: CategoryDTO[]) => {
+    for (const node of nodes) {
+      result.push(node);
+      if (node.children?.length) {
+        walk(node.children);
+      }
+    }
+  };
+  walk(categories);
+  return result;
 }
 
 export default function EditCategoryDialog({ slug, id, directionId }: EditCategoryDialogProps) {
@@ -63,18 +77,22 @@ export default function EditCategoryDialog({ slug, id, directionId }: EditCatego
       setLoading(true);
       const initCategory = async () => {
         try {
-          const [categoryDTO, catData, dirCollection] = await Promise.all([
+          const [categoryDTO, dirCollection] = await Promise.all([
             getCategoryBySlug(slug, directionId, token),
-            getAllCategories(token),
             getAllDirections(token),
           ]);
 
-          setCategories(catData.categories);
+          const cats = await getCategoriesByDirection(
+            categoryDTO.directionId || directionId,
+            token
+          );
+
+          setCategories(flattenCategories(cats as CategoryDTO[]));
           setDirectionCollection({
             directions: dirCollection as DirectionDTO[],
             total: dirCollection.length,
           });
-          setCategoryData(categoryDTO);
+          setCategoryData(categoryDTO as CategoryDTO);
 
           setTextValue(categoryDTO.text || "");
 
@@ -86,20 +104,8 @@ export default function EditCategoryDialog({ slug, id, directionId }: EditCatego
           setLoading(false);
         }
       };
-      const initDirections = async () => {
-        try {
-          const directionCollection = await getAllDirections(token);
-          setDirectionCollection({
-            directions: directionCollection as DirectionDTO[],
-            total: directionCollection.length,
-          });
-        } catch (error) {
-          toast.error(error instanceof Error ? error.message : "Ошибка при загрузке директорий");
-        }
-      };
 
       initCategory();
-      initDirections();
     } else {
       setCategoryData(null);
       setCategories([]);
@@ -109,6 +115,28 @@ export default function EditCategoryDialog({ slug, id, directionId }: EditCatego
       setTextValue("");
     }
   }, [open, token, slug, directionId]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (open && selectedDirectionId) {
+      const loadParents = async () => {
+        try {
+          const cats = await getCategoriesByDirection(selectedDirectionId, token);
+          if (!cancelled) {
+            setCategories(flattenCategories(cats as CategoryDTO[]));
+          }
+        } catch {
+          if (!cancelled) setCategories([]);
+        }
+      };
+      void loadParents();
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, selectedDirectionId, token]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

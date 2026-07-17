@@ -45,6 +45,21 @@ final class FileUploaderTest extends TestCase
         $this->handler->upload('directory', $uploadFile);
     }
 
+    public function testReplaceOverwritesExistingFile(): void
+    {
+        $uploadFile = $this->createMock(UploadedFileInterface::class);
+        $uploadFile->expects(self::once())->method('getError')->willReturn(UPLOAD_ERR_OK);
+
+        $expectedPath = 'vfs://storage/directory/existing.docx';
+
+        $this->dirCreator->expects(self::once())->method('createDirectory');
+
+        $uploadFile->expects(self::once())->method('moveTo')
+            ->with($this->equalTo($expectedPath));
+
+        $this->handler->replace('directory', 'existing.docx', $uploadFile);
+    }
+
     public function testErrNotFile(): void
     {
         $uploadFile = $this->createUploadFile('error_file.txt', 'text/plain', 1, UPLOAD_ERR_NO_FILE);

@@ -67,7 +67,11 @@ final class DirectionFetcher implements DirectionFetcherInterface
             }
         }
 
-        return reset($data) ?? throw new \DomainException('Direction does not exist.');
+        if ($data === []) {
+            throw new \DomainException('Direction does not exist.');
+        }
+
+        return array_values($data)[0];
     }
 
     public function getAll(): array

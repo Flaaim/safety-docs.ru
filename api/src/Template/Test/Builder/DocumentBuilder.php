@@ -20,7 +20,6 @@ final class DocumentBuilder
     public Amount $amount;
     public Filename $filename;
     public string $slug;
-    public \DateTimeImmutable $createdAt;
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct()
     {
@@ -29,7 +28,6 @@ final class DocumentBuilder
         $this->amount = new Amount(200.00, new Currency('RUB'));
         $this->filename = new Filename(Uuid::uuid4()->toString() . '.docx');
         $this->slug = Slug::generate($this->name)->getValue();
-        $this->createdAt = new \DateTimeImmutable();
     }
     /** @psalm-suppress PossiblyUnusedMethod */
     public function withId(DocumentId $id): self

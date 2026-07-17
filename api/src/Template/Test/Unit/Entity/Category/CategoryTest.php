@@ -234,7 +234,7 @@ class CategoryTest extends TestCase
         $category = (new CategoryBuilder())
             ->build($direction);
 
-        $document = new Document(
+        new Document(
             DocumentId::generate(),
             'Инструкция по охране труда при работе на высоте',
             new Amount(200.00, new Currency('RUB')),
@@ -254,11 +254,13 @@ class CategoryTest extends TestCase
             ->withSlug(Slug::generate('parent'))
             ->build($direction);
 
-        $childCategory = (new CategoryBuilder())
+        (new CategoryBuilder())
             ->withCategoryId(CategoryId::generate())
             ->withSlug(Slug::generate('child'))
             ->withParent($parentCategory)
             ->build($direction);
+
+        self::assertCount(1, $parentCategory->getChildren());
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('Cannot add a document, because the current category contains subcategories.');
@@ -365,11 +367,13 @@ class CategoryTest extends TestCase
             ->withSlug(Slug::generate('parent'))
             ->build($direction);
 
-        $child = (new CategoryBuilder())
+        (new CategoryBuilder())
             ->withCategoryId(CategoryId::generate())
             ->withSlug(Slug::generate('child'))
             ->withParent($parent)
             ->build($direction);
+
+        self::assertCount(1, $parent->getChildren());
 
         self::expectException(\DomainException::class);
         self::expectExceptionMessage('A category cannot be its own parent.');
@@ -451,11 +455,6 @@ class CategoryTest extends TestCase
         $safetyDirection = (new DirectionBuilder())
             ->withId(DirectionId::generate())
             ->withTitle('Охрана труда')
-            ->build();
-
-        $fireDirection = (new DirectionBuilder())
-            ->withId(DirectionId::generate())
-            ->withTitle('Пожарная безопасность')
             ->build();
 
         $category = (new CategoryBuilder())

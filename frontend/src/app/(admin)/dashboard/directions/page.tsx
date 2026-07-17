@@ -11,6 +11,8 @@ import AddDirectionDialog from "@/components/Admin/Dashboard/Directions/add-dire
 import EditDirectionDialog from "@/components/Admin/Dashboard/Directions/edit-direction-dialog";
 import { cookies } from "next/headers";
 import { DirectionDTO } from "@/interfaces/direction.interface";
+import Link from "next/link";
+import AdminBreadcrumbs from "@/components/Admin/Dashboard/AdminBreadcrumbs";
 
 export default async function DirectionsPage() {
   const cookieStore = await cookies();
@@ -20,6 +22,7 @@ export default async function DirectionsPage() {
 
   return (
     <div className="space-y-6">
+      <AdminBreadcrumbs items={[{ title: "Направления" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Направления</h1>
         <AddDirectionDialog />
@@ -37,7 +40,11 @@ export default async function DirectionsPage() {
           <TableBody>
             {data.map((dir: DirectionDTO) => (
               <TableRow key={dir.slug}>
-                <TableCell className="font-medium">{dir.title}</TableCell>
+                <TableCell className="font-medium">
+                  <Link href={`/dashboard/directions/${dir.slug}`} className="hover:underline">
+                    {dir.title}
+                  </Link>
+                </TableCell>
                 <TableCell className="max-w-[400px] font-medium">
                   <div className="line-clamp-2 text-sm text-muted-foreground">
                     {dir.description}

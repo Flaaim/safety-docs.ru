@@ -22,7 +22,7 @@ class CategoryRepository
     {
         return $this->repo->find($id);
     }
-    /** @return array<Category> */
+    /** @return ?Category */
     public function findBySlug(Slug $slug, DirectionId $directionId): ?Category
     {
         return $this->repo->findOneBy([

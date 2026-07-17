@@ -98,7 +98,7 @@ class CategoryBuilder
             $this->parent
         );
 
-        if(!empty($this->documents) && empty($this->children)) {
+        if (!empty($this->documents) && empty($this->children)) {
             foreach ($this->documents as $document) {
                 $category->addDocument($document);
             }

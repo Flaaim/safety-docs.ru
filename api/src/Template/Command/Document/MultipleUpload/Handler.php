@@ -34,18 +34,30 @@ final class Handler
             throw new \DomainException('Category not found.');
         }
 
-        if ($category->getParent() === null) {
-            throw new \DomainException('Uploading to parent category is prohibited.');
+        if (count($category->getChildren()) > 0) {
+            throw new \DomainException('Cannot add a document, because the current category contains subcategories.');
         }
 
         foreach ($command->files as $file) {
-            $documentId = DocumentId::generate();
-
             $name = $file->getClientFilename();
             if ($name === null) {
                 throw new \DomainException('File name cannot be null.');
             }
 
+            $existing = $this->documents->findByCategoryIdAndName($category->getId(), $name);
+
+            if ($existing !== null) {
+                $this->fileUploader->replace(
+                    $existing->getId()->getValue(),
+                    $existing->getFilename()->getValue(),
+                    $file
+                );
+                $existing->refreshUploadedAt();
+
+                continue;
+            }
+
+            $documentId = DocumentId::generate();
             $filename = $this->fileUploader->upload($documentId->getValue(), $file);
 
             $document = new Document(
