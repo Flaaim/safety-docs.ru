@@ -15,7 +15,7 @@ class Document
     private \DateTimeImmutable $createdAt;
     public function __construct(
         #[ORM\Id]
-        #[ORM\Column(type: 'document_id')]
+        #[ORM\Column(type: 'document_id', unique: true)]
         private DocumentId $id,
         #[ORM\Column(type: 'string', length: 255)]
         private string $name,
@@ -26,7 +26,12 @@ class Document
         #[ORM\Column(type: 'string', length: 255)]
         private string $slug,
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'documents')]
-        #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'category_id', nullable: false, onDelete: 'RESTRICT')]
+        #[ORM\JoinColumn(
+            name: 'category_id',
+            referencedColumnName: 'category_id',
+            nullable: false,
+            onDelete: 'RESTRICT')
+        ]
         private Category $category
     ) {
         $this->createdAt = new \DateTimeImmutable();

@@ -4,6 +4,8 @@ namespace Test\Functional\Payment\HookPayment;
 
 use App\Template\Entity\Document\DocumentId;
 use App\Template\Entity\Document\Filename;
+use App\Template\Test\Builder\CategoryBuilder;
+use App\Template\Test\Builder\DirectionBuilder;
 use App\Template\Test\Builder\DocumentBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
@@ -16,10 +18,16 @@ class RequestFixture extends AbstractFixture
     public const FILENAME = 'b1c45173-d172-46d7-b1b7-ef015c1e9a48.docx';
     public function load(ObjectManager $manager): void
     {
+        $direction = (new DirectionBuilder())->build();
+        $manager->persist($direction);
+
+        $category = (new CategoryBuilder())->build($direction);
+        $manager->persist($category);
+
         $document = (new DocumentBuilder())
             ->withId(new DocumentId(self::DOCUMENT_ID))
             ->withFilename(new Filename(self::FILENAME))
-            ->build();
+            ->build($category);
 
         $manager->persist($document);
 

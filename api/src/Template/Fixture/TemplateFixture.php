@@ -36,16 +36,16 @@ class TemplateFixture extends AbstractFixture
 
         $category = new Category(
             CategoryId::generate(),
-            'Служба охраны труда',
-            'Описание службы охраны труда',
+            'Инструкции по охране труда',
+            'Описание инструкций по охране труда',
             'Текст службы охраны труда',
             Slug::generate('Служба охраны труда')->getValue(),
             $safetyDirection
         );
 
-        $manager->persist($category);
         $manager->persist($safetyDirection);
         $manager->persist($fireDirection);
+        $manager->persist($category);
 
         $manager->flush();
     }

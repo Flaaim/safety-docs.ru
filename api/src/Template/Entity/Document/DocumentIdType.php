@@ -20,7 +20,13 @@ final class DocumentIdType extends StringType
     {
         return !empty($value) ? new DocumentId((string)$value) : null;
     }
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        $column['length'] = 36;
+        $column['fixed'] = true; // CHAR вместо VARCHAR
 
+        return $platform->getStringTypeDeclarationSQL($column);
+    }
     public function getName(): string
     {
         return self::NAME;
