@@ -30,23 +30,44 @@ return static function (App $app): void {
 
         $group->group('/directions', function (RouteCollectorProxy $group): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+            $slugPattern = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
             $group->get('', Template\GetAll\RequestAction::class);
 
-            $group->get('/s/{slug:[a-z0-9-]+}', Template\GetBySlug\RequestAction::class);
+            // Public slug hierarchy (mirrors frontend /directions/... paths)
+            $group->group('/s/{directionSlug:' . $slugPattern . '}', function (RouteCollectorProxy $group) use ($slugPattern): void {
+                $group->get('', Template\GetBySlug\RequestAction::class);
+
+                $group->get('/categories', Template\Category\GetAllByDirectionSlug\RequestAction::class);
+                $group->get(
+                    '/categories/s/{categorySlug:' . $slugPattern . '}',
+                    Template\Category\GetBySlugs\RequestAction::class
+                );
+                $group->get(
+                    '/categories/s/{categorySlug:' . $slugPattern . '}/documents',
+                    Template\Document\GetAllByCategorySlugs\RequestAction::class
+                );
+                $group->get(
+                    '/categories/s/{categorySlug:' . $slugPattern . '}/documents/s/{templateSlug:' . $slugPattern . '}',
+                    Template\Document\GetBySlugs\RequestAction::class
+                );
+            });
+
             $group->post('', Template\Add\RequestAction::class);
             $group->delete('/{directionId:' . $uuidPattern . '}', Template\Delete\RequestAction::class);
             $group->put('/{directionId:' . $uuidPattern . '}', Template\Update\RequestAction::class);
 
-            $group->group('/{directionId:' . $uuidPattern . '}/categories', function (RouteCollectorProxy $group) use ($uuidPattern): void {
-
+            // Admin / UUID-based category & document routes
+            $group->group('/{directionId:' . $uuidPattern . '}/categories', function (RouteCollectorProxy $group) use ($uuidPattern, $slugPattern): void {
                 $group->get('', Template\Category\GetAllByDirection\RequestAction::class);
-                $group->get('/s/{slug:[a-z0-9-]+}', Template\Category\GetBySlug\RequestAction::class);
+                $group->get('/s/{slug:' . $slugPattern . '}', Template\Category\GetBySlug\RequestAction::class);
                 $group->delete('/{categoryId:' . $uuidPattern . '}', Template\Category\Delete\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('', Template\Category\Add\RequestAction::class)->add(AuthMiddleware::class);
                 $group->put('/{categoryId:' . $uuidPattern . '}', Template\Category\Update\RequestAction::class)->add(AuthMiddleware::class);
 
-                $group->group('/{categoryId:' . $uuidPattern . '}/documents', function (RouteCollectorProxy $group) use ($uuidPattern): void {
+                $group->group('/{categoryId:' . $uuidPattern . '}/documents', function (RouteCollectorProxy $group) use ($uuidPattern, $slugPattern): void {
+                    $group->get('', Template\Document\GetAllByCategory\RequestAction::class);
+                    $group->get('/s/{slug:' . $slugPattern . '}', Template\Document\GetBySlug\RequestAction::class);
                     $group->get('/{documentId:' . $uuidPattern . '}', Template\Document\GetById\RequestAction::class);
                     $group->post('/bulk', Template\Document\MultipleUpload\RequestAction::class)->add(AuthMiddleware::class);
                 });

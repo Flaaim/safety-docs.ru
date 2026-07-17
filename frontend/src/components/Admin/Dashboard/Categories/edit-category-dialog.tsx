@@ -70,7 +70,10 @@ export default function EditCategoryDialog({ slug, id, directionId }: EditCatego
           ]);
 
           setCategories(catData.categories);
-          setDirectionCollection(dirCollection);
+          setDirectionCollection({
+            directions: dirCollection as DirectionDTO[],
+            total: dirCollection.length,
+          });
           setCategoryData(categoryDTO);
 
           setTextValue(categoryDTO.text || "");
@@ -86,7 +89,10 @@ export default function EditCategoryDialog({ slug, id, directionId }: EditCatego
       const initDirections = async () => {
         try {
           const directionCollection = await getAllDirections(token);
-          setDirectionCollection(directionCollection);
+          setDirectionCollection({
+            directions: directionCollection as DirectionDTO[],
+            total: directionCollection.length,
+          });
         } catch (error) {
           toast.error(error instanceof Error ? error.message : "Ошибка при загрузке директорий");
         }

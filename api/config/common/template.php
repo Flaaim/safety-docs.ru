@@ -8,8 +8,10 @@ use App\Shared\Domain\ValueObject\FileSystem\FileSystemPath;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
 use App\Template\Query\Category\CategoryFetcher;
 use App\Template\Query\Direction\DirectionFetcher;
+use App\Template\Query\Document\DocumentFetcher;
 use App\Template\ReadModel\CategoryFetcherInterface;
 use App\Template\ReadModel\DirectionFetcherInterface;
+use App\Template\ReadModel\DocumentFetcherInterface;
 use App\Template\Service\File\FileNameGeneratorInterface;
 use App\Template\Service\File\FileUploader;
 use App\Template\Service\File\FileUploaderInterface;
@@ -19,6 +21,7 @@ use Psr\Container\ContainerInterface;
 return [
     DirectionFetcherInterface::class => DI\autowire(DirectionFetcher::class),
     CategoryFetcherInterface::class => DI\autowire(CategoryFetcher::class),
+    DocumentFetcherInterface::class => DI\autowire(DocumentFetcher::class),
     FileUploaderInterface::class => function (ContainerInterface $container) {
         return new FileUploader(
             $container->get(FileSystemPathInterface::class),

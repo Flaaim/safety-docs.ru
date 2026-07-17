@@ -30,7 +30,42 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
         if (!$row) {
             return [];
         }
-        return $row;
+        return $this->normalizeRow($row);
+    }
+
+    public function getAllByCategory(string $categoryId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('d.id, d.name, d.amount, d.filename, d.created_at, d.slug')
+            ->from('documents', 'd')
+            ->where($qb->expr()->eq('d.category_id', ':categoryId'))
+            ->setParameter('categoryId', $categoryId)
+            ->orderBy('d.name', 'ASC');
+
+        $rows = $qb->executeQuery()->fetchAllAssociative();
+
+        return array_map(fn (array $row) => $this->normalizeRow($row), $rows);
+    }
+
+    public function getBySlugAndCategoryId(string $slug, string $categoryId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('d.id, d.name, d.amount, d.filename, d.created_at, d.slug')
+            ->from('documents', 'd')
+            ->where($qb->expr()->eq('d.slug', ':slug'))
+            ->andWhere($qb->expr()->eq('d.category_id', ':categoryId'))
+            ->setParameter('slug', $slug)
+            ->setParameter('categoryId', $categoryId);
+
+        $row = $qb->executeQuery()->fetchAssociative();
+
+        if (!$row) {
+            return [];
+        }
+
+        return $this->normalizeRow($row);
     }
 
     public function getDocumentForPaymentCreate(string $id): array
@@ -49,6 +84,24 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
         if (!$row) {
             return [];
         }
+        return $row;
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    private function normalizeRow(array $row): array
+    {
+        if (isset($row['created_at']) && !isset($row['createdAt'])) {
+            $row['createdAt'] = $row['created_at'];
+            unset($row['created_at']);
+        }
+
+        if (isset($row['amount'])) {
+            $row['amount'] = (float) $row['amount'];
+        }
+
         return $row;
     }
 }

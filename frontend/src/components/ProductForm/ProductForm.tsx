@@ -10,11 +10,12 @@ import { LabelFormProps } from "./LabelForm.props";
 import { ButtonProps } from "./Button.props";
 import { Status } from "@/components/Status/Status";
 import { createPayment } from "@api/payment";
-import { CreatePaymentDTO } from "@/interfaces/payment.interface";
+import { CreatePaymentDTO } from "@/types/payment";
+import Link from "next/link";
 
 const schema = z.object({
   email: z.string().email("Некорректный email адрес"),
-  productId: z.string().uuid("Некорректный ID продукта"),
+  documentId: z.string().uuid("Некорректный ID документа"),
 });
 
 export const InputForm = ({ type, name, value, id, placeholder, ...props }: InputFormProps) => (
@@ -41,7 +42,14 @@ export const Button = ({ children, type, disabled, ...props }: ButtonProps) => (
   </button>
 );
 
-export const ProductForm = ({ headline, productId, className }: ProductFormProps): JSX.Element => {
+export const ProductForm = ({
+  headline,
+  documentId,
+  productId,
+  className,
+  showTerms = false,
+}: ProductFormProps): JSX.Element => {
+  const resolvedDocumentId = documentId ?? productId ?? "";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,7 +72,7 @@ export const ProductForm = ({ headline, productId, className }: ProductFormProps
 
     const createPaymentDTO: CreatePaymentDTO = {
       email: formData.get("email") as string,
-      productId: productId,
+      documentId: resolvedDocumentId,
     };
 
     const parsed = schema.safeParse(createPaymentDTO);
@@ -88,16 +96,24 @@ export const ProductForm = ({ headline, productId, className }: ProductFormProps
 
   return (
     <>
-      <h4>{headline}</h4>
+      {headline && <h4>{headline}</h4>}
       <form className={cn(styles.form, className)} onSubmit={handleSubmit}>
         <LabelForm forInput="email">Введите ваш email: </LabelForm>
         <InputForm type="email" name="email" id="email" placeholder="Email" />
         {error && <Status appearance="error">{error}</Status>}
 
         <Button type="submit" disabled={loading}>
-          {loading ? "Отправка..." : "Получить"}
+          {loading ? "Отправка..." : "Оплатить"}
         </Button>
       </form>
+      {showTerms && (
+        <p className="text-sm text-muted-foreground mt-3">
+          Приобретая образцы документов вы соглашаетесь с{" "}
+          <Link href="/terms" className="underline hover:text-foreground">
+            условиями использования
+          </Link>
+        </p>
+      )}
     </>
   );
 };

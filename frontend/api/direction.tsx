@@ -1,26 +1,31 @@
-import { DirectionCollection, DirectionDTO } from "@/interfaces/direction.interface";
+import { Direction, DirectionWithCategories } from "@/types/direction";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
-export async function getDirectionBySlug(slug: string, token?: string): Promise<DirectionDTO> {
-  return await apiFetch<DirectionDTO>(API.direction.getBySlug(slug), {
+const publicCache: RequestCache = "no-store";
+
+export async function getDirectionBySlug(
+  slug: string,
+  token?: string
+): Promise<DirectionWithCategories> {
+  return await apiFetch<DirectionWithCategories>(API.direction.getBySlug(slug), {
     method: "GET",
     token,
-    cache: token ? "no-store" : "force-cache",
+    cache: token ? "no-store" : publicCache,
   });
 }
 
-export async function getAllDirections(token?: string): Promise<DirectionCollection> {
-  return await apiFetch<DirectionCollection>(API.direction.getAll(), {
+export async function getAllDirections(token?: string): Promise<Direction[]> {
+  return await apiFetch<Direction[]>(API.direction.getAll(), {
     method: "GET",
     token,
-    cache: token ? "no-store" : "force-cache",
+    cache: token ? "no-store" : publicCache,
   });
 }
 
 export async function addDirection(
   token: string | undefined,
-  direction: Partial<DirectionDTO>
+  direction: Partial<Direction>
 ): Promise<void> {
   return await apiFetch<void>(API.direction.add(), {
     method: "POST",
@@ -36,7 +41,7 @@ export async function addDirection(
 export async function updateDirection(
   token: string | undefined,
   id: string,
-  direction: Partial<DirectionDTO>
+  direction: Partial<Direction>
 ): Promise<void> {
   return await apiFetch<void>(API.direction.update(id), {
     method: "PUT",

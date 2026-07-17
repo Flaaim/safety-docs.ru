@@ -75,7 +75,8 @@ final class CategoryFetcher implements CategoryFetcherInterface
                     'text' => $row['child_text'],
                     'slug' => $row['child_slug'],
                     'parent_id' => $row['child_parent_id'],
-                    'direction_id' => $row['child_direction_id']
+                    'direction_id' => $row['direction_id'],
+                    'children' => []
                 ];
             }
         }

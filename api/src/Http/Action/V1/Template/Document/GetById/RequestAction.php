@@ -21,7 +21,7 @@ final class RequestAction implements RequestHandlerInterface
     }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $route = $request->getAttribute('route');
+        $route = $request->getAttribute('active_route');
 
         $documentId = $route->getArgument('documentId', '');
 

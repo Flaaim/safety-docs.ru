@@ -61,7 +61,10 @@ export default function AddCategoryDialog() {
             getAllCategories(token),
           ]);
 
-          setDirectionCollection(dirData);
+          setDirectionCollection({
+            directions: dirData as DirectionDTO[],
+            total: dirData.length,
+          });
           setCategories(catData.categories);
         } catch (error) {
           const err = error instanceof Error ? error : new Error("Ошибка при получении данных");

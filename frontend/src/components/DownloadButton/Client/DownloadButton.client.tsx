@@ -22,7 +22,7 @@ export const DownloadButtonClient = ({
       </button>
 
       <ProductModal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ProductForm headline={headline} productId={productId}></ProductForm>
+        <ProductForm headline={headline} documentId={productId}></ProductForm>
         <Spantag size="s">
           Приобретая образцы документов вы соглашаетесь с{" "}
           <Link href="/terms">условиями использования</Link>

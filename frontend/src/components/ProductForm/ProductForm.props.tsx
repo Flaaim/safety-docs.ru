@@ -4,6 +4,10 @@ export interface ProductFormProps extends DetailedHTMLProps<
   HTMLAttributes<HTMLFormElement>,
   HTMLFormElement
 > {
-  headline: ReactNode;
-  productId: string;
+  headline?: ReactNode;
+  /** Preferred payment document id */
+  documentId?: string;
+  /** @deprecated Use documentId */
+  productId?: string;
+  showTerms?: boolean;
 }

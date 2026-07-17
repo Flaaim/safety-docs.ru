@@ -1,18 +1,57 @@
-import { AssignCategory, CategoryCollection, CategoryDTO } from "@/interfaces/category.interface";
+import { AssignCategory, Category, CategoryCollection } from "@/types/category";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
+
+const publicCache: RequestCache = "no-store";
 
 export async function getAllCategories(token?: string): Promise<CategoryCollection> {
   return await apiFetch<CategoryCollection>(API.category.getAll(), {
     method: "GET",
     token,
-    cache: token ? "no-store" : "force-cache",
+    cache: token ? "no-store" : publicCache,
+  });
+}
+
+/** Preferred public API — mirrors /directions/[directionSlug] */
+export async function getCategoriesByDirectionSlug(
+  directionSlug: string,
+  token?: string
+): Promise<Category[]> {
+  return await apiFetch<Category[]>(API.category.getAllByDirectionSlug(directionSlug), {
+    method: "GET",
+    token,
+    cache: token ? "no-store" : publicCache,
+  });
+}
+
+/** Preferred public API — mirrors /directions/[directionSlug]/[categorySlug] */
+export async function getCategoryBySlugs(
+  directionSlug: string,
+  categorySlug: string,
+  token?: string
+): Promise<Category> {
+  return await apiFetch<Category>(API.category.getBySlugs(directionSlug, categorySlug), {
+    method: "GET",
+    token,
+    cache: token ? "no-store" : publicCache,
+  });
+}
+
+/** @deprecated Prefer getCategoriesByDirectionSlug for public pages */
+export async function getCategoriesByDirection(
+  directionId: string,
+  token?: string
+): Promise<Category[]> {
+  return await apiFetch<Category[]>(API.category.getAllByDirection(directionId), {
+    method: "GET",
+    token,
+    cache: token ? "no-store" : publicCache,
   });
 }
 
 export async function addCategory(
   token: string | undefined,
-  category: Partial<CategoryDTO>
+  category: Partial<Category>
 ): Promise<void> {
   const directionId = category.directionId || "";
 
@@ -28,20 +67,22 @@ export async function addCategory(
   });
 }
 
+/** @deprecated Prefer getCategoryBySlugs for public pages */
 export async function getCategoryBySlug(
   slug: string,
   directionId: string,
-  token: string | undefined
-): Promise<CategoryDTO> {
-  return await apiFetch<CategoryDTO>(API.category.getBySlug(slug, directionId), {
+  token?: string
+): Promise<Category> {
+  return await apiFetch<Category>(API.category.getBySlug(slug, directionId), {
     method: "GET",
     token,
+    cache: token ? "no-store" : publicCache,
   });
 }
 
 export async function updateCategory(
   token: string | undefined,
-  category: Partial<CategoryDTO>
+  category: Partial<Category>
 ): Promise<void> {
   const id = category.id || "";
   const directionId = category.directionId || "";

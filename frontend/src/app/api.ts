@@ -26,6 +26,13 @@ export const API = {
   },
   category: {
     getAll: () => BASE_URL + `/v1/categories`,
+    /** Public: slug hierarchy matching /directions/[directionSlug] */
+    getAllByDirectionSlug: (directionSlug: string) =>
+      BASE_URL + `/v1/directions/s/${directionSlug}/categories`,
+    getBySlugs: (directionSlug: string, categorySlug: string) =>
+      BASE_URL + `/v1/directions/s/${directionSlug}/categories/s/${categorySlug}`,
+    getAllByDirection: (directionId: string) =>
+      BASE_URL + `/v1/directions/${directionId}/categories`,
     add: (directionId: string) => BASE_URL + `/v1/directions/${directionId}/categories`,
     getBySlug: (slug: string, directionId: string) =>
       BASE_URL + `/v1/directions/${directionId}/categories/s/${slug}`,
@@ -35,6 +42,20 @@ export const API = {
       BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
     assignProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
     refuseProduct: (categoryId: string) => BASE_URL + `/v1/categories/${categoryId}/product`,
+  },
+  document: {
+    /** Public: slug hierarchy matching /directions/.../[templateSlug] */
+    getAllByCategorySlugs: (directionSlug: string, categorySlug: string) =>
+      BASE_URL + `/v1/directions/s/${directionSlug}/categories/s/${categorySlug}/documents`,
+    getBySlugs: (directionSlug: string, categorySlug: string, templateSlug: string) =>
+      BASE_URL +
+      `/v1/directions/s/${directionSlug}/categories/s/${categorySlug}/documents/s/${templateSlug}`,
+    getAllByCategory: (directionId: string, categoryId: string) =>
+      BASE_URL + `/v1/directions/${directionId}/categories/${categoryId}/documents`,
+    getBySlug: (directionId: string, categoryId: string, slug: string) =>
+      BASE_URL + `/v1/directions/${directionId}/categories/${categoryId}/documents/s/${slug}`,
+    getById: (directionId: string, categoryId: string, documentId: string) =>
+      BASE_URL + `/v1/directions/${directionId}/categories/${categoryId}/documents/${documentId}`,
   },
   distribution: {
     getContactFiles: (currentPage: number, perPage: number) =>

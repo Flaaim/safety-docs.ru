@@ -10,18 +10,21 @@ const getCachedDirections = cache(async () => {
 });
 
 export const Header = async ({ className }: HeaderProps): Promise<JSX.Element> => {
-  const data = await getCachedDirections();
+  const directions = await getCachedDirections();
   return (
     <header className={cn(className, styles.header)}>
       <nav>
         <Link href="/" className={cn(className, styles.link)}>
           Главная
         </Link>
-        {data.directions.map((direction) => {
+        <Link href="/directions" className={cn(className, styles.link)}>
+          Направления
+        </Link>
+        {directions.map((direction) => {
           return (
             <Link
               key={direction.id}
-              href={"/docs/" + direction.slug}
+              href={"/directions/" + direction.slug}
               className={cn(className, styles.link)}
             >
               {direction.title}

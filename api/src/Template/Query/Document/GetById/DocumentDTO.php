@@ -22,10 +22,10 @@ final class DocumentDTO
         return new self(
             id: $data['id'],
             name: $data['name'],
-            amount: $data['amount'],
+            amount: (float) $data['amount'],
             filename: $data['filename'],
             slug: $data['slug'],
-            createdAt: $data['createdAt']
+            createdAt: $data['createdAt'] ?? $data['created_at'] ?? '',
         );
     }
 }

@@ -1,8 +1,4 @@
-import {
-  CreatePaymentDTO,
-  PaymentInitResponse,
-  PaymentResultDTO,
-} from "@/interfaces/payment.interface";
+import { CreatePaymentDTO, PaymentInitResponse, PaymentResultDTO } from "@/types/payment";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
@@ -25,7 +21,7 @@ export async function createPayment(
     signal,
     body: JSON.stringify({
       email: payment.email,
-      productId: payment.productId,
+      documentId: payment.documentId,
     }),
   });
 }
