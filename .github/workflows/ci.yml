@@ -49,7 +49,7 @@ jobs:
       - name: Frontend lint
         run: |
           make frontend-format
-          make frontend-lint
+          make frontend-lint-style
 
       - name: API tests
         id: api-test
