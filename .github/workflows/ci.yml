@@ -48,7 +48,7 @@ jobs:
 
       - name: Frontend lint
         run: |
-          make frontend-lint-fix
+          make frontend-format
           make frontend-lint
 
       - name: API tests
