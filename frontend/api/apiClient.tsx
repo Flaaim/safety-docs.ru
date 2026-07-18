@@ -1,9 +1,20 @@
 interface fetchOptions extends RequestInit {
-  token?: string;
+  token?: string | undefined;
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
 }
 
 export async function apiFetch<T = void>(url: string, options: fetchOptions = {}): Promise<T> {
-  const { token, headers: customHeaders, body, ...restOptions } = options;
+  const {
+    token,
+    headers: customHeaders,
+    body,
+    next,
+    cache: requestCache,
+    ...restOptions
+  } = options;
 
   const headers = new Headers(customHeaders);
 
@@ -15,8 +26,16 @@ export async function apiFetch<T = void>(url: string, options: fetchOptions = {}
     headers.set("Authorization", `Bearer ${token}`);
   }
 
+  const fetchConfig = token
+    ? { cache: "no-store" as RequestCache }
+    : {
+        cache: requestCache,
+        next: next,
+      };
+
   const response = await fetch(url, {
     ...restOptions,
+    ...fetchConfig,
     headers: Object.fromEntries(headers.entries()),
     body,
   });

@@ -2,7 +2,7 @@ import { Direction, DirectionWithCategories } from "@/types/direction";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
-const publicCache: RequestCache = "no-store";
+const publicRevalidate = 3600;
 
 export async function getDirectionBySlug(
   slug: string,
@@ -11,7 +11,9 @@ export async function getDirectionBySlug(
   return await apiFetch<DirectionWithCategories>(API.direction.getBySlug(slug), {
     method: "GET",
     token,
-    cache: token ? "no-store" : publicCache,
+    ...(token
+      ? { cache: "no-store" }
+      : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
   });
 }
 
@@ -19,7 +21,9 @@ export async function getAllDirections(token?: string): Promise<Direction[]> {
   return await apiFetch<Direction[]>(API.direction.getAll(), {
     method: "GET",
     token,
-    cache: token ? "no-store" : publicCache,
+    ...(token
+      ? { cache: "no-store" }
+      : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
   });
 }
 

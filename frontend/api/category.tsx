@@ -2,7 +2,7 @@ import { Category } from "@/types/category";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
-const publicCache: RequestCache = "no-store";
+const publicRevalidate = 3600;
 
 /** Preferred public API — mirrors /directions/[directionSlug] */
 export async function getCategoriesByDirectionSlug(
@@ -12,7 +12,9 @@ export async function getCategoriesByDirectionSlug(
   return await apiFetch<Category[]>(API.category.getAllByDirectionSlug(directionSlug), {
     method: "GET",
     token,
-    cache: token ? "no-store" : publicCache,
+    ...(token
+      ? { cache: "no-store" }
+      : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
   });
 }
 
@@ -25,7 +27,9 @@ export async function getCategoryBySlugs(
   return await apiFetch<Category>(API.category.getBySlugs(directionSlug, categorySlug), {
     method: "GET",
     token,
-    cache: token ? "no-store" : publicCache,
+    ...(token
+      ? { cache: "no-store" }
+      : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
   });
 }
 
@@ -37,7 +41,9 @@ export async function getCategoriesByDirection(
   return await apiFetch<Category[]>(API.category.getAllByDirection(directionId), {
     method: "GET",
     token,
-    cache: token ? "no-store" : publicCache,
+    ...(token
+      ? { cache: "no-store" }
+      : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
   });
 }
 
@@ -68,7 +74,9 @@ export async function getCategoryBySlug(
   return await apiFetch<Category>(API.category.getBySlug(slug, directionId), {
     method: "GET",
     token,
-    cache: token ? "no-store" : publicCache,
+    ...(token
+      ? { cache: "no-store" }
+      : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
   });
 }
 

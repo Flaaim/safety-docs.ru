@@ -2,7 +2,7 @@ import { Template, TemplateListResult, BulkUploadResponse } from "@/types/templa
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
-const publicCache: RequestCache = "no-store";
+const publicRevalidate = 3600;
 
 const ACCEPTED_EXTENSIONS = [".doc", ".docx"];
 const ACCEPTED_MIME_TYPES = [
@@ -102,7 +102,9 @@ export async function getTemplatesByCategorySlugs(
     {
       method: "GET",
       token,
-      cache: token ? "no-store" : publicCache,
+      ...(token
+        ? { cache: "no-store" }
+        : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
     }
   );
 }
@@ -119,7 +121,9 @@ export async function getTemplateBySlugs(
     {
       method: "GET",
       token,
-      cache: token ? "no-store" : publicCache,
+      ...(token
+        ? { cache: "no-store" }
+        : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
     }
   );
 }
