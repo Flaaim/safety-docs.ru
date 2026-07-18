@@ -42,3 +42,4 @@ COPY --from=builder /app ./
 COPY ./ ./
 
 RUN chown www-data:www-data ./var -R
+RUN chown www-data:www-data ./public/templates
