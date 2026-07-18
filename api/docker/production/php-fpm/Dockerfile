@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=builder /app ./
 COPY ./ ./
 
-RUN mkdir -p var/cache var/log \
-    && chown -R www-data:www-data /app/var
+RUN mkdir -p var/cache var/log public/templates \
+    && chown -R www-data:www-data ./var ./public/templates
 
 USER www-data
