@@ -9,6 +9,7 @@ use App\Http\Action\V1\Distribution;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\UnsubscribeMiddleware;
 use App\Http\Middleware\UploadFileHandler;
+use App\Http\Action\V1\Parser;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -107,6 +108,10 @@ return static function (App $app): void {
                 $group->delete('/{newsletterId:' . $uuidPattern . '}', Distribution\Newsletter\Archive\RequestAction::class)->add(AuthMiddleware::class);
                 $group->post('/launch', Distribution\Newsletter\Launch\RequestAction::class)->add(AuthMiddleware::class);
             });
+        });
+
+        $group->group('/parser', function (RouteCollectorProxy $group): void {
+            $group->post('/launch', Parser\Launch\RequestAction::class);
         });
     });
 };
