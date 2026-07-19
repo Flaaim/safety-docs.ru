@@ -7,8 +7,10 @@ namespace App\Parser\Command\Launch;
 final class Command
 {
     public function __construct(
+        public string $categoryId,
+        public float $amount,
         public readonly string $url,
         public readonly string $cookie
-    ){
+    ) {
     }
 }

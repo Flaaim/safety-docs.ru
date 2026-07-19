@@ -7,6 +7,7 @@ use GuzzleHttp\ClientInterface;
 
 return [
     ClientInterface::class => function () {
-        return new Client();
+        return new Client([
+            'base_uri' => 'https://1otruda.ru']);
     }
 ];
