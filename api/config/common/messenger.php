@@ -130,6 +130,14 @@ return [
             ]
         );
 
+        $dispatcher->addListener(
+            WorkerMessageFailedEvent::class,
+            function (WorkerMessageFailedEvent $event) {
+                $throwable = $event->getThrowable();
+
+                \Sentry\captureException($throwable);
+            }
+        );
         return $dispatcher;
     },
     FailedMessagesRetryCommand::class => function (ContainerInterface $container): FailedMessagesRetryCommand {

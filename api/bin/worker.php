@@ -27,7 +27,7 @@ $bus = $container->get(MessageBusInterface::class);
 
 $receiver = $container->get(TransportInterface::class);
 
-$eventDispatcher = new EventDispatcher();
+$eventDispatcher = $container->get(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
 
 $worker = new Worker(
     ['async' => $receiver],

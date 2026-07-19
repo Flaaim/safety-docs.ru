@@ -8,6 +8,8 @@ use Monolog\Level;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Sentry\Monolog\LogToSentryIssueHandler;
+use Sentry\SentrySdk;
 
 return [
     LoggerInterface::class => function (ContainerInterface $container) {
@@ -23,6 +25,9 @@ return [
 
         if (!empty($config['file'])) {
             $log->pushHandler(new StreamHandler($config['file'], $level));
+        }
+        if(SentrySdk::getCurrentHub()->getClient() !== null) {
+            $log->pushHandler(new LogToSentryIssueHandler(SentrySdk::getCurrentHub(), Level::Error));
         }
         return $log;
     },
