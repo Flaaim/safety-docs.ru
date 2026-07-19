@@ -13,6 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
+use Symfony\Component\Messenger\Command\FailedMessagesShowCommand;
 
 return [
     FixturesLoadCommand::class => static function (ContainerInterface $container) {
@@ -40,6 +42,8 @@ return [
                 StatusCommand::class,
                 UpToDateCommand::class,
 
+                ConsumeMessagesCommand::class,
+                FailedMessagesShowCommand::class,
             ],
             'fixture_paths' => [
                 __DIR__ . '/../../src/Payment/Fixture',
