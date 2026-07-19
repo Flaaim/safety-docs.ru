@@ -82,11 +82,20 @@ return [
         );
     },
     'messenger.failure_transports.locator' => function (ContainerInterface $container): ServiceProviderInterface {
-        return new class($container) implements ServiceProviderInterface {
-            public function __construct(private ContainerInterface $container) {}
-            public function get(string $id): mixed { return $this->container->get($id); }
-            public function has(string $id): bool { return $this->container->has($id); }
-            public function getProvidedServices(): array {
+        return new class ($container) implements ServiceProviderInterface {
+            public function __construct(private ContainerInterface $container)
+            {
+            }
+            public function get(string $id): mixed
+            {
+                return $this->container->get($id);
+            }
+            public function has(string $id): bool
+            {
+                return $this->container->has($id);
+            }
+            public function getProvidedServices(): array
+            {
                 // Указываем, что сервис 'failed' возвращает TransportInterface
                 return ['failed' => TransportInterface::class];
             }
