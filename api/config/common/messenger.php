@@ -10,17 +10,28 @@ use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
 use App\Sender\Event\SendDocumentEmailCommand;
 use App\Sender\MessageHandler\SendDocumentOnEmailPreparedHandler;
+use Carbon\Laravel\ServiceProvider;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
+use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
+use Symfony\Component\Messenger\Command\FailedMessagesRetryCommand;
+use Symfony\Component\Messenger\Command\FailedMessagesShowCommand;
+use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
+use Symfony\Component\Messenger\EventListener\SendFailedMessageToFailureTransportListener;
 use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Component\Messenger\Middleware\SendMessageMiddleware;
+use Symfony\Component\Messenger\RoutableMessageBus;
 use Symfony\Component\Messenger\Transport\Sender\SendersLocator;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 
 return [
     MessageBusInterface::class => function (ContainerInterface $container): MessageBus {
@@ -62,11 +73,76 @@ return [
             new HandleMessageMiddleware(new HandlersLocator($handlers)),
         ]);
     },
+    'async' => DI\get(TransportInterface::class),
+    'failed' => DI\get('messenger.transport.failed'),
+    RoutableMessageBus::class => function (ContainerInterface $container): RoutableMessageBus {
+        return new RoutableMessageBus(
+            $container,
+            $container->get(MessageBusInterface::class)
+        );
+    },
+    'messenger.failure_transports.locator' => function (ContainerInterface $container): ServiceProviderInterface {
+        return new class($container) implements ServiceProviderInterface {
+            public function __construct(private ContainerInterface $container) {}
+            public function get(string $id): mixed { return $this->container->get($id); }
+            public function has(string $id): bool { return $this->container->has($id); }
+            public function getProvidedServices(): array {
+                // Указываем, что сервис 'failed' возвращает TransportInterface
+                return ['failed' => TransportInterface::class];
+            }
+        };
+    },
+    ConsumeMessagesCommand::class => function (ContainerInterface $container): ConsumeMessagesCommand {
+        return new ConsumeMessagesCommand(
+            $container->get(RoutableMessageBus::class),
+            $container,
+            $container->get(Symfony\Component\EventDispatcher\EventDispatcherInterface::class),
+            $container->get(LoggerInterface::class),
+        );
+    },
+    FailedMessagesShowCommand::class => function (ContainerInterface $container): FailedMessagesShowCommand {
+        return new FailedMessagesShowCommand(
+            'failed',
+            $container->get('messenger.failure_transports.locator'),
+        );
+    },
+    EventDispatcherInterface::class => function (ContainerInterface $container): EventDispatcherInterface {
+        $dispatcher = new EventDispatcher();
+
+        $dispatcher->addListener(
+            WorkerMessageFailedEvent::class,
+            [
+                new SendFailedMessageToFailureTransportListener(
+                    $container->get('messenger.failure_transports.locator'),
+                    $container->get(LoggerInterface::class),
+                    ['async' => 'failed']
+                ),
+                'onMessageFailed'
+            ]
+        );
+
+        return $dispatcher;
+    },
+    FailedMessagesRetryCommand::class => function (ContainerInterface $container): FailedMessagesRetryCommand {
+        return new FailedMessagesRetryCommand(
+            'failed',
+            $container->get('messenger.failure_transports.locator'),
+            $container->get(RoutableMessageBus::class),
+            $container->get(EventDispatcherInterface::class),
+            $container->get(LoggerInterface::class)
+        );
+    },
     TransportInterface::class => function (ContainerInterface $container): TransportInterface {
         $dsn = $container->get('config')['messenger']['async'];
 
         $factory = new RedisTransportFactory();
         return $factory->createTransport($dsn, [], new PhpSerializer());
+    },
+    'messenger.transport.failed' => function (ContainerInterface $container): TransportInterface {
+        $dsn = $container->get('config')['messenger']['async'];
+
+        $factory = new RedisTransportFactory();
+        return $factory->createTransport($dsn, ['stream' => 'failed'], new PhpSerializer());
     },
     'config' => [
         'messenger' => [

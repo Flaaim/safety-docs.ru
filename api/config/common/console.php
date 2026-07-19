@@ -14,6 +14,7 @@ use Doctrine\ORM\Tools\Console\Command\SchemaTool\UpdateCommand;
 use Doctrine\ORM\Tools\Console\Command\ValidateSchemaCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
+use Symfony\Component\Messenger\Command\FailedMessagesRetryCommand;
 use Symfony\Component\Messenger\Command\FailedMessagesShowCommand;
 
 return [
@@ -44,6 +45,7 @@ return [
 
                 ConsumeMessagesCommand::class,
                 FailedMessagesShowCommand::class,
+                FailedMessagesRetryCommand::class
             ],
             'fixture_paths' => [
                 __DIR__ . '/../../src/Payment/Fixture',
