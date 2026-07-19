@@ -23,6 +23,7 @@ use App\Template\Entity\Slug;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly RubricatorHtmlFetcher $fetchListDocuments,
         private readonly DocumentListParser $documentListParser,
@@ -55,7 +56,9 @@ final class Handler
 
         $documentHtml = ($this->documentHtmlFetcher)($documents[0], $command->cookie);
         $hrefLink = ($this->attachmentParser)($documentHtml);
-
+        if ($hrefLink === null) {
+            throw new \DomainException('Cannot add a document, hrefLink is null');
+        }
         $existing = $this->documents->findByCategoryIdAndName($category->getId(), $documents[0]->title);
         if ($existing !== null) {
             $this->downloader->replace(

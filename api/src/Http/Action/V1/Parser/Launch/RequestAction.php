@@ -21,7 +21,7 @@ final class RequestAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $data = (array)$request->getParsedBody() ?? [];
+        $data = $request->getParsedBody() ?? [];
 
         $command = new Command(
             $data['categoryId'] ?? '',
