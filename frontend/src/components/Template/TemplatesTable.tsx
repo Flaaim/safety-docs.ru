@@ -13,12 +13,6 @@ export default function TemplatesTable({
   directionSlug,
   categorySlug,
 }: TemplatesTableProps) {
-  const formatPrice = (amount: number) =>
-    new Intl.NumberFormat("ru-RU", {
-      style: "currency",
-      currency: "RUB",
-      maximumFractionDigits: 0,
-    }).format(amount);
 
   const formatDate = (dateInput?: string | Date) => {
     if (!dateInput) return "—";
