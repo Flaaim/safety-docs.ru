@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { getDirectionBySlug } from "@api/direction";
 import { getCategoriesByDirectionSlug, getCategoryBySlugs } from "@api/category";
-import { getTemplatesByCategorySlugs } from "@api/document";
+import { getTemplatesByCategorySlugs, EMPTY_PAGINATED_TEMPLATES } from "@api/document";
 import AddCategoryDialog from "@/components/Admin/Dashboard/Categories/add-category-dialog";
 import EditCategoryDialog from "@/components/Admin/Dashboard/Categories/edit-category-dialog";
 import DeleteCategoryDialog from "@/components/Admin/Dashboard/Categories/delete-category-dialog";
@@ -51,10 +51,10 @@ export default async function CategoryNestedPage({
 
   const children = category.children ?? [];
   const allCategories = await getCategoriesByDirectionSlug(directionSlug, token);
-  const templates =
+  const templatesData =
     children.length === 0
       ? await getTemplatesByCategorySlugs(directionSlug, categorySlug, token)
-      : [];
+      : EMPTY_PAGINATED_TEMPLATES;
 
   return (
     <div className="space-y-6">
@@ -148,14 +148,14 @@ export default async function CategoryNestedPage({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {templates.length === 0 ? (
+              {templatesData.items.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-muted-foreground">
                     В этой категории пока нет документов.
                   </TableCell>
                 </TableRow>
               ) : (
-                templates.map((template) => (
+                templatesData.items.map((template) => (
                   <TableRow key={template.id}>
                     <TableCell className="font-medium">
                       <Link

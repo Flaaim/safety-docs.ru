@@ -14,3 +14,4 @@ export * from "@/components/Navigation/Navigation";
 export * from "./PaymentResult/PaymentResult";
 export * from "./SimpleCard/SimpleCard";
 export * from "./Dialog/SimpleDialog";
+export * from "./Template/TemplatesTable";

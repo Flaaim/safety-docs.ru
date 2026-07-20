@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import PaginationControls from "@/components/PaginationControls/PaginationControls";
+import PaginationControls from "@/components/Pagination/Pagination";
 import AdminBreadcrumbs from "@/components/Admin/Dashboard/AdminBreadcrumbs";
 import { getAdminTemplates } from "@api/document";
 
@@ -75,7 +75,11 @@ export default async function DocsPage({ searchParams }: DocsPageProps) {
             )}
           </TableBody>
         </Table>
-        <PaginationControls currentPage={data.currentPage} totalPages={data.totalPages} />
+        <PaginationControls
+          currentPage={data.currentPage}
+          totalPages={data.totalPages}
+          baseUrl="/dashboard/docs"
+        />
       </div>
     </div>
   );

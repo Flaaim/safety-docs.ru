@@ -33,9 +33,36 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
         return $this->normalizeRow($row);
     }
 
-    public function getAllByCategory(string $categoryId): array
+    public function getPaginatedByCategory(string $categoryId, int $page = 1, int $limit = 15, ?string $search = null): array
     {
+        $offset = ($page - 1) * $limit;
+
         $qb = $this->connection->createQueryBuilder();
+
+            $qb->select('d.id, d.name, d.amount, d.filename, d.created_at, d.slug')
+            ->from('documents', 'd')
+            ->where($qb->expr()->eq('d.category_id', ':categoryId'))
+            ->setParameter('categoryId', $categoryId);
+
+        if ($search !== null && trim($search) !== '') {
+            $qb->andWhere($qb->expr()->or(
+                $qb->expr()->like('LOWER(d.name)', ':search'),
+                $qb->expr()->like('LOWER(d.filename)', ':search')
+            ))
+                ->setParameter('search', '%' . mb_strtolower(trim($search)) . '%');
+        }
+
+        $countQb = clone $qb;
+        $totalCount = (int) $countQb->select('COUNT(d.id)')
+            ->executeQuery()
+            ->fetchOne();
+
+        $rows = $qb->select('d.id, d.name, d.amount, d.filename, d.created_at, d.slug')
+            ->orderBy('d.name', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         $qb->select('d.id, d.name, d.amount, d.filename, d.created_at, d.slug')
             ->from('documents', 'd')
@@ -43,9 +70,12 @@ final class DocumentFetcher implements DocumentFetcherInterface, DocumentQueryIn
             ->setParameter('categoryId', $categoryId)
             ->orderBy('d.name', 'ASC');
 
-        $rows = $qb->executeQuery()->fetchAllAssociative();
+        $items = array_map(fn (array $row) => $this->normalizeRow($row), $rows);
 
-        return array_map(fn (array $row) => $this->normalizeRow($row), $rows);
+        return [
+            'items' => $items,
+            'totalCount' => $totalCount,
+        ];
     }
 
     public function getBySlugAndCategoryId(string $slug, string $categoryId): array

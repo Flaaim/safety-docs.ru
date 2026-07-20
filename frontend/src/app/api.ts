@@ -3,6 +3,12 @@ const BASE_URL = isServer
   ? process.env.INTERNAL_BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://api"
   : process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8081";
 
+type PaginationParams = {
+  page?: number;
+  limit?: number;
+  search?: string;
+};
+
 export const API = {
   payment: {
     create: () => BASE_URL + `/v1/payments/process-payment`,
@@ -52,8 +58,21 @@ export const API = {
       return BASE_URL + `/v1/templates?${params.toString()}`;
     },
     /** Public: slug hierarchy matching /directions/.../[templateSlug] */
-    getAllByCategorySlugs: (directionSlug: string, categorySlug: string) =>
-      BASE_URL + `/v1/directions/s/${directionSlug}/categories/s/${categorySlug}/documents`,
+    getAllByCategorySlugs: (
+      directionSlug: string,
+      categorySlug: string,
+      params?: PaginationParams
+    ) => {
+      const url = new URL(
+        BASE_URL + `/v1/directions/s/${directionSlug}/categories/s/${categorySlug}/documents`
+      );
+
+      if (params?.page) url.searchParams.set("page", params.page.toString());
+      if (params?.limit) url.searchParams.set("limit", params.limit.toString());
+      if (params?.search) url.searchParams.set("search", params.search.toString());
+      return url.toString();
+    },
+
     getBySlugs: (directionSlug: string, categorySlug: string, templateSlug: string) =>
       BASE_URL +
       `/v1/directions/s/${directionSlug}/categories/s/${categorySlug}/documents/s/${templateSlug}`,

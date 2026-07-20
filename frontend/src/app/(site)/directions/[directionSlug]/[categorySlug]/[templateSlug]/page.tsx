@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 
       for (const cat of leafCategories) {
         const templates = await getTemplatesByCategorySlugs(dir.slug, cat.slug);
-        for (const template of templates) {
+        for (const template of templates.items) {
           paths.push({
             directionSlug: dir.slug,
             categorySlug: cat.slug,

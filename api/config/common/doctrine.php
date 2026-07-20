@@ -24,9 +24,9 @@ return [
             null
         );
 
-//        $config->setSchemaAssetsFilter(function ($assetName) {
-//            return !str_starts_with($assetName, 'doctrine_migration_versions');
-//        });
+        $config->setSchemaAssetsFilter(function ($assetName) {
+            return !str_starts_with($assetName, 'doctrine_migration_versions');
+        });
 
         $config->setNamingStrategy(new UnderscoreNamingStrategy());
 

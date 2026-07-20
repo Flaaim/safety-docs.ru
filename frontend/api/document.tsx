@@ -1,8 +1,15 @@
 import { Template, TemplateListResult, BulkUploadResponse } from "@/types/template";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
+import { PaginatedTemplates } from "@/interfaces/template.interface";
 
 const publicRevalidate = 3600;
+
+export const EMPTY_PAGINATED_TEMPLATES: PaginatedTemplates = {
+  items: [],
+  totalCount: 0,
+  totalPages: 0,
+};
 
 const ACCEPTED_EXTENSIONS = [".doc", ".docx"];
 const ACCEPTED_MIME_TYPES = [
@@ -95,10 +102,11 @@ export async function getAdminTemplates(
 export async function getTemplatesByCategorySlugs(
   directionSlug: string,
   categorySlug: string,
-  token?: string
-): Promise<Template[]> {
-  return await apiFetch<Template[]>(
-    API.document.getAllByCategorySlugs(directionSlug, categorySlug),
+  token?: string,
+  params?: { page?: number; limit?: number; search?: string }
+): Promise<PaginatedTemplates> {
+  return await apiFetch<PaginatedTemplates>(
+    API.document.getAllByCategorySlugs(directionSlug, categorySlug, params),
     {
       method: "GET",
       token,

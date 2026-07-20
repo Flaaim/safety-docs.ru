@@ -6,11 +6,7 @@ interface DocumentFetcherInterface
 {
     public function getById(string $id): array;
 
-    /**
-     * @return list<array<string, mixed>>
-     */
-    public function getAllByCategory(string $categoryId): array;
-
+    public function getPaginatedByCategory(string $categoryId, int $page = 1, int $limit = 15, ?string $search = null): array;
     /**
      * @return array<string, mixed>
      */

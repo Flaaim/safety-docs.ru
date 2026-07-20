@@ -11,22 +11,33 @@ use App\Template\Query\Document\GetAllByCategorySlugs\Query;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 
 final class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Handler $handler,
         private readonly Validator $validator,
+        private readonly LoggerInterface $logger
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = $request->getAttribute('active_route');
+        $queryParams = $request->getQueryParams();
+
+        $this->logger->error('Params ' . var_export($queryParams, true));
+        $page = isset($queryParams['page']) && is_numeric($queryParams['page']) ? (int) $queryParams['page'] : 1;
+        $limit = isset($queryParams['limit']) && is_numeric($queryParams['limit']) ? (int) $queryParams['limit'] : 15;
+        $search = isset($queryParams['search']) && is_string($queryParams['search']) ? $queryParams['search'] : null;
 
         $query = new Query(
             (string) $route->getArgument('directionSlug', ''),
             (string) $route->getArgument('categorySlug', ''),
+            $page,
+            $limit,
+            $search
         );
         $this->validator->validate($query);
 

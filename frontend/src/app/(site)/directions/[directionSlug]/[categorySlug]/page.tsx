@@ -9,7 +9,10 @@ import normalizeMarkdown from "@/utils/normalizeMarkdown";
 import SiteBreadcrumbs from "@/components/Breadcrumb/SiteBreadcrumbs";
 import { getAllDirections, getDirectionBySlug } from "@api/direction";
 import { getCategoriesByDirectionSlug, getCategoryBySlugs } from "@api/category";
-import { getTemplatesByCategorySlugs } from "@api/document";
+import { getTemplatesByCategorySlugs, EMPTY_PAGINATED_TEMPLATES } from "@api/document";
+import TemplatesTable from "@/components/Template/TemplatesTable";
+import TemplateSearch from "@/components/Template/TemplateSearch";
+import Pagination from "@/components/Pagination/Pagination";
 
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
@@ -63,10 +66,17 @@ export async function generateMetadata({
 
 export default async function CategoryTemplatesPage({
   params,
+  searchParams,
 }: {
-  params: Promise<{ directionSlug: string; categorySlug: string }>;
+  params: Promise<{ directionSlug: string; categorySlug: string; page: number; limit: number }>;
+  searchParams: Promise<{ page?: string; limit?: string; q?: string }>;
 }) {
   const { directionSlug, categorySlug } = await params;
+  const resolvedSearchParams = await searchParams;
+
+  const page = resolvedSearchParams.page ? parseInt(resolvedSearchParams.page, 10) : 1;
+  const limit = resolvedSearchParams.limit ? parseInt(resolvedSearchParams.limit, 10) : 15;
+  const search = resolvedSearchParams.q ? resolvedSearchParams.q : "";
 
   let direction;
   try {
@@ -83,15 +93,14 @@ export default async function CategoryTemplatesPage({
   }
 
   const children = category.children ?? [];
-  const templates =
-    children.length === 0 ? await getTemplatesByCategorySlugs(directionSlug, categorySlug) : [];
-
-  const formatPrice = (amount: number) =>
-    new Intl.NumberFormat("ru-RU", {
-      style: "currency",
-      currency: "RUB",
-      maximumFractionDigits: 0,
-    }).format(amount);
+  const templatesData =
+    children.length === 0
+      ? await getTemplatesByCategorySlugs(directionSlug, categorySlug, undefined, {
+          page,
+          limit,
+          search,
+        })
+      : EMPTY_PAGINATED_TEMPLATES;
 
   return (
     <>
@@ -129,29 +138,41 @@ export default async function CategoryTemplatesPage({
               <MarkdownRenderer content={normalizeMarkdown(category.text)} />
             </div>
           )}
+          <div className="space-y-4">
+            <Htag tag="h2">
+              Документы{" "}
+              {templatesData.totalCount > 0 && (
+                <span className="text-sm font-normal text-muted-foreground">
+                  ({templatesData.totalCount})
+                </span>
+              )}
+            </Htag>
 
-          <Htag tag="h2">Документы</Htag>
-          {templates.length === 0 ? (
-            <Ptag>В этой категории пока нет документов.</Ptag>
-          ) : (
-            <div className="grid gap-3">
-              {templates.map((template) => (
-                <Link
-                  key={template.id}
-                  href={`/directions/${directionSlug}/${categorySlug}/${template.slug}`}
-                  className="flex items-center justify-between gap-4 p-4 rounded-lg border bg-card hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
-                >
-                  <div className="min-w-0">
-                    <div className="font-medium truncate">{template.name}</div>
-                    <div className="text-sm text-muted-foreground">{template.filename}</div>
-                  </div>
-                  <div className="shrink-0 font-semibold tabular-nums">
-                    {formatPrice(template.amount)}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+            <TemplateSearch />
+
+            {templatesData.items.length === 0 ? (
+              <div className="p-8 text-center border rounded-lg bg-card/50 text-muted-foreground">
+                {search
+                  ? `По запросу «${search}» ничего не найдено.`
+                  : "В этой категории пока нет документов."}
+              </div>
+            ) : (
+              <>
+                <TemplatesTable
+                  templates={templatesData.items}
+                  directionSlug={directionSlug}
+                  categorySlug={categorySlug}
+                />
+
+                <Pagination
+                  totalPages={templatesData.totalPages}
+                  currentPage={page}
+                  searchQuery={search}
+                  baseUrl={`/directions/${directionSlug}/${categorySlug}`}
+                />
+              </>
+            )}
+          </div>
         </div>
       )}
     </>

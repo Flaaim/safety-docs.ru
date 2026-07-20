@@ -15,6 +15,11 @@ final class Query
         #[Assert\NotBlank]
         #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/')]
         public readonly string $categorySlug,
+        #[Assert\GreaterThan(0)]
+        public readonly int $page = 1,
+        #[Assert\GreaterThan(0)]
+        public readonly int $limit = 15,
+        public readonly ?string $search = null,
     ) {
     }
 }

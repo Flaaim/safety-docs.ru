@@ -19,9 +19,10 @@ final class Handler
     }
 
     /**
-     * @return list<DocumentDTO>
+     * @param Query $query
+     * @return ListDocumentDTO
      */
-    public function handle(Query $query): array
+    public function handle(Query $query): ListDocumentDTO
     {
         $direction = $this->directions->getBySlug($query->directionSlug);
 
@@ -38,11 +39,26 @@ final class Handler
             throw new \DomainException('Category not found.');
         }
 
-        $rows = $this->documents->getAllByCategory($category['category_id']);
+        $result = $this->documents->getPaginatedByCategory(
+            $category['category_id'],
+            $query->page,
+            $query->limit,
+            $query->search
+        );
 
-        return array_map(
+        $items = array_map(
             static fn (array $row) => DocumentDTO::fromArray($row),
-            $rows
+            $result['items']
+        );
+
+        $totalCount = $result['totalCount'];
+
+        $totalPages = $totalCount > 0 ? (int) ceil($totalCount / $query->limit) : 0;
+
+        return new ListDocumentDTO(
+            items: $items,
+            totalCount: $totalCount,
+            totalPages: $totalPages
         );
     }
 }
