@@ -15,4 +15,8 @@ class Flusher
     {
         $this->em->flush();
     }
+    public function clear(): void
+    {
+        $this->em->clear();
+    }
 }

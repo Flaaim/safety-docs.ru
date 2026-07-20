@@ -6,11 +6,12 @@ use App\Distribution\Entity\Newsletter\Event\NewsLetterLaunched;
 use App\Distribution\Entity\Newsletter\Event\SendNewsletterBatch;
 use App\Distribution\MessageHandler\NewsletterLauncherHandler;
 use App\Distribution\MessageHandler\SendNewsletterBatchHandler;
+use App\Parser\Event\ProcessedSingleDocument;
+use App\Parser\MessageHandler\ProcessedSingleDocumentHandler;
 use App\Payment\Event\PaymentProcessed;
 use App\Payment\MessageHandler\EmailPreparedOnPaymentProcessedHandler;
 use App\Sender\Event\SendDocumentEmailCommand;
 use App\Sender\MessageHandler\SendDocumentOnEmailPreparedHandler;
-use Carbon\Laravel\ServiceProvider;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -57,6 +58,12 @@ return [
             SendNewsletterBatch::class => [
                 new HandlerDescriptor(function (SendNewsletterBatch $event) use ($container) {
                     $handler = $container->get(SendNewsletterBatchHandler::class);
+                    return $handler($event);
+                })
+            ],
+            ProcessedSingleDocument::class => [
+                new HandlerDescriptor(function (ProcessedSingleDocument $event) use ($container) {
+                    $handler = $container->get(ProcessedSingleDocumentHandler::class);
                     return $handler($event);
                 })
             ]

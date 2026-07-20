@@ -81,7 +81,7 @@ services:
       AUTH_LOGIN: app
       AUTH_PASSWORD: secret
       REDIS_HOST: redis
-      MESSENGER_TRANSPORT_DSN: redis://localhost:6379/messages
+      MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
       UNI_SENDER_API: uni_sender_test
 
 

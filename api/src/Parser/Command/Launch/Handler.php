@@ -4,24 +4,13 @@ declare(strict_types=1);
 
 namespace App\Parser\Command\Launch;
 
-use App\Flusher;
 use App\Parser\Entity\DocumentItem;
-use App\Parser\Service\DocumentAttachmentParser;
-use App\Parser\Service\DocumentDownloader;
-use App\Parser\Service\DocumentHtmlFetcher;
 use App\Parser\Service\DocumentListParser;
 use App\Parser\Service\RubricatorHtmlFetcher;
-use App\Shared\Domain\ValueObject\Currency;
 use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Category\CategoryRepository;
-use App\Template\Entity\Document\Amount;
-use App\Template\Entity\Document\Document;
-use App\Template\Entity\Document\DocumentId;
-use App\Template\Entity\Document\DocumentRepository;
-use App\Template\Entity\Document\Filename;
-use App\Template\Entity\Slug;
 use Symfony\Component\Messenger\MessageBusInterface;
-use App\Parser\Command\ProcessSingleDocument\Command as ProcessSingleDocumentCommand;
+use App\Parser\Event\ProcessedSingleDocument;
 
 final class Handler
 {
@@ -55,7 +44,7 @@ final class Handler
 
         foreach ($documents as $document) {
             $this->messageBus->dispatch(
-                new ProcessSingleDocumentCommand(
+                new ProcessedSingleDocument(
                     $category->getId()->getValue(),
                     $command->amount,
                     $document->title,
