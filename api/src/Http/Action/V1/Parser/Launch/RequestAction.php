@@ -16,6 +16,7 @@ final class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Handler $handler,
+        private readonly Validator $validator,
     ) {
     }
 
@@ -29,6 +30,8 @@ final class RequestAction implements RequestHandlerInterface
             $data['url'] ?? '',
             $data['cookie'] ?? '',
         );
+
+        $this->validator->validate($command);
 
         $this->handler->handle($command);
 
