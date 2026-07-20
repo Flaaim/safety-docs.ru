@@ -111,7 +111,7 @@ return static function (App $app): void {
         });
 
         $group->group('/parser', function (RouteCollectorProxy $group): void {
-            $group->post('/launch', Parser\Launch\RequestAction::class);
+            $group->post('/launch', Parser\Launch\RequestAction::class)->add(AuthMiddleware::class);
         });
     });
 };
