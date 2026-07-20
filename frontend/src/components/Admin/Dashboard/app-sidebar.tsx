@@ -11,6 +11,7 @@ import {
   ChevronRight,
   FolderOpenDot,
   Mailbox,
+  Target,
 } from "lucide-react";
 import {
   Sidebar,
@@ -40,6 +41,11 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 
 const items = [
   { title: "Панель", url: "/dashboard", icon: LayoutDashboard },
+  {
+    title: "Парсер",
+    url: "/dashboard/parser",
+    icon: Target,
+  },
   {
     title: "Каталог",
     url: "/dashboard/directions",

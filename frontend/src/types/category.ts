@@ -10,6 +10,14 @@ export interface Category {
   children: Category[];
 }
 
+export interface CategoryChildren {
+  id: string;
+  title: string;
+  description: string;
+  text: string;
+  slug: string;
+}
+
 /** @deprecated Prefer Category */
 export interface CategoryDTO extends Category {
   directionTitle?: string;

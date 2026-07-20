@@ -89,11 +89,13 @@ final class CategoryFetcher implements CategoryFetcherInterface
 
         $qb->select('c.category_id, c.title, c.description, c.text, c.slug, c.parent_id')
             ->from('categories', 'c')
-            ->where($qb->expr()->isnull('c.parent_id'));
+            ->leftJoin('c', 'categories', 'sub', 'sub.parent_id = c.category_id')
+            ->where($qb->expr()->isNotNull('c.parent_id'))
+            ->orWhere($qb->expr()->isNull('sub.category_id'));
 
         $result = $qb->executeQuery();
 
-        return $this->buildTree($result->fetchAllAssociative());
+        return $result->fetchAllAssociative();
     }
 
     private function buildTree(array $categories): array

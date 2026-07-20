@@ -29,6 +29,7 @@ export const API = {
       BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
     delete: (id: string, directionId: string) =>
       BASE_URL + `/v1/directions/${directionId}/categories/${id}`,
+    getAllChildrenCategories: () => BASE_URL + `/v1/children-categories`,
   },
   document: {
     /** Admin: paginated Template read-model list */
@@ -85,6 +86,9 @@ export const API = {
     launchNewsletter: () => BASE_URL + `/v1/distributions/newsletters/launch`,
     archiveNewsletter: (newsletter: string) =>
       BASE_URL + `/v1/distributions/newsletters/${newsletter}`,
+  },
+  parser: {
+    launch: () => BASE_URL + `/v1/parser/launch`,
   },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,

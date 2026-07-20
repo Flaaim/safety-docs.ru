@@ -27,7 +27,7 @@ final class RequestAction implements RequestHandlerInterface
 
         $command = new Command(
             $data['categoryId'] ?? '',
-            $data['amount'] ?? 0,
+            (float)($data['amount'] ?? 0),
             $data['url'] ?? '',
             $data['cookie'] ?? '',
         );

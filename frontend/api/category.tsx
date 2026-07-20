@@ -1,4 +1,4 @@
-import { Category } from "@/types/category";
+import { Category, CategoryChildren } from "@/types/category";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
 
@@ -107,6 +107,15 @@ export async function deleteCategory(
 ): Promise<void> {
   return await apiFetch<void>(API.category.delete(categoryId, directionId), {
     method: "DELETE",
+    token,
+  });
+}
+
+export async function getAllChildrenCategories(
+  token: string | undefined
+): Promise<CategoryChildren[]> {
+  return await apiFetch<CategoryChildren[]>(API.category.getAllChildrenCategories(), {
+    method: "GET",
     token,
   });
 }
