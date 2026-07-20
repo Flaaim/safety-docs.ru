@@ -32,6 +32,9 @@ return static function (App $app): void {
         $group->get('/templates', Template\Admin\GetTemplates\RequestAction::class)
             ->add(AuthMiddleware::class);
 
+        //Admin Children Categories read models
+        $group->get('/children-categories', Template\Admin\Categories\GetAllChildren\RequestAction::class)->add(AuthMiddleware::class);
+
         $group->group('/directions', function (RouteCollectorProxy $group): void {
             $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
             // Character classes inside {param:...} are fine; literal [...] outside is FastRoute "optional segment".

@@ -83,6 +83,18 @@ final class CategoryFetcher implements CategoryFetcherInterface
 
         return $data;
     }
+    public function getAllChildrenCategories(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('c.category_id, c.title, c.description, c.text, c.slug, c.parent_id')
+            ->from('categories', 'c')
+            ->where($qb->expr()->isnull('c.parent_id'));
+
+        $result = $qb->executeQuery();
+
+        return $this->buildTree($result->fetchAllAssociative());
+    }
 
     private function buildTree(array $categories): array
     {
