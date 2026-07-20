@@ -20,6 +20,8 @@ use App\Template\Entity\Document\DocumentId;
 use App\Template\Entity\Document\DocumentRepository;
 use App\Template\Entity\Document\Filename;
 use App\Template\Entity\Slug;
+use Symfony\Component\Messenger\MessageBusInterface;
+use App\Parser\Command\ProcessSingleDocument\Command as ProcessSingleDocumentCommand;
 
 final class Handler
 {
@@ -27,12 +29,8 @@ final class Handler
     public function __construct(
         private readonly RubricatorHtmlFetcher $fetchListDocuments,
         private readonly DocumentListParser $documentListParser,
-        private readonly DocumentHtmlFetcher $documentHtmlFetcher,
-        private readonly DocumentAttachmentParser $attachmentParser,
-        private readonly DocumentDownloader $downloader,
         private readonly CategoryRepository $categories,
-        private readonly DocumentRepository $documents,
-        private readonly Flusher $flusher,
+        private readonly MessageBusInterface $messageBus,
     ) {
     }
 
@@ -54,42 +52,17 @@ final class Handler
         /** @var DocumentItem[] $documents */
         $documents = ($this->documentListParser)($listDocuments);
 
-        $documentHtml = ($this->documentHtmlFetcher)($documents[0], $command->cookie);
-        $hrefLink = ($this->attachmentParser)($documentHtml);
-        if ($hrefLink === null) {
-            throw new \DomainException('Cannot add a document, hrefLink is null');
-        }
-        $existing = $this->documents->findByCategoryIdAndName($category->getId(), $documents[0]->title);
-        if ($existing !== null) {
-            $this->downloader->replace(
-                $existing->getId()->getValue(),
-                $existing->getFilename()->getValue(),
-                $hrefLink,
-                $command->cookie
+
+        foreach ($documents as $document) {
+            $this->messageBus->dispatch(
+                new ProcessSingleDocumentCommand(
+                    $category->getId()->getValue(),
+                    $command->amount,
+                    $document->title,
+                    $document->href,
+                    $command->cookie,
+                )
             );
-            $existing->refreshUploadedAt();
-        } else {
-            $documentId = DocumentId::generate();
-
-            $filename = $this->downloader->download($documentId->getValue(), $hrefLink, $command->cookie);
-
-            $document = new Document(
-                $documentId,
-                $documents[0]->title,
-                new Amount($command->amount, new Currency('RUB')),
-                new Filename($filename),
-                Slug::generate($documents[0]->title)->getValue(),
-                $category
-            );
-
-            $this->documents->add($document);
         }
-
-
-
-        $this->flusher->flush();
-//        foreach ($documents as $document){
-//            $documentHtml = ($this->downloader)($document, $cookie);
-//        }
     }
 }

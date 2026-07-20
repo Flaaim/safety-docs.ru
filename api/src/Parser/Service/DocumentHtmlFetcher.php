@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Parser\Service;
 
-use App\Parser\Entity\DocumentItem;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 
@@ -17,10 +16,10 @@ final class DocumentHtmlFetcher
     ) {
     }
 
-    public function __invoke(DocumentItem $documentItem, string $cookie): string
+    public function __invoke(string $href, string $cookie): string
     {
         try {
-            $response = $this->client->request('GET', 'https://1otruda.ru/system/content/doc/' . $documentItem->href, [
+            $response = $this->client->request('GET', 'https://1otruda.ru/system/content/doc/' . $href, [
                 'cookies' => false,
                 'headers' => [
                     'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',

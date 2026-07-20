@@ -26,7 +26,7 @@ return [
         if (!empty($config['file'])) {
             $log->pushHandler(new StreamHandler($config['file'], $level));
         }
-        if(SentrySdk::getCurrentHub()->getClient() !== null) {
+        if (SentrySdk::getCurrentHub()->getClient() !== null) {
             $log->pushHandler(new LogToSentryIssueHandler(SentrySdk::getCurrentHub(), Level::Error));
         }
         return $log;
