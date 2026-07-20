@@ -17,8 +17,7 @@ final class RequestAction implements RequestHandlerInterface
 {
     public function __construct(
         private readonly Handler $handler,
-        private readonly Validator $validator,
-        private readonly LoggerInterface $logger
+        private readonly Validator $validator
     ) {
     }
 
@@ -27,7 +26,6 @@ final class RequestAction implements RequestHandlerInterface
         $route = $request->getAttribute('active_route');
         $queryParams = $request->getQueryParams();
 
-        $this->logger->error('Params ' . var_export($queryParams, true));
         $page = isset($queryParams['page']) && is_numeric($queryParams['page']) ? (int) $queryParams['page'] : 1;
         $limit = isset($queryParams['limit']) && is_numeric($queryParams['limit']) ? (int) $queryParams['limit'] : 15;
         $search = isset($queryParams['search']) && is_string($queryParams['search']) ? $queryParams['search'] : null;
