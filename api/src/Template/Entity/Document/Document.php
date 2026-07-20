@@ -17,7 +17,7 @@ class Document
         #[ORM\Id]
         #[ORM\Column(type: 'document_id', unique: true)]
         private DocumentId $id,
-        #[ORM\Column(type: 'string', length: 255)]
+        #[ORM\Column(type: 'string', length: 512)]
         private string $name,
         #[ORM\Column(type: 'document_amount')]
         private Amount $amount,
