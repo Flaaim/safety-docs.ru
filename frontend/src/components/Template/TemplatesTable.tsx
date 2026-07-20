@@ -38,7 +38,6 @@ export default function TemplatesTable({
             <tr className="border-b bg-muted/40 text-xs font-medium text-muted-foreground uppercase tracking-wider">
               <th className="py-3 px-4">Название документа</th>
               <th className="py-3 px-4 whitespace-nowrap">Дата добавления</th>
-              <th className="py-3 px-4 text-right">Стоимость</th>
               <th className="py-3 px-4 w-10"></th>
             </tr>
           </thead>
@@ -66,9 +65,6 @@ export default function TemplatesTable({
                     <Calendar className="h-3.5 w-3.5 opacity-70" />
                     {formatDate(template.createdAt)}
                   </div>
-                </td>
-                <td className="py-3 px-4 whitespace-nowrap text-right font-semibold tabular-nums">
-                  {formatPrice(template.amount)}
                 </td>
                 <td className="py-3 px-4 text-right">
                   <Link
