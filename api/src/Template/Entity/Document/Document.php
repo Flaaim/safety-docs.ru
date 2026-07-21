@@ -23,7 +23,7 @@ class Document
         private Amount $amount,
         #[ORM\Column(type: 'filename')]
         private Filename $filename,
-        #[ORM\Column(type: 'string', length: 255)]
+        #[ORM\Column(type: 'string', length: 512)]
         private string $slug,
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'documents')]
         #[ORM\JoinColumn(
