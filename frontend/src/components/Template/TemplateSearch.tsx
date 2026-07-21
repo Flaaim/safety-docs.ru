@@ -11,8 +11,14 @@ export default function TemplateSearch() {
   const [isPending, startTransition] = useTransition();
 
   const [term, setTerm] = useState(searchParams.get("q") || "");
+
+  const currentQ = searchParams.get("q") || "";
   const searchParamsString = searchParams.toString();
   useEffect(() => {
+    if (term === currentQ) {
+      return () => {};
+    }
+
     const handler = setTimeout(() => {
       const params = new URLSearchParams(searchParamsString);
 
@@ -33,7 +39,7 @@ export default function TemplateSearch() {
     }, 400);
 
     return () => clearTimeout(handler);
-  }, [term, pathname, replace, searchParamsString]);
+  }, [term, pathname, replace, searchParamsString, currentQ]);
 
   return (
     <div className="relative max-w-md w-full">
