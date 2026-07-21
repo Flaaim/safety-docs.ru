@@ -9,6 +9,7 @@ use App\Parser\Service\DocumentListParser;
 use App\Parser\Service\RubricatorHtmlFetcher;
 use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Category\CategoryRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Parser\Event\ProcessedSingleDocument;
 
@@ -20,6 +21,7 @@ final class Handler
         private readonly DocumentListParser $documentListParser,
         private readonly CategoryRepository $categories,
         private readonly MessageBusInterface $messageBus,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -41,6 +43,8 @@ final class Handler
         /** @var DocumentItem[] $documents */
         $documents = ($this->documentListParser)($listDocuments);
 
+        $count = count($documents);
+        $this->logger->info("Найдено документов: {$count}. Начинаю отправку в очередь.");
 
         foreach ($documents as $document) {
             $this->messageBus->dispatch(
@@ -53,5 +57,7 @@ final class Handler
                 )
             );
         }
+
+        $this->logger->info("Все {$count} задачи успешно отправлены в очередь Messenger.");
     }
 }
