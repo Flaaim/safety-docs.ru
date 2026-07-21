@@ -7,6 +7,7 @@ namespace App\Parser\Service;
 use App\Parser\Entity\DocumentAttachment;
 use App\Shared\Domain\Service\File\DirectoryCreatorInterface;
 use App\Shared\Domain\ValueObject\FileSystem\FileSystemPathInterface;
+use DOMDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
@@ -44,6 +45,10 @@ final class DocumentDownloader
                 ]
             ]);
 
+            if (strtolower($cleanExtension) === 'docx') {
+                $this->clearDocxMetadata($filePath);
+            }
+
             return $filename;
         } catch (\Throwable $throwable) {
             if (file_exists($filePath)) {
@@ -64,5 +69,38 @@ final class DocumentDownloader
         }
 
         return $this->download($relativePathDir, $documentAttachment, $cookie);
+    }
+
+    private function clearDocxMetadata(string $filePath): void
+    {
+        $zip = new \ZipArchive();
+        if ($zip->open($filePath) === true) {
+            $coreXmlPath = 'docProps/core.xml';
+
+            if ($zip->locateName($coreXmlPath) !== false) {
+                $xmlContent = $zip->getFromName($coreXmlPath);
+
+                $dom = new DOMDocument();
+                libxml_use_internal_errors(true);
+                $dom->loadXML($xmlContent);
+                libxml_clear_errors();
+
+                $descriptions = $dom->getElementsByTagNameNS('http://purl.org/dc/elements/1.1/', 'description');
+                foreach ($descriptions as $node) {
+                    $node->nodeValue = '';
+                }
+
+                $creators = $dom->getElementsByTagNameNS('http://purl.org/dc/elements/1.1/', 'creator');
+                foreach ($creators as $node) {
+                    $node->nodeValue = '';
+                }
+                $modifiers = $dom->getElementsByTagNameNS('http://schemas.openxmlformats.org/package/2006/metadata/core-properties', 'lastModifiedBy');
+                foreach ($modifiers as $node) {
+                    $node->nodeValue = '';
+                }
+                $zip->addFromString($coreXmlPath, $dom->saveXML());
+            }
+            $zip->close();
+        }
     }
 }
