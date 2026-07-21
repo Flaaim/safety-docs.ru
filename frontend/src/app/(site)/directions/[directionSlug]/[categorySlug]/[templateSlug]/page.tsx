@@ -155,7 +155,7 @@ export default async function TemplatePurchasePage({
       <section className="mt-10 max-w-md rounded-lg border p-6 bg-card">
         <Htag tag="h2">Оформление покупки</Htag>
         <p className="text-sm text-muted-foreground mb-4">
-          Укажите email — на него придёт ссылка на скачивание после оплаты.
+          Укажите email — на него придёт документ после оплаты.
         </p>
         <ProductForm documentId={template.id} showTerms />
       </section>
