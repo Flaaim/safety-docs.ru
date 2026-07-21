@@ -29,7 +29,10 @@
     "sentry/sentry": "^4.27",
     "league/csv": "^9.0",
     "ext-curl": "*",
-    "imangazaliev/didom": "^2.0"
+    "imangazaliev/didom": "^2.0",
+    "ext-zip": "*",
+    "ext-dom": "*",
+    "ext-libxml": "*"
   },
   "autoload": {
     "psr-4": {

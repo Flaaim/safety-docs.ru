@@ -14,8 +14,8 @@ RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader 
 ### FPM ###
 FROM php:8.1-fpm-alpine
 
-RUN apk add --no-cache mysql-dev autoconf g++ make \
-    && docker-php-ext-install pdo_mysql mysqli \
+RUN apk add --no-cache mysql-dev autoconf g++ make libzip-dev \
+    && docker-php-ext-install pdo_mysql mysqli zip \
     && pecl install redis \
     && docker-php-ext-enable redis opcache \
     && apk del autoconf g++ make
