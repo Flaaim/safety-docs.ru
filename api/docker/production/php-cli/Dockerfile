@@ -1,6 +1,7 @@
 FROM php:8.1-cli-alpine AS builder
 
-RUN apk add --no-cache unzip
+RUN apk add --no-cache unzip libzip-dev \
+    && docker-php-ext-install zip
 
 RUN addgroup -g 1000 app && adduser -u 1000 -G app -s /bin/sh -D app
 
@@ -16,14 +17,9 @@ RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader 
 
 FROM php:8.1-cli-alpine
 
-RUN apk add --no-cache mysql-dev bash coreutils autoconf g++ make libzip-dev \
-    && docker-php-ext-install pdo_mysql mysqli zip \
-    && pecl install redis \
-    && docker-php-ext-enable redis opcache\
-    && apk del autoconf g++ make
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions intl
+RUN install-php-extensions pdo_mysql mysqli zip redis intl opcache
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
