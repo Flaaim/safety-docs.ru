@@ -29,9 +29,9 @@ final class ProcessedSingleDocumentHandler
         try {
             $documentHtml = ($this->documentHtmlFetcher)($event->href, $event->cookie);
 
-            $downloadUrl = ($this->attachmentParser)($documentHtml);
+            $documentAttachment = ($this->attachmentParser)($documentHtml);
 
-            if ($downloadUrl === null) {
+            if ($documentAttachment === null) {
                 $this->logger->error('Parser error. Download link is null' . $event->href);
                 return;
             }
@@ -40,7 +40,7 @@ final class ProcessedSingleDocumentHandler
                 $event->categoryId,
                 $event->title,
                 $event->amount,
-                $downloadUrl,
+                $documentAttachment,
                 $event->cookie
             );
         } catch (\Throwable $throwable) {

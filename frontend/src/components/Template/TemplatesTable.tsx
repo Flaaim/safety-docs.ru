@@ -13,7 +13,6 @@ export default function TemplatesTable({
   directionSlug,
   categorySlug,
 }: TemplatesTableProps) {
-
   const formatDate = (dateInput?: string | Date) => {
     if (!dateInput) return "—";
     const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Parser\Service;
 
 use App\Flusher;
+use App\Parser\Entity\DocumentAttachment;
 use App\Shared\Domain\ValueObject\Currency;
 use App\Template\Entity\Category\CategoryId;
 use App\Template\Entity\Category\CategoryRepository;
@@ -26,7 +27,7 @@ final class DocumentUpserter
     ) {
     }
 
-    public function upsert(string $categoryId, string $title, float $amount, string $downloadUrl, string $cookie): void
+    public function upsert(string $categoryId, string $title, float $amount, DocumentAttachment $documentAttachment, string $cookie): void
     {
         $category = $this->categories->findById(new CategoryId($categoryId));
         if ($category === null) {
@@ -36,17 +37,19 @@ final class DocumentUpserter
         $existing = $this->documents->findByCategoryIdAndName($category->getId(), $title);
 
         if ($existing !== null) {
-            $this->downloader->replace(
+            $newFilename = $this->downloader->replace(
                 $existing->getId()->getValue(),
                 $existing->getFilename()->getValue(),
-                $downloadUrl,
+                $documentAttachment,
                 $cookie
             );
+
+            $existing->updateFilename(new Filename($newFilename));
             $existing->refreshUploadedAt();
         } else {
             $documentId = DocumentId::generate();
 
-            $filename = $this->downloader->download($documentId->getValue(), $downloadUrl, $cookie);
+            $filename = $this->downloader->download($documentId->getValue(), $documentAttachment, $cookie);
 
             $document = new Document(
                 $documentId,

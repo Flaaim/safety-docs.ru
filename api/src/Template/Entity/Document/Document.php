@@ -72,4 +72,8 @@ class Document
     {
         $this->createdAt = new \DateTimeImmutable();
     }
+    public function updateFilename(Filename $filename): void
+    {
+        $this->filename = $filename;
+    }
 }

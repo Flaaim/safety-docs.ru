@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser\Service;
 
+use App\Parser\Entity\DocumentAttachment;
 use DiDom\Document;
 use DiDom\Element;
 use Psr\Log\LoggerInterface;
@@ -16,21 +17,24 @@ final class DocumentAttachmentParser
     ) {
     }
 
-    public function __invoke(string $htmlContent): ?string
+    public function __invoke(string $htmlContent): ?DocumentAttachment
     {
         try {
             $document = new Document($htmlContent);
-            /** @var Element[] $links */
-            $links = $document->find('a[href^="/api/v2/attachment-file_get"]');
 
-            foreach ($links as $link) {
-                if (!$link instanceof Element) {
-                    continue;
+            $link = $document->first('a[data-qa-locator="link"][download]');
+            if ($link) {
+                $originalName = $link->getAttribute('download');
+                $url = $link->getAttribute('href');
+                if ($originalName === null || $url === null) {
+                    return null;
                 }
-                $text = trim($link->text());
-                if ($text === 'Скачать шаблон') {
-                    return $link->getAttribute('href');
-                }
+                $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+
+                return new DocumentAttachment(
+                    $url,
+                    $extension ?: 'docx',
+                );
             }
 
             return null;
