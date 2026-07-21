@@ -43,6 +43,8 @@ final class ProcessedSingleDocumentHandler
                 $documentAttachment,
                 $event->cookie
             );
+        } catch (\Doctrine\ORM\Exception\EntityManagerClosed $e){
+            throw $e;
         } catch (\Throwable $throwable) {
             $this->logger->error('Ошибка при обработке документа: ' . $throwable->getMessage(), [
                 'href' => $event->href,
