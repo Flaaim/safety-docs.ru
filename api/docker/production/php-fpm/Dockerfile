@@ -1,19 +1,23 @@
 FROM php:8.1-fpm-alpine AS builder
 
-RUN apk add --no-cache unzip libzip-dev \
-    && docker-php-ext-install zip
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions zip intl redis
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /app
 
 COPY ./composer.json ./composer.lock ./
+COPY ./ ./
 
-RUN composer install --no-dev --prefer-dist --no-progress --optimize-autoloader --ignore-platform-req=ext-intl --ignore-platform-req=ext-redis && rm -rf /root/.composer/cache
+RUN composer install --no-dev --prefer-dist --no-progress --classmap-authoritative \
+    && rm -rf /root/.composer/cache
 
 
 ### FPM ###
 FROM php:8.1-fpm-alpine
+
+RUN apk add --no-cache bash
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions pdo_mysql mysqli zip redis intl opcache
@@ -25,8 +29,9 @@ COPY ./docker/production/php/conf.d /usr/local/etc/php/conf.d
 
 WORKDIR /app
 
-COPY --from=builder /app ./
 COPY ./ ./
+COPY --from=builder /app/vendor ./vendor
+
 
 RUN mkdir -p var/cache var/log public/templates \
     && chown -R www-data:www-data ./var ./public/templates
