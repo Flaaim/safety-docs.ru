@@ -22,6 +22,8 @@ RUN apk add --no-cache bash
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions pdo_mysql mysqli zip redis intl opcache
 
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
 COPY ./docker/common/php/conf.d /usr/local/etc/php/conf.d
