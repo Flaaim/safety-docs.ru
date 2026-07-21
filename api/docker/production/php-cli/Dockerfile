@@ -11,7 +11,7 @@ COPY ./composer.json ./composer.lock ./
 COPY ./ ./
 
 RUN composer install --no-dev --prefer-dist --no-progress --classmap-authoritative \
-    && rm -rf /root/.composer/cache \
+    && rm -rf /root/.composer/cache
 
 ### CLI ###
 
