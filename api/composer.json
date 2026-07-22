@@ -33,7 +33,8 @@
     "ext-zip": "*",
     "ext-dom": "*",
     "ext-libxml": "*",
-    "phpoffice/phpword": "^1.1"
+    "phpoffice/phpword": "^1.1",
+    "league/html-to-markdown": "^5.1"
   },
   "autoload": {
     "psr-4": {
