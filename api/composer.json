@@ -34,7 +34,8 @@
     "ext-dom": "*",
     "ext-libxml": "*",
     "phpoffice/phpword": "^1.1",
-    "league/html-to-markdown": "^5.1"
+    "league/html-to-markdown": "^5.1",
+    "erusev/parsedown": "^1.8"
   },
   "autoload": {
     "psr-4": {
