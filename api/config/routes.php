@@ -10,6 +10,7 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\UnsubscribeMiddleware;
 use App\Http\Middleware\UploadFileHandler;
 use App\Http\Action\V1\Parser;
+use App\Http\Action\V1\Sitemap;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -116,5 +117,7 @@ return static function (App $app): void {
         $group->group('/parser', function (RouteCollectorProxy $group): void {
             $group->post('/launch', Parser\Launch\RequestAction::class)->add(AuthMiddleware::class);
         });
+
+        $group->get('/sitemap/documents', Sitemap\GetDocuments\RequestAction::class);
     });
 };

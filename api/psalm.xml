@@ -28,6 +28,7 @@
                 <directory name="src/Shared/Domain/Query" />
                 <directory name="src/Distribution/Command" />
                 <directory name="src/Distribution/Query" />
+                <directory name="src/Sitemap/Query" />
                 <directory name="src/Distribution/Service" />
                 <directory name="src/Template/Entity" />
             </errorLevel>
@@ -36,6 +37,7 @@
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <directory name="src/Template/Query" />
+                <directory name="src/Sitemap/Query" />
                 <directory name="src/Distribution/Entity" />
             </errorLevel>
         </PossiblyUnusedProperty>
