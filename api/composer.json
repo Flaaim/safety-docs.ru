@@ -32,7 +32,8 @@
     "imangazaliev/didom": "^2.0",
     "ext-zip": "*",
     "ext-dom": "*",
-    "ext-libxml": "*"
+    "ext-libxml": "*",
+    "phpoffice/phpword": "^1.1"
   },
   "autoload": {
     "psr-4": {
