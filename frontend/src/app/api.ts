@@ -109,6 +109,9 @@ export const API = {
   parser: {
     launch: () => BASE_URL + `/v1/parser/launch`,
   },
+  sitemap: {
+    getDocuments: () => BASE_URL + `/v1/sitemap/documents`,
+  },
   token: {
     create: () => BASE_URL + `/v1/auth/login`,
   },
