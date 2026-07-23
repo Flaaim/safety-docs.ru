@@ -167,5 +167,6 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           MESSENGER_TRANSPORT_DSN: ${{ secrets.MESSENGER_TRANSPORT_DSN }}
           UNI_SENDER_API: ${{ secrets.UNI_SENDER_API }}
+          AI_REWRITER_API_KEY: ${{ secrets.AI_REWRITER_API_KEY }}
 
 

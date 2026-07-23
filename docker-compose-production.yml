@@ -65,6 +65,7 @@ services:
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
       UNI_SENDER_API: ${UNI_SENDER_API}
+      AI_REWRITER_API_KEY: ${AI_REWRITER_API_KEY}
 
   api-php-cli:
     image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
@@ -96,6 +97,7 @@ services:
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
       UNI_SENDER_API: ${UNI_SENDER_API}
+      AI_REWRITER_API_KEY: ${AI_REWRITER_API_KEY}
 
   api-worker:
     image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
@@ -128,6 +130,7 @@ services:
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
       UNI_SENDER_API: ${UNI_SENDER_API}
+      AI_REWRITER_API_KEY: ${AI_REWRITER_API_KEY}
     command: php bin/worker.php
     depends_on:
       - redis

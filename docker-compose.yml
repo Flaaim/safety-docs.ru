@@ -83,6 +83,7 @@ services:
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
       UNI_SENDER_API: uni_sender_test
+      AI_REWRITER_API_KEY: sk-exZnXqp2HytN6ZcxDeVrgewehVGTcqZU
 
 
   api-php-cli:
@@ -117,6 +118,7 @@ services:
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
       UNI_SENDER_API: uni_sender_test
+      AI_REWRITER_API_KEY: sk-exZnXqp2HytN6ZcxDeVrgewehVGTcqZU
 
   api-worker:
     build:
@@ -151,6 +153,7 @@ services:
       REDIS_HOST: redis
       MESSENGER_TRANSPORT_DSN: redis://redis:6379/messages
       UNI_SENDER_API: uni_sender_test
+      AI_REWRITER_API_KEY: sk-exZnXqp2HytN6ZcxDeVrgewehVGTcqZU
     command: php bin/worker.php
     depends_on:
       - redis
