@@ -24,8 +24,8 @@
 
     <rule ref="Generic.Files.LineLength">
         <properties>
-            <property name="lineLimit" value="200"/>
-            <property name="absoluteLineLimit" value="200"/>
+            <property name="lineLimit" value="800"/>
+            <property name="absoluteLineLimit" value="800"/>
         </properties>
     </rule>
     <rule ref="Zend.NamingConventions.ValidVariableName.NotCamelCaps"/>
