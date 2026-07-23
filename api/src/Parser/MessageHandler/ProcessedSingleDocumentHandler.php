@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Parser\MessageHandler;
 
 use App\Parser\Event\ProcessedSingleDocument;
-use App\Parser\Service\DocumentAttachmentParser;
+use App\Parser\Service\DocumentBodyFetcher;
 use App\Parser\Service\DocumentHtmlFetcher;
 use App\Parser\Service\DocumentUpserter;
 use Psr\Log\LoggerInterface;
@@ -18,7 +18,7 @@ final class ProcessedSingleDocumentHandler
     /** @psalm-suppress PossiblyUnusedMethod  */
     public function __construct(
         private readonly DocumentHtmlFetcher $documentHtmlFetcher,
-        private readonly DocumentAttachmentParser $attachmentParser,
+        private readonly DocumentBodyFetcher $documentBodyFetcher,
         private readonly LoggerInterface $logger,
         private readonly DocumentUpserter $upserter,
     ) {
@@ -29,19 +29,13 @@ final class ProcessedSingleDocumentHandler
         try {
             $documentHtml = ($this->documentHtmlFetcher)($event->href, $event->cookie);
 
-            $documentAttachment = ($this->attachmentParser)($documentHtml);
-
-            if ($documentAttachment === null) {
-                $this->logger->error('Parser error. Download link is null' . $event->href);
-                return;
-            }
+            $documentBody = ($this->documentBodyFetcher)($documentHtml);
 
             $this->upserter->upsert(
                 $event->categoryId,
                 $event->title,
                 $event->amount,
-                $documentAttachment,
-                $event->cookie
+                $documentBody
             );
         } catch (\Doctrine\ORM\Exception\EntityManagerClosed $e) {
             throw $e;
