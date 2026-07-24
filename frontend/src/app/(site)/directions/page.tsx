@@ -7,7 +7,7 @@ import { getAllDirections } from "@api/direction";
 import { Metadata } from "next";
 import SiteBreadcrumbs from "@/components/Breadcrumb/SiteBreadcrumbs";
 
-export const dynamicParams = true;
+export const dynamic = 'force-dynamic';
 
 const getCachedDirections = cache(async () => {
   return await getAllDirections();
