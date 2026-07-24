@@ -119,5 +119,8 @@ return static function (App $app): void {
         });
 
         $group->get('/sitemap/documents', Sitemap\GetDocuments\RequestAction::class);
+
+        $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+        $group->get('/preview/{documentId:' . $uuidPattern . '}', Template\Document\Preview\RequestAction::class);
     });
 };

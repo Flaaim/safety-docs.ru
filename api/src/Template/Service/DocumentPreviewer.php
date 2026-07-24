@@ -7,7 +7,6 @@ namespace App\Template\Service;
 use DomainException;
 use PhpOffice\PhpWord\IOFactory;
 
-/** @psalm-suppress UnusedClass */
 final class DocumentPreviewer
 {
     public function getHtml(string $absoluteFilePath): string
