@@ -18,7 +18,6 @@ const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });
 
-
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
