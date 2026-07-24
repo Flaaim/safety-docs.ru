@@ -2,8 +2,6 @@ import { Htag, Ptag } from "@/components";
 import PaymentResultPage from "@/components/PaymentResult/PaymentResult";
 import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
-
 export default async function Result() {
   return (
     <div>

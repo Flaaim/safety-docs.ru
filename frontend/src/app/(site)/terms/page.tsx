@@ -1,8 +1,6 @@
 import { Htag, Listtag, Ptag, Spantag } from "@/components";
 import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
-
 export default function Terms() {
   return (
     <div>

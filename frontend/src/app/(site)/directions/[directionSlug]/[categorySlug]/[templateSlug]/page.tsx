@@ -10,7 +10,6 @@ import { getTemplateBySlugs, getTemplatesByCategorySlugs } from "@api/document";
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });
-export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
