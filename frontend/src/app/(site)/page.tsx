@@ -6,6 +6,8 @@ import { cache } from "react";
 import { getAllDirections } from "@api/direction";
 import Link from "next/link";
 
+export const dynamicParams = true;
+
 const getCachedDirections = cache(async () => {
   return await getAllDirections();
 });
