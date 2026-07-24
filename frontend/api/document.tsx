@@ -1,7 +1,7 @@
 import { Template, TemplateListResult, BulkUploadResponse } from "@/types/template";
 import { API } from "@/app/api";
 import { apiFetch } from "@api/apiClient";
-import { PaginatedTemplates } from "@/interfaces/template.interface";
+import { PaginatedTemplates, TemplatePreview } from "@/interfaces/template.interface";
 
 const publicRevalidate = 3600;
 
@@ -134,4 +134,10 @@ export async function getTemplateBySlugs(
         : { next: { revalidate: publicRevalidate, tags: ["categories"] } }),
     }
   );
+}
+
+export async function preview(documentId: string): Promise<TemplatePreview> {
+  return await apiFetch<TemplatePreview>(API.document.preview(documentId), {
+    method: "GET",
+  });
 }

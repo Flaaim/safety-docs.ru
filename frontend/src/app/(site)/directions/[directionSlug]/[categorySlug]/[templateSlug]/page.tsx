@@ -6,6 +6,8 @@ import SiteBreadcrumbs from "@/components/Breadcrumb/SiteBreadcrumbs";
 import { getAllDirections, getDirectionBySlug } from "@api/direction";
 import { getCategoriesByDirectionSlug, getCategoryBySlugs } from "@api/category";
 import { getTemplateBySlugs, getTemplatesByCategorySlugs } from "@api/document";
+import TemplatePreview from "@/components/Template/TemplatePreview";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
@@ -130,7 +132,7 @@ export default async function TemplatePurchasePage({
 
       <Htag tag="h1">{template.name}</Htag>
 
-      <dl className="mt-6 grid gap-3 sm:grid-cols-2 text-sm">
+      <dl className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm">
         <div className="rounded-lg border p-4">
           <dt className="text-muted-foreground">Стоимость</dt>
           <dd className="mt-1 text-lg font-semibold">{formatPrice(template.amount)}</dd>
@@ -151,13 +153,19 @@ export default async function TemplatePurchasePage({
         </div>
       </dl>
 
-      <section className="mt-10 max-w-md rounded-lg border p-6 bg-card">
-        <Htag tag="h2">Оформление покупки</Htag>
-        <p className="text-sm text-muted-foreground mb-4">
-          Укажите email — на него придёт документ после оплаты.
-        </p>
-        <ProductForm documentId={template.id} showTerms />
-      </section>
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+        <TemplatePreview documentId={template.id} />
+
+        <Card className="lg:sticky lg:top-6">
+          <CardHeader>
+            <CardTitle>Оформление покупки</CardTitle>
+            <CardDescription>Укажите email — на него придёт документ после оплаты.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ProductForm documentId={template.id} showTerms />
+          </CardContent>
+        </Card>
+      </div>
     </>
   );
 }

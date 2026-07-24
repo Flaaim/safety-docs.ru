@@ -79,6 +79,7 @@ export const API = {
     /** Admin: bulk upload documents into a leaf category */
     bulkUpload: (directionId: string, categoryId: string) =>
       BASE_URL + `/v1/directions/${directionId}/categories/${categoryId}/documents/bulk`,
+    preview: (documentId: string) => BASE_URL + `/v1/preview/${documentId}`,
   },
   distribution: {
     getContactFiles: (currentPage: number, perPage: number) =>

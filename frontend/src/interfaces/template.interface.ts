@@ -12,3 +12,7 @@ export interface PaginatedTemplates {
   totalCount: number;
   totalPages: number;
 }
+
+export interface TemplatePreview {
+  html: string;
+}
