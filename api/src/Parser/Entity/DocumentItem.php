@@ -8,7 +8,7 @@ final class DocumentItem
 {
     public function __construct(
         public string $title,
-        public string $href,
+        public string $urlPath,
     ) {
     }
 }

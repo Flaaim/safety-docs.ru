@@ -43,6 +43,8 @@ final class Handler
         /** @var DocumentItem[] $documents */
         $documents = ($this->documentListParser)($listDocuments);
 
+        $host = $this->getHost($command->url);
+
         $count = count($documents);
         $this->logger->info("Найдено документов: {$count}. Начинаю отправку в очередь.");
 
@@ -52,12 +54,30 @@ final class Handler
                     $category->getId()->getValue(),
                     $command->amount,
                     $document->title,
-                    $document->href,
+                    $document->urlPath,
                     $command->cookie,
+                    $host,
                 )
             );
         }
 
         $this->logger->info("Все {$count} задачи успешно отправлены в очередь Messenger.");
+    }
+
+    private function getHost(string $url): string
+    {
+        $parts = parse_url($url);
+
+        if (empty($parts['scheme'])) {
+            $this->logger->error('Can not get scheme from ' . $url);
+            throw new \DomainException('Can not get scheme from URL: ' . $url);
+        }
+
+        if (empty($parts['host'])) {
+            $this->logger->error('Can not get host from ' . $url);
+            throw new \DomainException('Can not get host from URL: ' . $url);
+        }
+
+        return $parts['scheme'] . '://' . $parts['host'];
     }
 }

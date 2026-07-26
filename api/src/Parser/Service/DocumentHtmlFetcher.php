@@ -16,10 +16,10 @@ final class DocumentHtmlFetcher
     ) {
     }
 
-    public function __invoke(string $href, string $cookie): string
+    public function __invoke(string $urlPath, string $cookie, string $host): string
     {
         try {
-            $response = $this->client->request('GET', 'https://1otruda.ru/system/content/doc/' . $href, [
+            $response = $this->client->request('GET', $host . '/system/content/doc/' . $urlPath, [
                 'cookies' => false,
                 'timeout' => 30.0,
                 'connect_timeout' => 5.0,
