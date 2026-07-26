@@ -187,36 +187,54 @@ final class DocumentAiRewriter
         return $chunks;
     }
 
-    private function callLlmApi(string $text): ?string
+    private function callLlmApi(string $text, int $maxRetries = 3): ?string
     {
-        try {
-            $response = $this->client->request('POST', 'https://api.proxyapi.ru/openai/v1/chat/completions', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->apiKey,
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => [
-                    'model' => 'gpt-4o-mini',
-                    'temperature' => 0.4,
-                    'messages' => [
-                        [
-                            'role' => 'system',
-                            'content' => 'Ты — профессиональный эксперт по охране труда. Твоя задача — сделать глубокий рерайт текста, предоставленного в формате Markdown.'
-                        ],
-                        [
-                            'role' => 'user',
-                            'content' => "Перепиши следующий текст, изменив структуру предложений и синонимы, НО СТРОГО соблюдай следующие правила:\n1. СОХРАНИ всю разметку Markdown (заголовки #, списки -, нумерацию 1. 2.).\n2. СОХРАНИ таблицы строго в формате Markdown (| столбец | столбец |).\n3. СОХРАНИ все технические термины, номера законов, ГОСТов и цифры.\n4. Верни ТОЛЬКО перефразированный текст в формате Markdown без вступлений и пояснений:\n\n Если есть названия компании такие как ООО 'Альфа', ООО 'Гамма' и другие, их надо убрать из текста. Если в тексте встречаются фамилии, то их надо заменить на другие. Все даты обновить на 2026 год. Верни ТОЛЬКО перефразированный текст в формате Markdown без вступлений и пояснений:\n\n" . $text
-                        ]
-                    ]
-                ],
-                'timeout' => 60.0,
-            ]);
+        $attempt = 0;
+        $delaySeconds = 3;
 
-            $data = json_decode($response->getBody()->getContents(), true);
-            return trim($data['choices'][0]['message']['content'] ?? '');
-        } catch (\Throwable $throwable) {
-            $this->logger->warning('Ошибка генерации AI: ' . $throwable->getMessage());
-            return null;
+        while ($attempt < $maxRetries) {
+            $attempt++;
+
+            try {
+                $response = $this->client->request('POST', 'https://api.proxyapi.ru/openai/v1/chat/completions', [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $this->apiKey,
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => [
+                        'model' => 'gpt-4o-mini',
+                        'temperature' => 0.4,
+                        'messages' => [
+                            [
+                                'role' => 'system',
+                                'content' => 'Ты — профессиональный эксперт по охране труда. Твоя задача — сделать глубокий рерайт текста, предоставленного в формате Markdown.'
+                            ],
+                            [
+                                'role' => 'user',
+                                'content' => "Перепиши следующий текст, изменив структуру предложений и синонимы, НО СТРОГО соблюдай следующие правила:\n1. СОХРАНИ всю разметку Markdown (заголовки #, списки -, нумерацию 1. 2.).\n2. СОХРАНИ таблицы строго в формате Markdown (| столбец | столбец |).\n3. СОХРАНИ все технические термины, номера законов, ГОСТов и цифры.\n4. Верни ТОЛЬКО перефразированный текст в формате Markdown без вступлений и пояснений:\n\n Если есть названия компании такие как ООО 'Альфа', ООО 'Гамма' и другие, их надо убрать из текста. Если в тексте встречаются фамилии, то их надо заменить на другие. Все даты обновить на 2026 год. Верни ТОЛЬКО перефразированный текст в формате Markdown без вступлений и пояснений:\n\n" . $text
+                            ]
+                        ]
+                    ],
+                    'timeout' => 60.0,
+                ]);
+
+                $data = json_decode($response->getBody()->getContents(), true);
+                return trim($data['choices'][0]['message']['content'] ?? '');
+            } catch (\Throwable $throwable) {
+                $this->logger->warning(sprintf(
+                    'Ошибка генерации AI (Попытка %d из %d): %s',
+                    $attempt,
+                    $maxRetries,
+                    $throwable->getMessage()
+                ));
+                if ($attempt >= $maxRetries) {
+                    return null;
+                }
+                sleep($delaySeconds);
+
+                $delaySeconds *= 2;
+            }
         }
+        return null;
     }
 }
