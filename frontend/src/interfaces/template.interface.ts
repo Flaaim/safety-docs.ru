@@ -16,3 +16,7 @@ export interface PaginatedTemplates {
 export interface TemplatePreview {
   html: string;
 }
+
+export interface RelatedTemplates {
+  items: TemplateItem[];
+}

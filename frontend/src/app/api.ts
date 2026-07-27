@@ -80,6 +80,7 @@ export const API = {
     bulkUpload: (directionId: string, categoryId: string) =>
       BASE_URL + `/v1/directions/${directionId}/categories/${categoryId}/documents/bulk`,
     preview: (documentId: string) => BASE_URL + `/v1/preview/${documentId}`,
+    related: (documentId: string) => BASE_URL + `/v1/related/${documentId}`,
   },
   distribution: {
     getContactFiles: (currentPage: number, perPage: number) =>

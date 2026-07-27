@@ -7,6 +7,7 @@ import { getAllDirections, getDirectionBySlug } from "@api/direction";
 import { getCategoriesByDirectionSlug, getCategoryBySlugs } from "@api/category";
 import { getTemplateBySlugs, getTemplatesByCategorySlugs } from "@api/document";
 import TemplatePreview from "@/components/Template/TemplatePreview";
+import RelatedTemplates from "@/components/Template/RelatedTemplates";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const getCachedDirection = cache(async (slug: string) => {
@@ -154,7 +155,14 @@ export default async function TemplatePurchasePage({
       </dl>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-        <TemplatePreview documentId={template.id} />
+        <div className="space-y-6 min-w-0">
+          <TemplatePreview documentId={template.id} />
+          <RelatedTemplates
+            documentId={template.id}
+            directionSlug={directionSlug}
+            categorySlug={categorySlug}
+          />
+        </div>
 
         <Card className="lg:sticky lg:top-6">
           <CardHeader>
