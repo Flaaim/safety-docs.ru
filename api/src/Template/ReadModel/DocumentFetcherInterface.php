@@ -11,4 +11,6 @@ interface DocumentFetcherInterface
      * @return array<string, mixed>
      */
     public function getBySlugAndCategoryId(string $slug, string $categoryId): array;
+
+    public function getRelatedDocuments(string $categoryId, string $documentName, string $documentId): array;
 }

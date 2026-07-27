@@ -122,5 +122,6 @@ return static function (App $app): void {
 
         $uuidPattern = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
         $group->get('/preview/{documentId:' . $uuidPattern . '}', Template\Document\Preview\RequestAction::class);
+        $group->get('/related/{documentId: ' . $uuidPattern . '}', Template\Document\GetRelated\RequestAction::class);
     });
 };

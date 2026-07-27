@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Template\Document\Preview;
+namespace App\Http\Action\V1\Template\Document\GetRelated;
 
 use App\Http\JsonResponse;
 use App\Http\Validator\Validator;
-use App\Template\Query\Document\Preview\Handler;
-use App\Template\Query\Document\Preview\Query;
+use App\Template\Query\Document\GetRelated\Handler;
+use App\Template\Query\Document\GetRelated\Query;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -19,18 +19,18 @@ final class RequestAction implements RequestHandlerInterface
         private readonly Validator $validator
     ) {
     }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = $request->getAttribute('active_route');
-
-        $documentId = $route->getArgument('documentId');
+        $documentId = $route->getArgument('documentId', '');
 
         $query = new Query($documentId);
 
         $this->validator->validate($query);
 
-        $documentPreviewData = $this->handler->handle($query);
+        $relatedDocuments = $this->handler->handle($query);
 
-        return new JsonResponse(['html' => $documentPreviewData]);
+        return new JsonResponse($relatedDocuments);
     }
 }
