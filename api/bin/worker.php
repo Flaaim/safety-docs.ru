@@ -6,7 +6,8 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpForbiddenException;
 use Slim\Exception\HttpMethodNotAllowedException;
 use Slim\Exception\HttpNotFoundException;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\EventListener\StopWorkerOnTimeLimitListener;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Messenger\Worker;
@@ -27,7 +28,9 @@ $bus = $container->get(MessageBusInterface::class);
 
 $receiver = $container->get(TransportInterface::class);
 
-$eventDispatcher = $container->get(\Symfony\Component\EventDispatcher\EventDispatcherInterface::class);
+$eventDispatcher = $container->get(EventDispatcherInterface::class);
+
+$eventDispatcher->addSubscriber(new StopWorkerOnTimeLimitListener(3600));
 
 $worker = new Worker(
     ['async' => $receiver],
@@ -35,6 +38,8 @@ $worker = new Worker(
     $eventDispatcher
 );
 
-echo "[*] Worker started. Waiting for messages in Redis...\n";
+echo "[*] Worker started. Waiting for messages in Redis... (Will auto-restart in 1 hour)\n";
 
 $worker->run();
+
+echo "[*] Worker stopped cleanly by time limit.\n";
