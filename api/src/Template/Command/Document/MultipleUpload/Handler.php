@@ -65,7 +65,7 @@ final class Handler
                 $name,
                 new Amount($command->amount, new Currency('RUB')),
                 new Filename($filename),
-                Slug::generate($name)->getValue(),
+                Slug::generate($name, (string) $documentId)->getValue(),
                 $category
             );
 

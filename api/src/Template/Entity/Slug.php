@@ -18,7 +18,7 @@ class Slug
     {
         return $this->value;
     }
-    public static function generate(string $title): self
+    public static function generate(string $title, ?string $identifier = null, int $maxLength = 120): self
     {
         $transliterator = Transliterator::create('Any-Latin; Latin-ASCII');
 
@@ -36,6 +36,28 @@ class Slug
             throw new \RuntimeException('Transliteration value is null.');
         }
         $value = trim($value, '-');
+
+        if ($identifier !== null) {
+            $suffix = substr(md5($identifier), 0, 8);
+
+            $reservedLength = mb_strlen($suffix) + 1;
+            $maxTextLength = $maxLength - $reservedLength;
+
+            if (mb_strlen($value) > $maxTextLength) {
+                $value = mb_substr($value, 0, $maxTextLength);
+                $value = rtrim($value, '-'); // Убираем висячий дефис, если срез попал на него
+            }
+
+            $value = $value === '' ? 'doc' : $value;
+            $value .= '-' . $suffix;
+        } else {
+            if (mb_strlen($value) > $maxLength) {
+                $value = mb_substr($value, 0, $maxLength);
+                $value = rtrim($value, '-');
+            }
+        }
+
+
         if ($value === '') {
             throw new \DomainException('Cannot generate slug from the given title.');
         }

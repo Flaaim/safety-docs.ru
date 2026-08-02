@@ -70,7 +70,7 @@ final class DocumentUpserter
             $title,
             new Amount($amount, new Currency('RUB')),
             new Filename($filename),
-            Slug::generate($title)->getValue(),
+            Slug::generate($title, (string)$documentId)->getValue(),
             $category
         );
 
