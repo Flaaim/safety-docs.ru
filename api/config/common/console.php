@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Command\FixLongSlugsCommand;
 use App\Command\FixturesLoadCommand;
 use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
@@ -45,7 +46,9 @@ return [
 
                 ConsumeMessagesCommand::class,
                 FailedMessagesShowCommand::class,
-                FailedMessagesRetryCommand::class
+                FailedMessagesRetryCommand::class,
+
+                FixLongSlugsCommand::class,
             ],
             'fixture_paths' => [
                 __DIR__ . '/../../src/Payment/Fixture',

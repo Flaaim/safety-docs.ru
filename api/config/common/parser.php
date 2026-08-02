@@ -10,9 +10,7 @@ use Psr\Log\LoggerInterface;
 
 return [
     ClientInterface::class => function () {
-        return new Client([
-            'base_uri' => 'https://1otruda.ru'
-        ]);
+        return new Client();
     },
     DocumentAiRewriter::class => function (ContainerInterface $container) {
         $apiKey = $container->get('config')['AiRewriter'];

@@ -10,6 +10,8 @@ import TemplatePreview from "@/components/Template/TemplatePreview";
 import RelatedTemplates from "@/components/Template/RelatedTemplates";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+export const dynamic = "force-dynamic";
+
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });

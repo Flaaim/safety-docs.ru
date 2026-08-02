@@ -76,4 +76,9 @@ class Document
     {
         $this->filename = $filename;
     }
+
+    public function updateSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
 }
