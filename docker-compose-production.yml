@@ -1,6 +1,6 @@
 services:
   gateway:
-    image: ${REGISTRY}/safety-docs-gateway:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-gateway:${IMAGE_TAG}
     restart: always
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -13,11 +13,11 @@ services:
       - api
 
   frontend-node:
-    image: ${REGISTRY}/safety-docs-frontend-node:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-frontend-node:${IMAGE_TAG}
     restart: always
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_BACKEND_URL=https://api.safety-docs.ru
+      - NEXT_PUBLIC_BACKEND_URL=https://api.iot-1.ru
       - INTERNAL_BACKEND_URL=http://api
       - PORT=3000
     expose:
@@ -26,7 +26,7 @@ services:
       - api
 
   api:
-    image: ${REGISTRY}/safety-docs-api:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-api:${IMAGE_TAG}
     restart: always
     depends_on:
       - api-php-fpm
@@ -35,7 +35,7 @@ services:
       - /home/deploy/storage/templates:/app/public/templates
 
   api-php-fpm:
-    image: ${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-php-fpm:${IMAGE_TAG}
     restart: always
     volumes:
       - /home/deploy/storage/templates:/app/public/templates
@@ -68,7 +68,7 @@ services:
       AI_REWRITER_API_KEY: ${AI_REWRITER_API_KEY}
 
   api-php-cli:
-    image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-api-php-cli:${IMAGE_TAG}
     volumes:
       - /home/deploy/storage/templates:/app/public/templates
     environment:
@@ -100,7 +100,7 @@ services:
       AI_REWRITER_API_KEY: ${AI_REWRITER_API_KEY}
 
   api-worker:
-    image: ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-api-php-cli:${IMAGE_TAG}
     restart: always
     volumes:
       - /home/deploy/storage/templates:/app/public/templates

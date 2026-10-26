@@ -78,7 +78,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-cli/Dockerfile
-          tags: ${{ env.REGISTRY }}/safety-docs-api-php-cli:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/iot-1-api-php-cli:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -88,7 +88,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-fpm/Dockerfile
-          tags: ${{ env.REGISTRY }}/safety-docs-api-php-fpm:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/iot-1-api-php-fpm:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -98,7 +98,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/nginx/Dockerfile
-          tags: ${{ env.REGISTRY }}/safety-docs-api:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/iot-1-api:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -108,19 +108,19 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/docker/production/node/Dockerfile
-          tags: ${{ env.REGISTRY }}/safety-docs-frontend-node:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/iot-1-frontend-node:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            NEXT_PUBLIC_BACKEND_URL=https://api.safety-docs.ru
+            NEXT_PUBLIC_BACKEND_URL=https://api.iot-1.ru
 
       - name: Build and Push GATEWAY Image
         uses: docker/build-push-action@v5
         with:
           context: ./gateway
           file: ./gateway/docker/production/nginx/Dockerfile
-          tags: ${{ env.REGISTRY }}/safety-docs-gateway:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/iot-1-gateway:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -168,8 +168,6 @@ jobs:
           YOOKASSA_SHOP_ID: ${{ secrets.YOOKASSA_SHOP_ID }}
           YOOKASSA_SECRET_KEY: ${{ secrets.YOOKASSA_SECRET_KEY }}
           YOOKASSA_RETURN_URL: ${{ secrets.YOOKASSA_RETURN_URL }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           MESSENGER_TRANSPORT_DSN: ${{ secrets.MESSENGER_TRANSPORT_DSN }}
           UNI_SENDER_API: ${{ secrets.UNI_SENDER_API }}

@@ -105,16 +105,16 @@ docker-build:
 build: build-gateway build-frontend build-api
 
 build-gateway:
-	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/safety-docs-gateway:${IMAGE_TAG} gateway
+	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/iot-1-gateway:${IMAGE_TAG} gateway
 
 build-frontend:
-	docker --log-level=debug build --pull --file=frontend/docker/production/node/Dockerfile --tag=${REGISTRY}/safety-docs-frontend-node:${IMAGE_TAG} frontend
+	docker --log-level=debug build --pull --file=frontend/docker/production/node/Dockerfile --tag=${REGISTRY}/iot-1-frontend-node:${IMAGE_TAG} frontend
 
 
 build-api:
-	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/safety-docs-api:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/iot-1-api:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/iot-1-api-php-fpm:${IMAGE_TAG} api
+	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/iot-1-api-php-cli:${IMAGE_TAG} api
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
@@ -122,15 +122,15 @@ try-build:
 push: push-gateway push-frontend push-api
 
 push-gateway:
-	docker push ${REGISTRY}/safety-docs-gateway:${IMAGE_TAG}
+	docker push ${REGISTRY}/iot-1-gateway:${IMAGE_TAG}
 
 push-frontend:
-	docker push ${REGISTRY}/safety-docs-frontend-node:${IMAGE_TAG}
+	docker push ${REGISTRY}/iot-1-frontend-node:${IMAGE_TAG}
 
 push-api:
-	docker push ${REGISTRY}/safety-docs-api:${IMAGE_TAG}
-	docker push ${REGISTRY}/safety-docs-api-php-fpm:${IMAGE_TAG}
-	docker push ${REGISTRY}/safety-docs-api-php-cli:${IMAGE_TAG}
+	docker push ${REGISTRY}/iot-1-api:${IMAGE_TAG}
+	docker push ${REGISTRY}/iot-1-api-php-fpm:${IMAGE_TAG}
+	docker push ${REGISTRY}/iot-1-api-php-cli:${IMAGE_TAG}
 
 
 ifneq ("$(wildcard .env.production)","")
