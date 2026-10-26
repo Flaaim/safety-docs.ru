@@ -14,6 +14,8 @@ import TemplatesTable from "@/components/Template/TemplatesTable";
 import TemplateSearch from "@/components/Template/TemplateSearch";
 import Pagination from "@/components/Pagination/Pagination";
 
+export const dynamic = 'force-dynamic';
+
 const getCachedDirection = cache(async (slug: string) => {
   return await getDirectionBySlug(slug);
 });
