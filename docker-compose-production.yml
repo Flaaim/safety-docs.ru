@@ -35,7 +35,7 @@ services:
       - /home/deploy/storage/templates:/app/public/templates
 
   api-php-fpm:
-    image: ${REGISTRY}/iot-1-php-fpm:${IMAGE_TAG}
+    image: ${REGISTRY}/iot-1-api-php-fpm:${IMAGE_TAG}
     restart: always
     volumes:
       - /home/deploy/storage/templates:/app/public/templates
