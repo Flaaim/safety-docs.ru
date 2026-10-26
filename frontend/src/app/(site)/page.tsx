@@ -6,6 +6,7 @@ import { cache } from "react";
 import { getAllDirections } from "@api/direction";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 const getCachedDirections = cache(async () => {

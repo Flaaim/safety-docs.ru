@@ -9,7 +9,7 @@ import { getCategoriesByDirectionSlug } from "@api/category";
 import { cache } from "react";
 import { Metadata } from "next";
 import SiteBreadcrumbs from "@/components/Breadcrumb/SiteBreadcrumbs";
-
+export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
 
 const getCachedDirection = cache(async (slug: string) => {
