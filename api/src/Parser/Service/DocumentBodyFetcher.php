@@ -16,15 +16,18 @@ final class DocumentBodyFetcher
     }
     public function __invoke(string $htmlContent): string
     {
-        if (!preg_match('/<script id="__NEXT_DATA__"[^>]*>(.*?)<\/script>/is', $htmlContent, $matches)) {
-            $this->logger->error('Скрипт __NEXT_DATA__ не найден на странице');
-            throw new DomainException('__NEXT_DATA__ not found');
+        if (!preg_match('/<div[^>]*data-name="page\|contentContract"[^>]*>(.*?)<\/div>/is', $htmlContent, $matches)) {
+            $this->logger->error('Контейнер page|contentContract не найден на странице');
+            throw new DomainException('page|contentContract not found');
         }
 
-        $jsonData = json_decode($matches[1], true);
+        $rawJsonString = htmlspecialchars_decode($matches[1], ENT_QUOTES);
+
+        $jsonData = json_decode($rawJsonString, true);
         if (!is_array($jsonData)) {
-            $this->logger->error('Ошибка декодирования JSON из __NEXT_DATA__');
-            throw new DomainException('Invalid JSON in __NEXT_DATA__');
+            $jsonError = json_last_error_msg();
+            $this->logger->error('Ошибка декодирования JSON из page|contentContract');
+            throw new DomainException('Invalid JSON in page|contentContract');
         }
 
         $documentNodes = $this->findDocumentChildren($jsonData);
@@ -43,13 +46,10 @@ final class DocumentBodyFetcher
 
     private function findDocumentChildren(array $jsonData): array
     {
-        // Перебираем все запросы в dehydratedState, чтобы найти тот, который содержит документ
-        $queries = $jsonData['props']['dehydratedState']['queries'] ?? [];
-        foreach ($queries as $query) {
-            $body = $query['state']['data']['document']['content']['body'] ?? null;
-            if (is_array($body) && isset($body['children'])) {
-                return $body['children'];
-            }
+        $body = $jsonData['data']['document']['document']['content']['body'] ?? null;
+
+        if (is_array($body) && isset($body['children']) && is_array($body['children'])) {
+            return $body['children'];
         }
         return [];
     }

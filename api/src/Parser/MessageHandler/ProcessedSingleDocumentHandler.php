@@ -27,6 +27,7 @@ final class ProcessedSingleDocumentHandler
     public function __invoke(ProcessedSingleDocument $event): void
     {
         try {
+
             $documentHtml = ($this->documentHtmlFetcher)($event->urlPath, $event->cookie, $event->host);
 
             $documentBody = ($this->documentBodyFetcher)($documentHtml);
